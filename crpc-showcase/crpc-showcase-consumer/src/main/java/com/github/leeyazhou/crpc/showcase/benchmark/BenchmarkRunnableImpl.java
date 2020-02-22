@@ -13,15 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.leeyazhou.crpc.demo.benchmark;
+package com.github.leeyazhou.crpc.showcase.benchmark;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
 
-import com.github.leeyazhou.crpc.demo.service.UserService;
 import com.github.leeyazhou.crpc.core.logger.Logger;
 import com.github.leeyazhou.crpc.core.logger.LoggerFactory;
+import com.github.leeyazhou.crpc.showcase.service.UserService;
 
 public class BenchmarkRunnableImpl implements BenchmarkRunnable {
   private static final Logger logger = LoggerFactory.getLogger(BenchmarkRunnableImpl.class);

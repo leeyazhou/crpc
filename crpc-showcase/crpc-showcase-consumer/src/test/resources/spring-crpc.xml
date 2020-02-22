@@ -14,9 +14,9 @@
 		worker="64" />
 
 	<crpc:protocol name="kryo" />
-	<crpc:component-scan base-package="com.github.leeyazhou.demo"
+	<crpc:component-scan base-package="com.github.leeyazhou.showcase"
 		filter="ipFilter,monitorFilter,traceFilter" />
-	<context:component-scan base-package="com.github.leeyazhou.demo.service" />
+	<context:component-scan base-package="com.github.leeyazhou.showcase.service" />
 	<!-- <crpc:registry address="zookeeper://172.26.248.85:2181" /> -->
 
 	<bean id="userservice" class="com.github.leeyazhou.config.crpc.ServiceGroupConfig">
@@ -25,6 +25,6 @@
 			<bean class="com.github.leeyazhou.config.crpc.ServerConfig" p:address="tcp://127.0.0.1:12200" />
 		</property>
 	</bean>
-	<crpc:ref name="userService" interface="com.github.leeyazhou.demo.service.UserService"
+	<crpc:ref name="userService" interface="com.github.leeyazhou.showcase.service.UserService"
 		serviceGroup="userservice" />
 </beans>

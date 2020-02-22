@@ -24,30 +24,30 @@ public enum Codecs {
   /**
    * Java 原生序列化
    */
-  JAVA_CODEC(0, "com.github.crpc.protocol.codec.jdk.JavaEncoder", "com.github.crpc.protocol.codec.jdk.JavaDecoder"),
+  JAVA_CODEC(0, "com.github.leeyazhou.crpc.protocol.codec.jdk.JavaEncoder", "com.github.leeyazhou.crpc.protocol.codec.jdk.JavaDecoder"),
 
   /**
    * Kryo 序列化
    */
-  KRYO_CODEC(1, "com.github.crpc.protocol.codec.kryo.KryoEncoder",
-      "com.github.crpc.protocol.codec.kryo.KryoDecoder"),
+  KRYO_CODEC(1, "com.github.leeyazhou.crpc.protocol.codec.kryo.KryoEncoder",
+      "com.github.leeyazhou.crpc.protocol.codec.kryo.KryoDecoder"),
 
   /**
    * ProtoBuff序列化
    */
-  PB_CODEC(2, "com.github.crpc.protocol.codec.protobuf.ProtobufEncoder",
-      "com.github.crpc.protocol.codec.protobuf.ProtobufDecoder"),
+  PB_CODEC(2, "com.github.leeyazhou.crpc.protocol.codec.protobuf.ProtobufEncoder",
+      "com.github.leeyazhou.crpc.protocol.codec.protobuf.ProtobufDecoder"),
 
   /**
    * Hessian
    */
-  HESSIAN_CODEC(3, "com.github.crpc.protocol.codec.hessian.HessianEncoder",
-      "com.github.crpc.protocol.codec.hessian.HessianDecoder"),
+  HESSIAN_CODEC(3, "com.github.leeyazhou.crpc.protocol.codec.hessian.HessianEncoder",
+      "com.github.leeyazhou.crpc.protocol.codec.hessian.HessianDecoder"),
 
   /**
    * FST
    */
-  FST_CODEC(4, "com.github.crpc.protocol.codec.fst.FSTEncoder", "com.github.crpc.protocol.codec.fst.FSTDecoder");
+  FST_CODEC(4, "com.github.leeyazhou.crpc.protocol.codec.fst.FSTEncoder", "com.github.leeyazhou.crpc.protocol.codec.fst.FSTDecoder");
 
   private Codecs(int id, String encoder, String decoder) {
     try {

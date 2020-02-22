@@ -6,9 +6,9 @@
 
 	<server name="userservice" address="tcp://127.0.0.1:12200" worker="100" sync="false">
 		<!-- <registry address="zookeeper://127.0.0.1:2181" /> -->
-		<!-- <scan basepackage="com.github.leeyazhou.demo"
+		<!-- <scan basepackage="com.github.leeyazhou.showcase"
 			filter="ipFilter, counterFilter, monitorFilter, traceFilter, sentinelFilter" /> -->
-			<scan basepackage="com.github.leeyazhou.demo"/>
+			<scan basepackage="com.github.leeyazhou.crpc.showcase"/>
 	</server>
 
 </crpc>

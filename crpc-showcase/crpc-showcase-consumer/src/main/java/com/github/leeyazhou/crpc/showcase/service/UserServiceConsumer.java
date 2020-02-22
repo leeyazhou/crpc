@@ -16,40 +16,24 @@
 /**
  * 
  */
+package com.github.leeyazhou.crpc.showcase.service;
 
-package com.github.leeyazhou.crpc.demo.service;
+import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Map;
-
-import com.github.leeyazhou.crpc.demo.model.User;
+import com.github.leeyazhou.crpc.core.annotation.CRPCReference;
+import com.github.leeyazhou.crpc.showcase.service.UserService;
 
 /**
- * @author lee
- *
+ * @author <a href="mailto:lee_yazhou@163.com">Yazhou Li</a>
  */
-public interface UserService2 {
+@Service
+public class UserServiceConsumer {
 
-  public boolean say(User user);
+  @CRPCReference
+  UserService userService;
 
-  public boolean sayWord(String name);
-
-  public boolean say(User user, String mark);
-
-  public boolean say(int age);
-
-  public List<User> getUser(int id);
-
-  public void doNothing(User user);
-
-  /**
-   * 测试复杂对象
-   * 
-   * @param users ss
-   * @return ss
-   */
-  public Map<String, List<User>> complexObject(Map<String, List<User>> users);
-
-  public byte[] bigData(byte[] data);
+  public void foo() {
+    userService.proxyUserService2();
+  }
 
 }

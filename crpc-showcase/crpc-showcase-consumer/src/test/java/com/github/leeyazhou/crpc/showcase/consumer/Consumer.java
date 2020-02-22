@@ -17,7 +17,7 @@
  * 
  */
 
-package com.github.leeyazhou.crpc.demo.consumer;
+package com.github.leeyazhou.crpc.showcase.consumer;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -26,15 +26,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.github.leeyazhou.crpc.demo.model.User;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.github.leeyazhou.crpc.config.crpc.ServerConfig;
 import com.github.leeyazhou.crpc.config.crpc.ServiceGroupConfig;
-import com.github.leeyazhou.crpc.demo.service.UserService;
 import com.github.leeyazhou.crpc.rpc.ProxyFactory;
+import com.github.leeyazhou.crpc.showcase.model.User;
+import com.github.leeyazhou.crpc.showcase.service.UserService;
 import com.github.leeyazhou.crpc.core.util.ServiceLoader;
 
 /**

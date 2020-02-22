@@ -17,7 +17,7 @@
  * 
  */
 
-package com.github.leeyazhou.crpc.demo.benchmark;
+package com.github.leeyazhou.crpc.showcase.benchmark;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;

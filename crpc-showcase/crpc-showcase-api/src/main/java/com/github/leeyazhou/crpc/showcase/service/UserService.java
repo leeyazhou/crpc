@@ -17,15 +17,41 @@
  * 
  */
 
-package com.github.leeyazhou.crpc.demo.benchmark;
+package com.github.leeyazhou.crpc.showcase.service;
 
 import java.util.List;
+import java.util.Map;
+
+import com.github.leeyazhou.crpc.showcase.model.User;
 
 /**
  * @author lee
+ *
  */
-public interface BenchmarkRunnable extends Runnable {
+public interface UserService {
 
-  public List<long[]> getResult();
+  public boolean say(User user);
+
+  public boolean sayWord(String name);
+
+  public boolean say(User user, String mark);
+
+  public boolean say(int age);
+
+  public List<User> getUser(int id);
+
+  public void doNothing(User user);
+
+  /**
+   * 测试复杂对象
+   * 
+   * @param users ss
+   * @return ss
+   */
+  public Map<String, List<User>> complexObject(Map<String, List<User>> users);
+
+  public byte[] bigData(byte[] data);
+  
+  void proxyUserService2();
 
 }

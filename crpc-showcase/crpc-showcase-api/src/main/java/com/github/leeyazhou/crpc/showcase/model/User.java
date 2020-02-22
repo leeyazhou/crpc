@@ -17,7 +17,7 @@
  * 
  */
 
-package com.github.leeyazhou.crpc.demo.model;
+package com.github.leeyazhou.crpc.showcase.model;
 
 import java.io.Serializable;
 

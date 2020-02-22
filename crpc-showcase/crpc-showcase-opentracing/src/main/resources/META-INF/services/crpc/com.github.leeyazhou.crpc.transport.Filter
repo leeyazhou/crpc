@@ -1,0 +1,2 @@
+# proxy factory
+traceFilter=com.github.leeyazhou.crpc.showcase.filter.TraceFilter

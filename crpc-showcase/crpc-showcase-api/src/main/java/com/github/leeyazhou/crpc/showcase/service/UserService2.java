@@ -17,18 +17,18 @@
  * 
  */
 
-package com.github.leeyazhou.crpc.demo.service;
+package com.github.leeyazhou.crpc.showcase.service;
 
 import java.util.List;
 import java.util.Map;
 
-import com.github.leeyazhou.crpc.demo.model.User;
+import com.github.leeyazhou.crpc.showcase.model.User;
 
 /**
  * @author lee
  *
  */
-public interface UserService {
+public interface UserService2 {
 
   public boolean say(User user);
 
@@ -51,7 +51,5 @@ public interface UserService {
   public Map<String, List<User>> complexObject(Map<String, List<User>> users);
 
   public byte[] bigData(byte[] data);
-  
-  void proxyUserService2();
 
 }

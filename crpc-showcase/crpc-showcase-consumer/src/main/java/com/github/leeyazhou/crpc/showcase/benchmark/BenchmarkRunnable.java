@@ -16,20 +16,16 @@
 /**
  * 
  */
-package com.github.leeyazhou.crpc.demo.service.impl;
 
-import com.github.leeyazhou.crpc.demo.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+package com.github.leeyazhou.crpc.showcase.benchmark;
+
+import java.util.List;
 
 /**
  * @author lee
- *
  */
-@Service
-public class UserServiceImpl3 {
+public interface BenchmarkRunnable extends Runnable {
 
-  @Autowired
-  UserService userService;
+  public List<long[]> getResult();
 
 }

@@ -16,23 +16,21 @@
 /**
  * 
  */
-package com.github.leeyazhou.crpc.demo.service;
+package com.github.leeyazhou.crpc.showcase.service.impl;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.github.leeyazhou.crpc.core.annotation.CRPCReference;
+import com.github.leeyazhou.crpc.showcase.service.UserService;
 
 /**
- * @author <a href="mailto:lee_yazhou@163.com">Yazhou Li</a>
+ * @author lee
+ *
  */
 @Service
-public class UserServiceConsumer {
+public class UserServiceImpl3 {
 
-  @CRPCReference
+  @Autowired
   UserService userService;
-
-  public void foo() {
-    userService.proxyUserService2();
-  }
 
 }

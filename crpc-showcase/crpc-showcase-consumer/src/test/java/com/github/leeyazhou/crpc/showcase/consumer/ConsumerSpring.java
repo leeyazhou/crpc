@@ -16,14 +16,15 @@
 /**
  * 
  */
-package com.github.leeyazhou.crpc.demo.consumer;
+package com.github.leeyazhou.crpc.showcase.consumer;
 
-import com.github.leeyazhou.crpc.demo.service.UserServiceConsumer;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
+import com.github.leeyazhou.crpc.showcase.service.UserServiceConsumer;
 
 /**
  * @author <a href="mailto:lee_yazhou@163.com">Yazhou Li</a>

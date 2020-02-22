@@ -46,6 +46,11 @@
         </dependency>
         <dependency>
             <groupId>com.github.leeyazhou</groupId>
+            <artifactId>crpc-bootstrap-default</artifactId>
+            <version>${project.parent.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.github.leeyazhou</groupId>
             <artifactId>crpc-config-spring</artifactId>
             <version>${project.parent.version}</version>
         </dependency>

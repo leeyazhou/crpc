@@ -17,7 +17,7 @@
  * 
  */
 
-package com.github.leeyazhou.crpc.demo.service.impl;
+package com.github.leeyazhou.crpc.showcase.service.impl;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,14 +26,14 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import com.github.leeyazhou.crpc.demo.model.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.github.leeyazhou.crpc.demo.service.UserService;
-import com.github.leeyazhou.crpc.demo.service.UserService2;
 import com.github.leeyazhou.crpc.core.annotation.CRPCService;
+import com.github.leeyazhou.crpc.showcase.model.User;
+import com.github.leeyazhou.crpc.showcase.service.UserService;
+import com.github.leeyazhou.crpc.showcase.service.UserService2;
 
 /**
  * 
