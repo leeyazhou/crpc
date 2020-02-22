@@ -518,7 +518,7 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-checkstyle-plugin</artifactId>
                 <configuration>
-                    <configLocation>src/resources/CRPC_checkstyle.xml</configLocation>
+                    <configLocation>src/resources/crpc-checkstyle.xml</configLocation>
                     <encoding>UTF-8</encoding>
                 </configuration>
                 <executions>
