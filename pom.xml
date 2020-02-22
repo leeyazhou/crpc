@@ -55,6 +55,20 @@
         <module>crpc-extension</module>
         <module>crpc-bom</module>
     </modules>
+    <scm>
+        <connection>scm:git:git@github.com:${github.org}/${github.repo}.git</connection>
+        <developerConnection>scm:git:git@github.com:${github.org}/${github.repo}.git</developerConnection>
+        <tag>HEAD</tag>
+        <url>git@github.com:${github.org}/${github.repo}.git</url>
+    </scm>
+    <issueManagement>
+        <system>github-issue</system>
+        <url>https://github.com/${github.org}/${github.repo}/issues</url>
+    </issueManagement>
+    <ciManagement>
+        <system>travis-ci</system>
+        <url>https://travis-ci.org/${github.org}/${github.repo}</url>
+    </ciManagement>
 
     <properties>
         <antlr.version>2.7.4</antlr.version>
@@ -62,6 +76,8 @@
         <coveralls-maven-plugin.version>4.1.0</coveralls-maven-plugin.version>
         <findbugs-maven-plugin.version>3.0.2</findbugs-maven-plugin.version>
         <fst.version>2.57</fst.version>
+        <github.org>leeyazhou</github.org>
+        <github.repo>crpc</github.repo>
         <guava.version>20.0</guava.version>
         <guice.version>4.1.0</guice.version>
         <hessian.version>4.0.38</hessian.version>
@@ -502,7 +518,7 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-checkstyle-plugin</artifactId>
                 <configuration>
-                    <configLocation>src/resources/cbs_checkstyle.xml</configLocation>
+                    <configLocation>src/resources/CRPC_checkstyle.xml</configLocation>
                     <encoding>UTF-8</encoding>
                 </configuration>
                 <executions>
@@ -615,7 +631,7 @@
                 <artifactId>maven-checkstyle-plugin</artifactId>
                 <version>${maven-checkstyle-plugin.version}</version>
                 <configuration>
-                    <configLocation>src/resources/cbs_checkstyle.xml</configLocation>
+                    <configLocation>src/resources/CRPC_checkstyle.xml</configLocation>
                 </configuration>
             </plugin>
             <plugin>
@@ -643,4 +659,84 @@
             </plugin>
         </plugins>
     </reporting>
+    <profiles>
+        <profile>
+            <id>release</id>
+            <distributionManagement>
+                <repository>
+                    <id>ossrh-releases</id>
+                    <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+                </repository>
+                <snapshotRepository>
+                    <id>ossrh-snapshots</id>
+                    <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+                </snapshotRepository>
+            </distributionManagement>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-source-plugin</artifactId>
+                        <configuration>
+                            <attach>true</attach>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <goals>
+                                    <goal>jar-no-fork</goal>
+                                </goals>
+                                <phase>install</phase>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-javadoc-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>attach-javadocs</id>
+                                <goals>
+                                    <goal>jar</goal>
+                                    <goal>aggregate</goal>
+                                </goals>
+                                <phase>install</phase>
+                                <configuration>
+                                    <charset>${project.build.sourceEncoding}</charset>
+                                    <encoding>${project.build.sourceEncoding}</encoding>
+                                    <docencoding>${project.build.sourceEncoding}</docencoding>
+                                    <additionalJOption>-Xdoclint:none</additionalJOption>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-gpg-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <goals>
+                                    <goal>sign</goal>
+                                </goals>
+                                <phase>verify</phase>
+                                <configuration>
+                                    <executable>${gpg.executable}</executable>
+                                    <passphrase>${gpg.passphrase}</passphrase>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.sonatype.plugins</groupId>
+                        <artifactId>nexus-staging-maven-plugin</artifactId>
+                        <extensions>true</extensions>
+                        <configuration>
+                            <serverId>ossrh</serverId>
+                            <nexusUrl>https://oss.sonatype.org/</nexusUrl>
+                            <autoReleaseAfterClose>true</autoReleaseAfterClose>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 </project>

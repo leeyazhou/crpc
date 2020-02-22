@@ -67,7 +67,7 @@ public class Consumer {
         user.setId(i);
         user.setDeleted(i % 2 == 0);
         user.setSex(1);
-        user.setUsername("查博士 - " + i);
+        user.setUsername("CRPC - " + i);
         boolean flag = false;
         flag = getUserService().say(user);
         getUserService().say(user, null);
@@ -100,7 +100,7 @@ public class Consumer {
     List<User> users = new ArrayList<User>();
     int i = 0;
     while (i++ < 40000) {
-      User user = new User(26, 1, "查博士");
+      User user = new User(26, 1, "CRPC");
       users.add(user);
     }
     complexObj.put("users", users);

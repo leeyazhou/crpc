@@ -40,7 +40,7 @@ public class HessianCodecTest {
 
 	  @Test
 	  public void testEncoder() throws Exception {
-	    User user = new User(100, 100, "查博士技术部", "admin@github.cn");
+	    User user = new User(100, 100, "CRPC技术部", "admin@github.cn");
 	    doEncoderAndDecoder(user, User.class);
 
 	    List<String> args = new ArrayList<String>();
@@ -64,8 +64,8 @@ public class HessianCodecTest {
 	  @Test
 	  public void testComplexObject() throws Exception {
 	    Map<String, List<User>> complexObj = new HashMap<String, List<User>>();
-	    User user = new User(26, 27, "查博士", "admin@github.cn");
-	    User user2 = new User(25, 2, "查博士", "admin@github.cn");
+	    User user = new User(26, 27, "CRPC", "admin@github.cn");
+	    User user2 = new User(25, 2, "CRPC", "admin@github.cn");
 	    List<User> users = new ArrayList<User>();
 	    users.add(user);
 	    users.add(user2);

@@ -17,7 +17,7 @@
 
 -->
 <!DOCTYPE module PUBLIC "-//Puppy Crawl//DTD Check Configuration 1.3//EN" "http://www.puppycrawl.com/dtds/configuration_1_3.dtd">
-<module name="cbs-checker">
+<module name="CRPC-checker">
     <property name="severity" value="warning" />
     <property name="charset" value="UTF-8" />
     <!-- <property name="fileExtensions" value="java, properties, xml" /> -->

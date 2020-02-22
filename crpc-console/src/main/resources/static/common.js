@@ -1,3 +1,3 @@
 /**
- * CBS common js.
+ * CRPC common js.
  */
