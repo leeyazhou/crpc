@@ -23,13 +23,13 @@
         <artifactId>crpc-parent</artifactId>
         <version>1.0.1-SNAPSHOT</version>
     </parent>
-    <artifactId>crpc-demo</artifactId>
+    <artifactId>crpc-showcase</artifactId>
     <packaging>pom</packaging>
     <modules>
-        <module>crpc-demo-api</module>
-        <module>crpc-demo-consumer</module>
-        <module>crpc-demo-provider</module>
-        <module>crpc-demo-opentracing</module>
+        <module>crpc-showcase-api</module>
+        <module>crpc-showcase-consumer</module>
+        <module>crpc-showcase-provider</module>
+        <module>crpc-showcase-opentracing</module>
     </modules>
     <build>
         <plugins>

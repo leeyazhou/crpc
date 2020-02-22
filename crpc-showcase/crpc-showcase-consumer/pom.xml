@@ -20,10 +20,10 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>com.github.leeyazhou</groupId>
-        <artifactId>crpc-demo</artifactId>
+        <artifactId>crpc-showcase</artifactId>
         <version>1.0.1-SNAPSHOT</version>
     </parent>
-    <artifactId>crpc-demo-consumer</artifactId>
+    <artifactId>crpc-showcase-consumer</artifactId>
     <dependencies>
         <dependency>
             <groupId>com.caucho</groupId>
@@ -31,7 +31,7 @@
         </dependency>
         <dependency>
             <groupId>com.github.leeyazhou</groupId>
-            <artifactId>crpc-demo-api</artifactId>
+            <artifactId>crpc-showcase-api</artifactId>
             <version>${project.parent.version}</version>
         </dependency>
         <dependency>

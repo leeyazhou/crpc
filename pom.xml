@@ -44,7 +44,7 @@
     <modules>
         <module>crpc-core</module>
         <module>crpc-rpc</module>
-        <module>crpc-demo</module>
+        <module>crpc-showcase</module>
         <module>crpc-protocol</module>
         <module>crpc-console</module>
         <module>crpc-registry</module>
