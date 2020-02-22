@@ -1,0 +1,3 @@
+# proxy factory
+javassist=com.github.leeyazhou.crpc.rpc.factory.JavassistProxyFactory
+jdk=com.github.leeyazhou.crpc.rpc.factory.JDKProxyFactory

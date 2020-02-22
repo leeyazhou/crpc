@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:crpc="http://www.github.com/leeyazhou/schema/crpc"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+	http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
+	http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+	http://www.github.com/leeyazhou/schema/crpc http://www.github.com/leeyazhou/schema/crpc.xsd">
+
+	<crpc:module name="userservice" address="tcp://127.0.0.1:12201" version="1.0.1"
+		worker="64" />
+
+	<crpc:protocol name="kryo" />
+	<crpc:component-scan base-package="com.github.leeyazhou.demo"
+		filter="ipFilter,monitorFilter,traceFilter" />
+	<context:component-scan base-package="com.github.leeyazhou.demo.service" />
+	<!-- <crpc:registry address="zookeeper://172.26.248.85:2181" /> -->
+
+	<bean id="userservice" class="com.github.leeyazhou.config.crpc.ServiceGroupConfig">
+		<property name="codec" value="KRYO_CODEC"></property>
+		<property name="servers">
+			<bean class="com.github.leeyazhou.config.crpc.ServerConfig" p:address="tcp://127.0.0.1:12200" />
+		</property>
+	</bean>
+	<crpc:ref name="userService" interface="com.github.leeyazhou.demo.service.UserService"
+		serviceGroup="userservice" />
+</beans>

@@ -1,0 +1,2 @@
+# filter
+monitorFilter=com.github.leeyazhou.crpc.monitor.filter.SimpleMonitor

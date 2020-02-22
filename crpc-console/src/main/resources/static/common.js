@@ -1,0 +1,3 @@
+/**
+ * CBS common js.
+ */

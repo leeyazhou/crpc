@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns="http://www.github.cn/crpc/crpc"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.github.cn/crpc/crpc">
+
+	<xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+
+	<xsd:element name="crpc" type="crpcType"></xsd:element>
+
+	<xsd:element name="service" type="serviceType"></xsd:element>
+
+	<xsd:element name="registry" type="registryType"></xsd:element>
+
+	<xsd:complexType name="crpcType">
+		<xsd:sequence>
+			<xsd:choice minOccurs="0" maxOccurs="unbounded">
+				<xsd:element ref="service"></xsd:element>
+				<xsd:element ref="scan"></xsd:element>
+			</xsd:choice>
+			<xsd:element ref="server" maxOccurs="1" minOccurs="0"></xsd:element>
+		</xsd:sequence>
+
+		<xsd:attribute name="default-lazy-init" type="xsd:boolean" default="false"></xsd:attribute>
+	</xsd:complexType>
+
+	<xsd:complexType name="registryType">
+		<xsd:attribute name="address" type="xsd:string"></xsd:attribute>
+	</xsd:complexType>
+
+	<xsd:complexType name="serviceType">
+		<xsd:sequence>
+			<xsd:element ref="scan" minOccurs="0" maxOccurs="1"></xsd:element>
+			<xsd:element ref="server" minOccurs="1" maxOccurs="unbounded"></xsd:element>
+			<xsd:element ref="registry"></xsd:element>
+		</xsd:sequence>
+		<xsd:attribute name="name" type="xsd:string"></xsd:attribute>
+		<xsd:attribute name="codec" type="codecType"></xsd:attribute>
+		<xsd:attribute name="loadbalance" type="loadbalanceType"></xsd:attribute>
+		<xsd:attribute name="timeout" type="xsd:int" use="optional" default="3000"></xsd:attribute>
+	</xsd:complexType>
+
+	<xsd:simpleType name="codecType">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="JAVA_CODEC"></xsd:enumeration>
+			<xsd:enumeration value="KRYO_CODEC"></xsd:enumeration>
+			<xsd:enumeration value="PB_CODEC"></xsd:enumeration>
+			<xsd:enumeration value="HESSIAN_CODEC"></xsd:enumeration>
+			<xsd:enumeration value="FST_CODEC"></xsd:enumeration>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="loadbalanceType">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="ROUND_ROBIN"></xsd:enumeration>
+			<xsd:enumeration value="RANDOM"></xsd:enumeration>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="protocolType">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="tcp"></xsd:enumeration>
+			<xsd:enumeration value="telnet"></xsd:enumeration>
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:attributeGroup name="propertyAttributes">
+		<xsd:attribute name="id" type="xsd:string"></xsd:attribute>
+		<xsd:attribute name="name" type="xsd:string"></xsd:attribute>
+		<xsd:attribute name="class" type="xsd:string"></xsd:attribute>
+		<xsd:attribute name="interface" type="xsd:string"></xsd:attribute>
+		<xsd:attribute name="value" type="xsd:string"></xsd:attribute>
+	</xsd:attributeGroup>
+
+	<xsd:element name="property" type="propertyType"></xsd:element>
+
+	<xsd:complexType name="propertyType">
+		<xsd:attribute name="name" type="xsd:string" use="required"></xsd:attribute>
+		<xsd:attribute name="value" type="xsd:string"></xsd:attribute>
+	</xsd:complexType>
+
+
+	<xsd:element name="scan" type="scanType"></xsd:element>
+
+	<xsd:complexType name="scanType">
+		<xsd:attribute name="basepackage" type="xsd:string" use="required"></xsd:attribute>
+		<xsd:attribute name="filter" type="xsd:string" use="optional"></xsd:attribute>
+	</xsd:complexType>
+
+	<xsd:element name="server" type="serverType"></xsd:element>
+
+	<xsd:complexType name="serverType">
+		<xsd:sequence>
+			<xsd:choice minOccurs="0" maxOccurs="1">
+				<xsd:element ref="scan" minOccurs="0" maxOccurs="1"></xsd:element>
+				<xsd:element ref="registry"></xsd:element>
+			</xsd:choice>
+		</xsd:sequence>
+		<xsd:attribute name="name" type="xsd:string"></xsd:attribute>
+		<xsd:attribute name="address" type="xsd:string"></xsd:attribute>
+		<xsd:attribute name="worker" type="xsd:int" default="8"></xsd:attribute>
+		<xsd:attribute name="timeout" type="xsd:int" use="optional" default="3000"></xsd:attribute>
+		<xsd:attribute name="weight" type="xsd:int" use="optional" default="1"></xsd:attribute>
+		<xsd:attribute name="sync" type="xsd:boolean" use="optional" default="false"></xsd:attribute>
+	</xsd:complexType>
+</xsd:schema>

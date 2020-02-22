@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:insert="inc/head.html">
+<title>CRPC版本- CBS服务治理控制台</title>
+</head>
+<body class="top-navigation">
+	<div id="wrapper">
+		<div id="page-wrapper" class="gray-bg">
+<div th:include="inc/top.html"></div>			<div class="wrapper wrapper-content">
+				<div class="row col-lg-13 ibox ibox-content">
+					<div class="table-responsive">
+						<table class="table table-striped table-bordered dtr-inline">
+							<head>
+							<tr role="row">
+								<th>#</th>
+								<th>变量</th>
+								<th>变量值</th>
+							</tr>
+							</head>
+							#foreach($key in ${version.keySet()})
+							<tr>
+								<td>$!{velocityCount}</td>
+								<td>$!{key}</td>
+								<td>$!{version.get($key)}</td>
+							</tr>
+							#end
+						</table>
+					</div>
+
+				</div>
+			</div>
+
+		</div>
+		#include("/views/inc/bottom.vm")
+
+	</div>
+</body>
+</html>

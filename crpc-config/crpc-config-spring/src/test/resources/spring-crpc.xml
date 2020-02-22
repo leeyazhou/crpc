@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:crpc="http://www.github.com/leeyazhou/schema/crpc"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+	http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
+	http://www.github.com/leeyazhou/schema/crpc http://www.github.com/leeyazhou/schema/crpc.xsd">
+
+	<crpc:module name="userservice" address="tcp://127.0.0.1:12000" version="1.0.1"
+		worker="32" />
+
+	<crpc:protocol name="kryo" />
+	<crpc:registry address="zookeeper://172.26.248.85:2181" />
+
+	<crpc:component-scan base-package="com.github.leeyazhou.config.spring" />
+</beans>

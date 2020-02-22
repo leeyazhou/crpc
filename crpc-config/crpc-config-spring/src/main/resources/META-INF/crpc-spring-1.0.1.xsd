@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+
+<xsd:schema xmlns="http://www.github.com/leeyazhou/schema/crpc"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	targetNamespace="http://www.github.com/leeyazhou/schema/crpc" elementFormDefault="qualified"
+	attributeFormDefault="unqualified">
+
+
+
+	<xsd:element name="module">
+		<xsd:complexType>
+			<xsd:attribute name="name"></xsd:attribute>
+			<xsd:attribute name="address"></xsd:attribute>
+			<xsd:attribute name="version"></xsd:attribute>
+			<xsd:attribute name="worker" type="xsd:int"></xsd:attribute>
+		</xsd:complexType>
+	</xsd:element>
+	<xsd:element name="protocol">
+		<xsd:complexType>
+			<xsd:attribute name="name"></xsd:attribute>
+			<xsd:attribute name="port"></xsd:attribute>
+		</xsd:complexType>
+	</xsd:element>
+	<xsd:element name="registry">
+
+		<xsd:complexType>
+			<xsd:attribute name="address"></xsd:attribute>
+		</xsd:complexType>
+	</xsd:element>
+
+	<xsd:element name="component-scan">
+		<xsd:complexType>
+			<xsd:attribute name="base-package"></xsd:attribute>
+			<xsd:attribute name="filter"></xsd:attribute>
+		</xsd:complexType>
+	</xsd:element>
+	<xsd:element name="ref">
+		<xsd:complexType>
+			<xsd:attribute name="name"></xsd:attribute>
+			<xsd:attribute name="interface"></xsd:attribute>
+			<xsd:attribute name="address"></xsd:attribute>
+			<xsd:attribute name="codec" type="codecType"></xsd:attribute>
+			<xsd:attribute name="timeout" type="xsd:int"></xsd:attribute>
+			<xsd:attribute name="loadbalance" type="loadBalanceType"></xsd:attribute>
+			<xsd:attribute name="serviceGroup"></xsd:attribute>
+		</xsd:complexType>
+	</xsd:element>
+	<xsd:simpleType name="loadBalanceType">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="ROUND_ROBIN"></xsd:enumeration>
+			<xsd:enumeration value="RANDOM"></xsd:enumeration>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="codecType">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="JAVA_CODEC"></xsd:enumeration>
+			<xsd:enumeration value="KRYO_CODEC"></xsd:enumeration>
+			<xsd:enumeration value="PB_CODEC"></xsd:enumeration>
+			<xsd:enumeration value="HESSIAN_CODEC"></xsd:enumeration>
+			<xsd:enumeration value="FST_CODEC"></xsd:enumeration>
+		</xsd:restriction>
+	</xsd:simpleType>
+</xsd:schema>
