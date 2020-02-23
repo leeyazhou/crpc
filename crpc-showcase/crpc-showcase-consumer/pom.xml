@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
 
-    Copyright © 2016~2020 leeyazhou (coderhook@gmail.com)
+    Copyright © 2016~2020 CRPC (coderhook@gmail.com)
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -31,12 +31,12 @@
         </dependency>
         <dependency>
             <groupId>com.github.leeyazhou</groupId>
-            <artifactId>crpc-showcase-api</artifactId>
+            <artifactId>crpc-rpc</artifactId>
             <version>${project.parent.version}</version>
         </dependency>
         <dependency>
             <groupId>com.github.leeyazhou</groupId>
-            <artifactId>crpc-rpc</artifactId>
+            <artifactId>crpc-showcase-api</artifactId>
             <version>${project.parent.version}</version>
         </dependency>
         <dependency>
