@@ -29,7 +29,7 @@
         <dependency>
             <groupId>com.github.leeyazhou</groupId>
             <artifactId>crpc-registry-api</artifactId>
-            <version>${project.version}</version>
+            <version>${project.parent.version}</version>
         </dependency>
         <dependency>
             <groupId>redis.clients</groupId>

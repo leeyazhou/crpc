@@ -1,16 +1,12 @@
-## CRPC服务治理框架
+# CRPC服务治理框架
 
-[CRPC](http://www.github.com/leeyazhou)，致力于提供高性能和透明化的RPC远程服务调用方案，使应用可通过高性能的RPC实现服务的输出和输入功能。[CRPC](http://www.github.cn/)有自己的部署环境，也可部署在servlet容器中。CRPC项目编码格式UTF-8，基础依赖环境： JDK1.6+、[Netty4.1.x](http://netty.io/)、[Kryo4](https://github.com/EsotericSoftware/kryo)、[ProtoBuff](https://github.com/google/protobuf/)。
-
-## [CRPC](http://www.github.com/leeyazhou) features
+[CRPC](http://www.github.com/leeyazhou)致力于提供高性能和透明化的RPC远程服务调用方案，使应用可通过高性能的RPC实现服务的输出和输入功能。[CRPC](http://www.github.cn/)有自己的部署环境，也可部署在servlet容器中。CRPC项目编码格式UTF-8，基础依赖环境： JDK1.6+、[Netty4.1.x](http://netty.io/)、[Kryo4](https://github.com/EsotericSoftware/kryo)、[ProtoBuff](https://github.com/google/protobuf/)。
 
 * 基于[Netty](http://netty.io/)进行网络通讯，Netty is an asynchronous event-driven network application framework for rapid development of maintainable high performance protocol servers &amp;clients.所以[CRPC](http://www.github.cn/)是站在巨人的肩膀上，天生骄傲，具有高性能、高可靠性。
 * 配置可选多种序列化方案，支持[Kryo](https://github.com/EsotericSoftware/kryo)、[ProtoBuf](https://github.com/google/protobuf/)和JDK序列化,易于扩展。
 * [Zookeeper](https://zookeeper.apache.org/)注册中心集群，简化服务配置
 * 心跳监测和断线重连功能，及时清除挂掉的服务
 * 两种部署方式：单独部署和web容器部署
-
----
 
 ## 项目结构
 [CRPC](http://www.github.cn/)项目结构图，主要分为该框架项目代码和示例crpc-demo。项目需要发布时，在crpc-all项目下运行mvn clean install 即可把所有项目模块打包。如果需要打包crpc项目的部署环境，只需在crpc项目下运行mvn clean assembly:assembly，运行成功后，在target目录下生成crpc-0.0.1-SNAPSHOT-bin.tar.gz。crpc项目各个模块说明如下：
@@ -44,7 +40,7 @@ crpc/
 
 ---
 
-### 开发环境配置
+## 开发环境配置
 
 开发IDE可以使用eclipse或idea，下面以eclipse说明：
 
@@ -52,7 +48,7 @@ crpc/
 
 ---
 
-### 示例说明
+## 示例说明
 
 示例项目包含接口项目(crpc-demo-api)、服务提供者(crpc-demo-provider)和服务消费者(crpc-demo-consumer)三部分。
 

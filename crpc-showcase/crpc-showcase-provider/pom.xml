@@ -57,17 +57,17 @@
         <dependency>
             <groupId>com.github.leeyazhou</groupId>
             <artifactId>crpc-sentinel</artifactId>
-            <version>${project.version}</version>
+            <version>${project.parent.version}</version>
         </dependency>
         <dependency>
             <groupId>com.github.leeyazhou</groupId>
             <artifactId>crpc-showcase-api</artifactId>
-            <version>${project.version}</version>
+            <version>${project.parent.version}</version>
         </dependency>
         <dependency>
             <groupId>com.github.leeyazhou</groupId>
             <artifactId>crpc-tracer</artifactId>
-            <version>${project.version}</version>
+            <version>${project.parent.version}</version>
         </dependency>
         <dependency>
             <groupId>com.github.leeyazhou</groupId>

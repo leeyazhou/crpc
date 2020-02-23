@@ -29,17 +29,17 @@
         <dependency>
             <groupId>com.github.leeyazhou</groupId>
             <artifactId>crpc-core</artifactId>
-            <version>${project.version}</version>
+            <version>${project.parent.version}</version>
         </dependency>
         <dependency>
             <groupId>com.github.leeyazhou</groupId>
             <artifactId>crpc-protocol-api</artifactId>
-            <version>${project.version}</version>
+            <version>${project.parent.version}</version>
         </dependency>
         <dependency>
             <groupId>com.github.leeyazhou</groupId>
             <artifactId>crpc-transport-api</artifactId>
-            <version>${project.version}</version>
+            <version>${project.parent.version}</version>
         </dependency>
         <dependency>
             <groupId>io.dropwizard.metrics</groupId>
