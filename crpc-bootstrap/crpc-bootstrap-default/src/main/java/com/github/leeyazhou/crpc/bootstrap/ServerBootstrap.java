@@ -25,8 +25,6 @@ import com.github.leeyazhou.crpc.config.crpc.ServerConfig;
 import com.github.leeyazhou.crpc.config.parser.ConfigurationParser;
 import com.github.leeyazhou.crpc.core.Constants;
 import com.github.leeyazhou.crpc.core.CrpcConfig;
-import com.github.leeyazhou.crpc.core.logger.Logger;
-import com.github.leeyazhou.crpc.core.logger.LoggerFactory;
 import com.github.leeyazhou.crpc.core.util.StringUtil;
 
 /**
@@ -34,7 +32,6 @@ import com.github.leeyazhou.crpc.core.util.StringUtil;
  *
  */
 public class ServerBootstrap extends Bootstrap {
-  private static final Logger logger = LoggerFactory.getLogger(ServerBootstrap.class);
   private static String location = "crpc.xml";
   private static String deployPath = null;
 

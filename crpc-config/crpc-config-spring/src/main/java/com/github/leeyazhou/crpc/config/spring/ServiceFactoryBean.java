@@ -34,7 +34,7 @@ import org.springframework.context.event.ContextRefreshedEvent;
 import com.github.leeyazhou.crpc.registry.Registry;
 import com.github.leeyazhou.crpc.registry.RegistryFactory;
 import com.github.leeyazhou.crpc.rpc.util.RpcUtil;
-import com.github.leeyazhou.crpc.transport.factory.BeanFactory;
+import com.github.leeyazhou.crpc.transport.factory.ServerFactory;
 import com.github.leeyazhou.crpc.transport.factory.ServiceHandler;
 import com.github.leeyazhou.crpc.core.Constants;
 import com.github.leeyazhou.crpc.core.URL;
@@ -54,7 +54,7 @@ public class ServiceFactoryBean<T> extends ServiceConfig<T>
   private T object;
   private ServiceHandler<T> serviceHandler;
   private ApplicationContext applicationContext;
-  private BeanFactory beanFactory;
+  private ServerFactory beanFactory;
   private ModuleConfig moduleConfig;
   private final AtomicBoolean isExported = new AtomicBoolean(false);
 
@@ -92,7 +92,7 @@ public class ServiceFactoryBean<T> extends ServiceConfig<T>
   @Override
   public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
     this.applicationContext = applicationContext;
-    this.beanFactory = this.applicationContext.getBean(BeanFactory.class);
+    this.beanFactory = this.applicationContext.getBean(ServerFactory.class);
     this.moduleConfig = applicationContext.getBean(ModuleConfig.class);
   }
 

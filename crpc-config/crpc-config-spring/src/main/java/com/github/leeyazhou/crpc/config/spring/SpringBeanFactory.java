@@ -27,7 +27,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 
 import com.github.leeyazhou.crpc.transport.Filter;
-import com.github.leeyazhou.crpc.transport.factory.AbstractBeanFactory;
+import com.github.leeyazhou.crpc.transport.factory.AbstractServerFactory;
 import com.github.leeyazhou.crpc.transport.factory.ServiceHandler;
 import com.github.leeyazhou.crpc.core.logger.Logger;
 import com.github.leeyazhou.crpc.core.logger.LoggerFactory;
@@ -35,7 +35,7 @@ import com.github.leeyazhou.crpc.core.logger.LoggerFactory;
 /**
  * @author <a href="mailto:lee_yazhou@163.com">Yazhou Li</a>
  */
-public class SpringBeanFactory extends AbstractBeanFactory implements ApplicationContextAware {
+public class SpringBeanFactory extends AbstractServerFactory implements ApplicationContextAware {
   private static final Logger logger = LoggerFactory.getLogger(SpringBeanFactory.class);
   private ApplicationContext applicationContext;
   private final ConcurrentMap<String, ServiceHandler<?>> serviceHandlers = new ConcurrentHashMap<String, ServiceHandler<?>>();

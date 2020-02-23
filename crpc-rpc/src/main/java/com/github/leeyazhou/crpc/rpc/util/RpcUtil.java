@@ -26,7 +26,7 @@ import com.github.leeyazhou.crpc.config.crpc.ServiceGroupConfig;
 import com.github.leeyazhou.crpc.rpc.ProxyFactory;
 import com.github.leeyazhou.crpc.transport.Server;
 import com.github.leeyazhou.crpc.transport.TransportFactory;
-import com.github.leeyazhou.crpc.transport.factory.BeanFactory;
+import com.github.leeyazhou.crpc.transport.factory.ServerFactory;
 import com.github.leeyazhou.crpc.transport.factory.ServiceHandler;
 import com.github.leeyazhou.crpc.core.logger.Logger;
 import com.github.leeyazhou.crpc.core.logger.LoggerFactory;
@@ -42,7 +42,7 @@ public class RpcUtil {
   private static final TransportFactory transportFactory = ServiceLoader.load(TransportFactory.class).load();
   private static final ConcurrentMap<String, Server> servers = new ConcurrentHashMap<String, Server>();
 
-  public static <T> void export(ServerConfig serverConfig, ServiceHandler<T> servsiceHandler, BeanFactory beanFactory) {
+  public static <T> void export(ServerConfig serverConfig, ServiceHandler<T> servsiceHandler, ServerFactory beanFactory) {
     logger.info("export : " + serverConfig);
     final String serverKey = serverConfig.getAddress();
     Server server = servers.get(serverKey);

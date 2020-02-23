@@ -29,7 +29,7 @@ import com.github.leeyazhou.crpc.core.util.concurrent.ThreadPoolExecutor;
 /**
  * @author <a href="mailto:lee_yazhou@163.com">Yazhou Li</a>
  */
-public abstract class AbstractBeanFactory implements BeanFactory {
+public abstract class AbstractServerFactory implements ServerFactory {
 
 	private ExecutorService executorService;
 

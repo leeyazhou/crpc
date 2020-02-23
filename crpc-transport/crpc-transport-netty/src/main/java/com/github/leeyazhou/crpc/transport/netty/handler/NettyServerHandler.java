@@ -26,7 +26,7 @@ import com.github.leeyazhou.crpc.protocol.Request;
 import com.github.leeyazhou.crpc.protocol.Response;
 import com.github.leeyazhou.crpc.transport.Handler;
 import com.github.leeyazhou.crpc.transport.RpcContext;
-import com.github.leeyazhou.crpc.transport.factory.BeanFactory;
+import com.github.leeyazhou.crpc.transport.factory.ServerFactory;
 import com.github.leeyazhou.crpc.core.Constants;
 import com.github.leeyazhou.crpc.core.logger.Logger;
 import com.github.leeyazhou.crpc.core.logger.LoggerFactory;
@@ -56,10 +56,10 @@ public class NettyServerHandler extends SimpleChannelInboundHandler<Request> {
   private static final boolean DEBUG_ENABLED = logger.isDebugEnabled();
   private final boolean sync;
   private final Handler<?> serverHandler;
-  private final BeanFactory beanFactory;
+  private final ServerFactory beanFactory;
   private ConcurrentMap<String, Channel> channels = new ConcurrentHashMap<String, Channel>();
 
-  public NettyServerHandler(ServerConfig serverConfig, Handler<?> serverHandler, BeanFactory beanFactory) {
+  public NettyServerHandler(ServerConfig serverConfig, Handler<?> serverHandler, ServerFactory beanFactory) {
     this.sync = serverConfig.isSync();
     this.serverHandler = serverHandler;
     this.beanFactory = beanFactory;

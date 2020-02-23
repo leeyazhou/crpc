@@ -32,7 +32,7 @@ import com.github.leeyazhou.crpc.core.URL;
  */
 public class ServerConfig implements IConfig, Comparable<ServerConfig> {
 
-  private static final long serialVersionUID = 9103662837142755281L;
+  private static final long serialVersionUID = 1L;
   private String name;
   private String host;
   private String address;

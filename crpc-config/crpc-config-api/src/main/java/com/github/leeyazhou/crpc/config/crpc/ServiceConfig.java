@@ -28,8 +28,7 @@ import com.github.leeyazhou.crpc.core.URL;
  * @author <a href="mailto:lee_yazhou@163.com">Yazhou Li</a>
  */
 public class ServiceConfig<T> implements IConfig {
-
-  private static final long serialVersionUID = 7407904239024831771L;
+  private static final long serialVersionUID = 1L;
   private String name;
   private Class<T> interfaceClass;
   private Class<T> implClass;
@@ -98,13 +97,6 @@ public class ServiceConfig<T> implements IConfig {
    */
   public void setImplClass(Class<T> implClass) {
     this.implClass = implClass;
-  }
-
-  /**
-   * @return the serialversionuid
-   */
-  public static long getSerialversionuid() {
-    return serialVersionUID;
   }
 
   /**

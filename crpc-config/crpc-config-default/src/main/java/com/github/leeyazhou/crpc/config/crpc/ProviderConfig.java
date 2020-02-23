@@ -26,11 +26,6 @@ import java.util.Set;
 
 import com.github.leeyazhou.crpc.config.IConfig;
 import com.github.leeyazhou.crpc.config.server.DefaultBeanFactory;
-import com.github.leeyazhou.crpc.registry.RegistryFactory;
-import com.github.leeyazhou.crpc.rpc.util.RpcUtil;
-import com.github.leeyazhou.crpc.transport.Filter;
-import com.github.leeyazhou.crpc.transport.Interceptor;
-import com.github.leeyazhou.crpc.transport.factory.ServiceHandler;
 import com.github.leeyazhou.crpc.core.URL;
 import com.github.leeyazhou.crpc.core.annotation.Aspect;
 import com.github.leeyazhou.crpc.core.annotation.CRPCFilterType;
@@ -42,13 +37,18 @@ import com.github.leeyazhou.crpc.core.object.SideType;
 import com.github.leeyazhou.crpc.core.scanner.ClassScanner;
 import com.github.leeyazhou.crpc.core.scanner.DefaultClassScanner;
 import com.github.leeyazhou.crpc.core.util.ServiceLoader;
+import com.github.leeyazhou.crpc.registry.RegistryFactory;
+import com.github.leeyazhou.crpc.rpc.util.RpcUtil;
+import com.github.leeyazhou.crpc.transport.Filter;
+import com.github.leeyazhou.crpc.transport.Interceptor;
+import com.github.leeyazhou.crpc.transport.factory.ServiceHandler;
 
 /**
- * @author <a href="mailto:lee_yazhou@163.com">Yazhou Li</a>
+ * @author leeyazhou
  */
 public class ProviderConfig implements IConfig {
   private static final Logger logger = LoggerFactory.getLogger(ProviderConfig.class);
-  private static final long serialVersionUID = 3264027438430114554L;
+  private static final long serialVersionUID = 1L;
 
   private List<ServerConfig> servers;
 
@@ -188,13 +188,6 @@ public class ProviderConfig implements IConfig {
    */
   public void setServers(List<ServerConfig> servers) {
     this.servers = servers;
-  }
-
-  /**
-   * @return the serialversionuid
-   */
-  public static long getSerialversionuid() {
-    return serialVersionUID;
   }
 
 }

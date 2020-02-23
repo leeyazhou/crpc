@@ -25,7 +25,7 @@ import com.github.leeyazhou.crpc.config.crpc.Configuration;
 import com.github.leeyazhou.crpc.config.crpc.ServerConfig;
 import com.github.leeyazhou.crpc.config.crpc.ServiceConfig;
 import com.github.leeyazhou.crpc.config.crpc.ServiceGroupConfig;
-import com.github.leeyazhou.crpc.transport.factory.BeanFactory;
+import com.github.leeyazhou.crpc.transport.factory.ServerFactory;
 import com.github.leeyazhou.crpc.transport.object.SendLimitPolicy;
 import com.github.leeyazhou.crpc.core.URL;
 import com.github.leeyazhou.crpc.core.annotation.SPI;
@@ -118,7 +118,7 @@ public interface TransportFactory {
   ExecutorService getExecutorService();
 
 
-  Server createServer(ServerConfig serverConfig, BeanFactory beanFactory);
+  Server createServer(ServerConfig serverConfig, ServerFactory beanFactory);
 
   Client createClient(URL url);
 }

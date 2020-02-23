@@ -24,7 +24,7 @@ package com.github.leeyazhou.crpc.config.crpc;
  */
 public class ModuleConfig extends ServerConfig {
 
-  private static final long serialVersionUID = 2309107107145620691L;
+  private static final long serialVersionUID = 1L;
 
 
   private String version;
@@ -42,13 +42,6 @@ public class ModuleConfig extends ServerConfig {
    */
   public void setVersion(String version) {
     this.version = version;
-  }
-
-  /**
-   * @return the serialversionuid
-   */
-  public static long getSerialversionuid() {
-    return serialVersionUID;
   }
 
   @Override

@@ -26,7 +26,7 @@ import com.github.leeyazhou.crpc.protocol.util.ObjectUtils;
 import com.github.leeyazhou.crpc.registry.RegistryFactory;
 import com.github.leeyazhou.crpc.transport.Filter;
 import com.github.leeyazhou.crpc.transport.Interceptor;
-import com.github.leeyazhou.crpc.transport.factory.AbstractBeanFactory;
+import com.github.leeyazhou.crpc.transport.factory.AbstractServerFactory;
 import com.github.leeyazhou.crpc.transport.factory.ServiceHandler;
 import com.github.leeyazhou.crpc.core.logger.Logger;
 import com.github.leeyazhou.crpc.core.logger.LoggerFactory;
@@ -35,7 +35,7 @@ import com.github.leeyazhou.crpc.core.object.RegistryType;
 /**
  * @author lee
  */
-public class DefaultBeanFactory extends AbstractBeanFactory {
+public class DefaultBeanFactory extends AbstractServerFactory {
 
   private static final Logger logger = LoggerFactory.getLogger(DefaultBeanFactory.class);
 

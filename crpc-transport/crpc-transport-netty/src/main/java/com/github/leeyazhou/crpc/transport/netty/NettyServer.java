@@ -30,7 +30,7 @@ import com.github.leeyazhou.crpc.transport.AbstractServer;
 import com.github.leeyazhou.crpc.transport.Handler;
 import com.github.leeyazhou.crpc.transport.RpcContext;
 import com.github.leeyazhou.crpc.transport.Server;
-import com.github.leeyazhou.crpc.transport.factory.BeanFactory;
+import com.github.leeyazhou.crpc.transport.factory.ServerFactory;
 import com.github.leeyazhou.crpc.transport.netty.handler.NettyServerHandler;
 import com.github.leeyazhou.crpc.transport.netty.handler.NettyServerHeartBeatHandler;
 import com.github.leeyazhou.crpc.core.Constants;
@@ -59,11 +59,11 @@ class NettyServer extends AbstractServer {
   private NioEventLoopGroup ioGroup;
   private EventExecutorGroup bussinessGroup;
   private final Handler<?> handler;
-  private final BeanFactory beanFactory;
+  private final ServerFactory beanFactory;
   private ConcurrentMap<String, Channel> channels;
   private Channel channel;
 
-  public NettyServer(ServerConfig serverConfig, final BeanFactory beanFactory) {
+  public NettyServer(ServerConfig serverConfig, final ServerFactory beanFactory) {
     super(serverConfig);
     this.beanFactory = beanFactory;
     this.handler = new Handler<Response>() {
@@ -113,9 +113,7 @@ class NettyServer extends AbstractServer {
     bootStrap.childHandler(new ChannelInitializer<SocketChannel>() {
       @Override
       public void initChannel(SocketChannel channel) throws Exception {
-        // channel.pipeline().addLast("SnappyDecoder", new SnappyFrameDecoder());
         channel.pipeline().addLast("decoder", new NettyProtocolDecoder());
-        // channel.pipeline().addLast("SnappyEncoder", new SnappyFrameEncoder());
         channel.pipeline().addLast("encoder", new NettyProtocolEncoder());
         channel.pipeline().addLast("heartbeat",
             new NettyServerHeartBeatHandler(0, 0, Constants.DEFAULT_HEARTBEAT_TIMEOUT, TimeUnit.SECONDS));
