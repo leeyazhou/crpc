@@ -21,48 +21,47 @@ import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
- * Simple task thread factory to use to create threads for an executor
- * implementation.
+ * Simple task thread factory to use to create threads for an executor implementation.
  */
 public class TaskThreadFactory implements ThreadFactory {
 
-	private final ThreadGroup group;
-	private final AtomicInteger threadNumber = new AtomicInteger(1);
-	private final String namePrefix;
-	private final boolean daemon;
-	private final int threadPriority;
+  private final ThreadGroup group;
+  private final AtomicInteger threadNumber = new AtomicInteger(1);
+  private final String namePrefix;
+  private final boolean daemon;
+  private final int threadPriority;
 
-	public TaskThreadFactory(String namePrefix, boolean daemon, int priority) {
-		SecurityManager s = System.getSecurityManager();
-		this.group = (s != null) ? s.getThreadGroup() : Thread.currentThread().getThreadGroup();
-		this.namePrefix = namePrefix;
-		this.daemon = daemon;
-		this.threadPriority = priority;
-	}
+  public TaskThreadFactory(String namePrefix, boolean daemon, int priority) {
+    SecurityManager s = System.getSecurityManager();
+    this.group = (s != null) ? s.getThreadGroup() : Thread.currentThread().getThreadGroup();
+    this.namePrefix = namePrefix;
+    this.daemon = daemon;
+    this.threadPriority = priority;
+  }
 
-	@Override
-	public Thread newThread(Runnable r) {
-		final TaskThread t = new TaskThread(group, r, namePrefix + threadNumber.getAndIncrement());
-		t.setDaemon(daemon);
-		t.setPriority(threadPriority);
+  @Override
+  public Thread newThread(Runnable r) {
+    final TaskThread t = new TaskThread(group, r, namePrefix + threadNumber.getAndIncrement());
+    t.setDaemon(daemon);
+    t.setPriority(threadPriority);
 
-		// Set the context class loader of newly created threads to be the class
-		// loader that loaded this factory. This avoids retaining references to
-		// web application class loaders and similar.
-		if ((System.getSecurityManager() != null)) {
-			PrivilegedAction<Void> pa = new PrivilegedAction<Void>() {
+    // Set the context class loader of newly created threads to be the class
+    // loader that loaded this factory. This avoids retaining references to
+    // web application class loaders and similar.
+    if ((System.getSecurityManager() != null)) {
+      PrivilegedAction<Void> pa = new PrivilegedAction<Void>() {
 
-				@Override
-				public Void run() {
-					t.setContextClassLoader(getClass().getClassLoader());
-					return null;
-				}
-			};
-			AccessController.doPrivileged(pa);
-		} else {
-			t.setContextClassLoader(getClass().getClassLoader());
-		}
+        @Override
+        public Void run() {
+          t.setContextClassLoader(getClass().getClassLoader());
+          return null;
+        }
+      };
+      AccessController.doPrivileged(pa);
+    } else {
+      t.setContextClassLoader(getClass().getClassLoader());
+    }
 
-		return t;
-	}
+    return t;
+  }
 }

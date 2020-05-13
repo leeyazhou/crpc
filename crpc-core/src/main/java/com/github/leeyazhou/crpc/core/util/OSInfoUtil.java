@@ -28,8 +28,7 @@ public final class OSInfoUtil {
 
   private OSPlatform platform;
 
-  private OSInfoUtil() {
-  }
+  private OSInfoUtil() {}
 
   public static boolean isLinux() {
     return OS.indexOf("linux") >= 0;

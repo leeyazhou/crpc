@@ -22,26 +22,26 @@ package com.github.leeyazhou.crpc.protocol;
  */
 public interface ByteBufWrapper {
 
-  public ByteBufWrapper get(int capacity);
+  ByteBufWrapper get(int capacity);
 
-  public void writeByte(int index, byte data);
+  void writeByte(int index, byte data);
 
-  public void writeByte(byte data);
+  void writeByte(byte data);
 
-  public byte readByte();
+  byte readByte();
 
-  public void writeInt(int data);
+  void writeInt(int data);
 
-  public void writeBytes(byte[] data);
+  void writeBytes(byte[] data);
 
-  public int readableBytes();
+  int readableBytes();
 
-  public int readInt();
+  int readInt();
 
-  public void readBytes(byte[] dst);
+  void readBytes(byte[] dst);
 
-  public int readerIndex();
+  int readerIndex();
 
-  public void setReaderIndex(int readerIndex);
+  void setReaderIndex(int readerIndex);
 
 }

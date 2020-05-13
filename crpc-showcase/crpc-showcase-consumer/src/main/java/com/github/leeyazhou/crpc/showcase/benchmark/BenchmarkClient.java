@@ -50,7 +50,8 @@ public class BenchmarkClient extends AbstractBenchmarkClient {
 
     ServiceGroupConfig serviceGroupConfig = new ServiceGroupConfig().setName("userservice");
     serviceGroupConfig.addServerConfig(new ServerConfig().setAddress("tcp://127.0.0.1:12200"));
-    UserService userService = ServiceLoader.load(ProxyFactory.class).load().getProxy(UserService.class, serviceGroupConfig);
+    UserService userService =
+        ServiceLoader.load(ProxyFactory.class).load().getProxy(UserService.class, serviceGroupConfig);
     check(userService);
     long endTime = System.currentTimeMillis() + runtime * 1000;
     System.out.println("ready to start client benchmark, benchmark will end at:"

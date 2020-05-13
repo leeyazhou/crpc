@@ -27,11 +27,11 @@ public class IOUtils {
 
   public static void close(Closeable x) {
     if (x != null) {
-        try {
-            x.close();
-        } catch (Exception e) {
-            // skip
-        }
+      try {
+        x.close();
+      } catch (Exception e) {
+        // skip
+      }
     }
-}
+  }
 }

@@ -66,7 +66,8 @@ public interface ClassScanner {
    * @param classLoader classLoader
    * @return Set
    */
-  Set<Class<?>> getClassListByAnnotation(String packageName, Class<? extends Annotation> annotationClass, ClassLoader classLoader);
+  Set<Class<?>> getClassListByAnnotation(String packageName, Class<? extends Annotation> annotationClass,
+      ClassLoader classLoader);
 
   /**
    * 获取指定包名中指定父类或接口的相关类

@@ -41,7 +41,7 @@ public class ServerBootstrap extends Bootstrap {
     String serverName = System.getProperty("crpc.servername");
 
     if (StringUtil.isNotBlank(crpcHome) && StringUtil.isNotBlank(serverName)) {
-      deployPath = crpcHome + Constants.FILE_SEPARATOR + "services" + Constants.FILE_SEPARATOR + serverName;
+      deployPath = crpcHome + Constants.FILE_SEPARATOR + "service" + Constants.FILE_SEPARATOR + serverName;
       location = deployPath + "/conf/" + location;
     } else {
       deployPath = ServerBootstrap.class.getResource("/").getPath();

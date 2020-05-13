@@ -62,8 +62,7 @@ public final class LoggerFactory {
     });
   }
 
-  private LoggerFactory() {
-  }
+  private LoggerFactory() {}
 
   public static Logger getLogger(Class<?> clazz) {
     return getLogger(clazz.getName());

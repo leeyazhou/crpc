@@ -27,8 +27,7 @@ public class StdOutImpl implements Logger {
   private static final String WARN = "WARN ";
   private static final String ERROR = "ERROR ";
 
-  public StdOutImpl(String clazz) {
-  }
+  public StdOutImpl(String clazz) {}
 
   @Override
   public boolean isErrorEnabled() {

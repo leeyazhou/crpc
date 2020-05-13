@@ -33,7 +33,8 @@ public class Slf4jImpl implements com.github.leeyazhou.crpc.core.logger.Logger {
     if (logger instanceof LocationAwareLogger) {
       try {
         // check for slf4j >= 1.6 method signature
-        logger.getClass().getMethod("log", Marker.class, String.class, int.class, String.class, Object[].class, Throwable.class);
+        logger.getClass().getMethod("log", Marker.class, String.class, int.class, String.class, Object[].class,
+            Throwable.class);
         this.logger = new Slf4jLocationAwareLoggerImpl((LocationAwareLogger) logger);
         return;
       } catch (SecurityException err) {
@@ -48,18 +49,15 @@ public class Slf4jImpl implements com.github.leeyazhou.crpc.core.logger.Logger {
   }
 
   /*
-   * static { try { Class<?> clazz = Class.forName("org.apache.log4j.PropertyConfigurator"); URL
-   * log4jUrl = Thread.currentThread().getContextClassLoader().getResource("log4j.properties"); if
-   * (clazz != null && null == log4jUrl) { log4jUrl =
-   * Thread.currentThread().getContextClassLoader().getResource("log4j.xml"); if (null == log4jUrl) {
-   * Properties properties = new Properties(); properties.put("log4j.rootLogger", "debug,crpc");
+   * static { try { Class<?> clazz = Class.forName("org.apache.log4j.PropertyConfigurator"); URL log4jUrl =
+   * Thread.currentThread().getContextClassLoader().getResource("log4j.properties"); if (clazz != null && null ==
+   * log4jUrl) { log4jUrl = Thread.currentThread().getContextClassLoader().getResource("log4j.xml"); if (null ==
+   * log4jUrl) { Properties properties = new Properties(); properties.put("log4j.rootLogger", "debug,crpc");
    * properties.put("log4j.appender.crpc", "org.apache.log4j.ConsoleAppender");
-   * properties.put("log4j.appender.crpc.Target", "System.out");
-   * properties.put("log4j.appender.crpc.layout", "org.apache.log4j.PatternLayout");
-   * properties.put("log4j.appender.crpc.layout.ConversionPattern",
-   * "[%d{MM-dd HH:mm:ss.SSS} %-5p] [%t]%c{3}[%L] - %m%n"); Method method =
-   * clazz.getMethod("configure", Properties.class); method.invoke(clazz, properties); } } } catch
-   * (Exception err) { // ignore th err } }
+   * properties.put("log4j.appender.crpc.Target", "System.out"); properties.put("log4j.appender.crpc.layout",
+   * "org.apache.log4j.PatternLayout"); properties.put("log4j.appender.crpc.layout.ConversionPattern",
+   * "[%d{MM-dd HH:mm:ss.SSS} %-5p] [%t]%c{3}[%L] - %m%n"); Method method = clazz.getMethod("configure",
+   * Properties.class); method.invoke(clazz, properties); } } } catch (Exception err) { // ignore th err } }
    */
   @Override
   public boolean isDebugEnabled() {

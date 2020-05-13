@@ -36,7 +36,7 @@ public class CrpcClassLoader {
 
   static {
     try {
-      addURLMethod = URLClassLoader.class.getDeclaredMethod("addURL", new Class[] { URL.class });
+      addURLMethod = URLClassLoader.class.getDeclaredMethod("addURL", new Class[] {URL.class});
       addURLMethod.setAccessible(true);
     } catch (Exception err) {
       err.printStackTrace();
@@ -58,7 +58,7 @@ public class CrpcClassLoader {
   public static void addURL2SystemClassLoader(URL url) throws Exception {
     try {
       logger.info("append jar to system classpath:" + url.toString());
-      addURLMethod.invoke(system, new Object[] { url });
+      addURLMethod.invoke(system, new Object[] {url});
     } catch (Exception err) {
       throw err;
     }
@@ -67,7 +67,7 @@ public class CrpcClassLoader {
   public static void addURL2ExtClassLoader(URL url) throws Exception {
     try {
       logger.info("append jar to classpath:" + url.toString());
-      addURLMethod.invoke(ext, new Object[] { url });
+      addURLMethod.invoke(ext, new Object[] {url});
     } catch (Exception err) {
       throw err;
     }

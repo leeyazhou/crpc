@@ -26,8 +26,7 @@ import com.github.leeyazhou.crpc.core.scanner.filter.AbstractSupperClassFilter;
 public class DefaultClassScanner implements ClassScanner {
   private static final DefaultClassScanner Instance = new DefaultClassScanner();
 
-  private DefaultClassScanner() {
-  }
+  private DefaultClassScanner() {}
 
   public static DefaultClassScanner getInstance() {
     return Instance;
@@ -70,7 +69,8 @@ public class DefaultClassScanner implements ClassScanner {
   }
 
   @Override
-  public Set<Class<?>> getClassListByAnnotation(String packageName, Class<? extends Annotation> annotationClass, ClassLoader classLoader) {
+  public Set<Class<?>> getClassListByAnnotation(String packageName, Class<? extends Annotation> annotationClass,
+      ClassLoader classLoader) {
     return new AbstractAnnotationClassFilter(packageName, annotationClass, classLoader) {
       @Override
       public boolean filterCondition(Class<?> cls) { // 这里去掉了内部类
@@ -84,8 +84,9 @@ public class DefaultClassScanner implements ClassScanner {
     return new AbstractSupperClassFilter(packageName, superClass) {
       @Override
       public boolean filterCondition(Class<?> clazz) { // 这里去掉了内部类
-        return superClass.isAssignableFrom(clazz) && !superClass.equals(clazz) && !Modifier.isInterface(clazz.getModifiers())
-            && !Modifier.isAbstract(clazz.getModifiers()) && Modifier.isPublic(clazz.getModifiers());
+        return superClass.isAssignableFrom(clazz) && !superClass.equals(clazz)
+            && !Modifier.isInterface(clazz.getModifiers()) && !Modifier.isAbstract(clazz.getModifiers())
+            && Modifier.isPublic(clazz.getModifiers());
         // !cls.getName().contains("$");
       }
 

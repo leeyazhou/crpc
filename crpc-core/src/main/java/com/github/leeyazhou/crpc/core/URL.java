@@ -200,17 +200,21 @@ public class URL implements Serializable {
 
   @Override
   public boolean equals(Object obj) {
-    if (this == obj)
+    if (this == obj) {
       return true;
-    if (obj == null)
+    }
+    if (obj == null) {
       return false;
-    if (getClass() != obj.getClass())
+    }
+    if (getClass() != obj.getClass()) {
       return false;
+    }
     URL other = (URL) obj;
     if (host == null && other.host != null) {
       return false;
-    } else if (!host.equals(other.host))
+    } else if (!host.equals(other.host)) {
       return false;
+    }
     if (parameters == null && other.parameters != null) {
       return false;
     } else if (!parameters.equals(other.parameters)) {
@@ -241,8 +245,8 @@ public class URL implements Serializable {
 
   @Override
   public String toString() {
-    return "URL [protocol=" + protocol + ", host=" + host + ", port=" + port + ", parameters=" + parameters + ", registryType="
-        + registryType + "]";
+    return "URL [protocol=" + protocol + ", host=" + host + ", port=" + port + ", parameters=" + parameters
+        + ", registryType=" + registryType + "]";
   }
 
 }

@@ -21,11 +21,11 @@ public interface Server {
    * start server at listenPort,requests will be handled in businessThreadPool
    * 
    */
-  public void start();
+  void start();
 
   /**
    * stop server
    */
-  public void stop();
+  void stop();
 
 }

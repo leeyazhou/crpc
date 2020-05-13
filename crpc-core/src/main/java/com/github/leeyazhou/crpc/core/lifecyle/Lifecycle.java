@@ -22,26 +22,26 @@ package com.github.leeyazhou.crpc.core.lifecyle;
  */
 public interface Lifecycle {
 
-	/**
-	 * init
-	 */
-	void init();
+  /**
+   * init
+   */
+  void init();
 
-	/**
-	 * start
-	 */
-	void start();
+  /**
+   * start
+   */
+  void start();
 
-	/**
-	 * stop
-	 */
-	void stop();
+  /**
+   * stop
+   */
+  void stop();
 
-	/**
-	 * whether is running?
-	 * 
-	 * @return true if the component is running, or false.
-	 */
-	boolean isRunning();
+  /**
+   * whether is running?
+   * 
+   * @return true if the component is running, or false.
+   */
+  boolean isRunning();
 
 }

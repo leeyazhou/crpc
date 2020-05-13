@@ -31,7 +31,6 @@ import sun.misc.SignalHandler;
 /**
  * @author lee
  */
-@SuppressWarnings("restriction")
 public class ServerSignalHandler implements SignalHandler {
 
   private static final Logger logger = LoggerFactory.getLogger(ServerSignalHandler.class);

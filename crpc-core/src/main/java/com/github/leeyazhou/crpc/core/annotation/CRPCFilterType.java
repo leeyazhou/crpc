@@ -32,9 +32,9 @@ import com.github.leeyazhou.crpc.core.object.SideType;
  */
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
-@Target(value = { ElementType.TYPE })
+@Target(value = {ElementType.TYPE})
 public @interface CRPCFilterType {
   String name() default "";
 
-  SideType[] active() default { SideType.SIDE_PROVIDER, SideType.SIDE_CONSUMER };
+  SideType[] active() default {SideType.SIDE_PROVIDER, SideType.SIDE_CONSUMER};
 }

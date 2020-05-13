@@ -58,7 +58,7 @@ public class Log4j2LoggerImpl implements com.github.leeyazhou.crpc.core.logger.L
 
   @Override
   public void debug(String msg, Throwable throwable) {
-    logger.debug(MARKER,msg, throwable);
+    logger.debug(MARKER, msg, throwable);
   }
 
   @Override

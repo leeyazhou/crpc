@@ -31,17 +31,14 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
-
 import org.apache.commons.pool2.impl.GenericObjectPoolConfig;
-
-import com.github.leeyazhou.crpc.registry.support.FailbackRegistry;
 import com.github.leeyazhou.crpc.core.Constants;
 import com.github.leeyazhou.crpc.core.URL;
 import com.github.leeyazhou.crpc.core.concurrent.NamedThreadFactory;
 import com.github.leeyazhou.crpc.core.exception.CrpcException;
 import com.github.leeyazhou.crpc.core.logger.Logger;
 import com.github.leeyazhou.crpc.core.logger.LoggerFactory;
-
+import com.github.leeyazhou.crpc.registry.support.FailbackRegistry;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPubSub;
@@ -54,8 +51,8 @@ public class RedisRegistry extends FailbackRegistry {
   private Map<String, JedisPool> redisPools = new HashMap<String, JedisPool>();
   // private final ConcurrentMap<String, Notifier> notifiers = new
   // ConcurrentHashMap<String, Notifier>();
-  private final ScheduledExecutorService expireExecutor = Executors.newScheduledThreadPool(1,
-      new NamedThreadFactory("CRPCRegistryExpireTimer", true));
+  private final ScheduledExecutorService expireExecutor =
+      Executors.newScheduledThreadPool(1, new NamedThreadFactory("CRPCRegistryExpireTimer", true));
   private long expireTime;
   private ScheduledFuture<?> expireFuture;
   private volatile boolean running = true;
@@ -83,8 +80,8 @@ public class RedisRegistry extends FailbackRegistry {
         jedis.publish(key, Constants.UNREGISTER);
         success = true;
       } catch (Throwable t) {
-        exception = new CrpcException("Failed to unregister service to redis registry. registry: " + entry.getKey() + ", service: "
-            + registryURL + ", cause: " + t.getMessage(), t);
+        exception = new CrpcException("Failed to unregister service to redis registry. registry: " + entry.getKey()
+            + ", service: " + registryURL + ", cause: " + t.getMessage(), t);
       } finally {
         jedis.close();
       }
@@ -139,7 +136,8 @@ public class RedisRegistry extends FailbackRegistry {
   }
 
   private String toCategoryPath(URL url) {
-    return toServicePath(url) + Constants.FILE_SEPARATOR + url.getParameter(Constants.GROUP, Constants.DEFAULT_CATEGORY_PROVIDER);
+    return toServicePath(url) + Constants.FILE_SEPARATOR
+        + url.getParameter(Constants.GROUP, Constants.DEFAULT_CATEGORY_PROVIDER);
   }
 
   @Override
@@ -150,7 +148,8 @@ public class RedisRegistry extends FailbackRegistry {
       if (registryURL == null) {
         Jedis jedis = jedisPool.getResource();
         // patern : /crpc/*/providers
-        String key = root + Constants.FILE_SEPARATOR + Constants.ANY_VALUE + Constants.FILE_SEPARATOR + Constants.DEFAULT_CATEGORY_PROVIDER;
+        String key = root + Constants.FILE_SEPARATOR + Constants.ANY_VALUE + Constants.FILE_SEPARATOR
+            + Constants.DEFAULT_CATEGORY_PROVIDER;
         Set<String> providers = jedis.keys(key);
         for (String provider : providers) {
           Map<String, String> serviceProviders = jedis.hgetAll(provider);
@@ -203,7 +202,8 @@ public class RedisRegistry extends FailbackRegistry {
             String side = url.getParameter(Constants.SIDE_KEY, null);
             if (Constants.PROVIDER_SIDE.equals(side)) {
               String key = toCategoryPath(url);
-              if (jedis.hset(key, url.getProviderPath(), String.valueOf(System.currentTimeMillis() + expireTime)) == 1) {
+              if (jedis.hset(key, url.getProviderPath(),
+                  String.valueOf(System.currentTimeMillis() + expireTime)) == 1) {
                 jedis.publish(key, Constants.REGISTER);
               }
             }
@@ -213,7 +213,8 @@ public class RedisRegistry extends FailbackRegistry {
           jedis.close();
         }
       } catch (Throwable t) {
-        logger.warn("Failed to write provider heartbeat to redis registry. registry: " + entry.getKey() + ", cause: " + t.getMessage(), t);
+        logger.warn("Failed to write provider heartbeat to redis registry. registry: " + entry.getKey() + ", cause: "
+            + t.getMessage(), t);
       }
     }
 
@@ -234,8 +235,8 @@ public class RedisRegistry extends FailbackRegistry {
               jedis.hdel(key, entry.getKey());
               delete = true;
               if (logger.isWarnEnabled()) {
-                logger.warn("Delete expired key: " + key + " -> value: " + entry.getKey() + ", expire: " + new Date(expire) + ", now: "
-                    + new Date(now));
+                logger.warn("Delete expired key: " + key + " -> value: " + entry.getKey() + ", expire: "
+                    + new Date(expire) + ", now: " + new Date(now));
               }
             }
           }
@@ -257,10 +258,6 @@ public class RedisRegistry extends FailbackRegistry {
     return false;
   }
 
-  /**
-   * @param jedis
-   * @param channel
-   */
   private void doNotify(Jedis jedis, String channel) {
     logger.info("doNotify channel : " + channel);
   }
@@ -285,8 +282,9 @@ public class RedisRegistry extends FailbackRegistry {
         } catch (Throwable t) {
           logger.error(t.getMessage(), t);
         } finally {
-          if (jedis != null)
+          if (jedis != null) {
             jedis.close();
+          }
         }
       }
 
@@ -298,10 +296,6 @@ public class RedisRegistry extends FailbackRegistry {
   private class Notifier extends Thread {
     private String channel;
 
-    /**
-     * @param jedisPool
-     * @param channel
-     */
     public Notifier(JedisPool jedisPool, String channel) {
       this.channel = channel;
       super.setDaemon(true);

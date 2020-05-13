@@ -21,11 +21,11 @@ package com.github.leeyazhou.crpc.core.util.serviceloader;
 /**
  * @author leeyazhou
  */
-public class LoaderA implements ILoader{
+public class LoaderA implements ILoader {
 
   @Override
   public void foo() {
 
-      System.out.println("loaderA");
+    System.out.println("loaderA");
   }
 }

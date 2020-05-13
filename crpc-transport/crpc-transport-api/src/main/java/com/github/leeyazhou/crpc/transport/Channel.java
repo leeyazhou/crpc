@@ -26,8 +26,8 @@ import com.github.leeyazhou.crpc.protocol.message.RequestMessage;
  */
 public interface Channel {
 
-  public void send(RequestMessage request, int timeout);
+  void send(RequestMessage request, int timeout);
 
-  public boolean isConnected();
+  boolean isConnected();
 
 }

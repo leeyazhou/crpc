@@ -33,7 +33,7 @@ public interface Protocol {
    * @return ByteBufferWrapper
    * @throws Exception any exception
    */
-  public ByteBufWrapper encode(ByteBufWrapper byteBufwrapper, Message message) throws Exception;
+  ByteBufWrapper encode(ByteBufWrapper byteBufwrapper, Message message) throws Exception;
 
   /**
    * decode stream to object
@@ -43,5 +43,5 @@ public interface Protocol {
    * @return AbstractWrapper
    * @throws Exception any exception
    */
-  public Message decode(ByteBufWrapper byteBufwrapper, int originPos) throws Exception;
+  Message decode(ByteBufWrapper byteBufwrapper, int originPos) throws Exception;
 }

@@ -89,14 +89,7 @@ public class ServiceLoader<T> {
     return load(defaultServiceImpl);
   }
 
-  /**
-   * 所有已经加载的扩展
-   * 
-   * @return t
-   */
-  public List<T> loads() {
-    return new ArrayList<T>(servicesMap.values());
-  }
+
 
   /**
    * 加载指定实现
@@ -123,6 +116,15 @@ public class ServiceLoader<T> {
       logger.error("", e);
     }
     return ret;
+  }
+
+  /**
+   * 所有已经加载的扩展
+   * 
+   * @return t
+   */
+  public List<T> loads() {
+    return new ArrayList<T>(servicesMap.values());
   }
 
   /**

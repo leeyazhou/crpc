@@ -30,7 +30,6 @@ import sun.misc.Signal;
  * 
  * @author leeyazhou
  */
-@SuppressWarnings("restriction")
 public class SignalManager {
 
   /**

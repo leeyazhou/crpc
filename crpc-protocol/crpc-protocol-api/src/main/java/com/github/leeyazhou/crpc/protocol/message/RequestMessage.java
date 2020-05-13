@@ -98,34 +98,22 @@ public class RequestMessage extends Message {
     return argTypes;
   }
 
-  /**
-   * @param targetClassName the targetClassName to set
-   */
   public RequestMessage setTargetClassName(String targetClassName) {
     this.targetClassName = targetClassName;
     return this;
   }
 
-  /**
-   * @param methodName the methodName to set
-   */
   public RequestMessage setMethodName(String methodName) {
     this.methodName = methodName;
     return this;
   }
 
-  /**
-   * @param requestObjects the requestObjects to set
-   */
   public RequestMessage setArgs(Object[] args) {
     this.args = args;
     return this;
   }
 
 
-  /**
-   * @param timeout the timeout to set
-   */
   public RequestMessage setTimeout(int timeout) {
     this.timeout = timeout;
     return this;

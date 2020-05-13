@@ -59,7 +59,7 @@ public final class Constants {
   public static final String loadBalance = "loadbalance";
   public static final String codec = "codec";
   public static final String timeout = "timeout";
-  
+
 
   public static final String REQUEST_TIMEOUT = "requestTimeout";
 

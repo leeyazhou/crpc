@@ -32,6 +32,6 @@ public interface Interceptor {
    * @param method Method
    * @throws Exception any exception
    */
-  public void intercept(Method method) throws Exception;
+  void intercept(Method method) throws Exception;
 
 }

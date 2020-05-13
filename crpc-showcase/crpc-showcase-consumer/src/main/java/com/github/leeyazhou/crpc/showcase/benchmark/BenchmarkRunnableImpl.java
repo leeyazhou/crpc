@@ -34,7 +34,7 @@ public class BenchmarkRunnableImpl implements BenchmarkRunnable {
 
   private long[] responseSpreads = new long[9];
 
-  public BenchmarkRunnableImpl( CountDownLatch countDownLatch, UserService userService, long endTime) {
+  public BenchmarkRunnableImpl(CountDownLatch countDownLatch, UserService userService, long endTime) {
     this.userService = userService;
     this.countDownLatch = countDownLatch;
     this.endTime = endTime;
@@ -49,10 +49,10 @@ public class BenchmarkRunnableImpl implements BenchmarkRunnable {
         break;
       }
       try {
-       boolean flag = userService.sayWord("--");
-       if(logger.isInfoEnabled()) {
-         logger.info("sayWord result : " + flag);
-       }
+        boolean flag = userService.sayWord("--");
+        if (logger.isInfoEnabled()) {
+          logger.info("sayWord result : " + flag);
+        }
       } catch (Exception e) {
         e.printStackTrace();
         errorRequest++;
@@ -90,8 +90,8 @@ public class BenchmarkRunnableImpl implements BenchmarkRunnable {
   public List<long[]> getResult() {
     List<long[]> result = new ArrayList<long[]>(6);
     result.add(responseSpreads);
-    result.add(new long[] { acceptRequest });
-    result.add(new long[] { errorRequest });
+    result.add(new long[] {acceptRequest});
+    result.add(new long[] {errorRequest});
     return result;
   }
 }

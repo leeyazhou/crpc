@@ -27,14 +27,14 @@ public interface Client {
    * @param request {@link RequestMessage}
    * @return Object return response
    */
-  public ResponseMessage sendRequest(RequestMessage request);
+  ResponseMessage sendRequest(RequestMessage request);
 
   /**
    * receive response from server
    * 
    * @param response {@link ResponseMessage}
    */
-  public void putResponse(ResponseMessage response);
+  void putResponse(ResponseMessage response);
 
 
   /**
@@ -42,7 +42,7 @@ public interface Client {
    * 
    * @return long
    */
-  public long getSendingBytesSize();
+  long getSendingBytesSize();
 
   /**
    * connect channel

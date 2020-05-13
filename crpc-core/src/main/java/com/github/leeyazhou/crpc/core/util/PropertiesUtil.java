@@ -33,8 +33,7 @@ public final class PropertiesUtil {
   /**
    * 
    */
-  private PropertiesUtil() {
-  }
+  private PropertiesUtil() {}
 
   public static Properties get(String location) {
     try {

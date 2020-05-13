@@ -37,7 +37,8 @@ public class AntPathMatcher {
 
   private boolean trimTokens = true;
 
-  private final Map<String, AntPathStringMatcher> stringMatcherCache = new ConcurrentHashMap<String, AntPathStringMatcher>(256);
+  private final Map<String, AntPathStringMatcher> stringMatcherCache =
+      new ConcurrentHashMap<String, AntPathStringMatcher>(256);
 
   private static final AntPathMatcher instance = new AntPathMatcher();
 
@@ -81,7 +82,7 @@ public class AntPathMatcher {
    * @param pattern the pattern to match against
    * @param path the path String to test
    * @param fullMatch whether a full pattern match is required (else a pattern match as far as the given base path goes
-   *          is sufficient)
+   *        is sufficient)
    * @param uriTemplateVariables uriTemplateVariables
    * @return {@code true} if the supplied {@code path} matched, {@code false} if it didn't
    */
@@ -114,7 +115,8 @@ public class AntPathMatcher {
     if (pathIdxStart > pathIdxEnd) {
       // Path is exhausted, only match if rest of pattern is * or **'s
       if (pattIdxStart > pattIdxEnd) {
-        return (pattern.endsWith(this.pathSeparator) ? path.endsWith(this.pathSeparator) : !path.endsWith(this.pathSeparator));
+        return (pattern.endsWith(this.pathSeparator) ? path.endsWith(this.pathSeparator)
+            : !path.endsWith(this.pathSeparator));
       }
       if (!fullMatch) {
         return true;
@@ -609,7 +611,8 @@ public class AntPathMatcher {
   }
 
   public static void main(String[] args) {
-    boolean flag = getInstance().match("com.github.crpc.demo.*.*.*.say", "com.github.crpc.demo.service.impl.HelloServiceImpl.say");
+    boolean flag =
+        getInstance().match("com.github.crpc.demo.*.*.*.say", "com.github.crpc.demo.service.impl.HelloServiceImpl.say");
     System.out.println(flag);
   }
 }

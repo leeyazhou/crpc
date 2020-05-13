@@ -54,7 +54,8 @@ public final class StringUtil {
     return tokenizeToStringArray(str, delimiters, true, true);
   }
 
-  public static String[] tokenizeToStringArray(String str, String delimiters, boolean trimTokens, boolean ignoreEmptyTokens) {
+  public static String[] tokenizeToStringArray(String str, String delimiters, boolean trimTokens,
+      boolean ignoreEmptyTokens) {
 
     if (str == null) {
       return null;

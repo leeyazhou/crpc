@@ -87,9 +87,12 @@ public class AbstractBenchmarkClient {
     System.out.println(" RT (5,10] : " + above5sum * 100 / allRequestSum + "% " + above5sum + "/" + allRequestSum);
     System.out.println(" RT (10,50] : " + above10sum * 100 / allRequestSum + "% " + above10sum + "/" + allRequestSum);
     System.out.println(" RT (50,100] : " + above50sum * 100 / allRequestSum + "% " + above50sum + "/" + allRequestSum);
-    System.out.println(" RT (100,500] : " + above100sum * 100 / allRequestSum + "% " + above100sum + "/" + allRequestSum);
-    System.out.println(" RT (500,1000] : " + above500sum * 100 / allRequestSum + "% " + above500sum + "/" + allRequestSum);
-    System.out.println(" RT > 1000 : " + above1000sum * 100 / allRequestSum + "% " + above1000sum + "/" + allRequestSum);
+    System.out
+        .println(" RT (100,500] : " + above100sum * 100 / allRequestSum + "% " + above100sum + "/" + allRequestSum);
+    System.out
+        .println(" RT (500,1000] : " + above500sum * 100 / allRequestSum + "% " + above500sum + "/" + allRequestSum);
+    System.out
+        .println(" RT > 1000 : " + above1000sum * 100 / allRequestSum + "% " + above1000sum + "/" + allRequestSum);
 
     System.out.println("allRequestSum \t: " + allRequestSum);
     System.out.println("allErrorRequestSum : " + allErrorRequestSum);
