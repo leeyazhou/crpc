@@ -46,16 +46,6 @@
     </dependency>
     <dependency>
       <groupId>com.github.leeyazhou</groupId>
-      <artifactId>crpc-sentinel</artifactId>
-      <version>${project.parent.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>com.github.leeyazhou</groupId>
-      <artifactId>crpc-tracer</artifactId>
-      <version>${project.parent.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>com.github.leeyazhou</groupId>
       <artifactId>crpc-transport-netty</artifactId>
       <version>${project.parent.version}</version>
     </dependency>
