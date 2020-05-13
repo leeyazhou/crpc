@@ -148,7 +148,8 @@ public class SimpleProtocol2 implements Protocol {
           requestArgTypes.add(requestArgType.getBytes());
           requestArgTypesLen += requestArgType.getBytes().length;
         }
-        Serializer serializer = ServiceLoader.load(Serializer.class).load(CodecType.valueOf(request.getCodecType()).getSerializerName());
+        Serializer serializer =
+            ServiceLoader.load(Serializer.class).load(CodecType.valueOf(request.getCodecType()).getSerializerName());
         for (Object requestArg : requestObjects) {
           byte[] requestArgByte = serializer.encode(requestArg);
           requestArgs.add(requestArgByte);
@@ -213,7 +214,8 @@ public class SimpleProtocol2 implements Protocol {
     int error = 0;
     byte[] body = new byte[0];
     byte[] className = new byte[0];
-    Serializer serializer = ServiceLoader.load(Serializer.class).load(CodecType.valueOf(response.getCodecType()).getSerializerName());
+    Serializer serializer =
+        ServiceLoader.load(Serializer.class).load(CodecType.valueOf(response.getCodecType()).getSerializerName());
     try {
       if (response.getResponse() != null) {
         className = response.getResponse().getClass().getName().getBytes();
@@ -307,8 +309,8 @@ public class SimpleProtocol2 implements Protocol {
       byteBufWrapper.readBytes(argByte);
       args[i] = serializer.decode(argTypes[i], argByte);
     }
-    RequestMessage request = new RequestMessage(new String(targetInstanceByte), new String(methodNameByte), argTypes, args, timeout,
-        requestId, codecType, PROTOCOL_TYPE);
+    RequestMessage request = new RequestMessage(new String(targetInstanceByte), new String(methodNameByte), argTypes,
+        args, timeout, requestId, codecType, PROTOCOL_TYPE);
     request.setMessageType(messageType);
     int messageLen = HEADER_LEN + REQUEST_HEADER_LEN + expectedLenInfoLen + expectedLen;
     request.setMessageLen(messageLen);
@@ -343,7 +345,8 @@ public class SimpleProtocol2 implements Protocol {
     response.setResponseClassName(new String(classNameBytes));
     response.setMessageType(messageType);
     if (bodyLen != 0) {
-      Serializer serializer = ServiceLoader.load(Serializer.class).load(CodecType.valueOf(codecType).getSerializerName());
+      Serializer serializer =
+          ServiceLoader.load(Serializer.class).load(CodecType.valueOf(codecType).getSerializerName());
       response.setResponse(serializer.decode(response.getResponseClassName(), bodyBytes));
     }
     if (error == 1) {

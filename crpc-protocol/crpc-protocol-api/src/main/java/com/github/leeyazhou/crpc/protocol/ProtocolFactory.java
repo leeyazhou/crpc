@@ -17,8 +17,7 @@ package com.github.leeyazhou.crpc.protocol;
 
 public final class ProtocolFactory {
 
-  private ProtocolFactory() {
-  }
+  private ProtocolFactory() {}
 
   private static Protocol protocol = new SimpleProtocol();
 

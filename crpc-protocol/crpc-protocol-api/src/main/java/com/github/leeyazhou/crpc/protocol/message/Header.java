@@ -18,16 +18,18 @@
  */
 package com.github.leeyazhou.crpc.protocol.message;
 
+import java.io.Serializable;
+
 /**
  * @author leeyazhou
  */
-public class Header {
+public class Header implements Serializable {
 
+  private static final long serialVersionUID = 1L;
   private String key;
   private Object value;
-  
-  public Header() {
-  }
+
+  public Header() {}
 
   public Header(String key, Object value) {
     this.key = key;

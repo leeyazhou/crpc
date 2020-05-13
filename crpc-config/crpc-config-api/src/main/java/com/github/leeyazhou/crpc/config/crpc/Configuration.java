@@ -34,7 +34,7 @@ import com.github.leeyazhou.crpc.core.logger.LoggerFactory;
  */
 public class Configuration implements IConfig {
   static final Logger logger = LoggerFactory.getLogger(Configuration.class);
-  private static final long serialVersionUID = 3858886608932619894L;
+  private static final long serialVersionUID = 1L;
   private String location;
 
   private Map<String, ServiceGroupConfig> serviceGroupConfigs = new HashMap<String, ServiceGroupConfig>();

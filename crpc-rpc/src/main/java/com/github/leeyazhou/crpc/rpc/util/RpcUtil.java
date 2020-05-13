@@ -42,7 +42,8 @@ public class RpcUtil {
   private static final TransportFactory transportFactory = ServiceLoader.load(TransportFactory.class).load();
   private static final ConcurrentMap<String, Server> servers = new ConcurrentHashMap<String, Server>();
 
-  public static <T> void export(ServerConfig serverConfig, ServiceHandler<T> servsiceHandler, ServerFactory beanFactory) {
+  public static <T> void export(ServerConfig serverConfig, ServiceHandler<T> servsiceHandler,
+      ServerFactory beanFactory) {
     logger.info("export : " + serverConfig);
     final String serverKey = serverConfig.getAddress();
     Server server = servers.get(serverKey);
@@ -52,8 +53,10 @@ public class RpcUtil {
     synchronized (servers) {
       if ((server = servers.get(serverKey)) == null) {
         server = transportFactory.createServer(serverConfig, beanFactory);
-        servers.putIfAbsent(serverKey, server);
-        server.start();
+        Server t = servers.putIfAbsent(serverKey, server);
+        if (t == null) {
+          server.start();
+        }
       }
     }
 
@@ -62,11 +65,10 @@ public class RpcUtil {
   public static <T> void unexport(ServerConfig serverConfig, ServiceHandler<T> serviceHandler) {
     logger.info("unexport : " + serverConfig);
     final String serverKey = serverConfig.getAddress();
-    Server server = servers.get(serverKey);
+    Server server = servers.remove(serverKey);
     if (server != null) {
       server.stop();
     }
-    servers.remove(serverKey);
   }
 
   public static <T> T refer(ServiceGroupConfig serviceGroupConfig, Class<T> objectType) {
