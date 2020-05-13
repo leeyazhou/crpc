@@ -107,7 +107,6 @@ public class ConfigurationParser implements IParser<Configuration> {
       System.exit(0);
     }
     Configuration configuration = new Configuration();
-    configuration.setLocation(getLocation());
 
     NodeList nodeList = rootElement.getChildNodes();
     ServiceGroupParser serviceParser = new ServiceGroupParser(configuration);

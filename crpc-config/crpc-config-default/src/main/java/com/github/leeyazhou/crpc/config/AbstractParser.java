@@ -15,7 +15,7 @@ import com.github.leeyazhou.crpc.core.util.FieldUtil;
  *
  */
 public abstract class AbstractParser<T> implements IParser<T> {
-  private static final Logger logger = LoggerFactory.getLogger(AbstractParser.class);
+  static final Logger logger = LoggerFactory.getLogger(AbstractParser.class);
   protected Configuration configuration;
 
   public AbstractParser(Configuration configuration) {

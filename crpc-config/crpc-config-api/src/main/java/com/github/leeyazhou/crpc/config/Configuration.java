@@ -32,7 +32,6 @@ import com.github.leeyazhou.crpc.core.logger.LoggerFactory;
  */
 public class Configuration {
   static final Logger logger = LoggerFactory.getLogger(Configuration.class);
-  private String location;
   private ApplicationConfig applicationConfig;
 
   private Map<String, ServiceGroupConfig> serviceGroupConfigs = new HashMap<String, ServiceGroupConfig>();
@@ -41,17 +40,6 @@ public class Configuration {
 
   public Configuration() {}
 
-  public Configuration(String location) {
-    this.location = location;
-  }
-
-  public String getLocation() {
-    return location;
-  }
-
-  public void setLocation(String location) {
-    this.location = location;
-  }
 
   public Map<String, ServiceGroupConfig> getServiceConfigs() {
     return serviceGroupConfigs;
@@ -97,19 +85,6 @@ public class Configuration {
    */
   public ApplicationConfig getApplicationConfig() {
     return applicationConfig;
-  }
-
-  @Override
-  public String toString() {
-    StringBuilder builder = new StringBuilder();
-    builder.append("Configuration [\r\n\tlocation=");
-    builder.append(location);
-    builder.append(", \r\n\tserviceGroupConfigs=");
-    builder.append(serviceGroupConfigs);
-    builder.append(", \r\n\tserverConfigs=");
-    builder.append(serverConfigs);
-    builder.append("\r\n]");
-    return builder.toString();
   }
 
 }
