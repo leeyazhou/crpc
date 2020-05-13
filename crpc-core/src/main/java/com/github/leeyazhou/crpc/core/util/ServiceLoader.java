@@ -36,7 +36,7 @@ import com.github.leeyazhou.crpc.core.logger.LoggerFactory;
 
 public class ServiceLoader<T> {
   private static final Logger logger = LoggerFactory.getLogger(ServiceLoader.class);
-  private static final String PREFIX = "META-INF/services/crpc/";
+  private static final String PREFIX = "META-INF/service/crpc/";
   private static final ConcurrentMap<Class<?>, Object> serviceLoadersMap = new ConcurrentHashMap<Class<?>, Object>();
 
   private final Class<T> serviceType;

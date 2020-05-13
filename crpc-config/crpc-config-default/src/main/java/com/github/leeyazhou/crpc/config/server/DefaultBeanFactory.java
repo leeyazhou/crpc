@@ -21,16 +21,14 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
-
-import com.github.leeyazhou.crpc.protocol.util.ObjectUtils;
+import com.github.leeyazhou.crpc.core.logger.Logger;
+import com.github.leeyazhou.crpc.core.logger.LoggerFactory;
+import com.github.leeyazhou.crpc.core.object.RegistryType;
 import com.github.leeyazhou.crpc.registry.RegistryFactory;
 import com.github.leeyazhou.crpc.transport.Filter;
 import com.github.leeyazhou.crpc.transport.Interceptor;
 import com.github.leeyazhou.crpc.transport.factory.AbstractServerFactory;
 import com.github.leeyazhou.crpc.transport.factory.ServiceHandler;
-import com.github.leeyazhou.crpc.core.logger.Logger;
-import com.github.leeyazhou.crpc.core.logger.LoggerFactory;
-import com.github.leeyazhou.crpc.core.object.RegistryType;
 
 /**
  * @author lee
@@ -41,13 +39,19 @@ public class DefaultBeanFactory extends AbstractServerFactory {
 
   private static final Set<Interceptor> interceptors = new HashSet<Interceptor>();
 
-  private static final Map<RegistryType, RegistryFactory> registryFactories = new HashMap<RegistryType, RegistryFactory>();
+  private static final Map<RegistryType, RegistryFactory> registryFactories =
+      new HashMap<RegistryType, RegistryFactory>();
 
   private static Filter filterChain;
-  private static final ConcurrentMap<String, ServiceHandler<?>> beanClassFactory = new ConcurrentHashMap<String, ServiceHandler<?>>();
+  private static final ConcurrentMap<String, ServiceHandler<?>> beanClassFactory =
+      new ConcurrentHashMap<String, ServiceHandler<?>>();
 
   public void registerInterceptor(Class<Interceptor> interceptor) {
-    interceptors.add(ObjectUtils.newInstance(interceptor));
+    try {
+      interceptors.add(interceptor.newInstance());
+    } catch (Exception e) {
+      logger.error("", e);
+    }
   }
 
   /**
@@ -60,8 +64,7 @@ public class DefaultBeanFactory extends AbstractServerFactory {
   /**
    * 注册处理器
    * 
-   * @param serviceHandler
-   *          目标Class类
+   * @param serviceHandler 目标Class类
    */
   @Override
   public <T> void registerProcessor(ServiceHandler<T> serviceHandler) {
@@ -71,8 +74,7 @@ public class DefaultBeanFactory extends AbstractServerFactory {
   }
 
   /**
-   * @param targetInstanceName
-   *          类类型
+   * @param targetInstanceName 类类型
    * @return instance of type
    */
   public <T> ServiceHandler<T> getServiceHandler(String targetInstanceName) {

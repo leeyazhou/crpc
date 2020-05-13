@@ -18,10 +18,12 @@ package com.github.leeyazhou.crpc.protocol;
 import com.github.leeyazhou.crpc.core.exception.UnsupportProtocolException;
 import com.github.leeyazhou.crpc.core.logger.Logger;
 import com.github.leeyazhou.crpc.core.logger.LoggerFactory;
-import com.github.leeyazhou.crpc.protocol.codec.CodecType;
+import com.github.leeyazhou.crpc.core.util.ServiceLoader;
 import com.github.leeyazhou.crpc.protocol.message.Message;
 import com.github.leeyazhou.crpc.protocol.message.RequestMessage;
 import com.github.leeyazhou.crpc.protocol.message.ResponseMessage;
+import com.github.leeyazhou.crpc.serializer.CodecType;
+import com.github.leeyazhou.crpc.serializer.Serializer;
 
 /**
  * <b>Common RPC Protocol</b><br>
@@ -108,7 +110,8 @@ public class SimpleProtocol implements Protocol {
     }
 
     int id = message.getId();
-    byte[] bodyBytes = CodecType.valueOf(message.getCodecType()).getCodec().encode(message);
+    byte[] bodyBytes = ServiceLoader.load(Serializer.class)
+        .load(CodecType.valueOf(message.getCodecType()).getSerializerName()).encode(message);
     int capacity = HEADER_LEN + BODY_HEADER_LEN + bodyBytes.length;
     ByteBufWrapper byteBuffer = bytebufferWrapper.get(capacity);
 
@@ -155,10 +158,11 @@ public class SimpleProtocol implements Protocol {
     byte[] bodyBytes = new byte[bodyLen];
     byteBufWrapper.readBytes(bodyBytes);
     Message ret = null;
+    Serializer serializer = ServiceLoader.load(Serializer.class).load(CodecType.valueOf(codecType).getSerializerName());
     if (type == REQUEST) {
-      ret = (Message) CodecType.valueOf(codecType).getCodec().decode(RequestMessage.class.getName(), bodyBytes);
+      ret = (Message) serializer.decode(RequestMessage.class.getName(), bodyBytes);
     } else {
-      ret = (Message) CodecType.valueOf(codecType).getCodec().decode(ResponseMessage.class.getName(), bodyBytes);
+      ret = (Message) serializer.decode(ResponseMessage.class.getName(), bodyBytes);
     }
     return ret;
   }

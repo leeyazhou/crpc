@@ -54,6 +54,7 @@
         <module>crpc-monitor</module>
         <module>crpc-extension</module>
         <module>crpc-bom</module>
+        <module>crpc-serializer</module>
     </modules>
     <scm>
         <connection>scm:git:git@github.com:${github.org}/${github.repo}.git</connection>

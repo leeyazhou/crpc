@@ -20,27 +20,30 @@
 package com.github.leeyazhou.crpc.protocol.rpc;
 
 import org.junit.Test;
-
-import com.github.leeyazhou.crpc.protocol.codec.CodecType;
+import com.github.leeyazhou.crpc.core.util.ServiceLoader;
 import com.github.leeyazhou.crpc.protocol.model.User;
+import com.github.leeyazhou.crpc.serializer.CodecType;
+import com.github.leeyazhou.crpc.serializer.Serializer;
 
 /**
  * @author lee
  */
 public class ProtocolCodecTest {
 
+  Serializer serializer = ServiceLoader.load(Serializer.class).load(CodecType.KRYO_CODEC.getSerializerName());
+
   @Test
   public void testEncode() throws Exception {
     User user = new User(100, 100, "CRPC技术部", "admin@github.cn");
-    byte[] bytes = CodecType.KRYO_CODEC.getCodec().encode(user);
-    Object object = CodecType.KRYO_CODEC.getCodec().decode(User.class.getName(), bytes);
+    byte[] bytes = serializer.encode(user);
+    Object object = serializer.decode(User.class.getName(), bytes);
     System.out.println(object);
   }
 
   @Test
   public void testDecode() throws Exception {
     User user = new User(100, 100, "CRPC技术部", "admin@github.cn");
-    byte[] bytes = CodecType.KRYO_CODEC.getCodec().encode(user);
+    byte[] bytes = serializer.encode(user);
     System.out.println(bytes);
   }
 }

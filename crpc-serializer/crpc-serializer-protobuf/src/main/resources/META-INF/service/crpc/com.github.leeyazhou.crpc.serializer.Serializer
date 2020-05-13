@@ -1,0 +1,1 @@
+protobuf=com.github.leeyazhou.crpc.serializer.protobuf.ProtobufSerializer

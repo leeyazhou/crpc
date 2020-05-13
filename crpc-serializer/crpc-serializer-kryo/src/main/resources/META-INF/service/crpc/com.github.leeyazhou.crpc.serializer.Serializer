@@ -1,0 +1,1 @@
+kryo=com.github.leeyazhou.crpc.serializer.kryo.KryoSerializer

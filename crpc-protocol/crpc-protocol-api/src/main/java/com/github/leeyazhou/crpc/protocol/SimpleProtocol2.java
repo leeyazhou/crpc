@@ -17,14 +17,15 @@ package com.github.leeyazhou.crpc.protocol;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import com.github.leeyazhou.crpc.protocol.codec.CodecType;
-import com.github.leeyazhou.crpc.protocol.message.Message;
-import com.github.leeyazhou.crpc.protocol.message.RequestMessage;
-import com.github.leeyazhou.crpc.protocol.message.ResponseMessage;
 import com.github.leeyazhou.crpc.core.exception.UnsupportProtocolException;
 import com.github.leeyazhou.crpc.core.logger.Logger;
 import com.github.leeyazhou.crpc.core.logger.LoggerFactory;
+import com.github.leeyazhou.crpc.core.util.ServiceLoader;
+import com.github.leeyazhou.crpc.protocol.message.Message;
+import com.github.leeyazhou.crpc.protocol.message.RequestMessage;
+import com.github.leeyazhou.crpc.protocol.message.ResponseMessage;
+import com.github.leeyazhou.crpc.serializer.CodecType;
+import com.github.leeyazhou.crpc.serializer.Serializer;
 
 /**
  * <b>Common RPC Protocol</b><br>
@@ -147,9 +148,9 @@ public class SimpleProtocol2 implements Protocol {
           requestArgTypes.add(requestArgType.getBytes());
           requestArgTypesLen += requestArgType.getBytes().length;
         }
-
+        Serializer serializer = ServiceLoader.load(Serializer.class).load(CodecType.valueOf(request.getCodecType()).getSerializerName());
         for (Object requestArg : requestObjects) {
-          byte[] requestArgByte = CodecType.valueOf(request.getCodecType()).getCodec().encode(requestArg);
+          byte[] requestArgByte = serializer.encode(requestArg);
           requestArgs.add(requestArgByte);
           requestArgsLen += requestArgByte.length;
         }
@@ -212,21 +213,22 @@ public class SimpleProtocol2 implements Protocol {
     int error = 0;
     byte[] body = new byte[0];
     byte[] className = new byte[0];
+    Serializer serializer = ServiceLoader.load(Serializer.class).load(CodecType.valueOf(response.getCodecType()).getSerializerName());
     try {
       if (response.getResponse() != null) {
         className = response.getResponse().getClass().getName().getBytes();
-        body = CodecType.valueOf(response.getCodecType()).getCodec().encode(response.getResponse());
+        body = serializer.encode(response.getResponse());
       }
       if (response.isError()) {
         error = 1;
         className = response.getException().getClass().getName().getBytes();
-        body = CodecType.valueOf(response.getCodecType()).getCodec().encode(response.getException());
+        body = serializer.encode(response.getException());
       }
     } catch (Exception err) {
       logger.error("encode response object error", err);
       response.setResponse(new Exception("serialize response object error", err));
       className = Exception.class.getName().getBytes();
-      body = CodecType.valueOf(response.getCodecType()).getCodec().encode(response.getResponse());
+      body = serializer.encode(response.getResponse());
     }
     int capacity = HEADER_LEN + RESPONSE_HEADER_LEN + body.length;
     capacity += className.length;
@@ -299,10 +301,11 @@ public class SimpleProtocol2 implements Protocol {
       argTypes[i] = new String(argTypeByte);
     }
     Object[] args = new Object[argsCount];
+    Serializer serializer = ServiceLoader.load(Serializer.class).load(CodecType.valueOf(codecType).getSerializerName());
     for (int i = 0; i < argsCount; i++) {
       byte[] argByte = new byte[argsLen[i]];
       byteBufWrapper.readBytes(argByte);
-      args[i] = CodecType.valueOf(codecType).getCodec().decode(argTypes[i], argByte);
+      args[i] = serializer.decode(argTypes[i], argByte);
     }
     RequestMessage request = new RequestMessage(new String(targetInstanceByte), new String(methodNameByte), argTypes, args, timeout,
         requestId, codecType, PROTOCOL_TYPE);
@@ -340,7 +343,8 @@ public class SimpleProtocol2 implements Protocol {
     response.setResponseClassName(new String(classNameBytes));
     response.setMessageType(messageType);
     if (bodyLen != 0) {
-      response.setResponse(CodecType.valueOf(codecType).getCodec().decode(response.getResponseClassName(), bodyBytes));
+      Serializer serializer = ServiceLoader.load(Serializer.class).load(CodecType.valueOf(codecType).getSerializerName());
+      response.setResponse(serializer.decode(response.getResponseClassName(), bodyBytes));
     }
     if (error == 1) {
       response.setError(Boolean.TRUE);
