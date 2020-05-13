@@ -27,7 +27,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import com.github.leeyazhou.crpc.showcase.service.UserServiceConsumer;
 
 /**
- * @author <a href="mailto:lee_yazhou@163.com">Yazhou Li</a>
+ * @author leeyazhou
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration("classpath*:spring-*.xml")

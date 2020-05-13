@@ -20,8 +20,6 @@ package com.github.leeyazhou.crpc.core.util;
 
 import org.junit.Test;
 
-import com.github.leeyazhou.crpc.core.util.InetAddressUtil;
-
 /**
  * @author lee_y
  *

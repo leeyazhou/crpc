@@ -30,7 +30,7 @@ import com.github.leeyazhou.crpc.core.util.StringUtil;
 
 /**
  * 
- * @author <a href="mailto:lee_yazhou@163.com">Yazhou Li</a>
+ * @author leeyazhou
  */
 public class ReferenceBeanDefinitionParser extends AbstractBeanDefinitionParser {
   static final Logger logger = LoggerFactory.getLogger(ReferenceBeanDefinitionParser.class);

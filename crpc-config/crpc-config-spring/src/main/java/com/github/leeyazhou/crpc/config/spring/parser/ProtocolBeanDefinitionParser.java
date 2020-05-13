@@ -29,7 +29,7 @@ import com.github.leeyazhou.crpc.core.logger.LoggerFactory;
 
 /**
  * 
- * @author <a href="mailto:lee_yazhou@163.com">Yazhou Li</a>
+ * @author leeyazhou
  */
 public class ProtocolBeanDefinitionParser extends AbstractBeanDefinitionParser {
   private static final Logger logger = LoggerFactory.getLogger(ProtocolBeanDefinitionParser.class);

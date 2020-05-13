@@ -21,7 +21,7 @@ package com.github.leeyazhou.crpc.core.util.serviceloader;
 import com.github.leeyazhou.crpc.core.annotation.SPI;
 
 /**
- * @author <a href="mailto:lee_yazhou@163.com">Yazhou Li</a>
+ * @author leeyazhou
  */
 @SPI("loaderA")
 public interface ILoader {

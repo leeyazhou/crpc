@@ -38,14 +38,14 @@ import zipkin2.reporter.AsyncReporter;
 import zipkin2.reporter.okhttp3.OkHttpSender;
 
 /**
- * @author lee
+ * @author leeyazhou
  *
  */
-@CRPCFilterType(active = { SideType.SIDE_PROVIDER, SideType.SIDE_CONSUMER })
+@CRPCFilterType(active = {SideType.SIDE_PROVIDER, SideType.SIDE_CONSUMER})
 public class TraceFilter extends AbstractFilter {
   private static final String endpoint = "http://zipkin.iscoder.cn/api/v2/spans";
-  private static final Tracer tracer = BraveTracer
-      .create(Tracing.newBuilder().spanReporter(AsyncReporter.create(OkHttpSender.create(endpoint)))
+  private static final Tracer tracer =
+      BraveTracer.create(Tracing.newBuilder().spanReporter(AsyncReporter.create(OkHttpSender.create(endpoint)))
           .localServiceName("crpc-demo-provider").build());
   private static final Logger logger = LoggerFactory.getLogger(TraceFilter.class);
 

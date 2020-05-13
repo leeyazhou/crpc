@@ -46,7 +46,7 @@ import com.github.leeyazhou.crpc.core.logger.LoggerFactory;
 import com.github.leeyazhou.crpc.core.util.ServiceLoader;
 
 /**
- * @author <a href="mailto:lee_yazhou@163.com">Yazhou Li</a>
+ * @author leeyazhou
  */
 public abstract class AbstractTransportFactory implements TransportFactory, NotifyListener {
   private static final Logger logger = LoggerFactory.getLogger(AbstractTransportFactory.class);

@@ -45,7 +45,7 @@ import com.github.leeyazhou.crpc.core.util.StringUtil;
 
 /**
  * 
- * @author <a href="mailto:lee_yazhou@163.com">Yazhou Li</a>
+ * @author leeyazhou
  */
 public class ComponentScanBeanDefinitionParser implements BeanDefinitionParser {
 

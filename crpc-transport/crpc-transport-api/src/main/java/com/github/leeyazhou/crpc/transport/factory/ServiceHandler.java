@@ -36,7 +36,7 @@ import com.github.leeyazhou.crpc.core.util.ExceptionUtil;
 import com.github.leeyazhou.crpc.core.util.SerializerUtil;
 
 /**
- * @author <a href="mailto:lee_yazhou@163.com">Yazhou Li</a>
+ * @author leeyazhou
  */
 public class ServiceHandler<T> implements Handler<T> {
 	private static final Logger logger = LoggerFactory.getLogger(ServiceHandler.class);

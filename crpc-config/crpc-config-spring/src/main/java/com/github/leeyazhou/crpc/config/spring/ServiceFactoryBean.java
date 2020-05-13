@@ -45,7 +45,7 @@ import com.github.leeyazhou.crpc.core.util.ServiceLoader;
 /**
  * 服务类
  * 
- * @author <a href="mailto:lee_yazhou@163.com">Yazhou Li</a>
+ * @author leeyazhou
  */
 public class ServiceFactoryBean<T> extends ServiceConfig<T>
     implements InitializingBean, DisposableBean, ApplicationContextAware, ApplicationListener<ContextRefreshedEvent> {

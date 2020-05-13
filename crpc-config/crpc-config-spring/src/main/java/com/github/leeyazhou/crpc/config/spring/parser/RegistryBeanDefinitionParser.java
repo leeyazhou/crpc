@@ -28,7 +28,7 @@ import com.github.leeyazhou.crpc.core.util.ServiceLoader;
 
 /**
  * 
- * @author <a href="mailto:lee_yazhou@163.com">Yazhou Li</a>
+ * @author leeyazhou
  */
 public class RegistryBeanDefinitionParser implements BeanDefinitionParser {
   static final Logger logger = LoggerFactory.getLogger(RegistryBeanDefinitionParser.class);

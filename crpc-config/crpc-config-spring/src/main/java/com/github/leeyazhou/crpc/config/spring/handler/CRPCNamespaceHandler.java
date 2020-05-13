@@ -24,7 +24,7 @@ import com.github.leeyazhou.crpc.config.spring.parser.RegistryBeanDefinitionPars
 
 /**
  * 
- * @author <a href="mailto:lee_yazhou@163.com">Yazhou Li</a>
+ * @author leeyazhou
  */
 public class CRPCNamespaceHandler extends NamespaceHandlerSupport {
 

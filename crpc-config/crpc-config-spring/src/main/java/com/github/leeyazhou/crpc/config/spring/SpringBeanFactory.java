@@ -33,7 +33,7 @@ import com.github.leeyazhou.crpc.core.logger.Logger;
 import com.github.leeyazhou.crpc.core.logger.LoggerFactory;
 
 /**
- * @author <a href="mailto:lee_yazhou@163.com">Yazhou Li</a>
+ * @author leeyazhou
  */
 public class SpringBeanFactory extends AbstractServerFactory implements ApplicationContextAware {
   private static final Logger logger = LoggerFactory.getLogger(SpringBeanFactory.class);

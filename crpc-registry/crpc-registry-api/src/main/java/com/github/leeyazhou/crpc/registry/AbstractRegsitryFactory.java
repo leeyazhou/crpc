@@ -26,7 +26,7 @@ import java.util.Map;
 import com.github.leeyazhou.crpc.core.URL;
 
 /**
- * @author <a href="mailto:lee_yazhou@163.com">Yazhou Li</a>
+ * @author leeyazhou
  */
 public abstract class AbstractRegsitryFactory implements RegistryFactory {
 

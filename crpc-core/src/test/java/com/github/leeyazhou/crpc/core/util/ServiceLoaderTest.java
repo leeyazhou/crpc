@@ -19,12 +19,10 @@
 package com.github.leeyazhou.crpc.core.util;
 
 import org.junit.Test;
-
-import com.github.leeyazhou.crpc.core.util.ServiceLoader;
 import com.github.leeyazhou.crpc.core.util.serviceloader.ILoader;
 
 /**
- * @author <a href="mailto:lee_yazhou@163.com">Yazhou Li</a>
+ * @author leeyazhou
  */
 public class ServiceLoaderTest {
 

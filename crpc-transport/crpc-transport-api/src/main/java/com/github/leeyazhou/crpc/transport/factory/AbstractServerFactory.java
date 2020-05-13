@@ -27,7 +27,7 @@ import com.github.leeyazhou.crpc.core.util.concurrent.TaskThreadFactory;
 import com.github.leeyazhou.crpc.core.util.concurrent.ThreadPoolExecutor;
 
 /**
- * @author <a href="mailto:lee_yazhou@163.com">Yazhou Li</a>
+ * @author leeyazhou
  */
 public abstract class AbstractServerFactory implements ServerFactory {
 

@@ -37,7 +37,7 @@ import io.netty.handler.timeout.IdleStateEvent;
 
 /**
  * 
- * @author <a href="mailto:lee_yazhou@163.com">Yazhou Li</a>
+ * @author leeyazhou
  */
 @Sharable
 public class NettyClientHandler extends SimpleChannelInboundHandler<Response> {

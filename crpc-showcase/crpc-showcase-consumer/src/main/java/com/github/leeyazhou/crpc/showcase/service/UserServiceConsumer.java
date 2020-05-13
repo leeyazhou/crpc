@@ -24,7 +24,7 @@ import com.github.leeyazhou.crpc.core.annotation.CRPCReference;
 import com.github.leeyazhou.crpc.showcase.service.UserService;
 
 /**
- * @author <a href="mailto:lee_yazhou@163.com">Yazhou Li</a>
+ * @author leeyazhou
  */
 @Service
 public class UserServiceConsumer {

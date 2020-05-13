@@ -22,7 +22,7 @@ import com.github.leeyazhou.crpc.core.annotation.CRPCService;
 
 /**
  * 
- * @author <a href="mailto:lee_yazhou@163.com">Yazhou Li</a>
+ * @author leeyazhou
  */
 @CRPCService
 public class UserService2 {

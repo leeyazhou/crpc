@@ -20,11 +20,7 @@
 package com.github.leeyazhou.crpc.core.scanner;
 
 import java.util.Set;
-
 import org.junit.Test;
-
-import com.github.leeyazhou.crpc.core.scanner.ClassScanner;
-import com.github.leeyazhou.crpc.core.scanner.DefaultClassScanner;
 
 /**
  * @author lee

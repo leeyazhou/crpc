@@ -28,7 +28,7 @@ import sun.misc.Signal;
 
 /**
  * 
- * @author <a href="mailto:lee_yazhou@163.com">Yazhou Li</a>
+ * @author leeyazhou
  */
 @SuppressWarnings("restriction")
 public class SignalManager {

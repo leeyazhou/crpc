@@ -16,11 +16,7 @@
 package com.github.leeyazhou.crpc.core.logger;
 
 import static org.junit.Assert.assertEquals;
-
 import org.junit.Test;
-
-import com.github.leeyazhou.crpc.core.logger.Logger;
-import com.github.leeyazhou.crpc.core.logger.LoggerFactory;
 import com.github.leeyazhou.crpc.core.logger.commons.JakartaCommonsLoggingImpl;
 import com.github.leeyazhou.crpc.core.logger.log4j.Log4jImpl;
 import com.github.leeyazhou.crpc.core.logger.log4j2.Log4j2Impl;
