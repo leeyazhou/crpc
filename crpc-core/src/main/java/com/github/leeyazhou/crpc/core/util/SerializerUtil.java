@@ -27,7 +27,7 @@ import com.github.leeyazhou.crpc.core.annotation.CRPCSerializable;
 import com.github.leeyazhou.crpc.core.exception.SerializeException;
 
 /**
- * @author lee
+ * @author leeyazhou
  */
 public final class SerializerUtil {
 

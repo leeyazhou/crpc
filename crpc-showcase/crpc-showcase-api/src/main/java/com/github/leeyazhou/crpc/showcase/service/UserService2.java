@@ -25,7 +25,7 @@ import java.util.Map;
 import com.github.leeyazhou.crpc.showcase.model.User;
 
 /**
- * @author lee
+ * @author leeyazhou
  *
  */
 public interface UserService2 {

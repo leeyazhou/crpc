@@ -28,7 +28,7 @@ import com.github.leeyazhou.crpc.protocol.model.User;
 import com.github.leeyazhou.crpc.serializer.Serializer;
 
 /**
- * @author lee
+ * @author leeyazhou
  */
 public class JavaCodecTest {
   private Serializer codec = new JdkSerializer();

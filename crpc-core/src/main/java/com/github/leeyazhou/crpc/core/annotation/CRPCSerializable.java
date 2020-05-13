@@ -24,7 +24,7 @@ import java.lang.annotation.Target;
 /**
  * 序列化注解标识.
  * 
- * @author lee
+ * @author leeyazhou
  */
 @Documented
 @Retention(RetentionPolicy.RUNTIME)

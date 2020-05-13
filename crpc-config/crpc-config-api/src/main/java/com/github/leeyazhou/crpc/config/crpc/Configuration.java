@@ -29,7 +29,7 @@ import com.github.leeyazhou.crpc.core.logger.Logger;
 import com.github.leeyazhou.crpc.core.logger.LoggerFactory;
 
 /**
- * @author lee
+ * @author leeyazhou
  *
  */
 public class Configuration implements IConfig {

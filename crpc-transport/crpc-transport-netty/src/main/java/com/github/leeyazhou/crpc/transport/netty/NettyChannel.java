@@ -35,7 +35,7 @@ import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelFutureListener;
 
 /**
- * @author lee
+ * @author leeyazhou
  *
  */
 public class NettyChannel implements Channel {

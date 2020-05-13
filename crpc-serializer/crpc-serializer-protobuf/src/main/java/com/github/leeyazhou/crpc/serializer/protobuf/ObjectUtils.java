@@ -23,7 +23,7 @@ import org.objenesis.Objenesis;
 import org.objenesis.ObjenesisStd;
 
 /**
- * @author lee
+ * @author leeyazhou
  */
 public final class ObjectUtils {
   private static Objenesis objenesis = new ObjenesisStd(true);

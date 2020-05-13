@@ -26,7 +26,7 @@ import com.github.leeyazhou.crpc.core.logger.LoggerFactory;
 import com.github.leeyazhou.crpc.protocol.message.ResponseMessage;
 
 /**
- * @author lee_y
+ * @author leeyazhou_y
  *
  */
 public abstract class AbstractFilter implements Filter {

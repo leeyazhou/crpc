@@ -22,7 +22,7 @@ package com.github.leeyazhou.crpc.transport;
 import java.lang.reflect.Method;
 
 /**
- * @author lee
+ * @author leeyazhou
  */
 public interface Interceptor {
 

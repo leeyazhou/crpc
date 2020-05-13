@@ -20,7 +20,7 @@ import com.github.leeyazhou.crpc.bootstrap.Bootstrap;
 /**
  * server.
  * 
- * @author lee
+ * @author leeyazhou
  *
  */
 public class SpringProvider {

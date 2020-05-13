@@ -20,7 +20,7 @@
 package com.github.leeyazhou.crpc.core;
 
 /**
- * @author lee
+ * @author leeyazhou
  */
 public class CrpcConfig {
 

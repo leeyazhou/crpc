@@ -25,7 +25,7 @@ import java.util.concurrent.ConcurrentMap;
 import com.github.leeyazhou.crpc.core.URL;
 
 /**
- * @author lee
+ * @author leeyazhou
  */
 public class ServiceModel {
 

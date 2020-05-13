@@ -40,7 +40,7 @@ import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
 
 /**
- * @author lee
+ * @author leeyazhou
  *
  */
 public class NettyTransportFactory extends AbstractTransportFactory {

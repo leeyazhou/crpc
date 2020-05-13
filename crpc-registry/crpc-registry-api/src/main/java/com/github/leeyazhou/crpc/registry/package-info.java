@@ -19,6 +19,6 @@
 /**
  * 服务注册功能
  * 
- * @author lee_y
+ * @author leeyazhou_y
  */
 package com.github.leeyazhou.crpc.registry;

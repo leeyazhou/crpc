@@ -138,7 +138,7 @@ public abstract class AbstractClient implements Client {
   /**
    * result holder
    * 
-   * @author lee
+   * @author leeyazhou
    *
    */
   class RpcResult {

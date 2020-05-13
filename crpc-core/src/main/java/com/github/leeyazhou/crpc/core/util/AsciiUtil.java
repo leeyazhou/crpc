@@ -25,7 +25,7 @@ import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 
 /**
- * @author lee
+ * @author leeyazhou
  */
 public class AsciiUtil {
 

@@ -20,7 +20,7 @@
 package com.github.leeyazhou.crpc.bootstrap.signal;
 
 /**
- * @author lee
+ * @author leeyazhou
  */
 public enum SignalType {
 

@@ -20,7 +20,7 @@
 package com.github.leeyazhou.crpc.transport.loadbalance;
 
 /**
- * @author lee
+ * @author leeyazhou
  */
 public enum LoadBalanceType {
 

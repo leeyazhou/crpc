@@ -37,7 +37,7 @@ import com.github.leeyazhou.crpc.core.Constants;
 import com.github.leeyazhou.crpc.core.URL;
 
 /**
- * @author lee
+ * @author leeyazhou
  */
 public abstract class FailbackRegistry implements Registry {
 

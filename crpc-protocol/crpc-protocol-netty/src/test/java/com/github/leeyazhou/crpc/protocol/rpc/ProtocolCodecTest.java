@@ -26,7 +26,7 @@ import com.github.leeyazhou.crpc.serializer.CodecType;
 import com.github.leeyazhou.crpc.serializer.Serializer;
 
 /**
- * @author lee
+ * @author leeyazhou
  */
 public class ProtocolCodecTest {
 

@@ -41,7 +41,7 @@ import com.github.leeyazhou.crpc.core.logger.LoggerFactory;
 import com.github.leeyazhou.crpc.core.util.URLUtil;
 
 /**
- * @author lee
+ * @author leeyazhou
  */
 public class ZookeeperRegistry extends FailbackRegistry {
   private static final Logger logger = LoggerFactory.getLogger(ZookeeperRegistry.class);

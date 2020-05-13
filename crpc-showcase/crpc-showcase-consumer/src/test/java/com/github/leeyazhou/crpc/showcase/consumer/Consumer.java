@@ -38,7 +38,7 @@ import com.github.leeyazhou.crpc.showcase.service.UserService;
 import com.github.leeyazhou.crpc.core.util.ServiceLoader;
 
 /**
- * @author lee
+ * @author leeyazhou
  */
 public class Consumer {
 

@@ -35,7 +35,7 @@ import com.github.leeyazhou.crpc.showcase.service.UserService2;
 
 /**
  * 
- * @author lee
+ * @author leeyazhou
  */
 @CRPCService
 public class UserServiceImpl2 implements UserService2 {

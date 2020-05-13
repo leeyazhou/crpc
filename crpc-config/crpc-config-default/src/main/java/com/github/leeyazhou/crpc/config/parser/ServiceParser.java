@@ -31,7 +31,7 @@ import com.github.leeyazhou.crpc.core.logger.LoggerFactory;
 import com.github.leeyazhou.crpc.core.util.FieldUtil;
 
 /**
- * @author lee
+ * @author leeyazhou
  *
  */
 public class ServiceParser implements IParser<ServiceGroupConfig> {

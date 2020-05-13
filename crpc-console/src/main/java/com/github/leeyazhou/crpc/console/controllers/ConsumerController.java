@@ -31,7 +31,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import com.github.leeyazhou.crpc.console.inits.ZookeeperInit;
 
 /**
- * @author lee
+ * @author leeyazhou
  */
 @Controller
 @RequestMapping("/consumer/")

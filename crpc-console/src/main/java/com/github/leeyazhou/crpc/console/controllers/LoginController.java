@@ -24,7 +24,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 /**
- * @author lee
+ * @author leeyazhou
  *
  */
 @RequestMapping("/login/")

@@ -18,7 +18,7 @@ package com.github.leeyazhou.crpc.core.util;
 import com.github.leeyazhou.crpc.core.object.OSPlatform;
 
 /**
- * @author lee
+ * @author leeyazhou
  */
 public final class OSInfoUtil {
 

@@ -27,7 +27,7 @@ import java.util.TreeMap;
 import com.github.leeyazhou.crpc.core.util.URLUtil;
 
 /**
- * @author lee
+ * @author leeyazhou
  */
 public class URL implements Serializable {
 

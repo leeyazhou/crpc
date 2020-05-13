@@ -45,7 +45,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.github.leeyazhou.crpc.core.Constants;
 
 /**
- * @author lee
+ * @author leeyazhou
  */
 @RequestMapping("/sys/")
 @Controller

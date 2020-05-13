@@ -20,7 +20,7 @@
 package com.github.leeyazhou.crpc.console.service;
 
 /**
- * @author lee
+ * @author leeyazhou
  */
 public class ZKService {
   

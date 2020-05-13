@@ -23,7 +23,7 @@ import com.github.leeyazhou.crpc.core.Ordered;
 import com.github.leeyazhou.crpc.protocol.message.ResponseMessage;
 
 /**
- * @author lee
+ * @author leeyazhou
  */
 public interface Filter extends Handler<Filter>, Ordered {
 

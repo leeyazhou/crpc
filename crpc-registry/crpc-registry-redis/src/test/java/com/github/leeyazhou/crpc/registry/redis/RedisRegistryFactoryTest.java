@@ -32,7 +32,7 @@ import com.github.leeyazhou.crpc.core.util.InetAddressUtil;
 import redis.clients.jedis.Jedis;
 
 /**
- * @author lee
+ * @author leeyazhou
  */
 public class RedisRegistryFactoryTest {
 

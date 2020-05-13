@@ -23,7 +23,7 @@ import java.util.List;
 import com.github.leeyazhou.crpc.protocol.message.RequestMessage;
 
 /**
- * @author lee
+ * @author leeyazhou
  */
 public interface LoadBalance {
 

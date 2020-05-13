@@ -31,7 +31,7 @@ import com.github.leeyazhou.crpc.transport.factory.AbstractServerFactory;
 import com.github.leeyazhou.crpc.transport.factory.ServiceHandler;
 
 /**
- * @author lee
+ * @author leeyazhou
  */
 public class DefaultBeanFactory extends AbstractServerFactory {
 

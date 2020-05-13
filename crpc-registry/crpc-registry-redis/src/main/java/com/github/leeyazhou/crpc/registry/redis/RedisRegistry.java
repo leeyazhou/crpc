@@ -44,7 +44,7 @@ import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPubSub;
 
 /**
- * @author lee
+ * @author leeyazhou
  */
 public class RedisRegistry extends FailbackRegistry {
   private static final Logger logger = LoggerFactory.getLogger(RedisRegistry.class);

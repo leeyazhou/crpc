@@ -29,7 +29,7 @@ import sun.misc.Signal;
 import sun.misc.SignalHandler;
 
 /**
- * @author lee
+ * @author leeyazhou
  */
 public class ServerSignalHandler implements SignalHandler {
 

@@ -28,7 +28,7 @@ import java.lang.annotation.Target;
 import com.github.leeyazhou.crpc.core.object.SideType;
 
 /**
- * @author lee
+ * @author leeyazhou
  */
 @Documented
 @Retention(RetentionPolicy.RUNTIME)

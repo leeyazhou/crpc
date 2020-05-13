@@ -23,7 +23,7 @@ import com.github.leeyazhou.crpc.config.crpc.ServiceGroupConfig;
 import com.github.leeyazhou.crpc.core.annotation.SPI;
 
 /**
- * @author lee
+ * @author leeyazhou
  *
  */
 @SPI(value = "jdk", message = "动态代理")

@@ -26,7 +26,7 @@ import com.caucho.hessian.io.Hessian2Output;
 import com.github.leeyazhou.crpc.serializer.Serializer;
 
 /**
- * @author lee
+ * @author leeyazhou
  */
 public class HessianSerializer implements Serializer {
 

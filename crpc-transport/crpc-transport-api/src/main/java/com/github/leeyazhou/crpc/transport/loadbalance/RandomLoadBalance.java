@@ -25,7 +25,7 @@ import com.github.leeyazhou.crpc.protocol.message.RequestMessage;
 import com.github.leeyazhou.crpc.transport.Client;
 
 /**
- * @author lee
+ * @author leeyazhou
  */
 public class RandomLoadBalance extends AbstractLoadBalance {
 

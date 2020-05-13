@@ -24,7 +24,7 @@ import java.io.Serializable;
 import com.github.leeyazhou.crpc.core.annotation.CRPCSerializable;
 
 /**
- * @author lee
+ * @author leeyazhou
  *
  */
 @CRPCSerializable

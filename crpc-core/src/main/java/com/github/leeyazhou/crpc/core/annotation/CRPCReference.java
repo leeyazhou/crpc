@@ -26,7 +26,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * @author lee
+ * @author leeyazhou
  */
 @Documented
 @Retention(RetentionPolicy.RUNTIME)

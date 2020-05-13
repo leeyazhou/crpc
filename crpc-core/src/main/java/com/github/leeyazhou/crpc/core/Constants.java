@@ -22,7 +22,7 @@ package com.github.leeyazhou.crpc.core;
 import com.github.leeyazhou.crpc.core.util.PropertiesUtil;
 
 /**
- * @author lee
+ * @author leeyazhou
  */
 public final class Constants {
 

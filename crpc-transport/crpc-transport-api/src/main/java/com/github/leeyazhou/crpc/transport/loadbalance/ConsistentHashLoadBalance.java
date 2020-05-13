@@ -29,7 +29,7 @@ import com.github.leeyazhou.crpc.transport.Client;
 /**
  * has load balance
  * 
- * @author lee
+ * @author leeyazhou
  */
 public class ConsistentHashLoadBalance extends AbstractLoadBalance {
   public static final String name = "ConsistentHash";

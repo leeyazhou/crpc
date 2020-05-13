@@ -30,7 +30,7 @@ import com.github.leeyazhou.crpc.core.logger.LoggerFactory;
 import com.github.leeyazhou.crpc.core.util.AntPathMatcher;
 
 /**
- * @author lee
+ * @author leeyazhou
  */
 public final class MethodProxy {
 

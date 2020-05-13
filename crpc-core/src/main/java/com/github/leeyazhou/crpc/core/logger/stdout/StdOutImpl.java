@@ -18,7 +18,7 @@ package com.github.leeyazhou.crpc.core.logger.stdout;
 import com.github.leeyazhou.crpc.core.logger.Logger;
 
 /**
- * @author lee
+ * @author leeyazhou
  */
 public class StdOutImpl implements Logger {
   private static final String TRACE = "TRACE ";

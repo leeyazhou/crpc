@@ -22,7 +22,7 @@ package com.github.leeyazhou.crpc.core.exception;
 import com.github.leeyazhou.crpc.core.annotation.CRPCSerializable;
 
 /**
- * @author lee
+ * @author leeyazhou
  */
 @CRPCSerializable
 public class CrpcConnectException extends CrpcException {

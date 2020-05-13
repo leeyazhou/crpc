@@ -23,7 +23,7 @@ import java.util.Set;
 import org.junit.Test;
 
 /**
- * @author lee
+ * @author leeyazhou
  *
  */
 public class DefaultClassScannerTest {

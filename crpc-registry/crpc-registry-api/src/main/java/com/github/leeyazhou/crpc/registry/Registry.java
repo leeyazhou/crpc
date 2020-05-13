@@ -24,7 +24,7 @@ import java.util.List;
 import com.github.leeyazhou.crpc.core.URL;
 
 /**
- * @author lee
+ * @author leeyazhou
  */
 public interface Registry {
 

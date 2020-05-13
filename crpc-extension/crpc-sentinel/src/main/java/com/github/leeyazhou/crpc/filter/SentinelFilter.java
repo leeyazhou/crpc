@@ -35,7 +35,7 @@ import com.github.leeyazhou.crpc.transport.RpcContext;
 import com.github.leeyazhou.crpc.transport.filter.AbstractFilter;
 
 /**
- * @author lee
+ * @author leeyazhou
  *
  */
 public class SentinelFilter extends AbstractFilter {

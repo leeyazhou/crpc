@@ -24,7 +24,7 @@ import org.springframework.stereotype.Service;
 import com.github.leeyazhou.crpc.showcase.service.UserService;
 
 /**
- * @author lee
+ * @author leeyazhou
  *
  */
 @Service

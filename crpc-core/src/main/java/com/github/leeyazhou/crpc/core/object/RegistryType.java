@@ -20,7 +20,7 @@
 package com.github.leeyazhou.crpc.core.object;
 
 /**
- * @author lee
+ * @author leeyazhou
  */
 public enum RegistryType {
 

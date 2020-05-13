@@ -23,7 +23,7 @@ import java.util.List;
 import com.github.leeyazhou.crpc.core.URL;
 
 /**
- * @author lee_y
+ * @author leeyazhou_y
  *
  */
 public interface NotifyListener {

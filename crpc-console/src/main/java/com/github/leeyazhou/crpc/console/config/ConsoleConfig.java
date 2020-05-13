@@ -20,7 +20,7 @@
 package com.github.leeyazhou.crpc.console.config;
 
 /**
- * @author lee
+ * @author leeyazhou
  */
 public class ConsoleConfig {
 

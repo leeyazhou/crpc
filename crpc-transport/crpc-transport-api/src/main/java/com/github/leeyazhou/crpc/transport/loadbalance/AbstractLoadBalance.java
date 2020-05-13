@@ -26,7 +26,7 @@ import com.github.leeyazhou.crpc.core.Constants;
 import com.github.leeyazhou.crpc.protocol.message.RequestMessage;
 
 /**
- * @author lee
+ * @author leeyazhou
  */
 public abstract class AbstractLoadBalance implements LoadBalance {
 

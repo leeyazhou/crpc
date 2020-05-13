@@ -27,7 +27,7 @@ import org.slf4j.LoggerFactory;
 import com.github.leeyazhou.crpc.core.util.FileUtil;
 
 /**
- * @author lee
+ * @author leeyazhou
  */
 public class CrpcClassLoader {
 

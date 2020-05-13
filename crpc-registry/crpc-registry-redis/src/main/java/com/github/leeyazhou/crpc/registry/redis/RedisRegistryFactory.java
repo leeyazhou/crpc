@@ -24,7 +24,7 @@ import com.github.leeyazhou.crpc.registry.Registry;
 import com.github.leeyazhou.crpc.core.URL;
 
 /**
- * @author lee
+ * @author leeyazhou
  */
 public class RedisRegistryFactory extends AbstractRegsitryFactory {
 

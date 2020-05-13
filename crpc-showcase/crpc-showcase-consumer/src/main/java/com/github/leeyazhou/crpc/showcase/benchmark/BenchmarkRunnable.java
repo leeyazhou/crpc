@@ -22,7 +22,7 @@ package com.github.leeyazhou.crpc.showcase.benchmark;
 import java.util.List;
 
 /**
- * @author lee
+ * @author leeyazhou
  */
 public interface BenchmarkRunnable extends Runnable {
 

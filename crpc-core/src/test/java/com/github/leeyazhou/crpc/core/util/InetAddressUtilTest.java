@@ -21,7 +21,7 @@ package com.github.leeyazhou.crpc.core.util;
 import org.junit.Test;
 
 /**
- * @author lee_y
+ * @author leeyazhou_y
  *
  */
 public class InetAddressUtilTest {

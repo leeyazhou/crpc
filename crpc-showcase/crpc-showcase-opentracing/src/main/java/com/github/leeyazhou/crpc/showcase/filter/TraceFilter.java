@@ -44,7 +44,7 @@ import zipkin2.reporter.AsyncReporter;
 import zipkin2.reporter.okhttp3.OkHttpSender;
 
 /**
- * @author lee
+ * @author leeyazhou
  *
  */
 @CRPCFilterType(active = {SideType.SIDE_PROVIDER, SideType.SIDE_CONSUMER})

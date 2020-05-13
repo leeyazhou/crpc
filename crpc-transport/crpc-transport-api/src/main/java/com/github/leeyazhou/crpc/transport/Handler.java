@@ -24,7 +24,7 @@ import com.github.leeyazhou.crpc.protocol.message.ResponseMessage;
  * 
  * 处理器
  * 
- * @author lee
+ * @author leeyazhou
  *
  */
 public interface Handler<T> {

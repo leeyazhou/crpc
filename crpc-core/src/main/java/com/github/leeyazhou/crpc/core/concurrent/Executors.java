@@ -23,7 +23,7 @@ import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 /**
- * @author lee
+ * @author leeyazhou
  *
  */
 public final class Executors {

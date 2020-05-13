@@ -20,7 +20,7 @@
 package com.github.leeyazhou.crpc.core.annotation;
 
 /**
- * @author lee
+ * @author leeyazhou
  */
 public enum PointCutType {
 

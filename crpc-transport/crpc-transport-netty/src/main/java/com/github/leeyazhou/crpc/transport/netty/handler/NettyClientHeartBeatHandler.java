@@ -33,7 +33,7 @@ import io.netty.handler.timeout.IdleStateEvent;
 import io.netty.handler.timeout.IdleStateHandler;
 
 /**
- * @author lee
+ * @author leeyazhou
  */
 public class NettyClientHeartBeatHandler extends IdleStateHandler {
 

@@ -23,7 +23,7 @@ import com.github.leeyazhou.crpc.config.crpc.ServiceGroupConfig;
 import com.github.leeyazhou.crpc.rpc.ProxyFactory;
 
 /**
- * @author lee
+ * @author leeyazhou
  *
  */
 public final class JavassistProxyFactory implements ProxyFactory {

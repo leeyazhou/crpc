@@ -28,7 +28,7 @@ import com.github.leeyazhou.crpc.serializer.Serializer;
 import com.github.leeyazhou.crpc.serializer.model.User;
 
 /**
- * @author lee
+ * @author leeyazhou
  */
 public class KryoCodecTest {
   private Serializer codec = new KryoSerializer();

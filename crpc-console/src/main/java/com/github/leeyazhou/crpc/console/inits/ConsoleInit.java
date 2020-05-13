@@ -28,7 +28,7 @@ import javax.annotation.Resource;
 import com.github.leeyazhou.crpc.console.config.ConsoleConfig;
 
 /**
- * @author lee
+ * @author leeyazhou
  */
 @Resource
 public class ConsoleInit {

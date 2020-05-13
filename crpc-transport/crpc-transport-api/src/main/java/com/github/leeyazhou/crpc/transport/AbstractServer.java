@@ -24,7 +24,7 @@ import com.github.leeyazhou.crpc.core.logger.Logger;
 import com.github.leeyazhou.crpc.core.logger.LoggerFactory;
 
 /**
- * @author lee
+ * @author leeyazhou
  */
 public abstract class AbstractServer implements Server {
 

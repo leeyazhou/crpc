@@ -22,7 +22,7 @@ package com.github.leeyazhou.crpc.core.util;
 import org.junit.Test;
 
 /**
- * @author lee
+ * @author leeyazhou
  */
 public class SerializerUtilTest {
 

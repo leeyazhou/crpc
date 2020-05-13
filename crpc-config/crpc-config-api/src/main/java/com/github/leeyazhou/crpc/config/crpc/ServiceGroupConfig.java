@@ -31,7 +31,7 @@ import com.github.leeyazhou.crpc.core.util.StringUtil;
 /**
  * 服务组定义
  * 
- * @author lee
+ * @author leeyazhou
  *
  */
 public class ServiceGroupConfig implements IConfig {

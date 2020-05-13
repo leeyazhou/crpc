@@ -22,7 +22,7 @@ package com.github.leeyazhou.crpc.core.util;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
- * @author lee
+ * @author leeyazhou
  */
 public class AtomicPositiveInteger extends Number {
 

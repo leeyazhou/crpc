@@ -24,7 +24,7 @@ import com.github.leeyazhou.crpc.config.crpc.Configuration;
 import com.github.leeyazhou.crpc.config.parser.ConfigurationParser;
 
 /**
- * @author lee
+ * @author leeyazhou
  */
 public class ConfigurationTest {
 

@@ -22,7 +22,7 @@ package com.github.leeyazhou.crpc.console.model;
 import java.io.Serializable;
 
 /**
- * @author lee
+ * @author leeyazhou
  */
 public class LoggerModel implements Serializable {
 

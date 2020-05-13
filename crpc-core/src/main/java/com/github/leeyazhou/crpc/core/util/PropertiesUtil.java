@@ -24,7 +24,7 @@ import java.util.Map;
 import java.util.Properties;
 
 /**
- * @author lee
+ * @author leeyazhou
  */
 public final class PropertiesUtil {
 

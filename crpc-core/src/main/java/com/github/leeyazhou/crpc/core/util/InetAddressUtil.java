@@ -23,7 +23,7 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 
 /**
- * @author lee
+ * @author leeyazhou
  */
 public class InetAddressUtil {
 

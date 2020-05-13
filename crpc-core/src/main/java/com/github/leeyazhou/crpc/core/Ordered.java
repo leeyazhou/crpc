@@ -18,7 +18,7 @@ package com.github.leeyazhou.crpc.core;
 /**
  * 实现排序功能
  * 
- * @author lee
+ * @author leeyazhou
  */
 public interface Ordered {
 

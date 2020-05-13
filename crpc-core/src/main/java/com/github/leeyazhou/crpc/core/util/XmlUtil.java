@@ -25,7 +25,7 @@ import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 
 /**
- * @author lee
+ * @author leeyazhou
  */
 public class XmlUtil {
 

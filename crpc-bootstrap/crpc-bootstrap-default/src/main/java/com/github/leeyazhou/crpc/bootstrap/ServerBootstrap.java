@@ -28,7 +28,7 @@ import com.github.leeyazhou.crpc.core.CrpcConfig;
 import com.github.leeyazhou.crpc.core.util.StringUtil;
 
 /**
- * @author lee
+ * @author leeyazhou
  *
  */
 public class ServerBootstrap extends Bootstrap {
