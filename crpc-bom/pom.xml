@@ -80,11 +80,6 @@
             </dependency>
             <dependency>
                 <groupId>com.github.leeyazhou</groupId>
-                <artifactId>crpc-extension</artifactId>
-                <version>${project.parent.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.github.leeyazhou</groupId>
                 <artifactId>crpc-monitor</artifactId>
                 <version>${project.parent.version}</version>
             </dependency>
@@ -121,11 +116,6 @@
             <dependency>
                 <groupId>com.github.leeyazhou</groupId>
                 <artifactId>crpc-rpc</artifactId>
-                <version>${project.parent.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.github.leeyazhou</groupId>
-                <artifactId>crpc-sentinel</artifactId>
                 <version>${project.parent.version}</version>
             </dependency>
             <dependency>
