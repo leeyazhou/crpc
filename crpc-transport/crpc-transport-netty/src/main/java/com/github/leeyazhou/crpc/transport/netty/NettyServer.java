@@ -129,7 +129,7 @@ class NettyServer extends AbstractServer {
       if (channels != null) {
         // logger.info("关闭通道：" + channels);
         ResponseMessage response =
-            new ResponseMessage(0, CodecType.JAVA_CODEC.getId(), SimpleProtocol.PROTOCOL_TYPE, MessageType.MESSAGE_SHUTDOWN);
+            new ResponseMessage(0, CodecType.JDK_CODEC.getId(), SimpleProtocol.PROTOCOL_TYPE, MessageType.MESSAGE_SHUTDOWN);
         for (Map.Entry<String, Channel> entry : this.channels.entrySet()) {
           logger.info("通知关闭通道：" + entry.getKey() + ", channel : " + entry.getValue());
           entry.getValue().writeAndFlush(response);
