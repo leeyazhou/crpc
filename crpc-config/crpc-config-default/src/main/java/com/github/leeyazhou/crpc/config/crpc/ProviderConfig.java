@@ -23,14 +23,13 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
-import com.github.leeyazhou.crpc.config.IConfig;
+import com.github.leeyazhou.crpc.config.Configuration;
 import com.github.leeyazhou.crpc.config.RegistryConfig;
 import com.github.leeyazhou.crpc.config.ServerConfig;
 import com.github.leeyazhou.crpc.config.server.DefaultBeanFactory;
 import com.github.leeyazhou.crpc.core.annotation.Aspect;
 import com.github.leeyazhou.crpc.core.annotation.CRPCFilterType;
 import com.github.leeyazhou.crpc.core.annotation.CRPCService;
-import com.github.leeyazhou.crpc.core.loader.CrpcClassLoader;
 import com.github.leeyazhou.crpc.core.logger.Logger;
 import com.github.leeyazhou.crpc.core.logger.LoggerFactory;
 import com.github.leeyazhou.crpc.core.object.SideType;
@@ -46,41 +45,39 @@ import com.github.leeyazhou.crpc.transport.factory.ServiceHandler;
 /**
  * @author leeyazhou
  */
-public class ProviderConfig implements IConfig {
+public class ProviderConfig {
   private static final Logger logger = LoggerFactory.getLogger(ProviderConfig.class);
-  private static final long serialVersionUID = 1L;
 
-  private List<ServerConfig> servers;
+  private Configuration configuration;
 
-  public void addServer(ServerConfig serverConfig) {
-    if (servers == null) {
-      servers = new ArrayList<ServerConfig>();
-    }
-    servers.add(serverConfig);
+  /**
+   * @param configuration the configuration to set
+   */
+  public void setConfiguration(Configuration configuration) {
+    this.configuration = configuration;
   }
+
 
   /**
    * 暴露服务
    */
   public void export() {
-    for (ServerConfig serverConfig : servers) {
-      DefaultBeanFactory beanFactory = new DefaultBeanFactory();
-      beanFactory.setServerConfig(serverConfig);
-      try {
-        prepareEnvironment(serverConfig, beanFactory);
-        initBeans(serverConfig, beanFactory);
-      } catch (Exception e) {
-        logger.error("", e);
-      }
-      RpcUtil.export(serverConfig, null, beanFactory);
+    DefaultBeanFactory beanFactory = new DefaultBeanFactory();
+    beanFactory.setConfiguration(configuration);
+    try {
+      prepareEnvironment(configuration.getServerConfig(), beanFactory);
+      initBeans(configuration.getServerConfig(), beanFactory);
+    } catch (Exception e) {
+      logger.error("", e);
     }
+    RpcUtil.export(configuration, null, beanFactory);
   }
 
   private void prepareEnvironment(ServerConfig serverConfig, DefaultBeanFactory beanFactory) throws Exception {
-    if (serverConfig.getRegistryConfigs().isEmpty()) {
+    if (configuration.getRegistryConfigs() == null || configuration.getRegistryConfigs().isEmpty()) {
       return;
     }
-    for (RegistryConfig registryConfig : serverConfig.getRegistryConfigs()) {
+    for (RegistryConfig registryConfig : configuration.getRegistryConfigs()) {
       RegistryFactory registryFactory =
           ServiceLoader.load(RegistryFactory.class).load(registryConfig.toURL().getProtocol());
 
@@ -90,8 +87,6 @@ public class ProviderConfig implements IConfig {
 
   @SuppressWarnings({"unchecked", "rawtypes"})
   private void initBeans(ServerConfig serverConfig, DefaultBeanFactory beanFactory) throws Exception {
-    logger.info("location : " + serverConfig.getLocation());
-    CrpcClassLoader.addSystemClassPathFolder(serverConfig.getLocation() + "/lib");
     ClassScanner classScanner = DefaultClassScanner.getInstance();
     Set<String> basepackages = serverConfig.getBasepackages();
     if (basepackages == null || basepackages.isEmpty()) {
@@ -176,18 +171,5 @@ public class ProviderConfig implements IConfig {
     return false;
   }
 
-  /**
-   * @return the servers
-   */
-  public List<ServerConfig> getServers() {
-    return servers;
-  }
-
-  /**
-   * @param servers the servers to set
-   */
-  public void setServers(List<ServerConfig> servers) {
-    this.servers = servers;
-  }
 
 }

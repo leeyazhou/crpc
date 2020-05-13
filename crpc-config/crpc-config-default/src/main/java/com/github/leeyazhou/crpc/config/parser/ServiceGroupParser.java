@@ -20,13 +20,13 @@
 package com.github.leeyazhou.crpc.config.parser;
 
 import org.w3c.dom.Element;
-import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import com.github.leeyazhou.crpc.config.AbstractParser;
 import com.github.leeyazhou.crpc.config.Configuration;
 import com.github.leeyazhou.crpc.config.ServiceGroupConfig;
-import com.github.leeyazhou.crpc.core.util.FieldUtil;
+import com.github.leeyazhou.crpc.core.URL;
+import com.github.leeyazhou.crpc.core.util.StringUtil;
 
 /**
  * @author leeyazhou
@@ -42,27 +42,23 @@ public class ServiceGroupParser extends AbstractParser<ServiceGroupConfig> {
   @Override
   public ServiceGroupConfig parse(Node node) {
     ServiceGroupConfig serviceConfig = new ServiceGroupConfig();
-    NamedNodeMap nodeMap = node.getAttributes();
 
     Element rootElement = (Element) node;
-    RegistryConfigParser registryConfigParser = new RegistryConfigParser(getConfiguration());
-    NodeList registryNodeList = rootElement.getElementsByTagName("registry");
-    for (int i = 0; i < registryNodeList.getLength(); i++) {
-      Node registryNode = registryNodeList.item(i);
-      serviceConfig.addRegistryConfig(registryConfigParser.parse(registryNode));
-    }
+    parseProperties(rootElement, serviceConfig);
 
     NodeList moduleList = rootElement.getElementsByTagName("server");
-    ServerConfigParser serverParser = new ServerConfigParser(getConfiguration());
     for (int i = 0; i < moduleList.getLength(); i++) {
-      serviceConfig.addServerConfig(serverParser.parse(moduleList.item(i)));
+      Element providerNode = (Element) moduleList.item(i);
+      String address = providerNode.getAttribute("address");
+      URL provider = URL.valueOf(address);
+      String weight = providerNode.getAttribute("weight");
+      if (StringUtil.isNotBlank(weight)) {
+        provider.addParameter("weight", weight);
+      }
+
+      serviceConfig.addProvider(provider);
     }
 
-    for (int i = 0; i < nodeMap.getLength(); i++) {
-      String nodeName = nodeMap.item(i).getNodeName();
-      Object nodeValue = nodeMap.item(i).getNodeValue();
-      FieldUtil.convertValue(nodeName, nodeValue, serviceConfig);
-    }
 
     return serviceConfig;
   }

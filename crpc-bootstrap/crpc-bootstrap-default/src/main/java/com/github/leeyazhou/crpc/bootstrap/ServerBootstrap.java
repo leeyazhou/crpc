@@ -20,7 +20,6 @@
 package com.github.leeyazhou.crpc.bootstrap;
 
 import com.github.leeyazhou.crpc.config.Configuration;
-import com.github.leeyazhou.crpc.config.ServerConfig;
 import com.github.leeyazhou.crpc.config.crpc.ProviderConfig;
 import com.github.leeyazhou.crpc.config.parser.ConfigurationParser;
 import com.github.leeyazhou.crpc.core.Constants;
@@ -50,12 +49,9 @@ public class ServerBootstrap extends Bootstrap {
 
     Configuration configuration = parseConfiguration();
 
-    for (ServerConfig serverConfig : configuration.getServerConfigs()) {
-      serverConfig.setLocation(deployPath);
-      ProviderConfig providerConfig = new ProviderConfig();
-      providerConfig.addServer(serverConfig);
-      providerConfig.export();
-    }
+    ProviderConfig providerConfig = new ProviderConfig();
+    providerConfig.setConfiguration(configuration);
+    providerConfig.export();
 
   }
 

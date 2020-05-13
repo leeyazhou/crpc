@@ -24,7 +24,6 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import com.github.leeyazhou.crpc.config.AbstractParser;
 import com.github.leeyazhou.crpc.config.Configuration;
-import com.github.leeyazhou.crpc.config.RegistryConfig;
 import com.github.leeyazhou.crpc.config.ServerConfig;
 
 /**
@@ -43,28 +42,12 @@ public class ServerConfigParser extends AbstractParser<ServerConfig> {
 
     parseProperties(rootElement, serverConfig);
 
-    parseRegistry(rootElement, serverConfig);
 
     parseScan(rootElement, serverConfig);
 
     return serverConfig;
   }
 
-  /**
-   * parse registry center
-   * 
-   * @param rootElement root element : crpc
-   * @param serverConfig serverConfig
-   */
-  private void parseRegistry(Element rootElement, ServerConfig serverConfig) {
-    NodeList registryNodeList = rootElement.getElementsByTagName("registry");
-    RegistryConfigParser registryConfigParser = new RegistryConfigParser(configuration);
-    for (int i = 0; i < registryNodeList.getLength(); i++) {
-      Node registryNode = registryNodeList.item(i);
-      RegistryConfig registryConfig = registryConfigParser.parse(registryNode);
-      serverConfig.addRegistry(registryConfig);
-    }
-  }
 
   /**
    * parse scan base package

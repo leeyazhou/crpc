@@ -18,57 +18,81 @@
  */
 package com.github.leeyazhou.crpc.config;
 
+import com.github.leeyazhou.crpc.core.URL;
+
 /**
  * 
  * @author leeyazhou
  */
-public class ProtocolConfig  {
+public class ProtocolConfig {
+  private String address;
 
-
-  private String name;
-
-  private Integer port;
+  private String protocol;
+  private String host;
+  private int port;
 
   /**
-   * @return the name
+   * @return the address
    */
-  public String getName() {
-    return name;
+  public String getAddress() {
+    return address;
   }
 
   /**
-   * @param name the name to set
+   * @param address the address to set
    */
-  public void setName(String name) {
-    this.name = name;
+  public ProtocolConfig setAddress(String address) {
+    this.address = address;
+    URL url = URL.valueOf(address);
+    this.protocol = url.getProtocol();
+    this.host = url.getHost();
+    this.port = url.getPort();
+    return this;
+  }
+
+  /**
+   * @return the protocol
+   */
+  public String getProtocol() {
+    return protocol;
+  }
+
+  /**
+   * @param protocol the protocol to set
+   */
+  public ProtocolConfig setProtocol(String protocol) {
+    this.protocol = protocol;
+    return this;
+  }
+
+  /**
+   * @return the host
+   */
+  public String getHost() {
+    return host;
+  }
+
+  /**
+   * @param host the host to set
+   */
+  public ProtocolConfig setHost(String host) {
+    this.host = host;
+    return this;
   }
 
   /**
    * @return the port
    */
-  public Integer getPort() {
+  public int getPort() {
     return port;
   }
 
   /**
    * @param port the port to set
    */
-  public void setPort(Integer port) {
+  public ProtocolConfig setPort(int port) {
     this.port = port;
+    return this;
   }
-
-
-  @Override
-  public String toString() {
-    StringBuilder builder = new StringBuilder();
-    builder.append("ProtocolConfig [name=");
-    builder.append(name);
-    builder.append(", port=");
-    builder.append(port);
-    builder.append("]");
-    return builder.toString();
-  }
-
-
 
 }

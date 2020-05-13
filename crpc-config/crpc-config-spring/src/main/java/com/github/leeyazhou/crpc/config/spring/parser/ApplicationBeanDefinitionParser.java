@@ -17,12 +17,11 @@ package com.github.leeyazhou.crpc.config.spring.parser;
 
 import java.util.HashSet;
 import java.util.Set;
-
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.support.RootBeanDefinition;
 import org.springframework.beans.factory.xml.ParserContext;
 import org.w3c.dom.Element;
-import com.github.leeyazhou.crpc.config.ModuleConfig;
+import com.github.leeyazhou.crpc.config.ApplicationConfig;
 import com.github.leeyazhou.crpc.core.logger.Logger;
 import com.github.leeyazhou.crpc.core.logger.LoggerFactory;
 
@@ -30,8 +29,8 @@ import com.github.leeyazhou.crpc.core.logger.LoggerFactory;
  * 
  * @author leeyazhou
  */
-public class ModuleBeanDefinitionParser extends AbstractBeanDefinitionParser {
-  private static final Logger logger = LoggerFactory.getLogger(ModuleBeanDefinitionParser.class);
+public class ApplicationBeanDefinitionParser extends AbstractBeanDefinitionParser {
+  private static final Logger logger = LoggerFactory.getLogger(ApplicationBeanDefinitionParser.class);
   private static final String NAME = "name";
   private static final String VERSION = "version";
   private static final String ADDRESS = "address";
@@ -41,12 +40,12 @@ public class ModuleBeanDefinitionParser extends AbstractBeanDefinitionParser {
   public BeanDefinition parse(Element element, ParserContext parserContext) {
     logger.info("解析crpc module");
 
-    BeanDefinition beanDefinition = new RootBeanDefinition(ModuleConfig.class);
+    BeanDefinition beanDefinition = new RootBeanDefinition(ApplicationConfig.class);
     beanDefinition.setLazyInit(false);
 
     parsePropertyValue(element, beanDefinition);
 
-    parserContext.getRegistry().registerBeanDefinition(ModuleConfig.class.getSimpleName(), beanDefinition);
+    parserContext.getRegistry().registerBeanDefinition(ApplicationConfig.class.getSimpleName(), beanDefinition);
     return beanDefinition;
   }
 

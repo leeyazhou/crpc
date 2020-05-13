@@ -20,14 +20,13 @@ package com.github.leeyazhou.crpc.transport;
 
 import java.util.List;
 import java.util.concurrent.ExecutorService;
-import com.github.leeyazhou.crpc.transport.factory.ServerFactory;
-import com.github.leeyazhou.crpc.transport.object.SendLimitPolicy;
 import com.github.leeyazhou.crpc.config.Configuration;
-import com.github.leeyazhou.crpc.config.ServerConfig;
 import com.github.leeyazhou.crpc.config.ServiceConfig;
 import com.github.leeyazhou.crpc.config.ServiceGroupConfig;
 import com.github.leeyazhou.crpc.core.URL;
 import com.github.leeyazhou.crpc.core.annotation.SPI;
+import com.github.leeyazhou.crpc.transport.factory.ServerFactory;
+import com.github.leeyazhou.crpc.transport.object.SendLimitPolicy;
 
 /**
  * @author leeyazhou
@@ -117,7 +116,7 @@ public interface TransportFactory {
   ExecutorService getExecutorService();
 
 
-  Server createServer(ServerConfig serverConfig, ServerFactory beanFactory);
+  Server createServer(Configuration configuration, ServerFactory beanFactory);
 
   Client createClient(URL url);
 }

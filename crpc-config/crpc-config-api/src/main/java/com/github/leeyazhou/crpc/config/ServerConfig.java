@@ -22,63 +22,20 @@ package com.github.leeyazhou.crpc.config;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.TreeSet;
-import com.github.leeyazhou.crpc.core.Constants;
-import com.github.leeyazhou.crpc.core.URL;
 
 /**
  * @author leeyazhou
  */
-public class ServerConfig implements Comparable<ServerConfig> {
+public class ServerConfig {
 
-  private String name;
-  private String host;
-  private String address;
-  private int port;
-  private String protocol;
-  // 权重
-  private int weight = 1;
   private int worker = Runtime.getRuntime().availableProcessors() * 8;
   private Set<String> basepackages = new TreeSet<String>();
   private Set<String> filters = new HashSet<String>();
-  private String location;
-  private Set<RegistryConfig> registryConfigs = new HashSet<RegistryConfig>();
 
   /**
    * 处理器的同步/异步
    */
   private boolean sync;
-
-  public String getName() {
-    return name;
-  }
-
-  public void setName(String name) {
-    this.name = name;
-  }
-
-  public String getHost() {
-    return host;
-  }
-
-  public void setHost(String host) {
-    this.host = host;
-  }
-
-  public int getPort() {
-    return port;
-  }
-
-  public void setPort(int port) {
-    this.port = port;
-  }
-
-  public String getProtocol() {
-    return protocol;
-  }
-
-  public void setProtocol(String protocol) {
-    this.protocol = protocol;
-  }
 
   public int getWorker() {
     return worker;
@@ -88,21 +45,6 @@ public class ServerConfig implements Comparable<ServerConfig> {
     this.worker = worker;
   }
 
-  public String getAddress() {
-    return address;
-  }
-
-  public ServerConfig setAddress(String address) {
-    this.address = address;
-    if (address != null && address.length() != 0) {
-      String[] add = address.replaceAll("/", "").split(":");
-      this.protocol = add[0];
-      setProtocol(add[0]);
-      setHost(add[1]);
-      setPort(Integer.parseInt(add[2]));
-    }
-    return this;
-  }
 
   public Set<String> getFilters() {
     return filters;
@@ -121,8 +63,9 @@ public class ServerConfig implements Comparable<ServerConfig> {
     return basepackages;
   }
 
-  public void setBasepackages(Set<String> basepackages) {
+  public ServerConfig setBasepackages(Set<String> basepackages) {
     this.basepackages = basepackages;
+    return this;
   }
 
   public ServerConfig addBasepackage(String basepackage) {
@@ -135,57 +78,13 @@ public class ServerConfig implements Comparable<ServerConfig> {
     return this;
   }
 
-  /**
-   * @return the location
-   */
-  public String getLocation() {
-    return location;
-  }
 
-  /**
-   * @param location the location to set
-   */
-  public void setLocation(String location) {
-    this.location = location;
-  }
-
-  /**
-   * @return the registryConfigs
-   */
-  public Set<RegistryConfig> getRegistryConfigs() {
-    return registryConfigs;
-  }
-
-  /**
-   * @param registryConfigs the registryConfigs to set
-   */
-  public void setRegistryConfigs(Set<RegistryConfig> registryConfigs) {
-    this.registryConfigs = registryConfigs;
-  }
-
-  public void addRegistry(RegistryConfig registryConfig) {
-    registryConfigs.add(registryConfig);
-  }
 
   /**
    * @param filters the filters to set
    */
   public void setFilters(Set<String> filters) {
     this.filters = filters;
-  }
-
-  /**
-   * @return the weight
-   */
-  public int getWeight() {
-    return weight;
-  }
-
-  /**
-   * @param weight the weight to set
-   */
-  public void setWeight(int weight) {
-    this.weight = weight;
   }
 
   /**
@@ -202,46 +101,5 @@ public class ServerConfig implements Comparable<ServerConfig> {
     this.sync = sync;
   }
 
-  public URL toURL() {
-    URL url = new URL(protocol, host, port);
-    url.addParameter(Constants.SERVER_WEIGHT, String.valueOf(weight));
-    return url;
-  }
 
-  @Override
-  public String toString() {
-    StringBuilder builder = new StringBuilder();
-    builder.append("ServerConfig [name=");
-    builder.append(name);
-    builder.append(", host=");
-    builder.append(host);
-    builder.append(", address=");
-    builder.append(address);
-    builder.append(", port=");
-    builder.append(port);
-    builder.append(", protocol=");
-    builder.append(protocol);
-    builder.append(", weight=");
-    builder.append(weight);
-    builder.append(", worker=");
-    builder.append(worker);
-    builder.append(", basepackages=");
-    builder.append(basepackages);
-    builder.append(", filters=");
-    builder.append(filters);
-    builder.append(", location=");
-    builder.append(location);
-    builder.append(", sync=");
-    builder.append(sync);
-    builder.append("]");
-    return builder.toString();
-  }
-
-  @Override
-  public int compareTo(ServerConfig o) {
-    if (this.host.equals(o.getHost()) && this.port == o.getPort()) {
-      return 0;
-    }
-    return 1;
-  }
 }

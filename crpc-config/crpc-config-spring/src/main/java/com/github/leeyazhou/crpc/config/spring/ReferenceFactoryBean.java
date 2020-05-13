@@ -27,13 +27,12 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.util.StringUtils;
-
-import com.github.leeyazhou.crpc.rpc.util.RpcUtil;
 import com.github.leeyazhou.crpc.config.Configuration;
-import com.github.leeyazhou.crpc.config.ServerConfig;
 import com.github.leeyazhou.crpc.config.ServiceGroupConfig;
+import com.github.leeyazhou.crpc.core.URL;
 import com.github.leeyazhou.crpc.core.logger.Logger;
 import com.github.leeyazhou.crpc.core.logger.LoggerFactory;
+import com.github.leeyazhou.crpc.rpc.util.RpcUtil;
 
 /**
  * 依赖类
@@ -42,7 +41,6 @@ import com.github.leeyazhou.crpc.core.logger.LoggerFactory;
  */
 public class ReferenceFactoryBean<T> extends ServiceGroupConfig
     implements FactoryBean<T>, InitializingBean, DisposableBean, ApplicationContextAware {
-  private static final long serialVersionUID = 1793195457511348037L;
   protected static final Logger logger = LoggerFactory.getLogger(ReferenceFactoryBean.class);
   protected T ref;
   protected Class<T> objectType;
@@ -113,9 +111,7 @@ public class ReferenceFactoryBean<T> extends ServiceGroupConfig
       if (StringUtils.isEmpty(a)) {
         continue;
       }
-      ServerConfig serverConfig = new ServerConfig();
-      serverConfig.setAddress(a);
-      addServerConfig(serverConfig);
+      addProvider(URL.valueOf(a));
     }
   }
 

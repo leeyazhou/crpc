@@ -23,13 +23,11 @@ import java.util.concurrent.ConcurrentMap;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
-
+import com.github.leeyazhou.crpc.core.logger.Logger;
+import com.github.leeyazhou.crpc.core.logger.LoggerFactory;
 import com.github.leeyazhou.crpc.transport.Filter;
 import com.github.leeyazhou.crpc.transport.factory.AbstractServerFactory;
 import com.github.leeyazhou.crpc.transport.factory.ServiceHandler;
-import com.github.leeyazhou.crpc.config.ModuleConfig;
-import com.github.leeyazhou.crpc.core.logger.Logger;
-import com.github.leeyazhou.crpc.core.logger.LoggerFactory;
 
 /**
  * @author leeyazhou
@@ -46,7 +44,7 @@ public class SpringBeanFactory extends AbstractServerFactory implements Applicat
     if (logger.isInfoEnabled()) {
       logger.info("初始化CRPC BeanFactory, springApplicationContext : " + this.applicationContext);
     }
-    this.setServerConfig(applicationContext.getBean(ModuleConfig.class));
+    this.setConfiguration(applicationContext.getBean(com.github.leeyazhou.crpc.config.Configuration.class));
     this.filterChain = applicationContext.getBean(Filter.class);
   }
 

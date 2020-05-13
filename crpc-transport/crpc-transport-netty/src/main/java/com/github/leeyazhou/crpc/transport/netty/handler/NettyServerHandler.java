@@ -20,16 +20,16 @@ import java.net.InetSocketAddress;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.atomic.AtomicInteger;
-import com.github.leeyazhou.crpc.transport.Handler;
-import com.github.leeyazhou.crpc.transport.RpcContext;
-import com.github.leeyazhou.crpc.transport.factory.ServerFactory;
-import com.github.leeyazhou.crpc.config.ServerConfig;
+import com.github.leeyazhou.crpc.config.Configuration;
 import com.github.leeyazhou.crpc.core.Constants;
 import com.github.leeyazhou.crpc.core.logger.Logger;
 import com.github.leeyazhou.crpc.core.logger.LoggerFactory;
 import com.github.leeyazhou.crpc.core.util.AddressUtil;
 import com.github.leeyazhou.crpc.protocol.message.RequestMessage;
 import com.github.leeyazhou.crpc.protocol.message.ResponseMessage;
+import com.github.leeyazhou.crpc.transport.Handler;
+import com.github.leeyazhou.crpc.transport.RpcContext;
+import com.github.leeyazhou.crpc.transport.factory.ServerFactory;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelFutureListener;
@@ -57,8 +57,8 @@ public class NettyServerHandler extends SimpleChannelInboundHandler<RequestMessa
   private final ServerFactory beanFactory;
   private ConcurrentMap<String, Channel> channels = new ConcurrentHashMap<String, Channel>();
 
-  public NettyServerHandler(ServerConfig serverConfig, Handler<?> serverHandler, ServerFactory beanFactory) {
-    this.sync = serverConfig.isSync();
+  public NettyServerHandler(Configuration configuration, Handler<?> serverHandler, ServerFactory beanFactory) {
+    this.sync = configuration.getServerConfig().isSync();
     this.serverHandler = serverHandler;
     this.beanFactory = beanFactory;
   }

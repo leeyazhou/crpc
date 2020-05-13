@@ -73,18 +73,18 @@ public abstract class AbstractRpcHandler<T> implements Handler<T> {
     serviceConfig.setCodec(serviceGroupConfig.getCodec());
     serviceConfig.setCodecValue(CodecType.valueOf(serviceConfig.getCodec()).getId());
     serviceConfig.setLoadbalance(serviceGroupConfig.getLoadbalance());
-    if (serviceGroupConfig.getServers() != null && !serviceGroupConfig.getServers().isEmpty()) {
+    Set<URL> providers = serviceGroupConfig.getProviders();
+    if (providers != null && !providers.isEmpty()) {
       Set<URL> urls = new HashSet<URL>();
-      for (ServerConfig serverConfig : serviceGroupConfig.getServers()) {
-        URL u = serverConfig.toURL();
-        u.addParameter(Constants.APPLICATION, serviceGroupConfig.getName());
-        u.addParameter(Constants.VERSION, Constants.CRPC_VERSION);
-        u.addParameter(Constants.SERVICE_INTERFACE, handlerType.getName());
-        urls.add(u);
+      for (URL provider : providers) {
+        provider.addParameter(Constants.APPLICATION, serviceGroupConfig.getName());
+        provider.addParameter(Constants.VERSION, Constants.CRPC_VERSION);
+        provider.addParameter(Constants.SERVICE_INTERFACE, handlerType.getName());
+        urls.add(provider);
       }
       serviceConfig.setUrls(urls);
     }
-    serviceConfig.setRegistryConfigs(serviceGroupConfig.getRegistryConfigs());
+//    serviceConfig.setRegistryConfigs(serviceGroupConfig.get);
     this.transportFactory.initService(serviceConfig);
     this.serviceConfig = serviceConfig;
   }

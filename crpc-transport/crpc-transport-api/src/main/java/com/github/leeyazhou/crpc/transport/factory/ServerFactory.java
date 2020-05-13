@@ -19,7 +19,7 @@
 package com.github.leeyazhou.crpc.transport.factory;
 
 import java.util.concurrent.ExecutorService;
-import com.github.leeyazhou.crpc.config.ServerConfig;
+import com.github.leeyazhou.crpc.config.Configuration;
 import com.github.leeyazhou.crpc.transport.Filter;
 import com.github.leeyazhou.crpc.transport.FilterChain;
 
@@ -64,8 +64,8 @@ public interface ServerFactory {
 	/**
 	 * 设置服务器配置信息
 	 * 
-	 * @param serverConfig serverConfig
+	 * @param configuration configuration
 	 */
-	void setServerConfig(ServerConfig serverConfig);
+	void setConfiguration(Configuration configuration);
 
 }

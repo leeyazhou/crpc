@@ -18,9 +18,9 @@
  */
 package com.github.leeyazhou.crpc.config.spring;
 
-import com.github.leeyazhou.crpc.config.ModuleConfig;
-import com.github.leeyazhou.crpc.config.spring.demo.service.UserService;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+import com.github.leeyazhou.crpc.config.ApplicationConfig;
+import com.github.leeyazhou.crpc.config.spring.demo.service.UserService;
 import com.github.leeyazhou.crpc.transport.Handler;
 
 /**
@@ -31,7 +31,7 @@ public class Test {
 
   public static void main(String[] args) {
     ClassPathXmlApplicationContext applicationContext = new ClassPathXmlApplicationContext("spring-*.xml");
-    ModuleConfig moduleConfig = applicationContext.getBean(ModuleConfig.class);
+    ApplicationConfig moduleConfig = applicationContext.getBean(ApplicationConfig.class);
     System.out.println(moduleConfig);
     Handler<UserService> h = applicationContext.getBean(SpringBeanFactory.class).getServiceHandler(UserService.class.getName());
     System.out.println(h);

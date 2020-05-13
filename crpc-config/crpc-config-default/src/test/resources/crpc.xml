@@ -3,6 +3,7 @@
   xsi:schemaLocation="http://www.github.cn/crpc/crpc crpc.xsd">
 
   <application name="crpc-provider" version="1.0.0.2" />
+  <protocol />
 
   <server name="userservice" address="tcp://127.0.0.1:12200" worker="20">
     <registry address="zookeeper://127.0.0.1:2181" />

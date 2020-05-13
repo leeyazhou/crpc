@@ -23,11 +23,11 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.concurrent.CountDownLatch;
-import com.github.leeyazhou.crpc.rpc.ProxyFactory;
-import com.github.leeyazhou.crpc.showcase.service.UserService;
-import com.github.leeyazhou.crpc.config.ServerConfig;
 import com.github.leeyazhou.crpc.config.ServiceGroupConfig;
+import com.github.leeyazhou.crpc.core.URL;
 import com.github.leeyazhou.crpc.core.util.ServiceLoader;
+import com.github.leeyazhou.crpc.rpc.ProxyFactory;
+import com.github.leeyazhou.crpc.service.UserService;
 
 /**
  * @author leeyazhou
@@ -48,7 +48,7 @@ public class BenchmarkClient extends AbstractBenchmarkClient {
     CountDownLatch countDownlatch = new CountDownLatch(threadNum);
 
     ServiceGroupConfig serviceGroupConfig = new ServiceGroupConfig().setName("userservice");
-    serviceGroupConfig.addServerConfig(new ServerConfig().setAddress("tcp://127.0.0.1:12200"));
+    serviceGroupConfig.addProvider(URL.valueOf("tcp://127.0.0.1:12200"));
     UserService userService =
         ServiceLoader.load(ProxyFactory.class).load().getProxy(UserService.class, serviceGroupConfig);
     check(userService);

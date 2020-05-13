@@ -17,7 +17,7 @@ package com.github.leeyazhou.crpc.config.spring.handler;
 
 import org.springframework.beans.factory.xml.NamespaceHandlerSupport;
 import com.github.leeyazhou.crpc.config.spring.parser.ComponentScanBeanDefinitionParser;
-import com.github.leeyazhou.crpc.config.spring.parser.ModuleBeanDefinitionParser;
+import com.github.leeyazhou.crpc.config.spring.parser.ApplicationBeanDefinitionParser;
 import com.github.leeyazhou.crpc.config.spring.parser.ProtocolBeanDefinitionParser;
 import com.github.leeyazhou.crpc.config.spring.parser.ReferenceBeanDefinitionParser;
 import com.github.leeyazhou.crpc.config.spring.parser.RegistryBeanDefinitionParser;
@@ -30,7 +30,7 @@ public class CRPCNamespaceHandler extends NamespaceHandlerSupport {
 
   @Override
   public void init() {
-    registerBeanDefinitionParser("module", new ModuleBeanDefinitionParser());
+    registerBeanDefinitionParser("module", new ApplicationBeanDefinitionParser());
     registerBeanDefinitionParser("protocol", new ProtocolBeanDefinitionParser());
     registerBeanDefinitionParser("registry", new RegistryBeanDefinitionParser());
     registerBeanDefinitionParser("ref", new ReferenceBeanDefinitionParser());

@@ -27,19 +27,19 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
-
-import com.github.leeyazhou.crpc.registry.Registry;
-import com.github.leeyazhou.crpc.registry.RegistryFactory;
-import com.github.leeyazhou.crpc.rpc.util.RpcUtil;
-import com.github.leeyazhou.crpc.transport.factory.ServerFactory;
-import com.github.leeyazhou.crpc.transport.factory.ServiceHandler;
-import com.github.leeyazhou.crpc.config.ModuleConfig;
+import com.github.leeyazhou.crpc.config.Configuration;
+import com.github.leeyazhou.crpc.config.ProtocolConfig;
 import com.github.leeyazhou.crpc.config.ServiceConfig;
 import com.github.leeyazhou.crpc.core.Constants;
 import com.github.leeyazhou.crpc.core.URL;
 import com.github.leeyazhou.crpc.core.logger.Logger;
 import com.github.leeyazhou.crpc.core.logger.LoggerFactory;
 import com.github.leeyazhou.crpc.core.util.ServiceLoader;
+import com.github.leeyazhou.crpc.registry.Registry;
+import com.github.leeyazhou.crpc.registry.RegistryFactory;
+import com.github.leeyazhou.crpc.rpc.util.RpcUtil;
+import com.github.leeyazhou.crpc.transport.factory.ServerFactory;
+import com.github.leeyazhou.crpc.transport.factory.ServiceHandler;
 
 /**
  * 服务类
@@ -49,12 +49,12 @@ import com.github.leeyazhou.crpc.core.util.ServiceLoader;
 public class ServiceFactoryBean<T> extends ServiceConfig<T>
     implements InitializingBean, DisposableBean, ApplicationContextAware, ApplicationListener<ContextRefreshedEvent> {
   static final Logger logger = LoggerFactory.getLogger(ServiceFactoryBean.class);
-  private static final long serialVersionUID = 1L;
   private T object;
   private ServiceHandler<T> serviceHandler;
   private ApplicationContext applicationContext;
   private ServerFactory beanFactory;
-  private ModuleConfig moduleConfig;
+  private Configuration configuration;
+  private ProtocolConfig protocolConfig;
   private final AtomicBoolean isExported = new AtomicBoolean(false);
 
   @SuppressWarnings({ "unchecked" })
@@ -85,14 +85,15 @@ public class ServiceFactoryBean<T> extends ServiceConfig<T>
     if (logger.isInfoEnabled()) {
       logger.info("destory service : " + object);
     }
-    RpcUtil.unexport(moduleConfig, serviceHandler);
+    RpcUtil.unexport(configuration, serviceHandler);
   }
 
   @Override
   public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
     this.applicationContext = applicationContext;
     this.beanFactory = this.applicationContext.getBean(ServerFactory.class);
-    this.moduleConfig = applicationContext.getBean(ModuleConfig.class);
+    this.configuration = applicationContext.getBean(Configuration.class);
+    this.protocolConfig = applicationContext.getBean(ProtocolConfig.class);
   }
 
   @Override
@@ -105,7 +106,7 @@ public class ServiceFactoryBean<T> extends ServiceConfig<T>
       serviceHandler.setFilter(beanFactory.getFilterChain());
       this.beanFactory.registerProcessor(serviceHandler);
 
-      RpcUtil.export(moduleConfig, serviceHandler, beanFactory);
+      RpcUtil.export(configuration, serviceHandler, beanFactory);
       register();
     }
   }
@@ -122,8 +123,8 @@ public class ServiceFactoryBean<T> extends ServiceConfig<T>
         continue;
       }
       for (Registry registry : registries) {
-        URL registryUrl = new URL(moduleConfig.getProtocol(), moduleConfig.getHost(), moduleConfig.getPort());
-        registryUrl.addParameter(Constants.APPLICATION, moduleConfig.getName());
+        URL registryUrl = new URL(protocolConfig.getProtocol(), protocolConfig.getHost(), protocolConfig.getPort());
+        registryUrl.addParameter(Constants.APPLICATION, configuration.getApplicationConfig().getName());
         registryUrl.addParameter(Constants.SERVICE_INTERFACE, getInterfaceClass().getName());
         registryUrl.addParameter(Constants.TIMESTAMP_KEY, String.valueOf(System.currentTimeMillis()));
         registry.register(registryUrl);

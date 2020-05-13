@@ -23,6 +23,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import com.github.leeyazhou.crpc.core.URL;
 import com.github.leeyazhou.crpc.core.util.StringUtil;
 
 /**
@@ -39,8 +40,7 @@ public class ServiceGroupConfig {
   private int worker = Math.max(Runtime.getRuntime().availableProcessors() * 2 + 1, 32);
   private String protocol;
   private String loadbalance = "RANDOM";
-  private Set<ServerConfig> servers = new HashSet<ServerConfig>();
-  private Set<RegistryConfig> registryConfigs = new HashSet<RegistryConfig>();
+  private Set<URL> providers = new HashSet<URL>();
   /**
    * 超时时间/ms
    */
@@ -93,19 +93,18 @@ public class ServiceGroupConfig {
     return this;
   }
 
-  public Set<ServerConfig> getServers() {
-    return servers;
-  }
 
-  public ServiceGroupConfig setServers(Set<ServerConfig> servers) {
-    this.servers = servers;
+  public ServiceGroupConfig addProvider(URL provider) {
+    providers.add(provider);
+    this.worker += provider.getParameter("weight", 100);
     return this;
   }
 
-  public ServiceGroupConfig addServerConfig(ServerConfig server) {
-    this.servers.add(server);
-    this.worker += server.getWorker();
-    return this;
+  /**
+   * @return the providers
+   */
+  public Set<URL> getProviders() {
+    return providers;
   }
 
   public int getWorker() {
@@ -122,30 +121,12 @@ public class ServiceGroupConfig {
   }
 
   /**
-   * @return the registryConfigs
-   */
-  public Set<RegistryConfig> getRegistryConfigs() {
-    return registryConfigs;
-  }
-
-  /**
-   * @param registryConfigs the registryConfigs to set
-   */
-  public void setRegistryConfigs(Set<RegistryConfig> registryConfigs) {
-    this.registryConfigs = registryConfigs;
-  }
-
-  /**
    * @param worker the worker to set
    */
   public void setWorker(int worker) {
     this.worker = worker;
   }
 
-  public ServiceGroupConfig addRegistryConfig(RegistryConfig registryConfig) {
-    this.registryConfigs.add(registryConfig);
-    return this;
-  }
 
   public int getCodecValue() {
     return codecValue;
@@ -170,8 +151,6 @@ public class ServiceGroupConfig {
     builder.append(protocol);
     builder.append(", loadbalance=");
     builder.append(loadbalance);
-    builder.append(", servers=");
-    builder.append(servers);
     builder.append(", timeout=");
     builder.append(timeout);
     builder.append(", filters=");
@@ -209,8 +188,8 @@ public class ServiceGroupConfig {
     if (worker != 0) {
       this.worker = serviceGroupConfig.getWorker();
     }
-    if (!serviceGroupConfig.getServers().isEmpty()) {
-      this.servers = serviceGroupConfig.getServers();
+    if (!serviceGroupConfig.getProviders().isEmpty()) {
+      this.providers = serviceGroupConfig.getProviders();
     }
     return this;
   }

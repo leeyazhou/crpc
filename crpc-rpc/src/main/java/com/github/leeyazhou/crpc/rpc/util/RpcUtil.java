@@ -20,16 +20,16 @@ package com.github.leeyazhou.crpc.rpc.util;
 
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
+import com.github.leeyazhou.crpc.config.Configuration;
+import com.github.leeyazhou.crpc.config.ServiceGroupConfig;
+import com.github.leeyazhou.crpc.core.logger.Logger;
+import com.github.leeyazhou.crpc.core.logger.LoggerFactory;
+import com.github.leeyazhou.crpc.core.util.ServiceLoader;
 import com.github.leeyazhou.crpc.rpc.ProxyFactory;
 import com.github.leeyazhou.crpc.transport.Server;
 import com.github.leeyazhou.crpc.transport.TransportFactory;
 import com.github.leeyazhou.crpc.transport.factory.ServerFactory;
 import com.github.leeyazhou.crpc.transport.factory.ServiceHandler;
-import com.github.leeyazhou.crpc.config.ServerConfig;
-import com.github.leeyazhou.crpc.config.ServiceGroupConfig;
-import com.github.leeyazhou.crpc.core.logger.Logger;
-import com.github.leeyazhou.crpc.core.logger.LoggerFactory;
-import com.github.leeyazhou.crpc.core.util.ServiceLoader;
 
 /**
  * @author leeyazhou
@@ -41,17 +41,17 @@ public class RpcUtil {
   private static final TransportFactory transportFactory = ServiceLoader.load(TransportFactory.class).load();
   private static final ConcurrentMap<String, Server> servers = new ConcurrentHashMap<String, Server>();
 
-  public static <T> void export(ServerConfig serverConfig, ServiceHandler<T> servsiceHandler,
+  public static <T> void export(Configuration configuration, ServiceHandler<T> servsiceHandler,
       ServerFactory beanFactory) {
-    logger.info("export : " + serverConfig);
-    final String serverKey = serverConfig.getAddress();
+    logger.info("export : " + configuration);
+    final String serverKey = configuration.getProtocolConfig().getAddress();
     Server server = servers.get(serverKey);
     if (server != null) {
       return;
     }
     synchronized (servers) {
       if ((server = servers.get(serverKey)) == null) {
-        server = transportFactory.createServer(serverConfig, beanFactory);
+        server = transportFactory.createServer(configuration, beanFactory);
         Server t = servers.putIfAbsent(serverKey, server);
         if (t == null) {
           server.start();
@@ -61,9 +61,9 @@ public class RpcUtil {
 
   }
 
-  public static <T> void unexport(ServerConfig serverConfig, ServiceHandler<T> serviceHandler) {
-    logger.info("unexport : " + serverConfig);
-    final String serverKey = serverConfig.getAddress();
+  public static <T> void unexport(Configuration configuration, ServiceHandler<T> serviceHandler) {
+    logger.info("unexport : " + configuration.getProtocolConfig());
+    final String serverKey = configuration.getProtocolConfig().getAddress();
     Server server = servers.remove(serverKey);
     if (server != null) {
       server.stop();

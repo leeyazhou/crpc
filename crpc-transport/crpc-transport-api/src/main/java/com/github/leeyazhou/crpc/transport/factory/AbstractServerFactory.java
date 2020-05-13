@@ -20,7 +20,7 @@ package com.github.leeyazhou.crpc.transport.factory;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.TimeUnit;
-import com.github.leeyazhou.crpc.config.ServerConfig;
+import com.github.leeyazhou.crpc.config.Configuration;
 import com.github.leeyazhou.crpc.core.util.concurrent.TaskQueue;
 import com.github.leeyazhou.crpc.core.util.concurrent.TaskThreadFactory;
 import com.github.leeyazhou.crpc.core.util.concurrent.ThreadPoolExecutor;
@@ -30,25 +30,28 @@ import com.github.leeyazhou.crpc.core.util.concurrent.ThreadPoolExecutor;
  */
 public abstract class AbstractServerFactory implements ServerFactory {
 
-	private ExecutorService executorService;
+  private ExecutorService executorService;
 
-	/**
-	 * @return the executorService
-	 */
-	@Override
-	public ExecutorService getExecutorService() {
-		return executorService;
-	}
+  /**
+   * @return the executorService
+   */
+  @Override
+  public ExecutorService getExecutorService() {
+    if(executorService==null) {
+      
+    }
+    return executorService;
+  }
 
-	/**
-	 * @param serverConfig the serverConfig to set
-	 */
-	@Override
-	public void setServerConfig(ServerConfig serverConfig) {
-		if (executorService == null) {
-			executorService = new ThreadPoolExecutor(Runtime.getRuntime().availableProcessors() * 2,
-					serverConfig.getWorker(), 60L, TimeUnit.SECONDS, new TaskQueue(10000),
-					new TaskThreadFactory("crpc-server-", true, Thread.NORM_PRIORITY));
-		}
-	}
+  /**
+   * @param serverConfig the serverConfig to set
+   */
+  @Override
+  public void setConfiguration(Configuration configuration) {
+    if (executorService == null) {
+      executorService = new ThreadPoolExecutor(Runtime.getRuntime().availableProcessors() * 2,
+          configuration.getServerConfig().getWorker(), 60L, TimeUnit.SECONDS, new TaskQueue(10000),
+          new TaskThreadFactory("crpc-server-", true, Thread.NORM_PRIORITY));
+    }
+  }
 }

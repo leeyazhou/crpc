@@ -19,6 +19,7 @@
 package com.github.leeyazhou.crpc.transport.netty;
 
 import java.util.concurrent.TimeUnit;
+import com.github.leeyazhou.crpc.config.Configuration;
 import com.github.leeyazhou.crpc.config.ServerConfig;
 import com.github.leeyazhou.crpc.core.Constants;
 import com.github.leeyazhou.crpc.core.URL;
@@ -47,8 +48,8 @@ public class NettyTransportFactory extends AbstractTransportFactory {
   private static final EventLoopGroup bussinessGroup = new NioEventLoopGroup(0, new NamedThreadFactory("crpc-client"));
 
   @Override
-  public Server createServer(ServerConfig serverConfig, ServerFactory beanFactory) {
-    return new NettyServer(serverConfig, beanFactory);
+  public Server createServer(Configuration configuration, ServerFactory beanFactory) {
+    return new NettyServer(configuration, beanFactory);
   }
 
   @Override

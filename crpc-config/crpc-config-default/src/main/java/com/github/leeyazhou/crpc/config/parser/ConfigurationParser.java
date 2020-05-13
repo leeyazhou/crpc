@@ -67,7 +67,7 @@ public class ConfigurationParser implements IParser<Configuration> {
    * @return {@link Configuration}
    * @throws Exception any exception
    */
-  private Element parse() throws Exception {
+  private Element doParse() throws Exception {
     if (null == location || location.length() == 0) {
       throw new CrpcException("configuration location can not be null, location : " + location);
     }
@@ -101,7 +101,7 @@ public class ConfigurationParser implements IParser<Configuration> {
   public Configuration parse(Node rootNode) {
     Element rootElement = null;
     try {
-      rootElement = parse();
+      rootElement = doParse();
     } catch (Exception err) {
       logger.error("Configuration parse exception, location : " + location, err);
       System.exit(0);
@@ -109,18 +109,25 @@ public class ConfigurationParser implements IParser<Configuration> {
     Configuration configuration = new Configuration();
 
     NodeList nodeList = rootElement.getChildNodes();
-    ServiceGroupParser serviceParser = new ServiceGroupParser(configuration);
+    ServiceGroupParser serviceGroupConfigParser = new ServiceGroupParser(configuration);
     ServerConfigParser serverParser = new ServerConfigParser(configuration);
     ApplicationConfigParser applicationConfigParser = new ApplicationConfigParser(configuration);
+    RegistryConfigParser registryConfigParser = new RegistryConfigParser(configuration);
+    ProtocolConfigParser protocolConfigParser = new ProtocolConfigParser(configuration);
     for (int i = 0; i < nodeList.getLength(); i++) {
       Node item = nodeList.item(i);
       if ("service".equals(item.getNodeName())) {
-        configuration.addServiceGroupConfig(serviceParser.parse(item));
+        configuration.addServiceGroupConfig(serviceGroupConfigParser.parse(item));
       } else if ("server".equals(item.getNodeName())) {
-        configuration.addServerConfig(serverParser.parse(item));
+        configuration.setServerConfig(serverParser.parse(item));
       } else if ("application".equals(item.getNodeName())) {
-        applicationConfigParser.parse(item);
+        configuration.setApplicationConfig(applicationConfigParser.parse(item));
+      } else if ("registry".equals(item.getNodeName())) {
+        configuration.addRegistryConfig(registryConfigParser.parse(item));
+      } else if ("protocol".equals(item.getNodeName())) {
+        configuration.setProtocolConfig(protocolConfigParser.parse(item));
       }
+
     }
 
     return configuration;

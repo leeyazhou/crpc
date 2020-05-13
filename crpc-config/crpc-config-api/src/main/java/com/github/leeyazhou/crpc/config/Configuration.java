@@ -20,9 +20,9 @@
 package com.github.leeyazhou.crpc.config;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
-import java.util.TreeSet;
 import com.github.leeyazhou.crpc.core.logger.Logger;
 import com.github.leeyazhou.crpc.core.logger.LoggerFactory;
 
@@ -33,10 +33,12 @@ import com.github.leeyazhou.crpc.core.logger.LoggerFactory;
 public class Configuration {
   static final Logger logger = LoggerFactory.getLogger(Configuration.class);
   private ApplicationConfig applicationConfig;
+  private ProtocolConfig protocolConfig;
 
   private Map<String, ServiceGroupConfig> serviceGroupConfigs = new HashMap<String, ServiceGroupConfig>();
+  private Set<RegistryConfig> registryConfigs = new HashSet<RegistryConfig>();
 
-  private Set<ServerConfig> serverConfigs = new TreeSet<ServerConfig>();
+  private ServerConfig serverConfig;
 
   public Configuration() {}
 
@@ -45,39 +47,52 @@ public class Configuration {
     return serviceGroupConfigs;
   }
 
+
   /**
-   * @return the moduleConfigs
+   * @param protocolConfig the protocolConfig to set
    */
-  public Set<ServerConfig> getServerConfigs() {
-    return serverConfigs;
+  public Configuration setProtocolConfig(ProtocolConfig protocolConfig) {
+    this.protocolConfig = protocolConfig;
+    return this;
   }
 
   /**
-   * 配置serverConfigs
-   * 
-   * @param serverConfigs serverConfigs
+   * @return the protocolConfig
    */
-  public void setServerConfigs(Set<ServerConfig> serverConfigs) {
-    this.serverConfigs = serverConfigs;
+  public ProtocolConfig getProtocolConfig() {
+    return protocolConfig;
   }
 
-  public void addServerConfig(ServerConfig serverConfig) {
-    serverConfigs.add(serverConfig);
+  /**
+   * @param serverConfigs the serverConfigs to set
+   */
+  public Configuration setServerConfig(ServerConfig serverConfig) {
+    this.serverConfig = serverConfig;
+    return this;
+  }
+
+  /**
+   * @return the serverConfig
+   */
+  public ServerConfig getServerConfig() {
+    return serverConfig;
   }
 
   public ServiceGroupConfig getServiceConfig(String serviceName) {
     return serviceGroupConfigs.get(serviceName);
   }
 
-  public boolean addServiceGroupConfig(ServiceGroupConfig serviceGroupConfig) {
-    return this.serviceGroupConfigs.put(serviceGroupConfig.getName(), serviceGroupConfig) != null;
+  public Configuration addServiceGroupConfig(ServiceGroupConfig serviceGroupConfig) {
+    this.serviceGroupConfigs.put(serviceGroupConfig.getName(), serviceGroupConfig);
+    return this;
   }
 
   /**
    * @param applicationConfig the applicationConfig to set
    */
-  public void setApplicationConfig(ApplicationConfig applicationConfig) {
+  public Configuration setApplicationConfig(ApplicationConfig applicationConfig) {
     this.applicationConfig = applicationConfig;
+    return this;
   }
 
   /**
@@ -85,6 +100,31 @@ public class Configuration {
    */
   public ApplicationConfig getApplicationConfig() {
     return applicationConfig;
+  }
+
+
+  /**
+   * @param registryConfigs the registryConfigs to set
+   */
+  public Configuration setRegistryConfigs(Set<RegistryConfig> registryConfigs) {
+    this.registryConfigs = registryConfigs;
+    return this;
+  }
+
+  /**
+   * @return the registryConfigs
+   */
+  public Set<RegistryConfig> getRegistryConfigs() {
+    return registryConfigs;
+  }
+
+  public Configuration addRegistryConfig(RegistryConfig registryConfig) {
+    registryConfigs.add(registryConfig);
+    return this;
+  }
+
+  public void validate() {
+
   }
 
 }

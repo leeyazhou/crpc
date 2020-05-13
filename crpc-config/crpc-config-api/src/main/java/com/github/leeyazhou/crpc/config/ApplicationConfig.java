@@ -11,6 +11,7 @@ public class ApplicationConfig {
 
   private String name;
   private String version;
+  private String desc;
 
   /**
    * @return the name
@@ -22,8 +23,9 @@ public class ApplicationConfig {
   /**
    * @param name the name to set
    */
-  public void setName(String name) {
+  public ApplicationConfig setName(String name) {
     this.name = name;
+    return this;
   }
 
   /**
@@ -36,8 +38,24 @@ public class ApplicationConfig {
   /**
    * @param version the version to set
    */
-  public void setVersion(String version) {
+  public ApplicationConfig setVersion(String version) {
     this.version = version;
+    return this;
+  }
+
+  /**
+   * @return the desc
+   */
+  public String getDesc() {
+    return desc;
+  }
+
+  /**
+   * @param desc the desc to set
+   */
+  public ApplicationConfig setDesc(String desc) {
+    this.desc = desc;
+    return this;
   }
 
 
