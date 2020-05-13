@@ -19,25 +19,25 @@
 
 package com.github.leeyazhou.crpc.config.parser;
 
-import com.github.leeyazhou.crpc.config.crpc.ServiceGroupConfig;
 import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
-
-import com.github.leeyazhou.crpc.config.IParser;
-import com.github.leeyazhou.crpc.core.logger.Logger;
-import com.github.leeyazhou.crpc.core.logger.LoggerFactory;
+import com.github.leeyazhou.crpc.config.AbstractParser;
+import com.github.leeyazhou.crpc.config.Configuration;
+import com.github.leeyazhou.crpc.config.ServiceGroupConfig;
 import com.github.leeyazhou.crpc.core.util.FieldUtil;
 
 /**
  * @author leeyazhou
  *
  */
-public class ServiceGroupParser implements IParser<ServiceGroupConfig> {
+public class ServiceGroupParser extends AbstractParser<ServiceGroupConfig> {
 
-  private static final long serialVersionUID = 1L;
-  private static final Logger logger = LoggerFactory.getLogger(ServiceGroupParser.class);
+
+  public ServiceGroupParser(Configuration configuration) {
+    super(configuration);
+  }
 
   @Override
   public ServiceGroupConfig parse(Node node) {
@@ -45,23 +45,15 @@ public class ServiceGroupParser implements IParser<ServiceGroupConfig> {
     NamedNodeMap nodeMap = node.getAttributes();
 
     Element rootElement = (Element) node;
-
+    RegistryConfigParser registryConfigParser = new RegistryConfigParser(getConfiguration());
     NodeList registryNodeList = rootElement.getElementsByTagName("registry");
     for (int i = 0; i < registryNodeList.getLength(); i++) {
       Node registryNode = registryNodeList.item(i);
-      Node addressNode = registryNode.getAttributes().getNamedItem("address");
-      if (addressNode == null) {
-        continue;
-      }
-      String address = addressNode.getNodeValue();
-      if (logger.isDebugEnabled()) {
-        logger.debug("service register center : " + address);
-      }
-      serviceConfig.addRegistry(address);
+      serviceConfig.addRegistryConfig(registryConfigParser.parse(registryNode));
     }
 
     NodeList moduleList = rootElement.getElementsByTagName("server");
-    ServerParser serverParser = new ServerParser();
+    ServerConfigParser serverParser = new ServerConfigParser(getConfiguration());
     for (int i = 0; i < moduleList.getLength(); i++) {
       serviceConfig.addServerConfig(serverParser.parse(moduleList.item(i)));
     }

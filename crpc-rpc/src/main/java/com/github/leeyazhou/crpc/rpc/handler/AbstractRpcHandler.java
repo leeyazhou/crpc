@@ -20,10 +20,14 @@ package com.github.leeyazhou.crpc.rpc.handler;
 
 import java.util.HashSet;
 import java.util.Set;
-
-import com.github.leeyazhou.crpc.config.crpc.ServerConfig;
-import com.github.leeyazhou.crpc.config.crpc.ServiceConfig;
-import com.github.leeyazhou.crpc.config.crpc.ServiceGroupConfig;
+import com.github.leeyazhou.crpc.config.ServerConfig;
+import com.github.leeyazhou.crpc.config.ServiceConfig;
+import com.github.leeyazhou.crpc.config.ServiceGroupConfig;
+import com.github.leeyazhou.crpc.core.Constants;
+import com.github.leeyazhou.crpc.core.URL;
+import com.github.leeyazhou.crpc.core.logger.Logger;
+import com.github.leeyazhou.crpc.core.logger.LoggerFactory;
+import com.github.leeyazhou.crpc.core.util.ServiceLoader;
 import com.github.leeyazhou.crpc.protocol.SimpleProtocol;
 import com.github.leeyazhou.crpc.protocol.message.ResponseMessage;
 import com.github.leeyazhou.crpc.serializer.CodecType;
@@ -33,11 +37,6 @@ import com.github.leeyazhou.crpc.transport.RpcContext;
 import com.github.leeyazhou.crpc.transport.TransportFactory;
 import com.github.leeyazhou.crpc.transport.filter.CounterFilter;
 import com.github.leeyazhou.crpc.transport.filter.IPFilter;
-import com.github.leeyazhou.crpc.core.Constants;
-import com.github.leeyazhou.crpc.core.URL;
-import com.github.leeyazhou.crpc.core.logger.Logger;
-import com.github.leeyazhou.crpc.core.logger.LoggerFactory;
-import com.github.leeyazhou.crpc.core.util.ServiceLoader;
 
 /**
  * @author leeyazhou
@@ -85,7 +84,7 @@ public abstract class AbstractRpcHandler<T> implements Handler<T> {
       }
       serviceConfig.setUrls(urls);
     }
-    serviceConfig.setRegistries(serviceGroupConfig.getRegistries());
+    serviceConfig.setRegistryConfigs(serviceGroupConfig.getRegistryConfigs());
     this.transportFactory.initService(serviceConfig);
     this.serviceConfig = serviceConfig;
   }

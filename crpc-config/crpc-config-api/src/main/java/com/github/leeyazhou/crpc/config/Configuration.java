@@ -17,14 +17,12 @@
  * 
  */
 
-package com.github.leeyazhou.crpc.config.crpc;
+package com.github.leeyazhou.crpc.config;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
-
-import com.github.leeyazhou.crpc.config.IConfig;
 import com.github.leeyazhou.crpc.core.logger.Logger;
 import com.github.leeyazhou.crpc.core.logger.LoggerFactory;
 
@@ -32,17 +30,16 @@ import com.github.leeyazhou.crpc.core.logger.LoggerFactory;
  * @author leeyazhou
  *
  */
-public class Configuration implements IConfig {
+public class Configuration {
   static final Logger logger = LoggerFactory.getLogger(Configuration.class);
-  private static final long serialVersionUID = 1L;
   private String location;
+  private ApplicationConfig applicationConfig;
 
   private Map<String, ServiceGroupConfig> serviceGroupConfigs = new HashMap<String, ServiceGroupConfig>();
 
   private Set<ServerConfig> serverConfigs = new TreeSet<ServerConfig>();
 
-  public Configuration() {
-  }
+  public Configuration() {}
 
   public Configuration(String location) {
     this.location = location;
@@ -70,8 +67,7 @@ public class Configuration implements IConfig {
   /**
    * 配置serverConfigs
    * 
-   * @param serverConfigs
-   *          serverConfigs
+   * @param serverConfigs serverConfigs
    */
   public void setServerConfigs(Set<ServerConfig> serverConfigs) {
     this.serverConfigs = serverConfigs;
@@ -87,6 +83,20 @@ public class Configuration implements IConfig {
 
   public boolean addServiceGroupConfig(ServiceGroupConfig serviceGroupConfig) {
     return this.serviceGroupConfigs.put(serviceGroupConfig.getName(), serviceGroupConfig) != null;
+  }
+
+  /**
+   * @param applicationConfig the applicationConfig to set
+   */
+  public void setApplicationConfig(ApplicationConfig applicationConfig) {
+    this.applicationConfig = applicationConfig;
+  }
+
+  /**
+   * @return the applicationConfig
+   */
+  public ApplicationConfig getApplicationConfig() {
+    return applicationConfig;
   }
 
   @Override

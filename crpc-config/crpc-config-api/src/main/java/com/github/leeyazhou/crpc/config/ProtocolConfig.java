@@ -16,17 +16,14 @@
 /**
  * 
  */
-package com.github.leeyazhou.crpc.config.crpc;
-
-import com.github.leeyazhou.crpc.config.IConfig;
+package com.github.leeyazhou.crpc.config;
 
 /**
  * 
  * @author leeyazhou
  */
-public class ProtocolConfig implements IConfig {
+public class ProtocolConfig  {
 
-  private static final long serialVersionUID = 901941877669282991L;
 
   private String name;
 
@@ -60,18 +57,7 @@ public class ProtocolConfig implements IConfig {
     this.port = port;
   }
 
-  /**
-   * @return the serialversionuid
-   */
-  public static long getSerialversionuid() {
-    return serialVersionUID;
-  }
 
-  /*
-   * (non-Javadoc)
-   * 
-   * @see java.lang.Object#toString()
-   */
   @Override
   public String toString() {
     StringBuilder builder = new StringBuilder();

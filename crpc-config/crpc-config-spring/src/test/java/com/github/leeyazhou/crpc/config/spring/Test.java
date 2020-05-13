@@ -18,7 +18,7 @@
  */
 package com.github.leeyazhou.crpc.config.spring;
 
-import com.github.leeyazhou.crpc.config.crpc.ModuleConfig;
+import com.github.leeyazhou.crpc.config.ModuleConfig;
 import com.github.leeyazhou.crpc.config.spring.demo.service.UserService;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import com.github.leeyazhou.crpc.transport.Handler;

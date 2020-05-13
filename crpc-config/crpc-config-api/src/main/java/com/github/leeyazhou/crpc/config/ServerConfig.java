@@ -17,22 +17,19 @@
  * 
  */
 
-package com.github.leeyazhou.crpc.config.crpc;
+package com.github.leeyazhou.crpc.config;
 
 import java.util.HashSet;
 import java.util.Set;
 import java.util.TreeSet;
-
-import com.github.leeyazhou.crpc.config.IConfig;
 import com.github.leeyazhou.crpc.core.Constants;
 import com.github.leeyazhou.crpc.core.URL;
 
 /**
  * @author leeyazhou
  */
-public class ServerConfig implements IConfig, Comparable<ServerConfig> {
+public class ServerConfig implements Comparable<ServerConfig> {
 
-  private static final long serialVersionUID = 1L;
   private String name;
   private String host;
   private String address;
@@ -44,7 +41,7 @@ public class ServerConfig implements IConfig, Comparable<ServerConfig> {
   private Set<String> basepackages = new TreeSet<String>();
   private Set<String> filters = new HashSet<String>();
   private String location;
-  private Set<URL> registries = new HashSet<URL>();
+  private Set<RegistryConfig> registryConfigs = new HashSet<RegistryConfig>();
 
   /**
    * 处理器的同步/异步
@@ -146,46 +143,32 @@ public class ServerConfig implements IConfig, Comparable<ServerConfig> {
   }
 
   /**
-   * @param location
-   *          the location to set
+   * @param location the location to set
    */
   public void setLocation(String location) {
     this.location = location;
   }
 
   /**
-   * @return the registries
+   * @return the registryConfigs
    */
-  public Set<URL> getRegistries() {
-    return registries;
+  public Set<RegistryConfig> getRegistryConfigs() {
+    return registryConfigs;
   }
 
   /**
-   * @param registries
-   *          the registries to set
+   * @param registryConfigs the registryConfigs to set
    */
-  public void setRegistries(Set<URL> registries) {
-    this.registries = registries;
+  public void setRegistryConfigs(Set<RegistryConfig> registryConfigs) {
+    this.registryConfigs = registryConfigs;
   }
 
-  public void addRegistry(String registryStr) {
-    if (registryStr == null) {
-      return;
-    }
-    String[] data = registryStr.replaceAll("/", "").split(":");
-    if (data.length != 3) {
-      return;
-    }
-    String protocol = data[0];
-    String host = data[1];
-    URL registryUrl = new URL(protocol, host, Integer.parseInt(data[2]));
-    registryUrl.setRegistryType(protocol);
-    this.registries.add(registryUrl);
+  public void addRegistry(RegistryConfig registryConfig) {
+    registryConfigs.add(registryConfig);
   }
 
   /**
-   * @param filters
-   *          the filters to set
+   * @param filters the filters to set
    */
   public void setFilters(Set<String> filters) {
     this.filters = filters;
@@ -199,8 +182,7 @@ public class ServerConfig implements IConfig, Comparable<ServerConfig> {
   }
 
   /**
-   * @param weight
-   *          the weight to set
+   * @param weight the weight to set
    */
   public void setWeight(int weight) {
     this.weight = weight;
@@ -214,8 +196,7 @@ public class ServerConfig implements IConfig, Comparable<ServerConfig> {
   }
 
   /**
-   * @param sync
-   *          the sync to set
+   * @param sync the sync to set
    */
   public void setSync(boolean sync) {
     this.sync = sync;
@@ -250,8 +231,6 @@ public class ServerConfig implements IConfig, Comparable<ServerConfig> {
     builder.append(filters);
     builder.append(", location=");
     builder.append(location);
-    builder.append(", registries=");
-    builder.append(registries);
     builder.append(", sync=");
     builder.append(sync);
     builder.append("]");

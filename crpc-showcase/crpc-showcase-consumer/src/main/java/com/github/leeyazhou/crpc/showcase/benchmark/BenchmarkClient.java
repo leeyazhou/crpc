@@ -23,11 +23,10 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.concurrent.CountDownLatch;
-
-import com.github.leeyazhou.crpc.config.crpc.ServerConfig;
-import com.github.leeyazhou.crpc.config.crpc.ServiceGroupConfig;
 import com.github.leeyazhou.crpc.rpc.ProxyFactory;
 import com.github.leeyazhou.crpc.showcase.service.UserService;
+import com.github.leeyazhou.crpc.config.ServerConfig;
+import com.github.leeyazhou.crpc.config.ServiceGroupConfig;
 import com.github.leeyazhou.crpc.core.util.ServiceLoader;
 
 /**

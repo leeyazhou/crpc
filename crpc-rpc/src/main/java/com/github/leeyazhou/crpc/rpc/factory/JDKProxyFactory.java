@@ -20,7 +20,7 @@
 package com.github.leeyazhou.crpc.rpc.factory;
 
 import java.lang.reflect.Proxy;
-import com.github.leeyazhou.crpc.config.crpc.ServiceGroupConfig;
+import com.github.leeyazhou.crpc.config.ServiceGroupConfig;
 import com.github.leeyazhou.crpc.rpc.ProxyFactory;
 import com.github.leeyazhou.crpc.rpc.handler.ProxyHandler;
 

@@ -25,8 +25,9 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.ExecutorService;
-import com.github.leeyazhou.crpc.config.crpc.Configuration;
-import com.github.leeyazhou.crpc.config.crpc.ServiceConfig;
+import com.github.leeyazhou.crpc.config.Configuration;
+import com.github.leeyazhou.crpc.config.RegistryConfig;
+import com.github.leeyazhou.crpc.config.ServiceConfig;
 import com.github.leeyazhou.crpc.core.Constants;
 import com.github.leeyazhou.crpc.core.URL;
 import com.github.leeyazhou.crpc.core.concurrent.Executors;
@@ -53,7 +54,8 @@ public abstract class AbstractTransportFactory implements TransportFactory, Noti
   protected static final ConcurrentMap<String, Client> clientsMap = new ConcurrentHashMap<String, Client>();
   private static boolean isSendLimitEnabled = false;
   // Cache client
-  private static final ConcurrentMap<Class<?>, List<Client>> cachedClients = new ConcurrentHashMap<Class<?>, List<Client>>();
+  private static final ConcurrentMap<Class<?>, List<Client>> cachedClients =
+      new ConcurrentHashMap<Class<?>, List<Client>>();
 
   static Configuration configuration;
   static final String location = "crpc.xml";
@@ -61,11 +63,10 @@ public abstract class AbstractTransportFactory implements TransportFactory, Noti
   private static final Map<String, LoadBalance> loadBalances = new HashMap<String, LoadBalance>();
   private static final LoadBalance loadBalanceDefault = new RoundRobinLoadBalance();
 
-  protected static final ExecutorService executorService = Executors
-      .newCachedThreadPool(new NamedThreadFactory("crpc"), 0);
+  protected static final ExecutorService executorService =
+      Executors.newCachedThreadPool(new NamedThreadFactory("crpc"), 0);
 
-  protected AbstractTransportFactory() {
-  }
+  protected AbstractTransportFactory() {}
 
   @Override
   public void enableSendLimit() {
@@ -114,10 +115,10 @@ public abstract class AbstractTransportFactory implements TransportFactory, Noti
 
   @Override
   public synchronized <T> void initService(final ServiceConfig<T> serviceConfig) {
-    for (URL registryConfig : serviceConfig.getRegistries()) {
-      RegistryFactory registryFactory = ServiceLoader.load(RegistryFactory.class)
-          .load(registryConfig.getRegistryType());
-      registryFactory.createRegistry(registryConfig);
+    for (RegistryConfig registryConfig : serviceConfig.getRegistryConfigs()) {
+      RegistryFactory registryFactory =
+          ServiceLoader.load(RegistryFactory.class).load(registryConfig.toURL().getProtocol());
+      registryFactory.createRegistry(registryConfig.toURL());
     }
 
     // 从注册中心获取服务提供者
@@ -227,14 +228,14 @@ public abstract class AbstractTransportFactory implements TransportFactory, Noti
     }
     LoadBalanceType type = LoadBalanceType.valueOf(loadBalanceStr);
     switch (type) {
-    case RANDOM:
-      balance = new RandomLoadBalance();
-      break;
-    case ROUND_ROBIN:
-      balance = new RoundRobinLoadBalance();
-      break;
-    default:
-      balance = new RoundRobinLoadBalance();
+      case RANDOM:
+        balance = new RandomLoadBalance();
+        break;
+      case ROUND_ROBIN:
+        balance = new RoundRobinLoadBalance();
+        break;
+      default:
+        balance = new RoundRobinLoadBalance();
     }
     loadBalances.put(loadBalanceStr, balance);
     if (logger.isInfoEnabled()) {

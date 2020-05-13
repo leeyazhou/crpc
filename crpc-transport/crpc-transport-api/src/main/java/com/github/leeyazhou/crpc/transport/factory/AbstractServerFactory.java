@@ -20,8 +20,7 @@ package com.github.leeyazhou.crpc.transport.factory;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.TimeUnit;
-
-import com.github.leeyazhou.crpc.config.crpc.ServerConfig;
+import com.github.leeyazhou.crpc.config.ServerConfig;
 import com.github.leeyazhou.crpc.core.util.concurrent.TaskQueue;
 import com.github.leeyazhou.crpc.core.util.concurrent.TaskThreadFactory;
 import com.github.leeyazhou.crpc.core.util.concurrent.ThreadPoolExecutor;

@@ -19,39 +19,29 @@
 
 package com.github.leeyazhou.crpc.config.parser;
 
-import com.github.leeyazhou.crpc.config.crpc.ServerConfig;
 import org.w3c.dom.Element;
-import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
-
-import com.github.leeyazhou.crpc.config.IParser;
-import com.github.leeyazhou.crpc.core.logger.Logger;
-import com.github.leeyazhou.crpc.core.logger.LoggerFactory;
-import com.github.leeyazhou.crpc.core.util.FieldUtil;
+import com.github.leeyazhou.crpc.config.AbstractParser;
+import com.github.leeyazhou.crpc.config.Configuration;
+import com.github.leeyazhou.crpc.config.RegistryConfig;
+import com.github.leeyazhou.crpc.config.ServerConfig;
 
 /**
  * @author leeyazhou
  */
-public class ServerParser implements IParser<ServerConfig> {
+public class ServerConfigParser extends AbstractParser<ServerConfig> {
 
-  private static final long serialVersionUID = -5024440315331487971L;
-  private static final Logger logger = LoggerFactory.getLogger(ServerParser.class);
+  public ServerConfigParser(Configuration configuration) {
+    super(configuration);
+  }
 
   @Override
   public ServerConfig parse(Node node) {
     ServerConfig serverConfig = new ServerConfig();
     Element rootElement = (Element) node;
-    NamedNodeMap nodeMap = rootElement.getAttributes();
 
-    for (int i = 0; i < nodeMap.getLength(); i++) {
-      String nodeName = nodeMap.item(i).getNodeName();
-      Object nodeValue = nodeMap.item(i).getNodeValue();
-      if (logger.isDebugEnabled()) {
-        logger.debug("property " + nodeName + " : " + nodeValue);
-      }
-      FieldUtil.convertValue(nodeName, nodeValue, serverConfig);
-    }
+    parseProperties(rootElement, serverConfig);
 
     parseRegistry(rootElement, serverConfig);
 
@@ -63,34 +53,24 @@ public class ServerParser implements IParser<ServerConfig> {
   /**
    * parse registry center
    * 
-   * @param rootElement
-   *          root element : crpc
-   * @param serverConfig
-   *          serverConfig
+   * @param rootElement root element : crpc
+   * @param serverConfig serverConfig
    */
   private void parseRegistry(Element rootElement, ServerConfig serverConfig) {
     NodeList registryNodeList = rootElement.getElementsByTagName("registry");
+    RegistryConfigParser registryConfigParser = new RegistryConfigParser(configuration);
     for (int i = 0; i < registryNodeList.getLength(); i++) {
       Node registryNode = registryNodeList.item(i);
-      Node addressNode = registryNode.getAttributes().getNamedItem("address");
-      if (addressNode == null) {
-        continue;
-      }
-      String address = addressNode.getNodeValue();
-      if (logger.isDebugEnabled()) {
-        logger.debug("server register center : " + address);
-      }
-      serverConfig.addRegistry(address);
+      RegistryConfig registryConfig = registryConfigParser.parse(registryNode);
+      serverConfig.addRegistry(registryConfig);
     }
   }
 
   /**
    * parse scan base package
    * 
-   * @param rootElement
-   *          root element : crpc
-   * @param serverConfig
-   *          serverConfig
+   * @param rootElement root element : crpc
+   * @param serverConfig serverConfig
    */
   private void parseScan(Element rootElement, ServerConfig serverConfig) {
     NodeList nodeList = rootElement.getElementsByTagName("scan");

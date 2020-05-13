@@ -19,9 +19,9 @@
 
 package com.github.leeyazhou.crpc.bootstrap;
 
-import com.github.leeyazhou.crpc.config.crpc.Configuration;
+import com.github.leeyazhou.crpc.config.Configuration;
+import com.github.leeyazhou.crpc.config.ServerConfig;
 import com.github.leeyazhou.crpc.config.crpc.ProviderConfig;
-import com.github.leeyazhou.crpc.config.crpc.ServerConfig;
 import com.github.leeyazhou.crpc.config.parser.ConfigurationParser;
 import com.github.leeyazhou.crpc.core.Constants;
 import com.github.leeyazhou.crpc.core.CrpcConfig;

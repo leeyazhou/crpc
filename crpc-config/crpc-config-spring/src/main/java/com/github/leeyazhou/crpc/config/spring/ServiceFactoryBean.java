@@ -20,9 +20,6 @@ package com.github.leeyazhou.crpc.config.spring;
 
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
-
-import com.github.leeyazhou.crpc.config.crpc.ModuleConfig;
-import com.github.leeyazhou.crpc.config.crpc.ServiceConfig;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.InitializingBean;
@@ -36,6 +33,8 @@ import com.github.leeyazhou.crpc.registry.RegistryFactory;
 import com.github.leeyazhou.crpc.rpc.util.RpcUtil;
 import com.github.leeyazhou.crpc.transport.factory.ServerFactory;
 import com.github.leeyazhou.crpc.transport.factory.ServiceHandler;
+import com.github.leeyazhou.crpc.config.ModuleConfig;
+import com.github.leeyazhou.crpc.config.ServiceConfig;
 import com.github.leeyazhou.crpc.core.Constants;
 import com.github.leeyazhou.crpc.core.URL;
 import com.github.leeyazhou.crpc.core.logger.Logger;

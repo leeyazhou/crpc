@@ -19,7 +19,7 @@
 package com.github.leeyazhou.crpc.transport.netty;
 
 import java.util.concurrent.TimeUnit;
-import com.github.leeyazhou.crpc.config.crpc.ServerConfig;
+import com.github.leeyazhou.crpc.config.ServerConfig;
 import com.github.leeyazhou.crpc.core.Constants;
 import com.github.leeyazhou.crpc.core.URL;
 import com.github.leeyazhou.crpc.core.concurrent.NamedThreadFactory;

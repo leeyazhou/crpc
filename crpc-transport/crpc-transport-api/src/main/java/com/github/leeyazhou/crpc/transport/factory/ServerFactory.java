@@ -19,8 +19,7 @@
 package com.github.leeyazhou.crpc.transport.factory;
 
 import java.util.concurrent.ExecutorService;
-
-import com.github.leeyazhou.crpc.config.crpc.ServerConfig;
+import com.github.leeyazhou.crpc.config.ServerConfig;
 import com.github.leeyazhou.crpc.transport.Filter;
 import com.github.leeyazhou.crpc.transport.FilterChain;
 

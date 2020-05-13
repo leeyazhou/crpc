@@ -32,8 +32,7 @@ import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.core.type.filter.AnnotationTypeFilter;
 import org.springframework.util.StringUtils;
 import org.w3c.dom.Element;
-
-import com.github.leeyazhou.crpc.config.crpc.Configuration;
+import com.github.leeyazhou.crpc.config.Configuration;
 import com.github.leeyazhou.crpc.config.spring.ServiceFactoryBean;
 import com.github.leeyazhou.crpc.config.spring.SpringBeanFactory;
 import com.github.leeyazhou.crpc.transport.Filter;

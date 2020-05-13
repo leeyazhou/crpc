@@ -17,15 +17,12 @@
  * 
  */
 
-package com.github.leeyazhou.crpc.config.crpc;
+package com.github.leeyazhou.crpc.config;
 
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
-import com.github.leeyazhou.crpc.config.IConfig;
-import com.github.leeyazhou.crpc.core.URL;
 import com.github.leeyazhou.crpc.core.util.StringUtil;
 
 /**
@@ -34,9 +31,8 @@ import com.github.leeyazhou.crpc.core.util.StringUtil;
  * @author leeyazhou
  *
  */
-public class ServiceGroupConfig implements IConfig {
+public class ServiceGroupConfig {
 
-  private static final long serialVersionUID = 7568469582675822581L;
   private String name;
   private String codec = "KRYO_CODEC";
   private int codecValue;
@@ -44,7 +40,7 @@ public class ServiceGroupConfig implements IConfig {
   private String protocol;
   private String loadbalance = "RANDOM";
   private Set<ServerConfig> servers = new HashSet<ServerConfig>();
-  private Set<URL> registries = new HashSet<URL>();
+  private Set<RegistryConfig> registryConfigs = new HashSet<RegistryConfig>();
   /**
    * 超时时间/ms
    */
@@ -126,19 +122,17 @@ public class ServiceGroupConfig implements IConfig {
   }
 
   /**
-   * @return the registries
+   * @return the registryConfigs
    */
-  public Set<URL> getRegistries() {
-    return registries;
+  public Set<RegistryConfig> getRegistryConfigs() {
+    return registryConfigs;
   }
 
   /**
-   * @param registries the registries to set
-   * @return {@link ServiceGroupConfig}
+   * @param registryConfigs the registryConfigs to set
    */
-  public ServiceGroupConfig setRegistries(Set<URL> registries) {
-    this.registries = registries;
-    return this;
+  public void setRegistryConfigs(Set<RegistryConfig> registryConfigs) {
+    this.registryConfigs = registryConfigs;
   }
 
   /**
@@ -148,23 +142,8 @@ public class ServiceGroupConfig implements IConfig {
     this.worker = worker;
   }
 
-  public ServiceGroupConfig addRegistry(String registryStr) {
-    if (registryStr == null) {
-      return this;
-    }
-    String[] data = registryStr.replaceAll("/", "").split(":");
-    if (data.length != 3) {
-      return this;
-    }
-    String potocol = data[0];
-    URL registryUrl = new URL(data[0], data[1], Integer.parseInt(data[2]));
-    registryUrl.setRegistryType(potocol);
-    this.registries.add(registryUrl);
-    return this;
-  }
-
-  public ServiceGroupConfig addRegistry(URL registryURL) {
-    this.registries.add(registryURL);
+  public ServiceGroupConfig addRegistryConfig(RegistryConfig registryConfig) {
+    this.registryConfigs.add(registryConfig);
     return this;
   }
 
@@ -193,8 +172,6 @@ public class ServiceGroupConfig implements IConfig {
     builder.append(loadbalance);
     builder.append(", servers=");
     builder.append(servers);
-    builder.append(", registries=");
-    builder.append(registries);
     builder.append(", timeout=");
     builder.append(timeout);
     builder.append(", filters=");

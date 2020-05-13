@@ -18,9 +18,6 @@
  */
 package com.github.leeyazhou.crpc.config.spring;
 
-import com.github.leeyazhou.crpc.config.crpc.Configuration;
-import com.github.leeyazhou.crpc.config.crpc.ServerConfig;
-import com.github.leeyazhou.crpc.config.crpc.ServiceGroupConfig;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.DisposableBean;
@@ -32,6 +29,9 @@ import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.util.StringUtils;
 
 import com.github.leeyazhou.crpc.rpc.util.RpcUtil;
+import com.github.leeyazhou.crpc.config.Configuration;
+import com.github.leeyazhou.crpc.config.ServerConfig;
+import com.github.leeyazhou.crpc.config.ServiceGroupConfig;
 import com.github.leeyazhou.crpc.core.logger.Logger;
 import com.github.leeyazhou.crpc.core.logger.LoggerFactory;
 

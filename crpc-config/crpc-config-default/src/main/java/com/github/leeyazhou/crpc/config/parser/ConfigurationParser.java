@@ -23,16 +23,13 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.net.URL;
-
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
-
-import com.github.leeyazhou.crpc.config.crpc.Configuration;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
-
+import com.github.leeyazhou.crpc.config.Configuration;
 import com.github.leeyazhou.crpc.config.IParser;
 import com.github.leeyazhou.crpc.core.exception.CrpcException;
 import com.github.leeyazhou.crpc.core.logger.Logger;
@@ -43,12 +40,10 @@ import com.github.leeyazhou.crpc.core.logger.LoggerFactory;
  */
 public class ConfigurationParser implements IParser<Configuration> {
 
-  private static final long serialVersionUID = 1890834464031377902L;
   private static final Logger logger = LoggerFactory.getLogger(ConfigurationParser.class);
   private String location;
 
-  public ConfigurationParser() {
-  }
+  public ConfigurationParser() {}
 
   public String getLocation() {
     return location;
@@ -70,8 +65,7 @@ public class ConfigurationParser implements IParser<Configuration> {
    * 4. location是部署目录配置文件目录conf的文件，则获取配置文件绝对地址后解析
    * 
    * @return {@link Configuration}
-   * @throws Exception
-   *           any exception
+   * @throws Exception any exception
    */
   private Element parse() throws Exception {
     if (null == location || location.length() == 0) {
@@ -116,15 +110,17 @@ public class ConfigurationParser implements IParser<Configuration> {
     configuration.setLocation(getLocation());
 
     NodeList nodeList = rootElement.getChildNodes();
-    ServiceGroupParser serviceParser = new ServiceGroupParser();
-    ServerParser serverParser = new ServerParser();
-
+    ServiceGroupParser serviceParser = new ServiceGroupParser(configuration);
+    ServerConfigParser serverParser = new ServerConfigParser(configuration);
+    ApplicationConfigParser applicationConfigParser = new ApplicationConfigParser(configuration);
     for (int i = 0; i < nodeList.getLength(); i++) {
       Node item = nodeList.item(i);
       if ("service".equals(item.getNodeName())) {
         configuration.addServiceGroupConfig(serviceParser.parse(item));
       } else if ("server".equals(item.getNodeName())) {
         configuration.addServerConfig(serverParser.parse(item));
+      } else if ("application".equals(item.getNodeName())) {
+        applicationConfigParser.parse(item);
       }
     }
 

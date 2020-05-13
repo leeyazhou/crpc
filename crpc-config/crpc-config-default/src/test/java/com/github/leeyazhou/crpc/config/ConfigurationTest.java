@@ -17,10 +17,9 @@
  * 
  */
 
-package com.github.leeyazhou.crpc.common.config;
+package com.github.leeyazhou.crpc.config;
 
 import org.junit.Test;
-import com.github.leeyazhou.crpc.config.crpc.Configuration;
 import com.github.leeyazhou.crpc.config.parser.ConfigurationParser;
 
 /**

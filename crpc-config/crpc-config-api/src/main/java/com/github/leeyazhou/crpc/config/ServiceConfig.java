@@ -16,19 +16,16 @@
 /**
  * 
  */
-package com.github.leeyazhou.crpc.config.crpc;
+package com.github.leeyazhou.crpc.config;
 
 import java.util.HashSet;
 import java.util.Set;
-
-import com.github.leeyazhou.crpc.config.IConfig;
 import com.github.leeyazhou.crpc.core.URL;
 
 /**
  * @author leeyazhou
  */
-public class ServiceConfig<T> implements IConfig {
-  private static final long serialVersionUID = 1L;
+public class ServiceConfig<T> {
   private String name;
   private Class<T> interfaceClass;
   private Class<T> implClass;
@@ -40,7 +37,7 @@ public class ServiceConfig<T> implements IConfig {
    * 超时时间/ms
    */
   private int timeout = 3000;
-  private Set<URL> registries = new HashSet<URL>();
+  private Set<RegistryConfig> registryConfigs = new HashSet<RegistryConfig>();
   private Set<URL> urls = new HashSet<URL>();
 
   /**
@@ -142,17 +139,17 @@ public class ServiceConfig<T> implements IConfig {
   }
 
   /**
-   * @return the registries
+   * @return the registryConfigs
    */
-  public Set<URL> getRegistries() {
-    return registries;
+  public Set<RegistryConfig> getRegistryConfigs() {
+    return registryConfigs;
   }
 
   /**
-   * @param registries the registries to set
+   * @param registryConfigs the registryConfigs to set
    */
-  public void setRegistries(Set<URL> registries) {
-    this.registries = registries;
+  public void setRegistryConfigs(Set<RegistryConfig> registryConfigs) {
+    this.registryConfigs = registryConfigs;
   }
 
   /**

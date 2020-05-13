@@ -13,24 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-/**
- * 
- */
+package com.github.leeyazhou.crpc.config;
 
-package com.github.leeyazhou.crpc.rpc.factory;
+import org.w3c.dom.Node;
 
-import com.github.leeyazhou.crpc.config.ServiceGroupConfig;
-import com.github.leeyazhou.crpc.rpc.ProxyFactory;
-
-/**
- * @author leeyazhou
- *
- */
-public final class JavassistProxyFactory implements ProxyFactory {
-
-  @Override
-  public <T> T getProxy(Class<T> objectType, ServiceGroupConfig serviceGroupConfig) {
-    return null;
-  }
-
+public interface IParser<T> {
+  T parse(Node node);
 }

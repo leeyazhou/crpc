@@ -23,10 +23,10 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
-
 import com.github.leeyazhou.crpc.config.IConfig;
+import com.github.leeyazhou.crpc.config.RegistryConfig;
+import com.github.leeyazhou.crpc.config.ServerConfig;
 import com.github.leeyazhou.crpc.config.server.DefaultBeanFactory;
-import com.github.leeyazhou.crpc.core.URL;
 import com.github.leeyazhou.crpc.core.annotation.Aspect;
 import com.github.leeyazhou.crpc.core.annotation.CRPCFilterType;
 import com.github.leeyazhou.crpc.core.annotation.CRPCService;
@@ -77,17 +77,18 @@ public class ProviderConfig implements IConfig {
   }
 
   private void prepareEnvironment(ServerConfig serverConfig, DefaultBeanFactory beanFactory) throws Exception {
-    if (serverConfig.getRegistries().isEmpty()) {
+    if (serverConfig.getRegistryConfigs().isEmpty()) {
       return;
     }
-    for (URL registryUrl : serverConfig.getRegistries()) {
-      RegistryFactory registryFactory = ServiceLoader.load(RegistryFactory.class).load(registryUrl.getRegistryType());
+    for (RegistryConfig registryConfig : serverConfig.getRegistryConfigs()) {
+      RegistryFactory registryFactory =
+          ServiceLoader.load(RegistryFactory.class).load(registryConfig.toURL().getProtocol());
 
-      registryFactory.createRegistry(registryUrl);
+      registryFactory.createRegistry(registryConfig.toURL());
     }
   }
 
-  @SuppressWarnings({ "unchecked", "rawtypes" })
+  @SuppressWarnings({"unchecked", "rawtypes"})
   private void initBeans(ServerConfig serverConfig, DefaultBeanFactory beanFactory) throws Exception {
     logger.info("location : " + serverConfig.getLocation());
     CrpcClassLoader.addSystemClassPathFolder(serverConfig.getLocation() + "/lib");
@@ -183,8 +184,7 @@ public class ProviderConfig implements IConfig {
   }
 
   /**
-   * @param servers
-   *          the servers to set
+   * @param servers the servers to set
    */
   public void setServers(List<ServerConfig> servers) {
     this.servers = servers;

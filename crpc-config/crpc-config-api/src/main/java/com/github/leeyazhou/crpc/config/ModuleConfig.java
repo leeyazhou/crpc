@@ -13,12 +13,45 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+/**
+ * 
+ */
 package com.github.leeyazhou.crpc.config;
 
-import java.io.Serializable;
+/**
+ * 
+ * @author leeyazhou
+ */
+public class ModuleConfig extends ServerConfig {
 
-import org.w3c.dom.Node;
 
-public interface IParser<T extends IConfig> extends Serializable {
-  T parse(Node node);
+
+  private String version;
+
+
+  /**
+   * @return the version
+   */
+  public String getVersion() {
+    return version;
+  }
+
+  /**
+   * @param version the version to set
+   */
+  public void setVersion(String version) {
+    this.version = version;
+  }
+
+  @Override
+  public String toString() {
+    StringBuilder builder = new StringBuilder();
+    builder.append("ModuleConfig [version=");
+    builder.append(version);
+    builder.append("]");
+    return builder.toString();
+  }
+
+
+
 }
