@@ -44,7 +44,6 @@
     <modules>
         <module>crpc-core</module>
         <module>crpc-rpc</module>
-        <module>crpc-showcase</module>
         <module>crpc-protocol</module>
         <module>crpc-console</module>
         <module>crpc-registry</module>
@@ -55,6 +54,7 @@
         <module>crpc-extension</module>
         <module>crpc-bom</module>
         <module>crpc-serializer</module>
+        <module>crpc-example</module>
     </modules>
     <scm>
         <connection>scm:git:git@github.com:${github.org}/${github.repo}.git</connection>
