@@ -18,16 +18,18 @@
 								<th class="center" style="width: 147px;">application</th>
 								<th class="center" style="width: 147px;">版本</th>
 							</tr>
-							<tr th:each="item : ${serviceProducers}" th:class="${item.odd}? 'odd'">
+							<tr th:each="item : ${serviceProducers}"
+								th:class="${item.odd}? 'odd'">
 								<td th:text="${item.serviceName}"></td>
 								<td th:text=""></td>
 								<td th:text=""></td>
 							</tr>
-							#foreach($item in $serviceProducers) 
-							#foreach($url in $!{item.getProvider().values()})
+							#foreach($item in $serviceProducers) #foreach($url in
+							$!{item.getProvider().values()})
 							<tr>
 								#if($!{velocityCount} == 1)
-								<td rowspan="$!{item.provider.size()}" style="vertical-align: middle;">$!{item.serviceName}</td> #end
+								<td rowspan="$!{item.provider.size()}"
+									style="vertical-align: middle;">$!{item.serviceName}</td> #end
 								<td>$!{url.host}</td>
 								<td>$!{url.port}</td>
 								<td>$!{url.parameters.application}</td>

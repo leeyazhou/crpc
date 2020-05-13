@@ -3,23 +3,23 @@
 
 <log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
 
-    <appender name="Console" class="org.apache.log4j.ConsoleAppender">
-        <layout class="org.apache.log4j.PatternLayout">
-            <param name="ConversionPattern" value="%d{yyyy-MM-dd HH:mm:ss.SSS} %-5p [%t]%c(%L) | %m%n" />
-        </layout>
-    </appender>
+  <appender name="Console" class="org.apache.log4j.ConsoleAppender">
+    <layout class="org.apache.log4j.PatternLayout">
+      <param name="ConversionPattern" value="%d{yyyy-MM-dd HH:mm:ss.SSS} %-5p [%t]%c(%L) | %m%n" />
+    </layout>
+  </appender>
 
-    <appender name="Monitor" class="org.apache.log4j.DailyRollingFileAppender">
-        <param name="DatePattern" value="'.'yyyy-MM-dd'.log'" />
-        <param name="File" value="logs/crpc-console.log" />
-        <layout class="org.apache.log4j.PatternLayout">
-            <param name="ConversionPattern" value="%d{yyyy-MM-dd HH:mm:ss.SSS} %-5p [%t]%c(%L) | %m%n" />
-        </layout>
-    </appender>
+  <appender name="Monitor" class="org.apache.log4j.DailyRollingFileAppender">
+    <param name="DatePattern" value="'.'yyyy-MM-dd'.log'" />
+    <param name="File" value="logs/crpc-console.log" />
+    <layout class="org.apache.log4j.PatternLayout">
+      <param name="ConversionPattern" value="%d{yyyy-MM-dd HH:mm:ss.SSS} %-5p [%t]%c(%L) | %m%n" />
+    </layout>
+  </appender>
 
-    <root>
-        <level value="debug" />
-        <appender-ref ref="Monitor" />
-        <appender-ref ref="Console" />
-    </root>
+  <root>
+    <level value="debug" />
+    <appender-ref ref="Monitor" />
+    <appender-ref ref="Console" />
+  </root>
 </log4j:configuration>

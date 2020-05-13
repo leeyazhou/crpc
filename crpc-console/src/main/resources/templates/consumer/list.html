@@ -10,7 +10,9 @@
 			<div class="wrapper wrapper-content">
 				<div class="row col-lg-13 ibox ibox-content">
 					<div class="table-responsive">
-						<table class="table table-striped table-bordered table-hover dataTable dtr-inline" role="grid">
+						<table
+							class="table table-striped table-bordered table-hover dataTable dtr-inline"
+							role="grid">
 							<tr role="row">
 								<th class="center" style="width: 171px;">服务名称</th>
 								<th class="center" style="width: 215px;">-</th>
@@ -18,7 +20,8 @@
 								<th class="center" style="width: 147px;">-</th>
 								<th class="center" style="width: 110px;">-</th>
 							</tr>
-							<tr th:each="item : ${serviceProducers}" th:class="${item.odd}? 'odd'">
+							<tr th:each="item : ${serviceProducers}"
+								th:class="${item.odd}? 'odd'">
 								<td th:text="${item.serviceName}"></td>
 								<td th:text=""></td>
 								<td th:text=""></td>

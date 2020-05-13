@@ -29,6 +29,5 @@
         <module>crpc-registry-api</module>
         <module>crpc-registry-zookeeper</module>
         <module>crpc-registry-redis</module>
-        <module>crpc-registry-etcd</module>
     </modules>
 </project>

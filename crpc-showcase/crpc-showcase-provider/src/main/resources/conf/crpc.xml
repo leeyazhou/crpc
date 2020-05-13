@@ -1,14 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<crpc xmlns="http://www.github.cn/crpc/crpc"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://www.github.cn/crpc/crpc http://tw.github.cn/crpc/crpc.xsd">
+<crpc xmlns="http://www.github.cn/crpc/crpc" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.github.cn/crpc/crpc http://tw.github.cn/crpc/crpc.xsd">
 
 
-	<server name="userservice" address="tcp://127.0.0.1:12200" worker="100" sync="false">
+  <server name="userservice" address="tcp://127.0.0.1:12200" worker="100" sync="false">
 		<!-- <registry address="zookeeper://127.0.0.1:2181" /> -->
 		<!-- <scan basepackage="com.github.leeyazhou.showcase"
 			filter="ipFilter, counterFilter, monitorFilter, traceFilter, sentinelFilter" /> -->
-			<scan basepackage="com.github.leeyazhou.crpc.showcase"/>
-	</server>
+    <scan basepackage="com.github.leeyazhou.crpc.showcase" />
+  </server>
 
 </crpc>
