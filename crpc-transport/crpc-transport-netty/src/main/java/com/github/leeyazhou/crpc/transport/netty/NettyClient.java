@@ -16,15 +16,13 @@
 package com.github.leeyazhou.crpc.transport.netty;
 
 import java.util.concurrent.atomic.AtomicInteger;
-
-import com.github.leeyazhou.crpc.protocol.Request;
 import com.github.leeyazhou.crpc.transport.AbstractClient;
 import com.github.leeyazhou.crpc.transport.Channel;
 import com.github.leeyazhou.crpc.core.Constants;
 import com.github.leeyazhou.crpc.core.URL;
 import com.github.leeyazhou.crpc.core.logger.Logger;
 import com.github.leeyazhou.crpc.core.logger.LoggerFactory;
-
+import com.github.leeyazhou.crpc.protocol.message.RequestMessage;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelFutureListener;
@@ -43,7 +41,7 @@ public class NettyClient extends AbstractClient {
   }
 
   @Override
-  public void doSendRequest(final Request request, final int timeout) throws Exception {
+  public void doSendRequest(final RequestMessage request, final int timeout) throws Exception {
     channel.send(request, timeout);
   }
 

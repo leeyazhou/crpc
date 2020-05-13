@@ -13,17 +13,37 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.leeyazhou.crpc.protocol.codec.kryo.util;
+package com.github.leeyazhou.crpc.protocol.codec.kryo;
 
 import com.esotericsoftware.kryo.Kryo;
+import com.esotericsoftware.kryo.io.Input;
+import com.esotericsoftware.kryo.io.Output;
+import com.github.leeyazhou.crpc.protocol.codec.Codec;
 
-public class KryoUtils {
+public class KryoCodec implements Codec {
 
-  // private static final Set<ClassItem> classSet = new HashSet<ClassItem>();
-
-  private KryoUtils() {
+  @Override
+  public Object decode(String className, byte[] bytes) throws Exception {
+    Input input = new Input(bytes);
+    try {
+      return getKryo().readClassAndObject(input);
+    } finally {
+      input.close();
+    }
   }
 
+  @Override
+  public byte[] encode(Object object) throws Exception {
+    Output output = new Output(256, -1);
+    try {
+      getKryo().writeClassAndObject(output, object);
+      return output.toBytes();
+    } finally {
+      output.flush();
+      output.close();
+    }
+  }
+  
   private static final ThreadLocal<Kryo> kryosLocal = new ThreadLocal<Kryo>() {
     protected Kryo initialValue() {
       Kryo kryo = new Kryo();

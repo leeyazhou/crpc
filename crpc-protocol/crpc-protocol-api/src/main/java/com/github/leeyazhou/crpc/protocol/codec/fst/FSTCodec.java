@@ -13,29 +13,36 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.leeyazhou.crpc.protocol.codec.jdk;
+/**
+ * 
+ */
 
-import java.io.ByteArrayInputStream;
-import java.io.ObjectInputStream;
+package com.github.leeyazhou.crpc.protocol.codec.fst;
 
-import com.github.leeyazhou.crpc.protocol.codec.Decoder;
+import org.nustaq.serialization.FSTConfiguration;
+import com.github.leeyazhou.crpc.protocol.codec.Codec;
 
-public class JavaDecoder implements Decoder {
+/**
+ * @author leeyazhou
+ */
+public class FSTCodec implements Codec {
+  private final FSTConfiguration configuration = FSTConfiguration.createDefaultConfiguration();
 
   @Override
   public Object decode(String className, byte[] bytes) throws Exception {
-    ObjectInputStream objectIn = null;
-    Object resultObject = null;
-    try {
-      objectIn = new ObjectInputStream(new ByteArrayInputStream(bytes));
-      resultObject = objectIn.readObject();
-    } finally {
-      if (null != objectIn) {
-        objectIn.close();
-      }
-    }
-
-    return resultObject;
+    return getConfiguration().asObject(bytes);
   }
 
+  @Override
+  public byte[] encode(Object object) throws Exception {
+    return getConfiguration().asByteArray(object);
+  }
+
+
+  /**
+   * @return the configuration
+   */
+  public FSTConfiguration getConfiguration() {
+    return configuration;
+  }
 }

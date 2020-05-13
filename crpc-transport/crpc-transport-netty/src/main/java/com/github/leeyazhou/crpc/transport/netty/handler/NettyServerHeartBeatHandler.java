@@ -22,12 +22,10 @@ package com.github.leeyazhou.crpc.transport.netty.handler;
 import java.util.concurrent.TimeUnit;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import com.github.leeyazhou.crpc.protocol.Header;
-import com.github.leeyazhou.crpc.protocol.Request;
-import com.github.leeyazhou.crpc.protocol.Response;
-import com.github.leeyazhou.crpc.core.object.MessageType;
-
+import com.github.leeyazhou.crpc.protocol.message.Message;
+import com.github.leeyazhou.crpc.protocol.message.MessageType;
+import com.github.leeyazhou.crpc.protocol.message.RequestMessage;
+import com.github.leeyazhou.crpc.protocol.message.ResponseMessage;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandlerContext;
@@ -81,19 +79,19 @@ public class NettyServerHeartBeatHandler extends IdleStateHandler {
 
   @Override
   public void channelRead(final ChannelHandlerContext ctx, Object msg) throws Exception {
-    if (!(msg instanceof Header)) {
+    if (!(msg instanceof Message)) {
       super.channelRead(ctx, msg);
       return;
     }
 
-    Header header = (Header) msg;
+    Message header = (Message) msg;
     if (MessageType.MESSAGE_COMMON.equals(header.getMessageType())) {
       super.channelRead(ctx, msg);
       return;
     }
 
-    if (msg instanceof Request) {
-      Response response = new Response(0, header.getCodecType(), header.getProtocolType(), MessageType.MESSAGE_HEARTBEAT);
+    if (msg instanceof RequestMessage) {
+      ResponseMessage response = new ResponseMessage(0, header.getCodecType(), header.getProtocolType(), MessageType.MESSAGE_HEARTBEAT);
       ChannelFuture channelFuture = ctx.channel().writeAndFlush(response);
       channelFuture.addListener(new ChannelFutureListener() {
         @Override

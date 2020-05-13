@@ -15,12 +15,29 @@
  */
 package com.github.leeyazhou.crpc.protocol.codec.jdk;
 
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import com.github.leeyazhou.crpc.protocol.codec.Codec;
 
-import com.github.leeyazhou.crpc.protocol.codec.Encoder;
+public class JavaCodec implements Codec {
 
-public class JavaEncoder implements Encoder {
+  @Override
+  public Object decode(String className, byte[] bytes) throws Exception {
+    ObjectInputStream objectIn = null;
+    Object resultObject = null;
+    try {
+      objectIn = new ObjectInputStream(new ByteArrayInputStream(bytes));
+      resultObject = objectIn.readObject();
+    } finally {
+      if (null != objectIn) {
+        objectIn.close();
+      }
+    }
+
+    return resultObject;
+  }
 
   @Override
   public byte[] encode(Object object) throws Exception {
@@ -38,5 +55,4 @@ public class JavaEncoder implements Encoder {
     }
     return byteArray.toByteArray();
   }
-
 }

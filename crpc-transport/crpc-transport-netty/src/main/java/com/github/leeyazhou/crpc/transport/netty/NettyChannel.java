@@ -18,8 +18,6 @@
  */
 package com.github.leeyazhou.crpc.transport.netty;
 
-import com.github.leeyazhou.crpc.protocol.Request;
-import com.github.leeyazhou.crpc.protocol.Response;
 import com.github.leeyazhou.crpc.transport.Channel;
 import com.github.leeyazhou.crpc.transport.Client;
 import com.github.leeyazhou.crpc.transport.TransportFactory;
@@ -31,7 +29,8 @@ import com.github.leeyazhou.crpc.core.logger.Logger;
 import com.github.leeyazhou.crpc.core.logger.LoggerFactory;
 import com.github.leeyazhou.crpc.core.util.ExceptionUtil;
 import com.github.leeyazhou.crpc.core.util.ServiceLoader;
-
+import com.github.leeyazhou.crpc.protocol.message.RequestMessage;
+import com.github.leeyazhou.crpc.protocol.message.ResponseMessage;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelFutureListener;
 
@@ -53,7 +52,7 @@ public class NettyChannel implements Channel {
   }
 
   @Override
-  public void send(final Request request, final int timeout) {
+  public void send(final RequestMessage request, final int timeout) {
 
     final long beginTime = System.currentTimeMillis();
     // requestWrapper.getMessageLen();
@@ -89,7 +88,7 @@ public class NettyChannel implements Channel {
         }
         Exception ex = new CrpcConnectException(errorMsg.toString(), future.cause());
         logger.error("", ex);
-        Response response = new Response(request.getId(), request.getCodecType(), request.getProtocolType());
+        ResponseMessage response = new ResponseMessage(request.getId(), request.getCodecType(), request.getProtocolType());
         response.setError(Boolean.TRUE);
         response.setResponseClassName(CrpcException.class.getName());
         // response.setException(ExceptionUtil.getErrorMessage(ex));

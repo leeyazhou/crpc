@@ -19,8 +19,10 @@
 package com.github.leeyazhou.crpc.transport.netty;
 
 import java.util.concurrent.TimeUnit;
-
 import com.github.leeyazhou.crpc.config.crpc.ServerConfig;
+import com.github.leeyazhou.crpc.core.Constants;
+import com.github.leeyazhou.crpc.core.URL;
+import com.github.leeyazhou.crpc.core.concurrent.NamedThreadFactory;
 import com.github.leeyazhou.crpc.protocol.netty.NettyProtocolDecoder;
 import com.github.leeyazhou.crpc.protocol.netty.NettyProtocolEncoder;
 import com.github.leeyazhou.crpc.transport.AbstractTransportFactory;
@@ -29,10 +31,6 @@ import com.github.leeyazhou.crpc.transport.Server;
 import com.github.leeyazhou.crpc.transport.factory.ServerFactory;
 import com.github.leeyazhou.crpc.transport.netty.handler.NettyClientHandler;
 import com.github.leeyazhou.crpc.transport.netty.handler.NettyClientHeartBeatHandler;
-import com.github.leeyazhou.crpc.core.Constants;
-import com.github.leeyazhou.crpc.core.URL;
-import com.github.leeyazhou.crpc.core.concurrent.SimpleNamedThreadFactory;
-
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelOption;
@@ -46,7 +44,7 @@ import io.netty.channel.socket.nio.NioSocketChannel;
  *
  */
 public class NettyTransportFactory extends AbstractTransportFactory {
-  private static final EventLoopGroup bussinessGroup = new NioEventLoopGroup(0, new SimpleNamedThreadFactory("crpc-client"));
+  private static final EventLoopGroup bussinessGroup = new NioEventLoopGroup(0, new NamedThreadFactory("crpc-client"));
 
   @Override
   public Server createServer(ServerConfig serverConfig, ServerFactory beanFactory) {

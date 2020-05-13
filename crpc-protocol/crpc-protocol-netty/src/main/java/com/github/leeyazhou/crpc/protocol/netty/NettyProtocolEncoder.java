@@ -15,9 +15,8 @@
  */
 package com.github.leeyazhou.crpc.protocol.netty;
 
-import com.github.leeyazhou.crpc.protocol.Header;
 import com.github.leeyazhou.crpc.protocol.ProtocolFactory;
-
+import com.github.leeyazhou.crpc.protocol.message.Message;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.MessageToByteEncoder;
@@ -27,10 +26,10 @@ import io.netty.handler.codec.MessageToByteEncoder;
  * @author leeyazhou
  *
  */
-public class NettyProtocolEncoder extends MessageToByteEncoder<Header> {
+public class NettyProtocolEncoder extends MessageToByteEncoder<Message> {
 
   @Override
-  protected void encode(ChannelHandlerContext ctx, Header msg, ByteBuf out) throws Exception {
+  protected void encode(ChannelHandlerContext ctx, Message msg, ByteBuf out) throws Exception {
     NettyByteBufWrapper byteBuffer = new NettyByteBufWrapper(out);
     ProtocolFactory.getProtocol().encode(byteBuffer, msg);
   }

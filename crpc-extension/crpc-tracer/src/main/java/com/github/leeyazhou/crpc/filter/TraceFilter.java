@@ -17,8 +17,6 @@ package com.github.leeyazhou.crpc.filter;
 
 import java.util.HashMap;
 import java.util.Map;
-
-import com.github.leeyazhou.crpc.protocol.Response;
 import com.github.leeyazhou.crpc.transport.RpcContext;
 import com.github.leeyazhou.crpc.transport.filter.AbstractFilter;
 import com.github.leeyazhou.crpc.core.annotation.CRPCFilterType;
@@ -26,7 +24,7 @@ import com.github.leeyazhou.crpc.core.exception.CrpcException;
 import com.github.leeyazhou.crpc.core.logger.Logger;
 import com.github.leeyazhou.crpc.core.logger.LoggerFactory;
 import com.github.leeyazhou.crpc.core.object.SideType;
-
+import com.github.leeyazhou.crpc.protocol.message.ResponseMessage;
 import brave.Tracing;
 import brave.opentracing.BraveTracer;
 import io.opentracing.Scope;
@@ -50,7 +48,7 @@ public class TraceFilter extends AbstractFilter {
   private static final Logger logger = LoggerFactory.getLogger(TraceFilter.class);
 
   @Override
-  public Response handle(RpcContext context) {
+  public ResponseMessage handle(RpcContext context) {
     logger.info("start .分布式调用链追踪");
     Span span = tracer.buildSpan("crpc-demo-provider").start();
     span.log("开始");

@@ -21,7 +21,7 @@ package com.github.leeyazhou.crpc.protocol.rpc;
 
 import org.junit.Test;
 
-import com.github.leeyazhou.crpc.protocol.codec.Codecs;
+import com.github.leeyazhou.crpc.protocol.codec.CodecType;
 import com.github.leeyazhou.crpc.protocol.model.User;
 
 /**
@@ -32,15 +32,15 @@ public class ProtocolCodecTest {
   @Test
   public void testEncode() throws Exception {
     User user = new User(100, 100, "CRPC技术部", "admin@github.cn");
-    byte[] bytes = Codecs.KRYO_CODEC.getEncoder().encode(user);
-    Object object = Codecs.KRYO_CODEC.getDecoder().decode(User.class.getName(), bytes);
+    byte[] bytes = CodecType.KRYO_CODEC.getCodec().encode(user);
+    Object object = CodecType.KRYO_CODEC.getCodec().decode(User.class.getName(), bytes);
     System.out.println(object);
   }
 
   @Test
   public void testDecode() throws Exception {
     User user = new User(100, 100, "CRPC技术部", "admin@github.cn");
-    byte[] bytes = Codecs.KRYO_CODEC.getEncoder().encode(user);
+    byte[] bytes = CodecType.KRYO_CODEC.getCodec().encode(user);
     System.out.println(bytes);
   }
 }

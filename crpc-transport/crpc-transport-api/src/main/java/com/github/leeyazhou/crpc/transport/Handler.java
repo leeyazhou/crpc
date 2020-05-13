@@ -18,7 +18,7 @@
  */
 package com.github.leeyazhou.crpc.transport;
 
-import com.github.leeyazhou.crpc.protocol.Response;
+import com.github.leeyazhou.crpc.protocol.message.ResponseMessage;
 
 /**
  * 
@@ -40,8 +40,8 @@ public interface Handler<T> {
    * 请求处理
    * 
    * @param context 请求上下文
-   * @return 结果 {@link Response}
+   * @return 结果 {@link ResponseMessage}
    */
-  Response handle(RpcContext context);
+  ResponseMessage handle(RpcContext context);
 
 }

@@ -18,7 +18,7 @@
  */
 package com.github.leeyazhou.crpc.transport;
 
-import com.github.leeyazhou.crpc.protocol.Request;
+import com.github.leeyazhou.crpc.protocol.message.RequestMessage;
 
 /**
  * @author lee
@@ -26,7 +26,7 @@ import com.github.leeyazhou.crpc.protocol.Request;
  */
 public interface Channel {
 
-  public void send(Request request, int timeout);
+  public void send(RequestMessage request, int timeout);
 
   public boolean isConnected();
 

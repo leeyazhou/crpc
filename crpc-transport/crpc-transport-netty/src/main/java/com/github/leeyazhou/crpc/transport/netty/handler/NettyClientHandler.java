@@ -16,18 +16,17 @@
 package com.github.leeyazhou.crpc.transport.netty.handler;
 
 import java.io.IOException;
-
-import com.github.leeyazhou.crpc.protocol.Request;
-import com.github.leeyazhou.crpc.protocol.Response;
 import com.github.leeyazhou.crpc.protocol.SimpleProtocol;
-import com.github.leeyazhou.crpc.protocol.codec.Codecs;
+import com.github.leeyazhou.crpc.protocol.codec.CodecType;
+import com.github.leeyazhou.crpc.protocol.message.MessageType;
+import com.github.leeyazhou.crpc.protocol.message.RequestMessage;
+import com.github.leeyazhou.crpc.protocol.message.ResponseMessage;
 import com.github.leeyazhou.crpc.transport.TransportFactory;
 import com.github.leeyazhou.crpc.transport.netty.NettyClient;
 import com.github.leeyazhou.crpc.core.Constants;
 import com.github.leeyazhou.crpc.core.URL;
 import com.github.leeyazhou.crpc.core.logger.Logger;
 import com.github.leeyazhou.crpc.core.logger.LoggerFactory;
-import com.github.leeyazhou.crpc.core.object.MessageType;
 import com.github.leeyazhou.crpc.core.util.ServiceLoader;
 
 import io.netty.channel.ChannelHandler.Sharable;
@@ -40,12 +39,12 @@ import io.netty.handler.timeout.IdleStateEvent;
  * @author leeyazhou
  */
 @Sharable
-public class NettyClientHandler extends SimpleChannelInboundHandler<Response> {
+public class NettyClientHandler extends SimpleChannelInboundHandler<ResponseMessage> {
 
   private static final Logger logger = LoggerFactory.getLogger(NettyClientHandler.class);
   private static final boolean isTraceEnabled = logger.isTraceEnabled();
-  private static final Request ping =
-      new Request(Codecs.KRYO_CODEC.getId(), SimpleProtocol.PROTOCOL_TYPE, MessageType.MESSAGE_HEARTBEAT);
+  private static final RequestMessage ping =
+      new RequestMessage(CodecType.KRYO_CODEC.getId(), SimpleProtocol.PROTOCOL_TYPE, MessageType.MESSAGE_HEARTBEAT);
 
   private URL url;
 
@@ -67,7 +66,7 @@ public class NettyClientHandler extends SimpleChannelInboundHandler<Response> {
   }
 
   @Override
-  protected void channelRead0(ChannelHandlerContext ctx, Response response) throws Exception {
+  protected void channelRead0(ChannelHandlerContext ctx, ResponseMessage response) throws Exception {
     if (isTraceEnabled) {
       logger
           .trace(

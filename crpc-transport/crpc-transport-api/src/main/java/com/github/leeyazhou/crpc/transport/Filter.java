@@ -19,8 +19,8 @@
 
 package com.github.leeyazhou.crpc.transport;
 
-import com.github.leeyazhou.crpc.protocol.Response;
 import com.github.leeyazhou.crpc.core.Ordered;
+import com.github.leeyazhou.crpc.protocol.message.ResponseMessage;
 
 /**
  * @author lee
@@ -30,7 +30,7 @@ public interface Filter extends Handler<Filter>, Ordered {
   /**
    * 拦截处理时返回结果，如果不拦截的话返回Null
    */
-  Response handle(RpcContext context);
+  ResponseMessage handle(RpcContext context);
 
   void setNext(Filter filter);
 }

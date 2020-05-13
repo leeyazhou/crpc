@@ -20,16 +20,14 @@ package com.github.leeyazhou.crpc.showcase.filter;
 
 import java.util.HashMap;
 import java.util.Map;
-
-import com.github.leeyazhou.crpc.protocol.Request;
-import com.github.leeyazhou.crpc.protocol.RequestHeader;
-import com.github.leeyazhou.crpc.protocol.Response;
 import com.github.leeyazhou.crpc.transport.RpcContext;
 import com.github.leeyazhou.crpc.transport.filter.AbstractFilter;
 import com.github.leeyazhou.crpc.core.annotation.CRPCFilterType;
 import com.github.leeyazhou.crpc.core.exception.CrpcException;
 import com.github.leeyazhou.crpc.core.object.SideType;
-
+import com.github.leeyazhou.crpc.protocol.message.Header;
+import com.github.leeyazhou.crpc.protocol.message.RequestMessage;
+import com.github.leeyazhou.crpc.protocol.message.ResponseMessage;
 import brave.Tracing;
 import brave.opentracing.BraveTracer;
 import io.opentracing.Scope;
@@ -58,13 +56,13 @@ public class TraceFilter extends AbstractFilter {
           .localServiceName("crpc-demo-provider").build());
 
   @Override
-  public Response handle(RpcContext context) {
+  public ResponseMessage handle(RpcContext context) {
     logger.info("分布式调用链追踪start");
-    final Request request = context.getRequest();
+    final RequestMessage request = context.getRequest();
     String spanName = request.getTargetClassName() + "." + request.getMethodName();
     logger.info("spanName : " + spanName);
     SpanBuilder spanBuilder = tracer.buildSpan(spanName);
-    Map<String, String> headerMap = getMap(request.getRequestHeaders());
+    Map<String, String> headerMap = getMap(request.getHeaders());
     String log = "客户端";
     SpanContext spanContext = null;
     if (headerMap != null) {
@@ -108,11 +106,11 @@ public class TraceFilter extends AbstractFilter {
     }
   }
 
-  private Map<String, String> getMap(RequestHeader[] headers) {
+  private Map<String, String> getMap(Header[] headers) {
     Map<String, String> map = null;
     if (headers != null) {
       map = new HashMap<String, String>();
-      for (RequestHeader header : headers) {
+      for (Header header : headers) {
         map.put(header.getKey(), (String) header.getValue());
         logger.info("解压请求头：" + header);
       }
@@ -120,13 +118,13 @@ public class TraceFilter extends AbstractFilter {
     return map;
   }
 
-  private void addHeader(Request request, Map<String, String> map) {
-    RequestHeader[] requestHeaders = new RequestHeader[map.size()];
+  private void addHeader(RequestMessage request, Map<String, String> map) {
+    Header[] requestHeaders = new Header[map.size()];
     int i = 0;
     for (Map.Entry<String, String> entry : map.entrySet()) {
-      requestHeaders[i++] = new RequestHeader(entry.getKey(), entry.getValue());
+      requestHeaders[i++] = new Header(entry.getKey(), entry.getValue());
       logger.info("注入请求头:" + entry.toString());
     }
-    request.setRequestHeaders(requestHeaders);
+    request.setHeaders(requestHeaders);
   }
 }

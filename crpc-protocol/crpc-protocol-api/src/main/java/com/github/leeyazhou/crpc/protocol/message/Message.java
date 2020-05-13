@@ -17,16 +17,14 @@
  * 
  */
 
-package com.github.leeyazhou.crpc.protocol;
+package com.github.leeyazhou.crpc.protocol.message;
 
 import java.io.Serializable;
 
-import com.github.leeyazhou.crpc.core.object.MessageType;
-
 /**
- * @author lee
+ * @author leeyazhou
  */
-public abstract class Header implements Serializable {
+public abstract class Message implements Serializable {
   private static final long serialVersionUID = 7499489102375486122L;
 
   private int version;
@@ -35,7 +33,7 @@ public abstract class Header implements Serializable {
 
   private int codecType;
 
-  private RequestHeader[] requestHeaders;
+  private Header[] headers;
 
   private int id;
 
@@ -44,13 +42,13 @@ public abstract class Header implements Serializable {
    */
   private MessageType messageType = MessageType.MESSAGE_COMMON;
 
-  public Header() {}
+  public Message() {}
 
-  Header(int codecType, int protocolType) {
+  Message(int codecType, int protocolType) {
     this(codecType, protocolType, MessageType.MESSAGE_COMMON);
   }
 
-  Header(int codecType, int protocolType, MessageType messageType) {
+  Message(int codecType, int protocolType, MessageType messageType) {
     this.codecType = codecType;
     this.protocolType = protocolType;
     this.messageType = messageType;
@@ -92,7 +90,7 @@ public abstract class Header implements Serializable {
   /**
    * {@link MessageType}
    * 
-   * @param messageType messageType
+   * @param messageType {@link MessageType}
    */
   public void setMessageType(MessageType messageType) {
     this.messageType = messageType;
@@ -124,25 +122,25 @@ public abstract class Header implements Serializable {
     this.id = id;
   }
 
-  public void setRequestHeaders(RequestHeader[] requestHeaders) {
-    this.requestHeaders = requestHeaders;
+  public void setHeaders(Header[] headers) {
+    this.headers = headers;
   }
 
-  public RequestHeader[] getRequestHeaders() {
-    return requestHeaders;
+  public Header[] getHeaders() {
+    return headers;
   }
 
-  public void addRequestHeader(RequestHeader requestHeader) {
-    if (this.requestHeaders == null) {
-      requestHeaders = new RequestHeader[1];
-      requestHeaders[0] = requestHeader;
+  public void addHeader(Header header) {
+    if (this.headers == null) {
+      this.headers = new Header[1];
+      this.headers[0] = header;
       return;
     }
 
-    RequestHeader[] requestHeader2 = new RequestHeader[this.requestHeaders.length + 1];
-    System.arraycopy(this.requestHeaders, 0, requestHeader2, 0, requestHeaders.length);
-    requestHeader2[requestHeaders.length + 1] = requestHeader;
-    this.requestHeaders = requestHeader2;
+    Header[] requestHeader2 = new Header[this.headers.length + 1];
+    System.arraycopy(this.headers, 0, requestHeader2, 0, headers.length);
+    requestHeader2[headers.length + 1] = header;
+    this.headers = requestHeader2;
 
   }
 }

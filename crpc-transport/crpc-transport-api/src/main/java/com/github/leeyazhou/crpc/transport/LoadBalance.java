@@ -20,8 +20,7 @@
 package com.github.leeyazhou.crpc.transport;
 
 import java.util.List;
-
-import com.github.leeyazhou.crpc.protocol.Request;
+import com.github.leeyazhou.crpc.protocol.message.RequestMessage;
 
 /**
  * @author lee
@@ -35,6 +34,6 @@ public interface LoadBalance {
    * @param request request object
    * @return {@link Client}
    */
-  Client chooseOne(List<Client> clients, Request request);
+  Client chooseOne(List<Client> clients, RequestMessage request);
 
 }

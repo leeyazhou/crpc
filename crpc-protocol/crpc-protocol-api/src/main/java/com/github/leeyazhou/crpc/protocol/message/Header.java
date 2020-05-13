@@ -16,20 +16,20 @@
 /**
  * 
  */
-package com.github.leeyazhou.crpc.protocol;
+package com.github.leeyazhou.crpc.protocol.message;
 
 /**
  * @author leeyazhou
  */
-public class RequestHeader {
+public class Header {
 
   private String key;
   private Object value;
   
-  public RequestHeader() {
+  public Header() {
   }
 
-  public RequestHeader(String key, Object value) {
+  public Header(String key, Object value) {
     this.key = key;
     this.value = value;
   }

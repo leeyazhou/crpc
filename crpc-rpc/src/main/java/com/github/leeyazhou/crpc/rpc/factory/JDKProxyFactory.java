@@ -25,7 +25,7 @@ import com.github.leeyazhou.crpc.rpc.ProxyFactory;
 import com.github.leeyazhou.crpc.rpc.handler.ProxyHandler;
 
 /**
- * @author lee
+ * @author leeyazhou
  */
 public final class JDKProxyFactory implements ProxyFactory {
 

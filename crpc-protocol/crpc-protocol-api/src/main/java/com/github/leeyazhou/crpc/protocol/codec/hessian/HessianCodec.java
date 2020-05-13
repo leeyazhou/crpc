@@ -19,15 +19,25 @@
 
 package com.github.leeyazhou.crpc.protocol.codec.hessian;
 
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-
+import com.caucho.hessian.io.Hessian2Input;
 import com.caucho.hessian.io.Hessian2Output;
-import com.github.leeyazhou.crpc.protocol.codec.Encoder;
+import com.github.leeyazhou.crpc.protocol.codec.Codec;
 
 /**
  * @author lee
  */
-public class HessianEncoder implements Encoder {
+public class HessianCodec implements Codec {
+
+  @Override
+  public Object decode(String className, byte[] bytes) throws Exception {
+    Hessian2Input input = new Hessian2Input(new ByteArrayInputStream(bytes));
+    Object resultObject = input.readObject();
+    input.close();
+    return resultObject;
+
+  }
 
   @Override
   public byte[] encode(Object object) throws Exception {
@@ -39,5 +49,4 @@ public class HessianEncoder implements Encoder {
     return bytes;
 
   }
-
 }

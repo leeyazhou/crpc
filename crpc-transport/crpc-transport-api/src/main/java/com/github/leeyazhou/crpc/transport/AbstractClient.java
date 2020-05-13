@@ -19,15 +19,14 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
-
-import com.github.leeyazhou.crpc.protocol.Request;
-import com.github.leeyazhou.crpc.protocol.Response;
 import com.github.leeyazhou.crpc.core.URL;
 import com.github.leeyazhou.crpc.core.exception.CrpcException;
 import com.github.leeyazhou.crpc.core.exception.TimeoutException;
 import com.github.leeyazhou.crpc.core.logger.Logger;
 import com.github.leeyazhou.crpc.core.logger.LoggerFactory;
 import com.github.leeyazhou.crpc.core.util.ServiceLoader;
+import com.github.leeyazhou.crpc.protocol.message.RequestMessage;
+import com.github.leeyazhou.crpc.protocol.message.ResponseMessage;
 
 public abstract class AbstractClient implements Client {
   private static final Logger logger = LoggerFactory.getLogger(AbstractClient.class);
@@ -46,7 +45,7 @@ public abstract class AbstractClient implements Client {
   }
 
   @Override
-  public Response sendRequest(Request request) {
+  public ResponseMessage sendRequest(RequestMessage request) {
     long beginTime = System.currentTimeMillis();
     final RpcResult rpcResult = new RpcResult();
     responses.putIfAbsent(request.getId(), rpcResult);
@@ -65,7 +64,7 @@ public abstract class AbstractClient implements Client {
       logger.error(msg, err);
       throw new CrpcException(msg, err);
     }
-    Response response = null;
+    ResponseMessage response = null;
     try {
       response =
           rpcResult.getResponse(request.getTimeout() - (System.currentTimeMillis() - beginTime), TimeUnit.MILLISECONDS);
@@ -109,7 +108,7 @@ public abstract class AbstractClient implements Client {
    * receive response
    */
   @Override
-  public void putResponse(Response response) {
+  public void putResponse(ResponseMessage response) {
     if (!responses.containsKey(response.getId())) {
       logger.warn("give up the response,request id is:" + response.getId() + ",maybe because timeout!");
       return;
@@ -130,11 +129,11 @@ public abstract class AbstractClient implements Client {
   /**
    * send request to os sendbuffer,must ensure write result
    * 
-   * @param request {@link Request}
+   * @param request {@link RequestMessage}
    * @param timeout timeout
    * @throws Exception any exception
    */
-  public abstract void doSendRequest(Request request, int timeout) throws Exception;
+  public abstract void doSendRequest(RequestMessage request, int timeout) throws Exception;
 
   /**
    * result holder
@@ -144,18 +143,18 @@ public abstract class AbstractClient implements Client {
    */
   class RpcResult {
     private final CountDownLatch countDownLatch;
-    private Response response;
+    private ResponseMessage response;
 
     public RpcResult() {
       countDownLatch = new CountDownLatch(1);
     }
 
-    public Response getResponse(long timeout, TimeUnit unit) throws InterruptedException {
+    public ResponseMessage getResponse(long timeout, TimeUnit unit) throws InterruptedException {
       countDownLatch.await(timeout, unit);
       return response;
     }
 
-    public void setResponse(Response response) {
+    public void setResponse(ResponseMessage response) {
       this.response = response;
       countDownLatch.countDown();
     }

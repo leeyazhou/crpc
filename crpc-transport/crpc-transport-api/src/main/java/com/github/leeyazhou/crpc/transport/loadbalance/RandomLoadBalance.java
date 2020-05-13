@@ -21,7 +21,7 @@ package com.github.leeyazhou.crpc.transport.loadbalance;
 
 import java.util.List;
 import java.util.Random;
-import com.github.leeyazhou.crpc.protocol.Request;
+import com.github.leeyazhou.crpc.protocol.message.RequestMessage;
 import com.github.leeyazhou.crpc.transport.Client;
 
 /**
@@ -38,7 +38,7 @@ public class RandomLoadBalance extends AbstractLoadBalance {
   };
 
   @Override
-  protected Client doChooseOne(List<Client> clients, Request request) {
+  protected Client doChooseOne(List<Client> clients, RequestMessage request) {
     int clientNums = clients.size();
 
     int length = clients.size();

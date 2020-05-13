@@ -15,26 +15,26 @@
  */
 package com.github.leeyazhou.crpc.transport;
 
-import com.github.leeyazhou.crpc.protocol.Request;
-import com.github.leeyazhou.crpc.protocol.Response;
 import com.github.leeyazhou.crpc.core.URL;
+import com.github.leeyazhou.crpc.protocol.message.RequestMessage;
+import com.github.leeyazhou.crpc.protocol.message.ResponseMessage;
 
 public interface Client {
 
   /**
    * invoke sync via rpc
    * 
-   * @param request {@link Request}
+   * @param request {@link RequestMessage}
    * @return Object return response
    */
-  public Response sendRequest(Request request);
+  public ResponseMessage sendRequest(RequestMessage request);
 
   /**
    * receive response from server
    * 
-   * @param response {@link Response}
+   * @param response {@link ResponseMessage}
    */
-  public void putResponse(Response response);
+  public void putResponse(ResponseMessage response);
 
 
   /**

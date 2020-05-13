@@ -17,10 +17,10 @@
  * 
  */
 
-package com.github.leeyazhou.crpc.core.object;
+package com.github.leeyazhou.crpc.protocol.message;
 
 /**
- * @author lee
+ * @author leeyazhou
  */
 public enum MessageType {
 

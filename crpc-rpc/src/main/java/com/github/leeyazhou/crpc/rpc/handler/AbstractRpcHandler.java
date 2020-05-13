@@ -24,9 +24,9 @@ import java.util.Set;
 import com.github.leeyazhou.crpc.config.crpc.ServerConfig;
 import com.github.leeyazhou.crpc.config.crpc.ServiceConfig;
 import com.github.leeyazhou.crpc.config.crpc.ServiceGroupConfig;
-import com.github.leeyazhou.crpc.protocol.Response;
 import com.github.leeyazhou.crpc.protocol.SimpleProtocol;
-import com.github.leeyazhou.crpc.protocol.codec.Codecs;
+import com.github.leeyazhou.crpc.protocol.codec.CodecType;
+import com.github.leeyazhou.crpc.protocol.message.ResponseMessage;
 import com.github.leeyazhou.crpc.transport.Filter;
 import com.github.leeyazhou.crpc.transport.Handler;
 import com.github.leeyazhou.crpc.transport.RpcContext;
@@ -72,7 +72,7 @@ public abstract class AbstractRpcHandler<T> implements Handler<T> {
     serviceConfig.setInterfaceClass(handlerType);
     serviceConfig.setName(serviceGroupConfig.getName());
     serviceConfig.setCodec(serviceGroupConfig.getCodec());
-    serviceConfig.setCodecValue(Codecs.valueOf(serviceConfig.getCodec()).getId());
+    serviceConfig.setCodecValue(CodecType.valueOf(serviceConfig.getCodec()).getId());
     serviceConfig.setLoadbalance(serviceGroupConfig.getLoadbalance());
     if (serviceGroupConfig.getServers() != null && !serviceGroupConfig.getServers().isEmpty()) {
       Set<URL> urls = new HashSet<URL>();
@@ -103,7 +103,7 @@ public abstract class AbstractRpcHandler<T> implements Handler<T> {
   }
 
   @Override
-  public Response handle(RpcContext context) {
+  public ResponseMessage handle(RpcContext context) {
     try {
       return doInvoke(context);
     } catch (Exception err) {
@@ -139,5 +139,5 @@ public abstract class AbstractRpcHandler<T> implements Handler<T> {
    * @throws Exception
    *           any exception
    */
-  protected abstract Response doInvoke(RpcContext context) throws Exception;
+  protected abstract ResponseMessage doInvoke(RpcContext context) throws Exception;
 }

@@ -25,9 +25,17 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.ExecutorService;
-
 import com.github.leeyazhou.crpc.config.crpc.Configuration;
 import com.github.leeyazhou.crpc.config.crpc.ServiceConfig;
+import com.github.leeyazhou.crpc.core.Constants;
+import com.github.leeyazhou.crpc.core.URL;
+import com.github.leeyazhou.crpc.core.concurrent.Executors;
+import com.github.leeyazhou.crpc.core.concurrent.NamedThreadFactory;
+import com.github.leeyazhou.crpc.core.exception.CrpcException;
+import com.github.leeyazhou.crpc.core.exception.ServiceNotFoundException;
+import com.github.leeyazhou.crpc.core.logger.Logger;
+import com.github.leeyazhou.crpc.core.logger.LoggerFactory;
+import com.github.leeyazhou.crpc.core.util.ServiceLoader;
 import com.github.leeyazhou.crpc.registry.NotifyListener;
 import com.github.leeyazhou.crpc.registry.Registry;
 import com.github.leeyazhou.crpc.registry.RegistryFactory;
@@ -35,15 +43,6 @@ import com.github.leeyazhou.crpc.transport.loadbalance.LoadBalanceType;
 import com.github.leeyazhou.crpc.transport.loadbalance.RandomLoadBalance;
 import com.github.leeyazhou.crpc.transport.loadbalance.RoundRobinLoadBalance;
 import com.github.leeyazhou.crpc.transport.object.SendLimitPolicy;
-import com.github.leeyazhou.crpc.core.Constants;
-import com.github.leeyazhou.crpc.core.URL;
-import com.github.leeyazhou.crpc.core.concurrent.Executors;
-import com.github.leeyazhou.crpc.core.concurrent.SimpleNamedThreadFactory;
-import com.github.leeyazhou.crpc.core.exception.CrpcException;
-import com.github.leeyazhou.crpc.core.exception.ServiceNotFoundException;
-import com.github.leeyazhou.crpc.core.logger.Logger;
-import com.github.leeyazhou.crpc.core.logger.LoggerFactory;
-import com.github.leeyazhou.crpc.core.util.ServiceLoader;
 
 /**
  * @author leeyazhou
@@ -63,7 +62,7 @@ public abstract class AbstractTransportFactory implements TransportFactory, Noti
   private static final LoadBalance loadBalanceDefault = new RoundRobinLoadBalance();
 
   protected static final ExecutorService executorService = Executors
-      .newCachedThreadPool(new SimpleNamedThreadFactory("crpc"), 0);
+      .newCachedThreadPool(new NamedThreadFactory("crpc"), 0);
 
   protected AbstractTransportFactory() {
   }

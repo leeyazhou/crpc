@@ -19,7 +19,7 @@
 
 package com.github.leeyazhou.crpc.transport.filter;
 
-import com.github.leeyazhou.crpc.protocol.Response;
+import com.github.leeyazhou.crpc.protocol.message.ResponseMessage;
 import com.github.leeyazhou.crpc.transport.RpcContext;
 
 /**
@@ -28,7 +28,7 @@ import com.github.leeyazhou.crpc.transport.RpcContext;
 public class IPFilter extends AbstractFilter {
 
   @Override
-  public Response handle(RpcContext context) {
+  public ResponseMessage handle(RpcContext context) {
     if (context.isConsumerSide())
       logger.info("IP过滤器:" + context.getChoosedClient().getUrl().getAddress());
     else {

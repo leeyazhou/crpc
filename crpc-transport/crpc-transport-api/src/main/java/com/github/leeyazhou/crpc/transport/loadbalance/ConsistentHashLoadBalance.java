@@ -23,7 +23,7 @@ import java.util.SortedMap;
 import java.util.TreeMap;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
-import com.github.leeyazhou.crpc.protocol.Request;
+import com.github.leeyazhou.crpc.protocol.message.RequestMessage;
 import com.github.leeyazhou.crpc.transport.Client;
 
 /**
@@ -37,7 +37,7 @@ public class ConsistentHashLoadBalance extends AbstractLoadBalance {
       new ConcurrentHashMap<String, ConsistentHashSelector<Client>>();
 
   @Override
-  protected Client doChooseOne(List<Client> clients, Request request) {
+  protected Client doChooseOne(List<Client> clients, RequestMessage request) {
     String key = request.getTargetClassName();
     int identityHashCode = System.identityHashCode(clients);
     ConsistentHashSelector<Client> selector = selectors.get(key);
@@ -82,8 +82,8 @@ public class ConsistentHashLoadBalance extends AbstractLoadBalance {
       return identityHashCode;
     }
 
-    public Client select(Request request) {
-      String key = toKey(request.getRequestObjects());
+    public Client select(RequestMessage request) {
+      String key = toKey(request.getArgs());
       byte[] digest = md5(key);
       Client client = sekectForKey(hash(digest, 0));
       return client;

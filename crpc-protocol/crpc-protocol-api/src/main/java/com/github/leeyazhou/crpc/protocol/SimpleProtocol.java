@@ -15,10 +15,13 @@
  */
 package com.github.leeyazhou.crpc.protocol;
 
-import com.github.leeyazhou.crpc.protocol.codec.Codecs;
 import com.github.leeyazhou.crpc.core.exception.UnsupportProtocolException;
 import com.github.leeyazhou.crpc.core.logger.Logger;
 import com.github.leeyazhou.crpc.core.logger.LoggerFactory;
+import com.github.leeyazhou.crpc.protocol.codec.CodecType;
+import com.github.leeyazhou.crpc.protocol.message.Message;
+import com.github.leeyazhou.crpc.protocol.message.RequestMessage;
+import com.github.leeyazhou.crpc.protocol.message.ResponseMessage;
 
 /**
  * <b>Common RPC Protocol</b><br>
@@ -98,14 +101,14 @@ public class SimpleProtocol implements Protocol {
   private static final byte RESPONSE = (byte) 1;
 
   @Override
-  public ByteBufWrapper encode(ByteBufWrapper bytebufferWrapper, Header message) throws Exception {
+  public ByteBufWrapper encode(ByteBufWrapper bytebufferWrapper, Message message) throws Exception {
     byte type = REQUEST;
-    if (message instanceof Response) {
+    if (message instanceof ResponseMessage) {
       type = RESPONSE;
     }
 
     int id = message.getId();
-    byte[] bodyBytes = Codecs.valueOf(message.getCodecType()).getEncoder().encode(message);
+    byte[] bodyBytes = CodecType.valueOf(message.getCodecType()).getCodec().encode(message);
     int capacity = HEADER_LEN + BODY_HEADER_LEN + bodyBytes.length;
     ByteBufWrapper byteBuffer = bytebufferWrapper.get(capacity);
 
@@ -128,7 +131,7 @@ public class SimpleProtocol implements Protocol {
   }
 
   @Override
-  public Header decode(ByteBufWrapper byteBufWrapper, int originPos) throws Exception {
+  public Message decode(ByteBufWrapper byteBufWrapper, int originPos) throws Exception {
     if (byteBufWrapper.readableBytes() < BODY_HEADER_LEN) {
       byteBufWrapper.setReaderIndex(originPos);
       return null;
@@ -151,11 +154,11 @@ public class SimpleProtocol implements Protocol {
     }
     byte[] bodyBytes = new byte[bodyLen];
     byteBufWrapper.readBytes(bodyBytes);
-    Header ret = null;
+    Message ret = null;
     if (type == REQUEST) {
-      ret = (Header) Codecs.valueOf(codecType).getDecoder().decode(Request.class.getName(), bodyBytes);
+      ret = (Message) CodecType.valueOf(codecType).getCodec().decode(RequestMessage.class.getName(), bodyBytes);
     } else {
-      ret = (Header) Codecs.valueOf(codecType).getDecoder().decode(Response.class.getName(), bodyBytes);
+      ret = (Message) CodecType.valueOf(codecType).getCodec().decode(ResponseMessage.class.getName(), bodyBytes);
     }
     return ret;
   }

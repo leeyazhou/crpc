@@ -24,11 +24,9 @@ import java.util.concurrent.TimeUnit;
 import com.github.leeyazhou.crpc.transport.netty.NettyClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import com.github.leeyazhou.crpc.protocol.Header;
-import com.github.leeyazhou.crpc.protocol.Response;
-import com.github.leeyazhou.crpc.core.object.MessageType;
-
+import com.github.leeyazhou.crpc.protocol.message.Message;
+import com.github.leeyazhou.crpc.protocol.message.MessageType;
+import com.github.leeyazhou.crpc.protocol.message.ResponseMessage;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.timeout.IdleState;
 import io.netty.handler.timeout.IdleStateEvent;
@@ -87,18 +85,18 @@ public class NettyClientHeartBeatHandler extends IdleStateHandler {
 
   @Override
   public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
-    if (!(msg instanceof Header)) {
+    if (!(msg instanceof Message)) {
       super.channelRead(ctx, msg);
       return;
     }
 
-    Header header = (Header) msg;
+    Message header = (Message) msg;
     if (MessageType.MESSAGE_COMMON.equals(header.getMessageType())) {
       super.channelRead(ctx, msg);
       return;
     }
 
-    if (msg instanceof Response) {
+    if (msg instanceof ResponseMessage) {
       client.getIdleCount().set(0);
       if (TRACE_ENABLED) {
         logger.trace("client receive heartbeat from : " + ctx.channel().remoteAddress());

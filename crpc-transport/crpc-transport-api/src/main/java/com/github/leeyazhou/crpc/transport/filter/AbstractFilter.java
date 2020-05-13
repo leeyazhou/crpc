@@ -18,12 +18,12 @@
  */
 package com.github.leeyazhou.crpc.transport.filter;
 
-import com.github.leeyazhou.crpc.protocol.Response;
 import com.github.leeyazhou.crpc.transport.Filter;
 import com.github.leeyazhou.crpc.transport.RpcContext;
 import com.github.leeyazhou.crpc.core.Ordered;
 import com.github.leeyazhou.crpc.core.logger.Logger;
 import com.github.leeyazhou.crpc.core.logger.LoggerFactory;
+import com.github.leeyazhou.crpc.protocol.message.ResponseMessage;
 
 /**
  * @author lee_y
@@ -51,9 +51,9 @@ public abstract class AbstractFilter implements Filter {
    * 
    * @param context
    *          {@link RpcContext}
-   * @return {@link Response}
+   * @return {@link ResponseMessage}
    */
-  protected Response nextFilter(RpcContext context) {
+  protected ResponseMessage nextFilter(RpcContext context) {
     if (next != null) {
       return next.handle(context);
     }

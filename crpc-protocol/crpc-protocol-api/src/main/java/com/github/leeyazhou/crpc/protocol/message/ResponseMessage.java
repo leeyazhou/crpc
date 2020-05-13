@@ -13,11 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.leeyazhou.crpc.protocol;
+package com.github.leeyazhou.crpc.protocol.message;
 
-import com.github.leeyazhou.crpc.core.object.MessageType;
-
-public class Response extends Header {
+public class ResponseMessage extends Message {
 
   private static final long serialVersionUID = 3172161907603172383L;
 
@@ -32,21 +30,21 @@ public class Response extends Header {
 
   private String responseClassName;
 
-  public Response() {}
+  public ResponseMessage() {}
 
-  public Response(int id, int codecType, int protocolType) {
+  public ResponseMessage(int id, int codecType, int protocolType) {
     this(id, codecType, protocolType, MessageType.MESSAGE_COMMON);
   }
 
-  public Response(int id, int codecType, int protocolType, MessageType messageType) {
+  public ResponseMessage(int id, int codecType, int protocolType, MessageType messageType) {
     this(id, codecType, protocolType, null, messageType);
   }
 
-  public Response(int id, int codecType, int protocolType, String responseClassName) {
+  public ResponseMessage(int id, int codecType, int protocolType, String responseClassName) {
     this(id, codecType, protocolType, responseClassName, MessageType.MESSAGE_COMMON);
   }
 
-  public Response(int id, int codecType, int protocolType, String responseClassName, MessageType messageType) {
+  public ResponseMessage(int id, int codecType, int protocolType, String responseClassName, MessageType messageType) {
     super(codecType, protocolType, messageType);
     setId(id);
     this.responseClassName = responseClassName;

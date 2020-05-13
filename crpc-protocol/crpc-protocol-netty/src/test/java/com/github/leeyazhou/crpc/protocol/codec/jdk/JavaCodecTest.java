@@ -23,19 +23,15 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import com.github.leeyazhou.crpc.protocol.codec.Encoder;
-import com.github.leeyazhou.crpc.protocol.model.User;
 import org.junit.Test;
-
-import com.github.leeyazhou.crpc.protocol.codec.Decoder;
+import com.github.leeyazhou.crpc.protocol.codec.Codec;
+import com.github.leeyazhou.crpc.protocol.model.User;
 
 /**
  * @author lee
  */
 public class JavaCodecTest {
-  private Encoder encoder = new JavaEncoder();
-  private Decoder decoder = new JavaDecoder();
+  private Codec codec = new JavaCodec();
 
   @Test
   public void testEncoder() throws Exception {
@@ -51,9 +47,9 @@ public class JavaCodecTest {
   }
 
   public void doEncoderAndDecoder(Object obj, Class<?> clazz) throws Exception {
-    byte[] objByte = encoder.encode(obj);
+    byte[] objByte = codec.encode(obj);
     System.out.println("编码结果:" + objByte);
-    Object obj2 = decoder.decode(clazz.getName(), objByte);
+    Object obj2 = codec.decode(clazz.getName(), objByte);
     System.out.println("解码结果:" + obj2);
   }
   
@@ -69,8 +65,8 @@ public class JavaCodecTest {
     complexObj.put("users", users);
 
     System.out.println("编码:" + complexObj);
-    byte[] encodeByte = encoder.encode(complexObj);
-    Map<String, List<User>> result = (Map<String, List<User>>) decoder.decode(Map.class.getName(), encodeByte);
+    byte[] encodeByte = codec.encode(complexObj);
+    Map<String, List<User>> result = (Map<String, List<User>>) codec.decode(Map.class.getName(), encodeByte);
     System.out.println("解码:" + result);
   }
 }

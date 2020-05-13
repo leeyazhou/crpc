@@ -20,12 +20,12 @@ import java.lang.reflect.Method;
 import java.util.List;
 
 import com.github.leeyazhou.crpc.config.crpc.ServiceGroupConfig;
-import com.github.leeyazhou.crpc.protocol.Request;
-import com.github.leeyazhou.crpc.protocol.Response;
 import com.github.leeyazhou.crpc.transport.Client;
 import com.github.leeyazhou.crpc.transport.LoadBalance;
 import com.github.leeyazhou.crpc.transport.RpcContext;
 import com.github.leeyazhou.crpc.core.exception.ServiceNotFoundException;
+import com.github.leeyazhou.crpc.protocol.message.RequestMessage;
+import com.github.leeyazhou.crpc.protocol.message.ResponseMessage;
 
 public class ProxyHandler<T> extends AbstractRpcHandler<T> implements InvocationHandler {
 
@@ -34,13 +34,13 @@ public class ProxyHandler<T> extends AbstractRpcHandler<T> implements Invocation
   }
 
   @Override
-  protected Response doInvoke(RpcContext context) throws Exception {
-    final Request request = context.getRequest();
+  protected ResponseMessage doInvoke(RpcContext context) throws Exception {
+    final RequestMessage request = context.getRequest();
     final List<Client> clients = context.getClients();
     final LoadBalance loadBalance = context.getLoadBalance();
     Client client = loadBalance.chooseOne(clients, request);
     context.setChoosedClient(client);
-    Response response = filter.handle(context);
+    ResponseMessage response = filter.handle(context);
     if (response != null) {
       return response;
     }
@@ -64,7 +64,7 @@ public class ProxyHandler<T> extends AbstractRpcHandler<T> implements Invocation
       return this.equals(args[0]);
     }
 
-    Request request = new Request(getHandlerType().getName(), method.getName(), argsTypes, args,
+    RequestMessage request = new RequestMessage(getHandlerType().getName(), method.getName(), argsTypes, args,
         serviceConfig.getTimeout(), serviceConfig.getCodecValue(), getProtocolType());
     List<Client> clients = transportFactory.get(serviceConfig);
     LoadBalance loadBalance = transportFactory.getLoadBalance(serviceConfig.getLoadbalance());

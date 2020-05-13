@@ -20,11 +20,10 @@
 package com.github.leeyazhou.crpc.transport.loadbalance;
 
 import java.util.List;
-
-import com.github.leeyazhou.crpc.protocol.Request;
 import com.github.leeyazhou.crpc.transport.Client;
 import com.github.leeyazhou.crpc.transport.LoadBalance;
 import com.github.leeyazhou.crpc.core.Constants;
+import com.github.leeyazhou.crpc.protocol.message.RequestMessage;
 
 /**
  * @author lee
@@ -32,7 +31,7 @@ import com.github.leeyazhou.crpc.core.Constants;
 public abstract class AbstractLoadBalance implements LoadBalance {
 
   @Override
-  public Client chooseOne(List<Client> clients, Request request) {
+  public Client chooseOne(List<Client> clients, RequestMessage request) {
     if (clients == null || clients.isEmpty()) {
       return null;
     }
@@ -69,6 +68,6 @@ public abstract class AbstractLoadBalance implements LoadBalance {
    * @param request request
    * @return {@link Client}
    */
-  protected abstract Client doChooseOne(List<Client> clients, Request request);
+  protected abstract Client doChooseOne(List<Client> clients, RequestMessage request);
 
 }

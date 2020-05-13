@@ -29,8 +29,8 @@ import com.alibaba.csp.sentinel.slots.block.RuleConstant;
 import com.alibaba.csp.sentinel.slots.block.flow.FlowRule;
 import com.alibaba.csp.sentinel.slots.block.flow.FlowRuleManager;
 import com.alibaba.csp.sentinel.transport.config.TransportConfig;
-import com.github.leeyazhou.crpc.protocol.Request;
-import com.github.leeyazhou.crpc.protocol.Response;
+import com.github.leeyazhou.crpc.protocol.message.RequestMessage;
+import com.github.leeyazhou.crpc.protocol.message.ResponseMessage;
 import com.github.leeyazhou.crpc.transport.RpcContext;
 import com.github.leeyazhou.crpc.transport.filter.AbstractFilter;
 
@@ -49,10 +49,10 @@ public class SentinelFilter extends AbstractFilter {
   }
 
   @Override
-  public Response handle(RpcContext context) {
+  public ResponseMessage handle(RpcContext context) {
     Entry entry = null;
     try {
-      final Request request = context.getRequest();
+      final RequestMessage request = context.getRequest();
 
       StringBuilder resource = new StringBuilder();
       resource.append(request.getTargetClassName());

@@ -34,7 +34,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import com.github.leeyazhou.crpc.monitor.AbstractMonitor;
-import com.github.leeyazhou.crpc.protocol.Request;
+import com.github.leeyazhou.crpc.protocol.message.RequestMessage;
 import com.github.leeyazhou.crpc.transport.RpcContext;
 import com.github.leeyazhou.crpc.core.logger.Logger;
 import com.github.leeyazhou.crpc.core.logger.LoggerFactory;
@@ -44,7 +44,7 @@ import com.github.leeyazhou.crpc.core.logger.LoggerFactory;
  */
 public class SimpleMonitor extends AbstractMonitor {
   private static final Logger logger = LoggerFactory.getLogger(SimpleMonitor.class);
-  private BlockingQueue<Request> queue;
+  private BlockingQueue<RequestMessage> queue;
   private Thread thread;
   private volatile AtomicBoolean running = new AtomicBoolean(false);
   // TODO 此处只有PUT，注意内存使用
@@ -58,7 +58,7 @@ public class SimpleMonitor extends AbstractMonitor {
     if (!running.compareAndSet(false, true)) {
       return;
     }
-    queue = new LinkedBlockingDeque<Request>(10240);
+    queue = new LinkedBlockingDeque<RequestMessage>(10240);
     thread = new Thread(new Runnable() {
       public void run() {
         try {
@@ -92,7 +92,7 @@ public class SimpleMonitor extends AbstractMonitor {
   private final Random random = new Random();
 
   private void doCollect() throws InterruptedException {
-    Request request = null;
+    RequestMessage request = null;
     do {
       request = queue.poll(random.nextInt(10), TimeUnit.SECONDS);
       if (request == null) {

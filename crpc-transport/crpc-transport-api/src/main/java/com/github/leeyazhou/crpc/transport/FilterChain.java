@@ -19,13 +19,13 @@
 
 package com.github.leeyazhou.crpc.transport;
 
-import com.github.leeyazhou.crpc.protocol.Response;
+import com.github.leeyazhou.crpc.protocol.message.ResponseMessage;
 
 /**
  * @author lee
  */
 public interface FilterChain {
 
-  Response filter(RpcContext context);
+  ResponseMessage filter(RpcContext context);
 
 }

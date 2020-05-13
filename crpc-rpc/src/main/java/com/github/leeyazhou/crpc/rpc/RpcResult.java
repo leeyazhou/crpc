@@ -23,7 +23,7 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
 /**
- * @author lee
+ * @author leeyazhou
  *
  */
 public class RpcResult {
@@ -32,7 +32,7 @@ public class RpcResult {
   private Object result;
 
   public RpcResult() {
-    countDownLatch = new CountDownLatch(1);
+    this.countDownLatch = new CountDownLatch(1);
   }
 
   /**
@@ -40,7 +40,11 @@ public class RpcResult {
    * @throws InterruptedException ex
    */
   public Object getResult() throws InterruptedException {
-    countDownLatch.await(3, TimeUnit.MILLISECONDS);
+    return getResult(3, TimeUnit.SECONDS);
+  }
+
+  public Object getResult(int timeout, TimeUnit unit) throws InterruptedException {
+    countDownLatch.await(timeout, unit);
     return result;
   }
 

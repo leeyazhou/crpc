@@ -22,8 +22,6 @@ import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import com.github.leeyazhou.crpc.config.crpc.ServerConfig;
-import com.github.leeyazhou.crpc.protocol.Request;
-import com.github.leeyazhou.crpc.protocol.Response;
 import com.github.leeyazhou.crpc.transport.Handler;
 import com.github.leeyazhou.crpc.transport.RpcContext;
 import com.github.leeyazhou.crpc.transport.factory.ServerFactory;
@@ -31,7 +29,8 @@ import com.github.leeyazhou.crpc.core.Constants;
 import com.github.leeyazhou.crpc.core.logger.Logger;
 import com.github.leeyazhou.crpc.core.logger.LoggerFactory;
 import com.github.leeyazhou.crpc.core.util.AddressUtil;
-
+import com.github.leeyazhou.crpc.protocol.message.RequestMessage;
+import com.github.leeyazhou.crpc.protocol.message.ResponseMessage;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelFutureListener;
@@ -46,7 +45,7 @@ import io.netty.handler.timeout.IdleStateEvent;
  *
  */
 @Sharable
-public class NettyServerHandler extends SimpleChannelInboundHandler<Request> {
+public class NettyServerHandler extends SimpleChannelInboundHandler<RequestMessage> {
 
   private static final Logger logger = LoggerFactory.getLogger(NettyServerHandler.class);
 
@@ -76,7 +75,7 @@ public class NettyServerHandler extends SimpleChannelInboundHandler<Request> {
   }
 
   @Override
-  protected void channelRead0(final ChannelHandlerContext ctx, final Request request) throws Exception {
+  protected void channelRead0(final ChannelHandlerContext ctx, final RequestMessage request) throws Exception {
     idleCount.set(0);
     if (this.sync) {
       returnResponse(ctx, request, System.currentTimeMillis());
@@ -92,7 +91,7 @@ public class NettyServerHandler extends SimpleChannelInboundHandler<Request> {
     });
   }
 
-  private void returnResponse(final ChannelHandlerContext ctx, final Request request, long beginTime) {
+  private void returnResponse(final ChannelHandlerContext ctx, final RequestMessage request, long beginTime) {
     long invokeTime;
     // already timeout,so not return
     if ((invokeTime = System.currentTimeMillis() - beginTime) >= request.getTimeout() && logger.isWarnEnabled()) {
@@ -102,7 +101,7 @@ public class NettyServerHandler extends SimpleChannelInboundHandler<Request> {
       return;
     }
     RpcContext context = RpcContext.providerContext(request);
-    Response response = serverHandler.handle(context);
+    ResponseMessage response = serverHandler.handle(context);
     // already timeout,so not return
     if ((invokeTime = System.currentTimeMillis() - beginTime) >= request.getTimeout() && logger.isWarnEnabled()) {
       logger.warn("timeout(" + request.getTimeout() + "ms < invoketime : " + invokeTime

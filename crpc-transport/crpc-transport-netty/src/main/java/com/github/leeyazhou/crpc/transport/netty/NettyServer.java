@@ -19,11 +19,16 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
-
 import com.github.leeyazhou.crpc.config.crpc.ServerConfig;
-import com.github.leeyazhou.crpc.protocol.Response;
+import com.github.leeyazhou.crpc.core.Constants;
+import com.github.leeyazhou.crpc.core.concurrent.NamedThreadFactory;
+import com.github.leeyazhou.crpc.core.exception.ServiceNotFoundException;
+import com.github.leeyazhou.crpc.core.logger.Logger;
+import com.github.leeyazhou.crpc.core.logger.LoggerFactory;
 import com.github.leeyazhou.crpc.protocol.SimpleProtocol;
-import com.github.leeyazhou.crpc.protocol.codec.Codecs;
+import com.github.leeyazhou.crpc.protocol.codec.CodecType;
+import com.github.leeyazhou.crpc.protocol.message.MessageType;
+import com.github.leeyazhou.crpc.protocol.message.ResponseMessage;
 import com.github.leeyazhou.crpc.protocol.netty.NettyProtocolDecoder;
 import com.github.leeyazhou.crpc.protocol.netty.NettyProtocolEncoder;
 import com.github.leeyazhou.crpc.transport.AbstractServer;
@@ -33,13 +38,6 @@ import com.github.leeyazhou.crpc.transport.Server;
 import com.github.leeyazhou.crpc.transport.factory.ServerFactory;
 import com.github.leeyazhou.crpc.transport.netty.handler.NettyServerHandler;
 import com.github.leeyazhou.crpc.transport.netty.handler.NettyServerHeartBeatHandler;
-import com.github.leeyazhou.crpc.core.Constants;
-import com.github.leeyazhou.crpc.core.concurrent.SimpleNamedThreadFactory;
-import com.github.leeyazhou.crpc.core.exception.ServiceNotFoundException;
-import com.github.leeyazhou.crpc.core.logger.Logger;
-import com.github.leeyazhou.crpc.core.logger.LoggerFactory;
-import com.github.leeyazhou.crpc.core.object.MessageType;
-
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
@@ -66,15 +64,15 @@ class NettyServer extends AbstractServer {
   public NettyServer(ServerConfig serverConfig, final ServerFactory beanFactory) {
     super(serverConfig);
     this.beanFactory = beanFactory;
-    this.handler = new Handler<Response>() {
+    this.handler = new Handler<ResponseMessage>() {
 
       @Override
-      public Class<Response> getHandlerType() {
-        return Response.class;
+      public Class<ResponseMessage> getHandlerType() {
+        return ResponseMessage.class;
       }
 
       @Override
-      public Response handle(RpcContext context) {
+      public ResponseMessage handle(RpcContext context) {
         final String targetInstanceName = context.getRequest().getTargetClassName();
         final Handler<?> processor = beanFactory.getServiceHandler(targetInstanceName);
         if (processor == null) {
@@ -97,10 +95,10 @@ class NettyServer extends AbstractServer {
   }
 
   protected void doStart() {
-    bossGroup = new NioEventLoopGroup(1, new SimpleNamedThreadFactory("crpc-boss"));
-    ioGroup = new NioEventLoopGroup(0, new SimpleNamedThreadFactory("crpc-io"));
+    bossGroup = new NioEventLoopGroup(1, new NamedThreadFactory("crpc-boss"));
+    ioGroup = new NioEventLoopGroup(0, new NamedThreadFactory("crpc-io"));
     bussinessGroup = new DefaultEventExecutorGroup(Runtime.getRuntime().availableProcessors() * 2,
-        new SimpleNamedThreadFactory("crpc-worker"));
+        new NamedThreadFactory("crpc-worker"));
 
     ServerBootstrap bootStrap = new ServerBootstrap();
     bootStrap.group(bossGroup, ioGroup).channel(NioServerSocketChannel.class);
@@ -130,8 +128,8 @@ class NettyServer extends AbstractServer {
       logger.warn("Server stopped! serverConfig : " + serverConfig);
       if (channels != null) {
         // logger.info("关闭通道：" + channels);
-        Response response =
-            new Response(0, Codecs.JAVA_CODEC.getId(), SimpleProtocol.PROTOCOL_TYPE, MessageType.MESSAGE_SHUTDOWN);
+        ResponseMessage response =
+            new ResponseMessage(0, CodecType.JAVA_CODEC.getId(), SimpleProtocol.PROTOCOL_TYPE, MessageType.MESSAGE_SHUTDOWN);
         for (Map.Entry<String, Channel> entry : this.channels.entrySet()) {
           logger.info("通知关闭通道：" + entry.getKey() + ", channel : " + entry.getValue());
           entry.getValue().writeAndFlush(response);

@@ -16,11 +16,10 @@
 package com.github.leeyazhou.crpc.protocol.netty;
 
 import java.util.List;
-
-import com.github.leeyazhou.crpc.protocol.Header;
 import com.github.leeyazhou.crpc.protocol.Protocol;
 import com.github.leeyazhou.crpc.protocol.ProtocolFactory;
 import com.github.leeyazhou.crpc.protocol.SimpleProtocol;
+import com.github.leeyazhou.crpc.protocol.message.Message;
 import com.github.leeyazhou.crpc.core.exception.UnsupportProtocolException;
 
 import io.netty.buffer.ByteBuf;
@@ -54,7 +53,7 @@ public class NettyProtocolDecoder extends ByteToMessageDecoder {
     if (protocol == null) {
       throw new UnsupportProtocolException("Unsupport protocol type : " + protocolType);
     }
-    Header msg = protocol.decode(byteBufWrapper, originPos);
+    Message msg = protocol.decode(byteBufWrapper, originPos);
     if (msg != null) {
       out.add(msg);
     }

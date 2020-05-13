@@ -22,9 +22,8 @@ package com.github.leeyazhou.crpc.transport;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import com.github.leeyazhou.crpc.protocol.Request;
 import com.github.leeyazhou.crpc.core.object.SideType;
+import com.github.leeyazhou.crpc.protocol.message.RequestMessage;
 
 /**
  * CRPC 上下文信息
@@ -33,7 +32,7 @@ import com.github.leeyazhou.crpc.core.object.SideType;
  *
  */
 public final class RpcContext {
-  private final Request request;
+  private final RequestMessage request;
   private List<Client> clients;
   private Client choosedClient;
   private LoadBalance loadBalance;
@@ -41,13 +40,13 @@ public final class RpcContext {
 
   private Map<String, Object> attachements;
 
-  private RpcContext(Request request, List<Client> clients, LoadBalance loadBalance) {
+  private RpcContext(RequestMessage request, List<Client> clients, LoadBalance loadBalance) {
     this.request = request;
     this.clients = clients;
     this.loadBalance = loadBalance;
   }
 
-  private RpcContext(Request request) {
+  private RpcContext(RequestMessage request) {
     this.request = request;
   }
 
@@ -62,7 +61,7 @@ public final class RpcContext {
    *          负载均衡器
    * @return {@link RpcContext}
    */
-  public static RpcContext consumerContext(Request request, List<Client> clients, LoadBalance loadBalance) {
+  public static RpcContext consumerContext(RequestMessage request, List<Client> clients, LoadBalance loadBalance) {
     RpcContext ret = new RpcContext(request, clients, loadBalance);
     ret.setSideType(SideType.SIDE_CONSUMER);
     return ret;
@@ -75,7 +74,7 @@ public final class RpcContext {
    *          请求信息
    * @return {@link RpcContext}
    */
-  public static RpcContext providerContext(Request request) {
+  public static RpcContext providerContext(RequestMessage request) {
     RpcContext ret = new RpcContext(request);
     ret.setSideType(SideType.SIDE_PROVIDER);
     return ret;
@@ -84,7 +83,7 @@ public final class RpcContext {
   /**
    * @return the request
    */
-  public Request getRequest() {
+  public RequestMessage getRequest() {
     return request;
   }
 
