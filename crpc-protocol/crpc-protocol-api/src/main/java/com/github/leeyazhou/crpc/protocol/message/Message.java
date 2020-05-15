@@ -25,7 +25,7 @@ import java.io.Serializable;
  * @author leeyazhou
  */
 public abstract class Message implements Serializable {
-  private static final long serialVersionUID = 7499489102375486122L;
+  private static final long serialVersionUID = 1L;
 
   private int version;
 
@@ -111,15 +111,16 @@ public abstract class Message implements Serializable {
   /**
    * @return the id
    */
-  public int getId() {
+  public int id() {
     return id;
   }
 
   /**
    * @param id the id to set
    */
-  public void setId(int id) {
+  public Message setId(int id) {
     this.id = id;
+    return this;
   }
 
   public void setHeaders(Header[] headers) {

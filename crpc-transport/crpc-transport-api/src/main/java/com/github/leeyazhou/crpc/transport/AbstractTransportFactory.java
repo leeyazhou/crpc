@@ -50,12 +50,12 @@ import com.github.leeyazhou.crpc.transport.object.SendLimitPolicy;
  */
 public abstract class AbstractTransportFactory implements TransportFactory, NotifyListener {
   private static final Logger logger = LoggerFactory.getLogger(AbstractTransportFactory.class);
-
   protected static final ConcurrentMap<String, Client> clientsMap = new ConcurrentHashMap<String, Client>();
   private static boolean isSendLimitEnabled = false;
   // Cache client
   private static final ConcurrentMap<Class<?>, List<Client>> cachedClients =
       new ConcurrentHashMap<Class<?>, List<Client>>();
+  private final ConnectionManager connectionManager = new ConnectionManager();
 
   static Configuration configuration;
   static final String location = "crpc.xml";
@@ -274,8 +274,18 @@ public abstract class AbstractTransportFactory implements TransportFactory, Noti
     Client client = clientsMap.get(key);
     if (client == null) {
       client = createClient(url);
-      clientsMap.put(key, client);
+      Client t = clientsMap.putIfAbsent(key, client);
+      if (t != null) {
+        client = t;
+      } else {
+        client.connect();
+      }
     }
     return client;
+  }
+
+  @Override
+  public ConnectionManager getConnectionManager() {
+    return connectionManager;
   }
 }

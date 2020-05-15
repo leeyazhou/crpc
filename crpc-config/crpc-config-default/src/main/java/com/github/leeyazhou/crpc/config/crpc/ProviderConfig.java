@@ -19,9 +19,9 @@
 package com.github.leeyazhou.crpc.config.crpc;
 
 import com.github.leeyazhou.crpc.config.Configuration;
+import com.github.leeyazhou.crpc.config.DefaultServerFactory;
 import com.github.leeyazhou.crpc.config.RegistryConfig;
 import com.github.leeyazhou.crpc.config.ServerConfig;
-import com.github.leeyazhou.crpc.config.server.DefaultBeanFactory;
 import com.github.leeyazhou.crpc.core.annotation.Aspect;
 import com.github.leeyazhou.crpc.core.annotation.CRPCFilterType;
 import com.github.leeyazhou.crpc.core.annotation.CRPCService;
@@ -56,7 +56,7 @@ public class ProviderConfig {
      * 暴露服务
      */
     public void export() {
-        DefaultBeanFactory beanFactory = new DefaultBeanFactory();
+        DefaultServerFactory beanFactory = new DefaultServerFactory();
         beanFactory.setConfiguration(configuration);
         try {
             prepareEnvironment(configuration.getServerConfig(), beanFactory);
@@ -67,7 +67,7 @@ public class ProviderConfig {
         RpcUtil.export(configuration, null, beanFactory);
     }
 
-    private void prepareEnvironment(ServerConfig serverConfig, DefaultBeanFactory beanFactory) throws Exception {
+    private void prepareEnvironment(ServerConfig serverConfig, DefaultServerFactory beanFactory) throws Exception {
         if (configuration.getRegistryConfigs() == null || configuration.getRegistryConfigs().isEmpty()) {
             return;
         }
@@ -80,7 +80,7 @@ public class ProviderConfig {
     }
 
     @SuppressWarnings({"unchecked", "rawtypes"})
-    private void initBeans(ServerConfig serverConfig, DefaultBeanFactory beanFactory) throws Exception {
+    private void initBeans(ServerConfig serverConfig, DefaultServerFactory beanFactory) throws Exception {
         Set<String> basepackages = serverConfig.getBasepackages();
         if (basepackages == null || basepackages.isEmpty()) {
             throw new IllegalAccessException("basepackage is required ! ");

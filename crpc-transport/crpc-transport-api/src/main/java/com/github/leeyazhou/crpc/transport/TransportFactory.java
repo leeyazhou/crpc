@@ -119,4 +119,6 @@ public interface TransportFactory {
   Server createServer(Configuration configuration, ServerFactory beanFactory);
 
   Client createClient(URL url);
+  
+  ConnectionManager getConnectionManager();
 }

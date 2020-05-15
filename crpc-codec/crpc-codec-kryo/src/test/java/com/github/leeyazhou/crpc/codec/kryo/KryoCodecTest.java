@@ -25,14 +25,14 @@ import java.util.List;
 import java.util.Map;
 import org.junit.Test;
 import com.github.leeyazhou.crpc.codec.Codec;
-import com.github.leeyazhou.crpc.codec.kryo.KryoSerializer;
+import com.github.leeyazhou.crpc.codec.kryo.KryoCodec;
 import com.github.leeyazhou.crpc.codec.model.User;
 
 /**
  * @author leeyazhou
  */
 public class KryoCodecTest {
-  private Codec codec = new KryoSerializer();
+  private Codec codec = new KryoCodec();
 
   @Test
   public void testEncoder() throws Exception {

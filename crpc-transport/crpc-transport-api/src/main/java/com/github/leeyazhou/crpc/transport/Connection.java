@@ -24,7 +24,9 @@ import com.github.leeyazhou.crpc.protocol.message.RequestMessage;
  * @author leeyazhou
  *
  */
-public interface Channel {
+public interface Connection {
+
+  String getAddress();
 
   void send(RequestMessage request, int timeout);
 

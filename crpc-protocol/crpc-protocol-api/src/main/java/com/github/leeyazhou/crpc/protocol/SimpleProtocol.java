@@ -109,7 +109,7 @@ public class SimpleProtocol implements Protocol {
       type = RESPONSE;
     }
 
-    int id = message.getId();
+    int id = message.id();
     byte[] bodyBytes = ServiceLoader.load(Codec.class)
         .load(CodecType.valueOf(message.getCodecType()).getSerializerName()).encode(message);
     int capacity = HEADER_LEN + BODY_HEADER_LEN + bodyBytes.length;

@@ -47,9 +47,9 @@ public interface Client {
   /**
    * connect channel
    * 
-   * @return {@link Channel}
+   * @return {@link Connection}
    */
-  Channel getChannel();
+  Connection getConnection();
 
   /**
    * get server config url

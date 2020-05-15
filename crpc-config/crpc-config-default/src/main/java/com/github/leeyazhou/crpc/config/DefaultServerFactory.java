@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.leeyazhou.crpc.config.server;
+package com.github.leeyazhou.crpc.config;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -33,9 +33,9 @@ import com.github.leeyazhou.crpc.transport.factory.ServiceHandler;
 /**
  * @author leeyazhou
  */
-public class DefaultBeanFactory extends AbstractServerFactory {
+public class DefaultServerFactory extends AbstractServerFactory {
 
-  private static final Logger logger = LoggerFactory.getLogger(DefaultBeanFactory.class);
+  private static final Logger logger = LoggerFactory.getLogger(DefaultServerFactory.class);
 
   private static final Set<Interceptor> interceptors = new HashSet<Interceptor>();
 

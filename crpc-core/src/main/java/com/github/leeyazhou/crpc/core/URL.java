@@ -23,7 +23,6 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeMap;
-
 import com.github.leeyazhou.crpc.core.util.URLUtil;
 
 /**
@@ -104,9 +103,9 @@ public class URL implements Serializable {
     return parameters;
   }
 
-  public boolean addParameter(String key, String value) {
-    String result = this.parameters.put(key, value);
-    return result == null;
+  public URL addParameter(String key, String value) {
+    this.parameters.put(key, value);
+    return this;
   }
 
   public String getParameter(String key, String defaultValue) {
@@ -187,15 +186,17 @@ public class URL implements Serializable {
   /**
    * @param registryType the registryType to set
    */
-  public void setRegistryType(String registryType) {
+  public URL setRegistryType(String registryType) {
     this.registryType = registryType;
+    return this;
   }
 
   /**
    * @param protocol the protocol to set
    */
-  public void setProtocol(String protocol) {
+  public URL setProtocol(String protocol) {
     this.protocol = protocol;
+    return this;
   }
 
   @Override

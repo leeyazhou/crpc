@@ -20,15 +20,12 @@
 package com.github.leeyazhou.crpc.transport;
 
 import com.github.leeyazhou.crpc.config.Configuration;
-import com.github.leeyazhou.crpc.core.logger.Logger;
-import com.github.leeyazhou.crpc.core.logger.LoggerFactory;
+import com.github.leeyazhou.crpc.core.lifecyle.AbstractLifecycle;
 
 /**
  * @author leeyazhou
  */
-public abstract class AbstractServer implements Server {
-
-  static final Logger logger = LoggerFactory.getLogger(AbstractServer.class);
+public abstract class AbstractServer extends AbstractLifecycle implements Server {
 
   protected Configuration configuration;
 

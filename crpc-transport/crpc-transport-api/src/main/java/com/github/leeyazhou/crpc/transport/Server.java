@@ -15,17 +15,9 @@
  */
 package com.github.leeyazhou.crpc.transport;
 
-public interface Server {
+import com.github.leeyazhou.crpc.core.lifecyle.Lifecycle;
 
-  /**
-   * start server at listenPort,requests will be handled in businessThreadPool
-   * 
-   */
-  void start();
+public interface Server extends Lifecycle {
 
-  /**
-   * stop server
-   */
-  void stop();
 
 }

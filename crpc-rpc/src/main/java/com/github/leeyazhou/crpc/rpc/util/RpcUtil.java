@@ -54,6 +54,7 @@ public class RpcUtil {
         server = transportFactory.createServer(configuration, beanFactory);
         Server t = servers.putIfAbsent(serverKey, server);
         if (t == null) {
+          server.init();
           server.start();
         }
       }

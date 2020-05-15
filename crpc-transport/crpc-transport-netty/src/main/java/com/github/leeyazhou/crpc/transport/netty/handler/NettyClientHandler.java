@@ -26,8 +26,10 @@ import com.github.leeyazhou.crpc.protocol.SimpleProtocol;
 import com.github.leeyazhou.crpc.protocol.message.MessageType;
 import com.github.leeyazhou.crpc.protocol.message.RequestMessage;
 import com.github.leeyazhou.crpc.protocol.message.ResponseMessage;
+import com.github.leeyazhou.crpc.transport.ConnectionManager;
 import com.github.leeyazhou.crpc.transport.TransportFactory;
 import com.github.leeyazhou.crpc.transport.netty.NettyClient;
+import com.github.leeyazhou.crpc.transport.netty.NettyConnection;
 import io.netty.channel.ChannelHandler.Sharable;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
@@ -44,15 +46,17 @@ public class NettyClientHandler extends SimpleChannelInboundHandler<ResponseMess
   private static final boolean isTraceEnabled = logger.isTraceEnabled();
   private static final RequestMessage ping =
       new RequestMessage(CodecType.KRYO_CODEC.getId(), SimpleProtocol.PROTOCOL_TYPE, MessageType.MESSAGE_HEARTBEAT);
-
-  private URL url;
-
-  private NettyClient client;
   private final TransportFactory transportFactory = ServiceLoader.load(TransportFactory.class).load();
 
-  public NettyClientHandler(URL url, NettyClient client) {
+  private final URL url;
+  private final ConnectionManager connectionManager;
+
+  private final NettyClient client;
+
+  public NettyClientHandler(URL url, NettyClient client, ConnectionManager connectionManager) {
     this.url = url;
     this.client = client;
+    this.connectionManager = connectionManager;
   }
 
   @Override
@@ -67,9 +71,8 @@ public class NettyClientHandler extends SimpleChannelInboundHandler<ResponseMess
   @Override
   protected void channelRead0(ChannelHandlerContext ctx, ResponseMessage response) throws Exception {
     if (isTraceEnabled) {
-      logger
-          .trace(
-              "receive response from server: " + ctx.channel().remoteAddress() + ", request id is:" + response.getId());
+      logger.trace(
+          "receive response from server: " + ctx.channel().remoteAddress() + ", request id is:" + response.id());
     }
     client.putResponse(response);
   }
@@ -84,7 +87,7 @@ public class NettyClientHandler extends SimpleChannelInboundHandler<ResponseMess
         ctx.close().sync();
         return;
       }
-      client.getChannel().send(ping, 3000);
+      client.getConnection().send(ping, 3000);
     }
   }
 
@@ -94,6 +97,12 @@ public class NettyClientHandler extends SimpleChannelInboundHandler<ResponseMess
     Class<?> beanType = Class.forName(url.getParameter(Constants.SERVICE_INTERFACE, null));
     transportFactory.removeClient(beanType, client);
     client.connect();
+    connectionManager.removeConnection(url.getAddress());
   }
 
+  @Override
+  public void channelActive(ChannelHandlerContext ctx) throws Exception {
+    super.channelActive(ctx);
+    connectionManager.addConnection(new NettyConnection(ctx.channel(), client, url));
+  }
 }

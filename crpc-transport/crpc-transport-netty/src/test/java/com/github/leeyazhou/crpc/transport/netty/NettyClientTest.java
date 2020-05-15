@@ -1,36 +1,23 @@
 /**
- * Copyright © 2016~2020 CRPC (coderhook@gmail.com)
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-/**
  * 
  */
 package com.github.leeyazhou.crpc.transport.netty;
 
 import java.util.concurrent.TimeUnit;
-import com.github.leeyazhou.crpc.config.Configuration;
+import org.junit.Assert;
+import org.junit.Test;
 import com.github.leeyazhou.crpc.core.Constants;
 import com.github.leeyazhou.crpc.core.URL;
 import com.github.leeyazhou.crpc.core.concurrent.NamedThreadFactory;
+import com.github.leeyazhou.crpc.protocol.message.RequestMessage;
+import com.github.leeyazhou.crpc.protocol.message.ResponseMessage;
 import com.github.leeyazhou.crpc.protocol.netty.NettyProtocolDecoder;
 import com.github.leeyazhou.crpc.protocol.netty.NettyProtocolEncoder;
-import com.github.leeyazhou.crpc.transport.AbstractTransportFactory;
-import com.github.leeyazhou.crpc.transport.Client;
-import com.github.leeyazhou.crpc.transport.Server;
-import com.github.leeyazhou.crpc.transport.factory.ServerFactory;
+import com.github.leeyazhou.crpc.transport.ConnectionManager;
 import com.github.leeyazhou.crpc.transport.netty.handler.NettyClientHandler;
 import com.github.leeyazhou.crpc.transport.netty.handler.NettyClientHeartBeatHandler;
+import com.github.leeyazhou.crpc.transport.service.InternalEchoService;
+import com.github.leeyazhou.crpc.transport.service.impl.InternalEchoServiceImpl;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelOption;
@@ -43,16 +30,14 @@ import io.netty.channel.socket.nio.NioSocketChannel;
  * @author leeyazhou
  *
  */
-public class NettyTransportFactory extends AbstractTransportFactory {
+public class NettyClientTest extends NettyServerTest {
   private static final EventLoopGroup bussinessGroup = new NioEventLoopGroup(0, new NamedThreadFactory("crpc-client"));
 
-  @Override
-  public Server createServer(Configuration configuration, ServerFactory beanFactory) {
-    return new NettyServer(configuration, beanFactory);
-  }
-
-  @Override
-  public Client createClient(final URL url) {
+  @Test
+  public void testDoSendRequest() {
+    final URL url = URL.valueOf("crpc://127.0.0.1:25001").addParameter(Constants.SERVICE_INTERFACE,
+        InternalEchoService.class.getName());
+    final ConnectionManager connectionManager = new ConnectionManager();
     Bootstrap bootStrap = new Bootstrap();
 
     final NettyClient client = new NettyClient(bootStrap, url);
@@ -68,12 +53,18 @@ public class NettyTransportFactory extends AbstractTransportFactory {
         channel.pipeline().addLast("decoder", new NettyProtocolDecoder());
         channel.pipeline().addLast("encoder", new NettyProtocolEncoder());
         channel.pipeline().addLast("heartbeat", new NettyClientHeartBeatHandler(client, 0, 0, 3, TimeUnit.SECONDS));
-        channel.pipeline().addLast("handler", new NettyClientHandler(url, client, getConnectionManager()));
+        channel.pipeline().addLast("handler", new NettyClientHandler(url, client, connectionManager));
       }
     });
 
-    
-    return client;
+    client.connect();
+
+    RequestMessage message =
+        new RequestMessage().setTargetClassName(InternalEchoServiceImpl.class.getName()).setMethodName("echo")
+            .setArgs(new Object[] {"PING"}).setArgTypes(new String[] {String.class.getName()}).setTimeout(3000);
+
+    ResponseMessage responseMessage = client.sendRequest(message);
+    Assert.assertEquals("PING", responseMessage.getResponse());
   }
 
 }

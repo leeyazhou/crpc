@@ -22,10 +22,6 @@ import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
-import com.github.leeyazhou.crpc.transport.Filter;
-import com.github.leeyazhou.crpc.transport.Handler;
-import com.github.leeyazhou.crpc.transport.Interceptor;
-import com.github.leeyazhou.crpc.transport.RpcContext;
 import com.github.leeyazhou.crpc.core.exception.ServiceMethodNotFoundException;
 import com.github.leeyazhou.crpc.core.logger.Logger;
 import com.github.leeyazhou.crpc.core.logger.LoggerFactory;
@@ -33,6 +29,10 @@ import com.github.leeyazhou.crpc.core.util.ExceptionUtil;
 import com.github.leeyazhou.crpc.core.util.SerializerUtil;
 import com.github.leeyazhou.crpc.protocol.message.RequestMessage;
 import com.github.leeyazhou.crpc.protocol.message.ResponseMessage;
+import com.github.leeyazhou.crpc.transport.Filter;
+import com.github.leeyazhou.crpc.transport.Handler;
+import com.github.leeyazhou.crpc.transport.Interceptor;
+import com.github.leeyazhou.crpc.transport.RpcContext;
 
 /**
  * @author leeyazhou
@@ -77,7 +77,7 @@ public class ServiceHandler<T> implements Handler<T> {
 
     final RequestMessage request = context.getRequest();
 
-    ResponseMessage response = new ResponseMessage(request.getId(), request.getCodecType(), request.getProtocolType());
+    ResponseMessage response = new ResponseMessage(request.id(), request.getCodecType(), request.getProtocolType());
     String targetInstanceName = request.getTargetClassName();
     String methodName = new String(request.getMethodName());
     String[] argTypes = request.getArgTypes();
@@ -96,7 +96,6 @@ public class ServiceHandler<T> implements Handler<T> {
           }
         }
         requestObjects = request.getArgs();
-
         method = this.getCachedMethods().get(methodKeyBuilder.toString());
         if (method == null) {
           throw new ServiceMethodNotFoundException(

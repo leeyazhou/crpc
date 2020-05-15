@@ -30,13 +30,10 @@ import com.github.leeyazhou.crpc.protocol.message.ResponseMessage;
 
 public abstract class AbstractClient implements Client {
   private static final Logger logger = LoggerFactory.getLogger(AbstractClient.class);
-
-  private static final long PRINT_CONSUME_MINTIME = Long.parseLong(System.getProperty("rpc.print.consumetime", "0"));
-
-  protected static ConcurrentMap<Integer, RpcResult> responses = new ConcurrentHashMap<Integer, RpcResult>();
-
   private static final boolean isTraceEnabled = logger.isTraceEnabled();
   private static final boolean isDebugEnabled = logger.isDebugEnabled();
+  private static final long PRINT_CONSUME_MINTIME = Long.parseLong(System.getProperty("rpc.print.consumetime", "0"));
+  protected static ConcurrentMap<Integer, RpcResult> responses = new ConcurrentHashMap<Integer, RpcResult>();
   protected final TransportFactory transportFactory = ServiceLoader.load(TransportFactory.class).load();
   protected final URL url;
 
@@ -48,18 +45,18 @@ public abstract class AbstractClient implements Client {
   public ResponseMessage sendRequest(RequestMessage request) {
     long beginTime = System.currentTimeMillis();
     final RpcResult rpcResult = new RpcResult();
-    responses.putIfAbsent(request.getId(), rpcResult);
+    responses.putIfAbsent(request.id(), rpcResult);
     try {
       if (isTraceEnabled) {
-        logger.trace("client ready to send message, request id: " + request.getId());
+        logger.trace("client ready to send message, request id: " + request.id());
       }
       transportFactory.checkSendLimit();
       doSendRequest(request, request.getTimeout());
       if (isTraceEnabled) {
-        logger.trace("client write message to send buffer,wait for response,request id: " + request.getId());
+        logger.trace("client write message to send buffer,wait for response,request id: " + request.id());
       }
     } catch (Exception err) {
-      responses.remove(request.getId());
+      responses.remove(request.id());
       final String msg = "send request to os sendbuffer error, " + request;
       logger.error(msg, err);
       throw new CrpcException(msg, err);
@@ -72,28 +69,27 @@ public abstract class AbstractClient implements Client {
       // logger.error("Get response error", err);
       throw new CrpcException("Get response error, " + request, err);
     } finally {
-      responses.remove(request.getId());
+      responses.remove(request.id());
     }
 
     if (PRINT_CONSUME_MINTIME > 0 && isDebugEnabled) {
       long consumeTime = System.currentTimeMillis() - beginTime;
       if (consumeTime > PRINT_CONSUME_MINTIME) {
-        if (logger.isWarnEnabled()) {
-          logger.warn(
+        if (logger.isInfoEnabled()) {
+          logger.info(
               String.format("client invokeSync consume time: %s ms, server is: %s:%s request id is:%s, queue : %s",
-                  consumeTime, this.url.getHost(), this.url.getPort(), request.getId(), responses.size()));
+                  consumeTime, this.url.getHost(), this.url.getPort(), request.id(), responses.size()));
         }
       }
     }
     if (response == null) {
-      String errorMsg =
-          "receive response timeout(" + request.getTimeout() + " ms),server is: " + this.url.getHost() + ":"
-              + this.url.getPort() + " request id is:" + request.getId() + ", queue : " + responses.size();
+      String errorMsg = "receive response timeout(" + request.getTimeout() + " ms),server is: " + this.url.getHost()
+          + ":" + this.url.getPort() + " request id is:" + request.id() + ", queue : " + responses.size();
       throw new TimeoutException(errorMsg);
     } else if (response.isError()) {
       StringBuilder sb = new StringBuilder("server error, server is: [");
       sb.append(this.url.getHost()).append(":").append(this.url.getPort());
-      sb.append("], request id is:").append(request.getId());
+      sb.append("], request id is:").append(request.id());
       if (response.getResponse() != null) {
         sb.append(", ").append(response.getResponse());
       } else if (response.getException() != null) {
@@ -109,15 +105,15 @@ public abstract class AbstractClient implements Client {
    */
   @Override
   public void putResponse(ResponseMessage response) {
-    if (!responses.containsKey(response.getId())) {
-      logger.warn("give up the response,request id is:" + response.getId() + ",maybe because timeout!");
+    if (!responses.containsKey(response.id())) {
+      logger.warn("give up the response, request id is:" + response.id() + ", maybe because timeout!");
       return;
     }
-    RpcResult rpcResult = responses.get(response.getId());
+    RpcResult rpcResult = responses.get(response.id());
     if (rpcResult != null) {
       rpcResult.setResponse(response);
     } else {
-      logger.warn("give up the response,request id is:" + response.getId() + ",because queue is null");
+      logger.warn("give up the response,request id is:" + response.id() + ",because queue is null");
     }
   }
 

@@ -162,7 +162,7 @@ public class SimpleProtocol2 implements Protocol {
         targetInstanceNameByte = request.getTargetClassName().getBytes();
         methodNameByte = request.getMethodName().getBytes();
       }
-      int id = request.getId();
+      int id = request.id();
       int timeout = request.getTimeout();
       int capacity = HEADER_LEN + REQUEST_HEADER_LEN + requestArgs.size() * 4 * 2 + targetInstanceNameByte.length
           + methodNameByte.length + requestArgTypesLen + requestArgsLen;
@@ -210,7 +210,7 @@ public class SimpleProtocol2 implements Protocol {
   private ByteBufWrapper encodeResponse(ByteBufWrapper bytebufferWrapper, Message message) throws Exception {
     final byte type = RESPONSE;
     ResponseMessage response = (ResponseMessage) message;
-    final int id = response.getId();
+    final int id = response.id();
     int error = 0;
     byte[] body = new byte[0];
     byte[] className = new byte[0];

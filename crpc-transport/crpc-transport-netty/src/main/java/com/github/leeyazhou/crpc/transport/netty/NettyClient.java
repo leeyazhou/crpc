@@ -17,7 +17,7 @@ package com.github.leeyazhou.crpc.transport.netty;
 
 import java.util.concurrent.atomic.AtomicInteger;
 import com.github.leeyazhou.crpc.transport.AbstractClient;
-import com.github.leeyazhou.crpc.transport.Channel;
+import com.github.leeyazhou.crpc.transport.Connection;
 import com.github.leeyazhou.crpc.core.Constants;
 import com.github.leeyazhou.crpc.core.URL;
 import com.github.leeyazhou.crpc.core.logger.Logger;
@@ -31,7 +31,7 @@ public class NettyClient extends AbstractClient {
 
   private static final Logger logger = LoggerFactory.getLogger(NettyClient.class);
   private final AtomicInteger idleCount = new AtomicInteger(0);
-  private volatile Channel channel;
+  private volatile Connection connection;
 
   private final Bootstrap bootStrap;
 
@@ -42,7 +42,7 @@ public class NettyClient extends AbstractClient {
 
   @Override
   public void doSendRequest(final RequestMessage request, final int timeout) throws Exception {
-    channel.send(request, timeout);
+    connection.send(request, timeout);
   }
 
   @Override
@@ -73,7 +73,7 @@ public class NettyClient extends AbstractClient {
         }
       }
     }).syncUninterruptibly();
-    this.channel = new NettyChannel(channelFuture.channel(), this, getUrl());
+    this.connection = new NettyConnection(channelFuture.channel(), this, getUrl());
     return channelFuture.awaitUninterruptibly().isSuccess();
   }
 
@@ -84,8 +84,8 @@ public class NettyClient extends AbstractClient {
   }
 
   @Override
-  public Channel getChannel() {
-    return channel;
+  public Connection getConnection() {
+    return connection;
   }
 
   /**

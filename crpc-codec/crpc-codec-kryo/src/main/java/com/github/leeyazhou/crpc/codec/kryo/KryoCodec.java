@@ -20,7 +20,7 @@ import com.esotericsoftware.kryo.io.Input;
 import com.esotericsoftware.kryo.io.Output;
 import com.github.leeyazhou.crpc.codec.Codec;
 
-public class KryoSerializer implements Codec {
+public class KryoCodec implements Codec {
 
   @Override
   public Object decode(String className, byte[] bytes) throws Exception {

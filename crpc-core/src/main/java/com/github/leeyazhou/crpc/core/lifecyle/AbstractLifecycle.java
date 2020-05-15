@@ -46,6 +46,9 @@ public abstract class AbstractLifecycle implements Lifecycle {
 
   @Override
   public void start() {
+    if (init.get() == false) {
+      init();
+    }
     if (running.compareAndSet(false, true)) {
       if (logger.isDebugEnabled()) {
         logger.debug("Start " + this);

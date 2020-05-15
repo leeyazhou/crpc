@@ -37,6 +37,6 @@ public interface ProxyFactory {
    * @param serviceGroupConfig 配置
    * @return t
    */
-  public <T> T getProxy(Class<T> objectType, ServiceGroupConfig serviceGroupConfig);
+  <T> T getProxy(Class<T> objectType, ServiceGroupConfig serviceGroupConfig);
 
 }

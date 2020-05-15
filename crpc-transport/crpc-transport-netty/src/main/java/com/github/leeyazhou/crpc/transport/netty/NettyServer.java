@@ -18,7 +18,6 @@ package com.github.leeyazhou.crpc.transport.netty;
 import java.util.Map;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicBoolean;
 import com.github.leeyazhou.crpc.codec.CodecType;
 import com.github.leeyazhou.crpc.config.Configuration;
 import com.github.leeyazhou.crpc.core.Constants;
@@ -50,17 +49,17 @@ import io.netty.channel.socket.nio.NioServerSocketChannel;
 class NettyServer extends AbstractServer {
 
   private static final Logger logger = LoggerFactory.getLogger(NettyServer.class);
-  private AtomicBoolean startFlag = new AtomicBoolean(false);
   private NioEventLoopGroup bossGroup;
   private NioEventLoopGroup ioGroup;
+  private ServerBootstrap bootStrap;
   private final Handler<?> handler;
-  private final ServerFactory beanFactory;
+  private final ServerFactory serverFactory;
   private ConcurrentMap<String, Channel> channels;
   private Channel channel;
 
-  public NettyServer(Configuration configuration, final ServerFactory beanFactory) {
+  public NettyServer(Configuration configuration, final ServerFactory serverFactory) {
     super(configuration);
-    this.beanFactory = beanFactory;
+    this.serverFactory = serverFactory;
     this.handler = new Handler<ResponseMessage>() {
 
       @Override
@@ -71,7 +70,7 @@ class NettyServer extends AbstractServer {
       @Override
       public ResponseMessage handle(RpcContext context) {
         final String targetInstanceName = context.getRequest().getTargetClassName();
-        final Handler<?> processor = beanFactory.getServiceHandler(targetInstanceName);
+        final Handler<?> processor = serverFactory.getServiceHandler(targetInstanceName);
         if (processor == null) {
           throw new ServiceNotFoundException(targetInstanceName);
         }
@@ -81,28 +80,17 @@ class NettyServer extends AbstractServer {
   }
 
   @Override
-  public void start() {
-    if (!startFlag.compareAndSet(false, true)) {
-      return;
-    }
-    doStart();
-    afterStartServer();
-    logger.info(String.format("Server is running at %s://%s:%s, businessThreads : %s",
-        configuration.getProtocolConfig().getProtocol(), configuration.getProtocolConfig().getHost(),
-        configuration.getProtocolConfig().getPort(), configuration.getServerConfig().getWorker()));
-  }
+  public void doInit() {
+    this.bossGroup = new NioEventLoopGroup(1, new NamedThreadFactory("crpc-boss"));
+    this.ioGroup = new NioEventLoopGroup(0, new NamedThreadFactory("crpc-io"));
 
-  protected void doStart() {
-    bossGroup = new NioEventLoopGroup(1, new NamedThreadFactory("crpc-boss"));
-    ioGroup = new NioEventLoopGroup(0, new NamedThreadFactory("crpc-io"));
-
-    ServerBootstrap bootStrap = new ServerBootstrap();
+    this.bootStrap = new ServerBootstrap();
     bootStrap.group(bossGroup, ioGroup).channel(NioServerSocketChannel.class);
     bootStrap.childOption(ChannelOption.TCP_NODELAY, true);
     bootStrap.childOption(ChannelOption.SO_REUSEADDR, true);
     bootStrap.childOption(ChannelOption.SO_KEEPALIVE, true);
     bootStrap.childOption(ChannelOption.SINGLE_EVENTEXECUTOR_PER_GROUP, false);
-    final NettyServerHandler nettyServerHandler = new NettyServerHandler(configuration, handler, beanFactory);
+    final NettyServerHandler nettyServerHandler = new NettyServerHandler(configuration, handler, serverFactory);
     this.channels = nettyServerHandler.getChannels();
     bootStrap.childHandler(new ChannelInitializer<SocketChannel>() {
       @Override
@@ -114,36 +102,44 @@ class NettyServer extends AbstractServer {
         channel.pipeline().addLast("handler", nettyServerHandler);
       }
     });
+  }
+
+  @Override
+  protected void doStart() {
     ChannelFuture channelFuture =
         bootStrap.bind(configuration.getProtocolConfig().getHost(), configuration.getProtocolConfig().getPort())
             .syncUninterruptibly();
     this.channel = channelFuture.channel();
+    afterStartServer();
+    logger.info(String.format("Server is running at %s://%s:%s, businessThreads : %s",
+        configuration.getProtocolConfig().getProtocol(), configuration.getProtocolConfig().getHost(),
+        configuration.getProtocolConfig().getPort(), configuration.getServerConfig().getWorker()));
+
   }
 
   @Override
-  public void stop() {
-    if (startFlag.compareAndSet(true, false)) {
-      logger.warn("Server stopped! configuration : " + configuration);
-      if (channels != null) {
-        // logger.info("关闭通道：" + channels);
-        ResponseMessage response = new ResponseMessage(0, CodecType.JDK_CODEC.getId(), SimpleProtocol.PROTOCOL_TYPE,
-            MessageType.MESSAGE_SHUTDOWN);
-        for (Map.Entry<String, Channel> entry : this.channels.entrySet()) {
-          logger.info("通知关闭通道：" + entry.getKey() + ", channel : " + entry.getValue());
-          entry.getValue().writeAndFlush(response);
-        }
-        channels.clear();
+  public void doStop() {
+    logger.warn("Server stopped! configuration : " + configuration);
+    if (channels != null) {
+      // logger.info("关闭通道：" + channels);
+      ResponseMessage response = new ResponseMessage(0, CodecType.JDK_CODEC.getId(), SimpleProtocol.PROTOCOL_TYPE,
+          MessageType.MESSAGE_SHUTDOWN);
+      for (Map.Entry<String, Channel> entry : this.channels.entrySet()) {
+        logger.info("通知关闭通道：" + entry.getKey() + ", channel : " + entry.getValue());
+        entry.getValue().writeAndFlush(response);
       }
-      if (channel != null) {
-        channel.close();
-      }
-      if (bossGroup != null) {
-        bossGroup.shutdownGracefully();
-      }
-      if (ioGroup != null) {
-        ioGroup.shutdownGracefully();
-      }
+      channels.clear();
     }
+    if (channel != null) {
+      channel.close();
+    }
+    if (bossGroup != null) {
+      bossGroup.shutdownGracefully();
+    }
+    if (ioGroup != null) {
+      ioGroup.shutdownGracefully();
+    }
+
   }
 
   /**

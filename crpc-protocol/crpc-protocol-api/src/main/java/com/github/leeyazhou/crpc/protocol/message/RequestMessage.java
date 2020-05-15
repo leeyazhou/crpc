@@ -17,6 +17,8 @@ package com.github.leeyazhou.crpc.protocol.message;
 
 import java.util.Arrays;
 import java.util.concurrent.atomic.AtomicInteger;
+import com.github.leeyazhou.crpc.codec.CodecType;
+import com.github.leeyazhou.crpc.protocol.SimpleProtocol;
 
 public class RequestMessage extends Message {
   private static final long serialVersionUID = 1L;
@@ -35,7 +37,9 @@ public class RequestMessage extends Message {
 
   private int messageLen;
 
-  public RequestMessage() {}
+  public RequestMessage() {
+    this(CodecType.KRYO_CODEC.getId(), SimpleProtocol.PROTOCOL_TYPE, MessageType.MESSAGE_COMMON);
+  }
 
   /**
    * 

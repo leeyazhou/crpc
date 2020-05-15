@@ -32,11 +32,6 @@ public class ServerConfig {
   private Set<String> basepackages = new TreeSet<String>();
   private Set<String> filters = new HashSet<String>();
 
-  /**
-   * 处理器的同步/异步
-   */
-  private boolean sync;
-
   public int getWorker() {
     return worker;
   }
@@ -86,20 +81,5 @@ public class ServerConfig {
   public void setFilters(Set<String> filters) {
     this.filters = filters;
   }
-
-  /**
-   * @return the sync
-   */
-  public boolean isSync() {
-    return sync;
-  }
-
-  /**
-   * @param sync the sync to set
-   */
-  public void setSync(boolean sync) {
-    this.sync = sync;
-  }
-
 
 }

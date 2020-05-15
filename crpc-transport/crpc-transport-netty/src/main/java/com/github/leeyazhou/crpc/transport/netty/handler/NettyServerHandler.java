@@ -52,15 +52,13 @@ public class NettyServerHandler extends SimpleChannelInboundHandler<RequestMessa
   private final int IDLE_MAX_COUNT = 60;
 
   private static final boolean DEBUG_ENABLED = logger.isDebugEnabled();
-  private final boolean sync;
   private final Handler<?> serverHandler;
-  private final ServerFactory beanFactory;
+  private final ServerFactory serverFactory;
   private ConcurrentMap<String, Channel> channels = new ConcurrentHashMap<String, Channel>();
 
-  public NettyServerHandler(Configuration configuration, Handler<?> serverHandler, ServerFactory beanFactory) {
-    this.sync = configuration.getServerConfig().isSync();
+  public NettyServerHandler(Configuration configuration, Handler<?> serverHandler, ServerFactory serverFactory) {
     this.serverHandler = serverHandler;
-    this.beanFactory = beanFactory;
+    this.serverFactory = serverFactory;
   }
 
   @Override
@@ -76,11 +74,7 @@ public class NettyServerHandler extends SimpleChannelInboundHandler<RequestMessa
   @Override
   protected void channelRead0(final ChannelHandlerContext ctx, final RequestMessage request) throws Exception {
     idleCount.set(0);
-    if (this.sync) {
-      returnResponse(ctx, request, System.currentTimeMillis());
-      return;
-    }
-    this.beanFactory.getExecutorService().execute(new Runnable() {
+    serverFactory.getExecutorService().execute(new Runnable() {
       private long beginTime = System.currentTimeMillis();
 
       @Override
@@ -95,7 +89,7 @@ public class NettyServerHandler extends SimpleChannelInboundHandler<RequestMessa
     // already timeout,so not return
     if ((invokeTime = System.currentTimeMillis() - beginTime) >= request.getTimeout() && logger.isWarnEnabled()) {
       logger.warn("timeout(" + request.getTimeout() + "ms < invoketime : " + invokeTime
-          + "ms), so give up send response to client, requestId is:" + request.getId() + ", client address : "
+          + "ms), so give up send response to client, requestId is:" + request.id() + ", client address : "
           + ctx.channel().remoteAddress());
       return;
     }
@@ -104,15 +98,14 @@ public class NettyServerHandler extends SimpleChannelInboundHandler<RequestMessa
     // already timeout,so not return
     if ((invokeTime = System.currentTimeMillis() - beginTime) >= request.getTimeout() && logger.isWarnEnabled()) {
       logger.warn("timeout(" + request.getTimeout() + "ms < invoketime : " + invokeTime
-          + "ms), so give up send response to client, requestId is:" + request.getId() + ", client address : "
+          + "ms), so give up send response to client, requestId is:" + request.id() + ", client address : "
           + ctx.channel().remoteAddress());
       return;
     }
-    ChannelFuture wf = ctx.channel().writeAndFlush(response);
-    wf.addListener(new ChannelFutureListener() {
+    ctx.channel().writeAndFlush(response).addListener(new ChannelFutureListener() {
       public void operationComplete(ChannelFuture future) throws Exception {
         if (!future.isSuccess()) {
-          logger.error("server write response error, request id is: " + request.getId(), future.cause());
+          logger.error("server write response error, request id is: " + request.id(), future.cause());
         }
       }
     });
@@ -120,12 +113,13 @@ public class NettyServerHandler extends SimpleChannelInboundHandler<RequestMessa
   }
 
   @Override
-  public void channelRegistered(ChannelHandlerContext ctx) throws Exception {
-    super.channelRegistered(ctx);
+  public void channelActive(ChannelHandlerContext ctx) throws Exception {
+    super.channelActive(ctx);
     if (logger.isInfoEnabled()) {
-      logger.info("channel register from " + ctx.channel().remoteAddress());
+      logger.info("channel active from " + ctx.channel().remoteAddress());
     }
-    channels.putIfAbsent(AddressUtil.toAddressString((InetSocketAddress) ctx.channel().remoteAddress()), ctx.channel());
+    String key = AddressUtil.toAddressString((InetSocketAddress) ctx.channel().remoteAddress());
+    channels.putIfAbsent(key, ctx.channel());
   }
 
   @Override

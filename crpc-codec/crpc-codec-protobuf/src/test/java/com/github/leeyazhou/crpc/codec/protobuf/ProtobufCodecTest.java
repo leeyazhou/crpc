@@ -26,7 +26,6 @@ import java.util.Map;
 import org.junit.Test;
 import com.github.leeyazhou.crpc.codec.Codec;
 import com.github.leeyazhou.crpc.codec.model.User;
-import com.github.leeyazhou.crpc.codec.protobuf.ProtobufSerializer;
 
 /**
  * @author leeyazhou
