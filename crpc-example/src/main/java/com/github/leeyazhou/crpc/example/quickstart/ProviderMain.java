@@ -19,9 +19,10 @@ public class ProviderMain {
     ApplicationConfig applicationConfig = new ApplicationConfig().setName("quick-start-provider").setVersion("1.0.1");
     ProtocolConfig protocolConfig = new ProtocolConfig().setAddress("crpc://127.0.0.1:25001");
 
-    Configuration configuration =
-        new Configuration().setApplicationConfig(applicationConfig).setProtocolConfig(protocolConfig)
-        .setServerConfig(new ServerConfig().addBasepackage("com.github.leeyazhou.crpc"));
+    Configuration configuration = new Configuration()
+                .setApplicationConfig(applicationConfig)
+                .setProtocolConfig(protocolConfig)
+                .setServerConfig(new ServerConfig().addBasepackage("com.github.leeyazhou.crpc.service"));
 
     ProviderConfig providerConfig = new ProviderConfig();
     providerConfig.setConfiguration(configuration);
