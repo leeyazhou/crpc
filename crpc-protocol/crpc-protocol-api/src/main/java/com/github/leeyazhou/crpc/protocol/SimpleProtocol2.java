@@ -17,6 +17,8 @@ package com.github.leeyazhou.crpc.protocol;
 
 import java.util.ArrayList;
 import java.util.List;
+import com.github.leeyazhou.crpc.codec.Codec;
+import com.github.leeyazhou.crpc.codec.CodecType;
 import com.github.leeyazhou.crpc.core.exception.UnsupportProtocolException;
 import com.github.leeyazhou.crpc.core.logger.Logger;
 import com.github.leeyazhou.crpc.core.logger.LoggerFactory;
@@ -24,8 +26,6 @@ import com.github.leeyazhou.crpc.core.util.ServiceLoader;
 import com.github.leeyazhou.crpc.protocol.message.Message;
 import com.github.leeyazhou.crpc.protocol.message.RequestMessage;
 import com.github.leeyazhou.crpc.protocol.message.ResponseMessage;
-import com.github.leeyazhou.crpc.serializer.CodecType;
-import com.github.leeyazhou.crpc.serializer.Serializer;
 
 /**
  * <b>Common RPC Protocol</b><br>
@@ -148,8 +148,8 @@ public class SimpleProtocol2 implements Protocol {
           requestArgTypes.add(requestArgType.getBytes());
           requestArgTypesLen += requestArgType.getBytes().length;
         }
-        Serializer serializer =
-            ServiceLoader.load(Serializer.class).load(CodecType.valueOf(request.getCodecType()).getSerializerName());
+        Codec serializer =
+            ServiceLoader.load(Codec.class).load(CodecType.valueOf(request.getCodecType()).getSerializerName());
         for (Object requestArg : requestObjects) {
           byte[] requestArgByte = serializer.encode(requestArg);
           requestArgs.add(requestArgByte);
@@ -214,8 +214,8 @@ public class SimpleProtocol2 implements Protocol {
     int error = 0;
     byte[] body = new byte[0];
     byte[] className = new byte[0];
-    Serializer serializer =
-        ServiceLoader.load(Serializer.class).load(CodecType.valueOf(response.getCodecType()).getSerializerName());
+    Codec serializer =
+        ServiceLoader.load(Codec.class).load(CodecType.valueOf(response.getCodecType()).getSerializerName());
     try {
       if (response.getResponse() != null) {
         className = response.getResponse().getClass().getName().getBytes();
@@ -303,7 +303,7 @@ public class SimpleProtocol2 implements Protocol {
       argTypes[i] = new String(argTypeByte);
     }
     Object[] args = new Object[argsCount];
-    Serializer serializer = ServiceLoader.load(Serializer.class).load(CodecType.valueOf(codecType).getSerializerName());
+    Codec serializer = ServiceLoader.load(Codec.class).load(CodecType.valueOf(codecType).getSerializerName());
     for (int i = 0; i < argsCount; i++) {
       byte[] argByte = new byte[argsLen[i]];
       byteBufWrapper.readBytes(argByte);
@@ -345,8 +345,7 @@ public class SimpleProtocol2 implements Protocol {
     response.setResponseClassName(new String(classNameBytes));
     response.setMessageType(messageType);
     if (bodyLen != 0) {
-      Serializer serializer =
-          ServiceLoader.load(Serializer.class).load(CodecType.valueOf(codecType).getSerializerName());
+      Codec serializer = ServiceLoader.load(Codec.class).load(CodecType.valueOf(codecType).getSerializerName());
       response.setResponse(serializer.decode(response.getResponseClassName(), bodyBytes));
     }
     if (error == 1) {

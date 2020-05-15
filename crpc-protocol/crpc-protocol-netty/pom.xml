@@ -32,7 +32,7 @@
         </dependency>
         <dependency>
             <groupId>com.github.leeyazhou</groupId>
-            <artifactId>crpc-serializer-kryo</artifactId>
+            <artifactId>crpc-codec-kryo</artifactId>
             <version>${project.parent.version}</version>
         </dependency>
         <dependency>

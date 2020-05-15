@@ -16,19 +16,18 @@
 package com.github.leeyazhou.crpc.transport.netty.handler;
 
 import java.io.IOException;
-import com.github.leeyazhou.crpc.protocol.SimpleProtocol;
-import com.github.leeyazhou.crpc.protocol.message.MessageType;
-import com.github.leeyazhou.crpc.protocol.message.RequestMessage;
-import com.github.leeyazhou.crpc.protocol.message.ResponseMessage;
-import com.github.leeyazhou.crpc.serializer.CodecType;
-import com.github.leeyazhou.crpc.transport.TransportFactory;
-import com.github.leeyazhou.crpc.transport.netty.NettyClient;
+import com.github.leeyazhou.crpc.codec.CodecType;
 import com.github.leeyazhou.crpc.core.Constants;
 import com.github.leeyazhou.crpc.core.URL;
 import com.github.leeyazhou.crpc.core.logger.Logger;
 import com.github.leeyazhou.crpc.core.logger.LoggerFactory;
 import com.github.leeyazhou.crpc.core.util.ServiceLoader;
-
+import com.github.leeyazhou.crpc.protocol.SimpleProtocol;
+import com.github.leeyazhou.crpc.protocol.message.MessageType;
+import com.github.leeyazhou.crpc.protocol.message.RequestMessage;
+import com.github.leeyazhou.crpc.protocol.message.ResponseMessage;
+import com.github.leeyazhou.crpc.transport.TransportFactory;
+import com.github.leeyazhou.crpc.transport.netty.NettyClient;
 import io.netty.channel.ChannelHandler.Sharable;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;

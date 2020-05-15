@@ -20,17 +20,17 @@
 package com.github.leeyazhou.crpc.protocol.rpc;
 
 import org.junit.Test;
+import com.github.leeyazhou.crpc.codec.Codec;
+import com.github.leeyazhou.crpc.codec.CodecType;
 import com.github.leeyazhou.crpc.core.util.ServiceLoader;
 import com.github.leeyazhou.crpc.protocol.model.User;
-import com.github.leeyazhou.crpc.serializer.CodecType;
-import com.github.leeyazhou.crpc.serializer.Serializer;
 
 /**
  * @author leeyazhou
  */
 public class ProtocolCodecTest {
 
-  Serializer serializer = ServiceLoader.load(Serializer.class).load(CodecType.KRYO_CODEC.getSerializerName());
+  Codec serializer = ServiceLoader.load(Codec.class).load(CodecType.KRYO_CODEC.getSerializerName());
 
   @Test
   public void testEncode() throws Exception {

@@ -53,7 +53,7 @@
         <module>crpc-monitor</module>
         <module>crpc-extension</module>
         <module>crpc-bom</module>
-        <module>crpc-serializer</module>
+        <module>crpc-codec</module>
         <module>crpc-example</module>
     </modules>
     <scm>

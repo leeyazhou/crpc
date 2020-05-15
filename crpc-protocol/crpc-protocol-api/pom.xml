@@ -33,7 +33,7 @@
         </dependency>
         <dependency>
             <groupId>com.github.leeyazhou</groupId>
-            <artifactId>crpc-serializer-api</artifactId>
+            <artifactId>crpc-codec-api</artifactId>
             <version>${project.parent.version}</version>
         </dependency>
 

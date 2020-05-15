@@ -20,7 +20,7 @@ package com.github.leeyazhou.crpc.rpc.handler;
 
 import java.util.HashSet;
 import java.util.Set;
-import com.github.leeyazhou.crpc.config.ServerConfig;
+import com.github.leeyazhou.crpc.codec.CodecType;
 import com.github.leeyazhou.crpc.config.ServiceConfig;
 import com.github.leeyazhou.crpc.config.ServiceGroupConfig;
 import com.github.leeyazhou.crpc.core.Constants;
@@ -30,7 +30,6 @@ import com.github.leeyazhou.crpc.core.logger.LoggerFactory;
 import com.github.leeyazhou.crpc.core.util.ServiceLoader;
 import com.github.leeyazhou.crpc.protocol.SimpleProtocol;
 import com.github.leeyazhou.crpc.protocol.message.ResponseMessage;
-import com.github.leeyazhou.crpc.serializer.CodecType;
 import com.github.leeyazhou.crpc.transport.Filter;
 import com.github.leeyazhou.crpc.transport.Handler;
 import com.github.leeyazhou.crpc.transport.RpcContext;
