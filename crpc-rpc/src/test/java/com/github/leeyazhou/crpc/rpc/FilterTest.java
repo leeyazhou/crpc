@@ -17,7 +17,7 @@
  * 
  */
 
-package com.github.crpc.server;
+package com.github.leeyazhou.crpc.rpc;
 
 /**
  * @author leeyazhou

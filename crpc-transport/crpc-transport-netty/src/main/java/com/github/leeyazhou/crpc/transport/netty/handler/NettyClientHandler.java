@@ -17,7 +17,6 @@ package com.github.leeyazhou.crpc.transport.netty.handler;
 
 import java.io.IOException;
 import com.github.leeyazhou.crpc.codec.CodecType;
-import com.github.leeyazhou.crpc.core.Constants;
 import com.github.leeyazhou.crpc.core.URL;
 import com.github.leeyazhou.crpc.core.logger.Logger;
 import com.github.leeyazhou.crpc.core.logger.LoggerFactory;
@@ -64,15 +63,14 @@ public class NettyClientHandler extends SimpleChannelInboundHandler<ResponseMess
     if (!(cause instanceof IOException)) {
       logger.error("catch some exception not IOException", cause);
     }
-    Class<?> beanType = Class.forName(url.getParameter(Constants.SERVICE_INTERFACE, null));
-    transportFactory.removeClient(beanType, client);
+    transportFactory.getClientManager().removeClient(client);
   }
 
   @Override
   protected void channelRead0(ChannelHandlerContext ctx, ResponseMessage response) throws Exception {
     if (isTraceEnabled) {
-      logger.trace(
-          "receive response from server: " + ctx.channel().remoteAddress() + ", request id is:" + response.id());
+      logger
+          .trace("receive response from server: " + ctx.channel().remoteAddress() + ", request id is:" + response.id());
     }
     client.putResponse(response);
   }
@@ -94,8 +92,7 @@ public class NettyClientHandler extends SimpleChannelInboundHandler<ResponseMess
   @Override
   public void channelInactive(ChannelHandlerContext ctx) throws Exception {
     super.channelInactive(ctx);
-    Class<?> beanType = Class.forName(url.getParameter(Constants.SERVICE_INTERFACE, null));
-    transportFactory.removeClient(beanType, client);
+    transportFactory.getClientManager().removeClient(client);
     client.connect();
     connectionManager.removeConnection(url.getAddress());
   }

@@ -16,13 +16,13 @@
 package com.github.leeyazhou.crpc.transport.netty;
 
 import java.util.concurrent.atomic.AtomicInteger;
-import com.github.leeyazhou.crpc.transport.AbstractClient;
-import com.github.leeyazhou.crpc.transport.Connection;
 import com.github.leeyazhou.crpc.core.Constants;
 import com.github.leeyazhou.crpc.core.URL;
 import com.github.leeyazhou.crpc.core.logger.Logger;
 import com.github.leeyazhou.crpc.core.logger.LoggerFactory;
 import com.github.leeyazhou.crpc.protocol.message.RequestMessage;
+import com.github.leeyazhou.crpc.transport.AbstractClient;
+import com.github.leeyazhou.crpc.transport.Connection;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelFutureListener;
@@ -52,8 +52,7 @@ public class NettyClient extends AbstractClient {
     ChannelFuture channelFuture = bootStrap.connect(host, port).addListener(new ChannelFutureListener() {
       public void operationComplete(ChannelFuture future) throws Exception {
         if (future.isSuccess()) {
-          Class<?> beanType = Class.forName(getUrl().getParameter(Constants.SERVICE_INTERFACE, null));
-          transportFactory.addClient(beanType, NettyClient.this);
+          transportFactory.getClientManager().addClient(NettyClient.this);
           logger.info(String.format("Client connect server %s:%s success ! ", host, port));
         } else {
           String msg = String.format("Client connect server %s:%s fail", host, port);

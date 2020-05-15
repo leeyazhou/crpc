@@ -18,11 +18,9 @@
  */
 package com.github.leeyazhou.crpc.transport;
 
-import java.util.List;
 import java.util.concurrent.ExecutorService;
 import com.github.leeyazhou.crpc.config.Configuration;
 import com.github.leeyazhou.crpc.config.ServiceConfig;
-import com.github.leeyazhou.crpc.config.ServiceGroupConfig;
 import com.github.leeyazhou.crpc.core.URL;
 import com.github.leeyazhou.crpc.core.annotation.SPI;
 import com.github.leeyazhou.crpc.transport.factory.ServerFactory;
@@ -38,11 +36,11 @@ public interface TransportFactory {
   public static final long javaHeapSize = Runtime.getRuntime().maxMemory();
 
   /**
-   * when the size of sending bytes in queue reach percent -Xmx, then do sth based on sendLimitPolicy
-   * to avoid oom default is 50<br>
+   * when the size of sending bytes in queue reach percent -Xmx, then do sth based on sendLimitPolicy to avoid oom
+   * default is 50<br>
    * 
-   * for example: ClientFactory.sendLimitPercent = 50 -Xmx1g, if sending bytes size reaches 500m,when
-   * u call client.invokeSync then it'll throw CrpcRPCRejectException
+   * for example: ClientFactory.sendLimitPercent = 50 -Xmx1g, if sending bytes size reaches 500m,when u call
+   * client.invokeSync then it'll throw CrpcRPCRejectException
    */
   public static int sendLimitPercent = 50;
 
@@ -61,33 +59,6 @@ public interface TransportFactory {
   void enableSendLimit();
 
 
-
-  /**
-   * get client,create clientNums connections to targetIP:targetPort(or your custom key)
-   * 
-   * @param <T> t
-   * @param serviceConfig {@link ServiceGroupConfig}
-   * @return list of {@link Client}
-   * @throws Exception any exception
-   */
-  <T> List<Client> get(final ServiceConfig<T> serviceConfig) throws Exception;
-
-  /**
-   * remove error client
-   * 
-   * @param key username
-   * @param client {@link Client}
-   */
-  void removeClient(Class<?> key, Client client);
-
-  /**
-   * remove client from cache
-   * 
-   * @param beanType beanType
-   * @param client client
-   * @return boolean
-   */
-  boolean addClient(Class<?> beanType, Client client);
 
   /**
    * get crpc configuration
@@ -110,15 +81,14 @@ public interface TransportFactory {
    */
   LoadBalance getLoadBalance(String loadbalance);
 
-  /**
-   * @return ExecutorService
-   */
   ExecutorService getExecutorService();
 
 
-  Server createServer(Configuration configuration, ServerFactory beanFactory);
+  Server createServer(Configuration configuration, ServerFactory serverFactory);
 
   Client createClient(URL url);
-  
+
   ConnectionManager getConnectionManager();
+
+  ClientManager getClientManager();
 }

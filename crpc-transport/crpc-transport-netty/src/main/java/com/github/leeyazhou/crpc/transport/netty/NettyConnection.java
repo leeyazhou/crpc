@@ -86,13 +86,12 @@ public class NettyConnection implements Connection {
             // maybe some exception,so close the channel
             channel.close();
           } else {
-            transportFactory.removeClient(Class.forName(request.getTargetClassName()), client);
+            transportFactory.getClientManager().removeClient(client);
           }
         }
         Exception ex = new CrpcConnectException(errorMsg.toString(), future.cause());
         logger.error("", ex);
-        ResponseMessage response =
-            new ResponseMessage(request.id(), request.getCodecType(), request.getProtocolType());
+        ResponseMessage response = new ResponseMessage(request.id(), request.getCodecType(), request.getProtocolType());
         response.setError(Boolean.TRUE);
         response.setResponseClassName(CrpcException.class.getName());
         // response.setException(ExceptionUtil.getErrorMessage(ex));

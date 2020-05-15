@@ -34,7 +34,7 @@ public class NettyClientTest extends NettyServerTest {
   private static final EventLoopGroup bussinessGroup = new NioEventLoopGroup(0, new NamedThreadFactory("crpc-client"));
 
   @Test
-  public void testDoSendRequest() {
+  public void testSendRequest() {
     final URL url = URL.valueOf("crpc://127.0.0.1:25001").addParameter(Constants.SERVICE_INTERFACE,
         InternalEchoService.class.getName());
     final ConnectionManager connectionManager = new ConnectionManager();

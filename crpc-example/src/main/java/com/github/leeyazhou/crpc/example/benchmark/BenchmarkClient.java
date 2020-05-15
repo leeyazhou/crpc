@@ -26,7 +26,7 @@ import java.util.concurrent.CountDownLatch;
 import com.github.leeyazhou.crpc.config.ServiceGroupConfig;
 import com.github.leeyazhou.crpc.core.URL;
 import com.github.leeyazhou.crpc.core.util.ServiceLoader;
-import com.github.leeyazhou.crpc.rpc.ProxyFactory;
+import com.github.leeyazhou.crpc.rpc.proxy.ProxyFactory;
 import com.github.leeyazhou.crpc.service.UserService;
 
 /**

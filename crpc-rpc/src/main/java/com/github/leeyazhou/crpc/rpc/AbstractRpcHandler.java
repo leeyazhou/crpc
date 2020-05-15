@@ -91,7 +91,6 @@ public abstract class AbstractRpcHandler<T> implements Handler<T>, InvocationHan
       }
       serviceConfig.setUrls(urls);
     }
-//    serviceConfig.setRegistryConfigs(serviceGroupConfig.get);
     this.transportFactory.initService(serviceConfig);
     this.serviceConfig = serviceConfig;
   }
@@ -107,7 +106,7 @@ public abstract class AbstractRpcHandler<T> implements Handler<T>, InvocationHan
       }
     }
   }
-  
+
 
 
   @Override
@@ -129,7 +128,7 @@ public abstract class AbstractRpcHandler<T> implements Handler<T>, InvocationHan
 
     RequestMessage request = new RequestMessage(getHandlerType().getName(), method.getName(), argsTypes, args,
         serviceConfig.getTimeout(), serviceConfig.getCodecValue(), getProtocolType());
-    List<Client> clients = transportFactory.get(serviceConfig);
+    List<Client> clients = transportFactory.getClientManager().get(serviceConfig);
     LoadBalance loadBalance = transportFactory.getLoadBalance(serviceConfig.getLoadbalance());
     RpcContext context = RpcContext.consumerContext(request, clients, loadBalance);
     return handle(context).getResponse();
@@ -177,11 +176,9 @@ public abstract class AbstractRpcHandler<T> implements Handler<T>, InvocationHan
   /**
    * do invoce thing
    * 
-   * @param context
-   *          {@link RpcContext}
+   * @param context {@link RpcContext}
    * @return result
-   * @throws Exception
-   *           any exception
+   * @throws Exception any exception
    */
   protected abstract ResponseMessage doInvoke(RpcContext context) throws Exception;
 }

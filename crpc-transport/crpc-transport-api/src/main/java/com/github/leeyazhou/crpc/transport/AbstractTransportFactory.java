@@ -22,8 +22,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.ExecutorService;
 import com.github.leeyazhou.crpc.config.Configuration;
 import com.github.leeyazhou.crpc.config.RegistryConfig;
@@ -33,7 +31,6 @@ import com.github.leeyazhou.crpc.core.URL;
 import com.github.leeyazhou.crpc.core.concurrent.Executors;
 import com.github.leeyazhou.crpc.core.concurrent.NamedThreadFactory;
 import com.github.leeyazhou.crpc.core.exception.CrpcException;
-import com.github.leeyazhou.crpc.core.exception.ServiceNotFoundException;
 import com.github.leeyazhou.crpc.core.logger.Logger;
 import com.github.leeyazhou.crpc.core.logger.LoggerFactory;
 import com.github.leeyazhou.crpc.core.util.ServiceLoader;
@@ -50,12 +47,10 @@ import com.github.leeyazhou.crpc.transport.object.SendLimitPolicy;
  */
 public abstract class AbstractTransportFactory implements TransportFactory, NotifyListener {
   private static final Logger logger = LoggerFactory.getLogger(AbstractTransportFactory.class);
-  protected static final ConcurrentMap<String, Client> clientsMap = new ConcurrentHashMap<String, Client>();
   private static boolean isSendLimitEnabled = false;
   // Cache client
-  private static final ConcurrentMap<Class<?>, List<Client>> cachedClients =
-      new ConcurrentHashMap<Class<?>, List<Client>>();
   private final ConnectionManager connectionManager = new ConnectionManager();
+  private final ClientManager clientManager = new ClientManager(this);
 
   static Configuration configuration;
   static final String location = "crpc.xml";
@@ -82,14 +77,14 @@ public abstract class AbstractTransportFactory implements TransportFactory, Noti
       return;
     }
     long threshold = javaHeapSize * sendLimitPercent / 100;
-    long sendingBytesSize = getSendingBytesSize();
+    long sendingBytesSize = getClientManager().getSendingBytesSize();
     if (sendingBytesSize >= threshold) {
       if (sendLimitPolicy == SendLimitPolicy.REJECT) {
         throw new CrpcException(
             "sending bytes size exceed threshold,size: " + sendingBytesSize + ", threshold: " + threshold);
       } else {
         Thread.sleep(1000);
-        sendingBytesSize = getSendingBytesSize();
+        sendingBytesSize = getClientManager().getSendingBytesSize();
         if (sendingBytesSize >= threshold) {
           throw new CrpcException(
               "sending bytes size exceed threshold,size: " + sendingBytesSize + ", threshold: " + threshold);
@@ -98,19 +93,10 @@ public abstract class AbstractTransportFactory implements TransportFactory, Noti
     }
   }
 
-  /**
-   * 
-   * @return
-   * @throws Exception
-   */
-  private long getSendingBytesSize() throws Exception {
-    long sendingBytesSize = 0;
-    for (List<Client> clientList : cachedClients.values()) {
-      for (Client client : clientList) {
-        sendingBytesSize += client.getSendingBytesSize();
-      }
-    }
-    return sendingBytesSize;
+
+  @Override
+  public ClientManager getClientManager() {
+    return clientManager;
   }
 
   @Override
@@ -150,67 +136,9 @@ public abstract class AbstractTransportFactory implements TransportFactory, Noti
 
     List<Client> clients = new ArrayList<Client>(providers.size());
     for (URL provider : providers.values()) {
-      clients.add(getOrCreateClient(provider));
+      getClientManager().getOrCreateClient(provider);
     }
-    logger.info("find " + clients.size() + " providers of " + serviceConfig.getName());
-    cachedClients.putIfAbsent(serviceConfig.getInterfaceClass(), clients);
-  }
-
-  @Override
-  public <T> List<Client> get(final ServiceConfig<T> serviceConfig) throws Exception {
-    try {
-      List<Client> clients = cachedClients.get(serviceConfig.getInterfaceClass());
-      if (clients == null || clients.isEmpty()) {
-        throw new ServiceNotFoundException("serviceName : " + serviceConfig.getName());
-      }
-      return clients;
-    } catch (Exception err) {
-      cachedClients.remove(serviceConfig.getInterfaceClass());
-      throw err;
-    }
-  }
-
-  @Override
-  public void removeClient(Class<?> beanType, Client client) {
-    try {
-      final String key = client.getUrl().getHost() + ":" + client.getUrl().getPort();
-      clientsMap.remove(key);
-      for (Map.Entry<Class<?>, List<Client>> entry : cachedClients.entrySet()) {
-        List<Client> clients = entry.getValue();
-        if (clients.remove(client) && clients.isEmpty()) {
-          cachedClients.remove(beanType);
-        }
-
-      }
-    } catch (Exception err) {
-      logger.error("removeClient error ", err);
-    }
-  }
-
-  @Override
-  public boolean addClient(Class<?> beanType, final Client client) {
-    try {
-      List<Client> clients = cachedClients.get(beanType);
-      if (clients == null) {
-        clients = new ArrayList<Client>();
-        cachedClients.putIfAbsent(beanType, clients);
-      }
-      if (!clients.contains(client)) {
-        clients.add(client);
-        final String key = client.getUrl().getHost() + ":" + client.getUrl().getPort();
-        Client temp = clientsMap.putIfAbsent(key, client);
-        if (temp != null) {
-          logger.warn("fail to cache client : " + client);
-        }
-      }
-      if (logger.isInfoEnabled()) {
-        logger.info("addClient success, serviceName:" + beanType + ", client : " + client);
-      }
-    } catch (Throwable err) {
-      logger.error("addClient fail, serviceName:" + beanType, err);
-      return Boolean.FALSE;
-    }
-    return Boolean.TRUE;
+    logger.info("find " + clients.size() + " providers for " + serviceConfig.getName());
   }
 
   @Override
@@ -252,8 +180,7 @@ public abstract class AbstractTransportFactory implements TransportFactory, Noti
     for (URL url : urls) {
       try {
         String beanTypeStr = url.getParameter(Constants.SERVICE_INTERFACE, null);
-        Class<?> beanType = Class.forName(beanTypeStr);
-        addClient(beanType, getOrCreateClient(url));
+        clientManager.getOrCreateClient(url);
       } catch (Exception e) {
         logger.error("notify fail", e);
       }
@@ -269,20 +196,6 @@ public abstract class AbstractTransportFactory implements TransportFactory, Noti
     return executorService;
   }
 
-  private Client getOrCreateClient(URL url) {
-    final String key = url.getHost() + ":" + url.getPort();
-    Client client = clientsMap.get(key);
-    if (client == null) {
-      client = createClient(url);
-      Client t = clientsMap.putIfAbsent(key, client);
-      if (t != null) {
-        client = t;
-      } else {
-        client.connect();
-      }
-    }
-    return client;
-  }
 
   @Override
   public ConnectionManager getConnectionManager() {

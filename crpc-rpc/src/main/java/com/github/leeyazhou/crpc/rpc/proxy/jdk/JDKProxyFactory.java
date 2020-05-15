@@ -17,12 +17,12 @@
  * 
  */
 
-package com.github.leeyazhou.crpc.rpc.factory;
+package com.github.leeyazhou.crpc.rpc.proxy.jdk;
 
 import java.lang.reflect.Proxy;
 import com.github.leeyazhou.crpc.config.ServiceGroupConfig;
-import com.github.leeyazhou.crpc.rpc.ProxyFactory;
 import com.github.leeyazhou.crpc.rpc.DefaultInvoker;
+import com.github.leeyazhou.crpc.rpc.proxy.ProxyFactory;
 
 /**
  * @author leeyazhou

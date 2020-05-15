@@ -17,26 +17,20 @@
  * 
  */
 
-package com.github.leeyazhou.crpc.rpc;
+package com.github.leeyazhou.crpc.rpc.proxy.javassist;
 
 import com.github.leeyazhou.crpc.config.ServiceGroupConfig;
-import com.github.leeyazhou.crpc.core.annotation.SPI;
+import com.github.leeyazhou.crpc.rpc.proxy.ProxyFactory;
 
 /**
  * @author leeyazhou
  *
  */
-@SPI(value = "jdk", message = "动态代理")
-public interface ProxyFactory {
+public final class JavassistProxyFactory implements ProxyFactory {
 
-  /**
-   * 获取代理
-   * 
-   * @param <T> t
-   * @param objectType 代理类
-   * @param serviceGroupConfig 配置
-   * @return t
-   */
-  <T> T getProxy(Class<T> objectType, ServiceGroupConfig serviceGroupConfig);
+  @Override
+  public <T> T getProxy(Class<T> objectType, ServiceGroupConfig serviceGroupConfig) {
+    return null;
+  }
 
 }
