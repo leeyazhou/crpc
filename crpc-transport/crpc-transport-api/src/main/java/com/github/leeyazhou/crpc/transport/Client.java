@@ -34,7 +34,7 @@ public interface Client {
    * 
    * @param response {@link ResponseMessage}
    */
-  void putResponse(ResponseMessage response);
+  void receiveResponse(ResponseMessage response);
 
 
   /**

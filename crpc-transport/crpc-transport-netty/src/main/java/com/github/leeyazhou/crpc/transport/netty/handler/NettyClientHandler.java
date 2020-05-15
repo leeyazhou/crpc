@@ -72,7 +72,7 @@ public class NettyClientHandler extends SimpleChannelInboundHandler<ResponseMess
       logger
           .trace("receive response from server: " + ctx.channel().remoteAddress() + ", request id is:" + response.id());
     }
-    client.putResponse(response);
+    client.receiveResponse(response);
   }
 
   @Override

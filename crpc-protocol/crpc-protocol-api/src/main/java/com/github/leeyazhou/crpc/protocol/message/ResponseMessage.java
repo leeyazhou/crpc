@@ -16,9 +16,7 @@
 package com.github.leeyazhou.crpc.protocol.message;
 
 public class ResponseMessage extends Message {
-
-  private static final long serialVersionUID = 3172161907603172383L;
-
+  private static final long serialVersionUID = 1L;
 
   private Object response = null;
 

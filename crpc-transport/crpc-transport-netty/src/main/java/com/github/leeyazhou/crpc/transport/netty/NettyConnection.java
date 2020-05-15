@@ -96,7 +96,7 @@ public class NettyConnection implements Connection {
         response.setResponseClassName(CrpcException.class.getName());
         // response.setException(ExceptionUtil.getErrorMessage(ex));
         response.setResponse(ExceptionUtil.getErrorMessage(ex));
-        client.putResponse(response);
+        client.receiveResponse(response);
       }
     });
 

@@ -104,7 +104,7 @@ public abstract class AbstractClient implements Client {
    * receive response
    */
   @Override
-  public void putResponse(ResponseMessage response) {
+  public void receiveResponse(ResponseMessage response) {
     if (!responses.containsKey(response.id())) {
       logger.warn("give up the response, request id is:" + response.id() + ", maybe because timeout!");
       return;
