@@ -21,7 +21,7 @@
     <parent>
         <groupId>com.github.leeyazhou</groupId>
         <artifactId>crpc-parent</artifactId>
-        <version>1.0.1-SNAPSHOT</version>
+        <version>1.0.1.RELEASE</version>
     </parent>
     <artifactId>crpc-transport</artifactId>
     <packaging>pom</packaging>

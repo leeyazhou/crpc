@@ -21,7 +21,7 @@
     <parent>
         <groupId>com.github.leeyazhou</groupId>
         <artifactId>crpc-config</artifactId>
-        <version>1.0.1-SNAPSHOT</version>
+        <version>1.0.1.RELEASE</version>
     </parent>
     <artifactId>crpc-config-default</artifactId>
 
@@ -29,17 +29,17 @@
         <dependency>
             <groupId>com.github.leeyazhou</groupId>
             <artifactId>crpc-config-api</artifactId>
-            <version>1.0.1-SNAPSHOT</version>
+            <version>1.0.1.RELEASE</version>
         </dependency>
         <dependency>
             <groupId>com.github.leeyazhou</groupId>
             <artifactId>crpc-rpc</artifactId>
-            <version>1.0.1-SNAPSHOT</version>
+            <version>1.0.1.RELEASE</version>
         </dependency>
         <dependency>
             <groupId>com.github.leeyazhou</groupId>
             <artifactId>crpc-transport-api</artifactId>
-            <version>1.0.1-SNAPSHOT</version>
+            <version>1.0.1.RELEASE</version>
         </dependency>
     </dependencies>
 </project>

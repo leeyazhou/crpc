@@ -21,7 +21,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.github.leeyazhou</groupId>
   <artifactId>crpc-parent</artifactId>
-  <version>1.0.1-SNAPSHOT</version>
+  <version>1.0.1.RELEASE</version>
   <packaging>pom</packaging>
   <name>${project.artifactId}</name>
   <description>RPC framework</description>
@@ -51,7 +51,6 @@
     <module>crpc-transport</module>
     <module>crpc-config</module>
     <module>crpc-monitor</module>
-    <module>crpc-extension</module>
     <module>crpc-bom</module>
     <module>crpc-codec</module>
     <module>crpc-example</module>
