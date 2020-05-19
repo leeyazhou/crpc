@@ -85,21 +85,6 @@
             </dependency>
             <dependency>
                 <groupId>com.github.leeyazhou</groupId>
-                <artifactId>crpc-protocol</artifactId>
-                <version>${project.parent.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.github.leeyazhou</groupId>
-                <artifactId>crpc-protocol-api</artifactId>
-                <version>${project.parent.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.github.leeyazhou</groupId>
-                <artifactId>crpc-protocol-netty</artifactId>
-                <version>${project.parent.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.github.leeyazhou</groupId>
                 <artifactId>crpc-registry</artifactId>
                 <version>${project.parent.version}</version>
             </dependency>
