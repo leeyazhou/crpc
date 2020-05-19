@@ -47,7 +47,7 @@ public class NettyServerTest {
 
           @Override
           public ServiceHandler<InternalEchoServiceImpl> answer(InvocationOnMock invocation) throws Throwable {
-            return new ServiceHandler<InternalEchoServiceImpl>(InternalEchoServiceImpl.class, null,
+            return new ServiceHandler<InternalEchoServiceImpl>(InternalEchoServiceImpl.class,
                 new InternalEchoServiceImpl());
           }
         });

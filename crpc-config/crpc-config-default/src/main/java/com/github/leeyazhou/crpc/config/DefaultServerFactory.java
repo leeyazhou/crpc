@@ -16,9 +16,7 @@
 package com.github.leeyazhou.crpc.config;
 
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
-import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import com.github.leeyazhou.crpc.core.logger.Logger;
@@ -26,7 +24,6 @@ import com.github.leeyazhou.crpc.core.logger.LoggerFactory;
 import com.github.leeyazhou.crpc.core.object.RegistryType;
 import com.github.leeyazhou.crpc.registry.RegistryFactory;
 import com.github.leeyazhou.crpc.transport.Filter;
-import com.github.leeyazhou.crpc.transport.Interceptor;
 import com.github.leeyazhou.crpc.transport.factory.AbstractServerFactory;
 import com.github.leeyazhou.crpc.transport.factory.ServiceHandler;
 
@@ -37,8 +34,6 @@ public class DefaultServerFactory extends AbstractServerFactory {
 
   private static final Logger logger = LoggerFactory.getLogger(DefaultServerFactory.class);
 
-  private static final Set<Interceptor> interceptors = new HashSet<Interceptor>();
-
   private static final Map<RegistryType, RegistryFactory> registryFactories =
       new HashMap<RegistryType, RegistryFactory>();
 
@@ -46,20 +41,6 @@ public class DefaultServerFactory extends AbstractServerFactory {
   private static final ConcurrentMap<String, ServiceHandler<?>> beanClassFactory =
       new ConcurrentHashMap<String, ServiceHandler<?>>();
 
-  public void registerInterceptor(Class<Interceptor> interceptor) {
-    try {
-      interceptors.add(interceptor.newInstance());
-    } catch (Exception e) {
-      logger.error("", e);
-    }
-  }
-
-  /**
-   * @return the interceptors
-   */
-  public Set<Interceptor> getInterceptors() {
-    return interceptors;
-  }
 
   /**
    * 注册处理器

@@ -21,7 +21,6 @@ package com.github.leeyazhou.crpc.transport.factory;
 import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
 import com.github.leeyazhou.crpc.core.exception.ServiceMethodNotFoundException;
 import com.github.leeyazhou.crpc.core.logger.Logger;
 import com.github.leeyazhou.crpc.core.logger.LoggerFactory;
@@ -31,7 +30,6 @@ import com.github.leeyazhou.crpc.protocol.message.RequestMessage;
 import com.github.leeyazhou.crpc.protocol.message.ResponseMessage;
 import com.github.leeyazhou.crpc.transport.Filter;
 import com.github.leeyazhou.crpc.transport.Handler;
-import com.github.leeyazhou.crpc.transport.Interceptor;
 import com.github.leeyazhou.crpc.transport.RpcContext;
 
 /**
@@ -43,20 +41,15 @@ public class ServiceHandler<T> implements Handler<T> {
   private T instance;
   // Cached Server Methods key: methodname$argtype_argtype
   private final Map<String, MethodProxy> cachedMethods = new HashMap<String, MethodProxy>();
-  private final Set<Interceptor> interceptors;
   private Filter filter;
 
   public ServiceHandler(Class<T> clazz) {
     this(clazz, null);
   }
 
-  public ServiceHandler(Class<T> clazz, Set<Interceptor> interceptors) {
-    this(clazz, interceptors, null);
-  }
 
-  public ServiceHandler(Class<T> clazz, Set<Interceptor> interceptors, T instance) {
+  public ServiceHandler(Class<T> clazz, T instance) {
     this.clazz = clazz;
-    this.interceptors = interceptors;
     this.instance = instance;
     init();
   }
@@ -107,7 +100,7 @@ public class ServiceHandler<T> implements Handler<T> {
           throw new ServiceMethodNotFoundException(
               "no method: " + methodName + " found in " + targetInstanceName + " on the server");
         }
-        method = new MethodProxy(temp, null);
+        method = new MethodProxy(temp);
         requestObjects = new Object[] {};
       }
       response.setResponseClassName(method.getMethod().getReturnType().getName());
@@ -132,7 +125,7 @@ public class ServiceHandler<T> implements Handler<T> {
       for (Class<?> argClass : argTypes) {
         methodKeyBuilder.append(argClass.getName()).append("_");
       }
-      MethodProxy temp = this.cachedMethods.put(methodKeyBuilder.toString(), new MethodProxy(method, interceptors));
+      MethodProxy temp = this.cachedMethods.put(methodKeyBuilder.toString(), new MethodProxy(method));
       if (temp != null) {
         logger.warn("method is already exists! targetClass : " + clazz + ", MethodProxy : " + temp);
       }
@@ -181,8 +174,6 @@ public class ServiceHandler<T> implements Handler<T> {
     builder.append(instance);
     builder.append(", cachedMethods=");
     builder.append(cachedMethods);
-    builder.append(", interceptors=");
-    builder.append(interceptors);
     builder.append("]");
     return builder.toString();
   }

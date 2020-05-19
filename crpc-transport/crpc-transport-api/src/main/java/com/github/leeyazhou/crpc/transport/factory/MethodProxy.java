@@ -20,97 +20,29 @@
 package com.github.leeyazhou.crpc.transport.factory;
 
 import java.lang.reflect.Method;
-import java.util.HashSet;
-import java.util.Set;
-
-import com.github.leeyazhou.crpc.transport.Interceptor;
-import com.github.leeyazhou.crpc.core.annotation.PointCut;
 import com.github.leeyazhou.crpc.core.logger.Logger;
 import com.github.leeyazhou.crpc.core.logger.LoggerFactory;
-import com.github.leeyazhou.crpc.core.util.AntPathMatcher;
 
 /**
  * @author leeyazhou
  */
 public final class MethodProxy {
 
-  private static final Logger logger = LoggerFactory.getLogger(MethodProxy.class);
+  static final Logger logger = LoggerFactory.getLogger(MethodProxy.class);
 
   private Method method;
 
-  private Set<Interceptor> beforeInterceptors;
-  private Set<Interceptor> afterInterceptors;
-  private final Set<Interceptor> interceptors;
 
-  public MethodProxy(Method method, Set<Interceptor> interceptors) {
+  public MethodProxy(Method method) {
     this.method = method;
-    this.interceptors = interceptors;
-    init();
   }
 
   public Object invoke(Object target, Object... args) throws Exception {
-    if (beforeInterceptors != null && !beforeInterceptors.isEmpty()) {
-      for (Interceptor interceptor : beforeInterceptors) {
-        interceptor.intercept(method);
-      }
-    }
     Object result = method.invoke(target, args);
-    if (afterInterceptors != null && !afterInterceptors.isEmpty()) {
-      for (Interceptor interceptor : afterInterceptors) {
-        interceptor.intercept(method);
-      }
-    }
     return result;
   }
 
-  private void init() {
-    try {
-      if (interceptors == null) {
-        return;
-      }
-      for (Interceptor interceptor : this.interceptors) {
-        Method interceptMethod = interceptor.getClass().getDeclaredMethod("intercept", Method.class);
-        PointCut pointCut;
-        if (null == interceptMethod || (pointCut = interceptMethod.getAnnotation(PointCut.class)) == null) {
-          continue;
-        }
-        String methodPath = this.method.getDeclaringClass().getName() + "." + this.method.getName();
-        if (AntPathMatcher.getInstance().match(pointCut.value(), methodPath)) {
-          switch (pointCut.type()) {
-            case BEFORE:
-              addBeforeInterceptor(interceptor);
-              break;
-            case AFTER:
-              addAfterInterceptor(interceptor);
-              break;
-            case AROUND:
-              addBeforeInterceptor(interceptor);
-              addAfterInterceptor(interceptor);
-              break;
-            default:
-              break;
-          }
 
-        }
-      }
-    } catch (Exception err) {
-      logger.error("", err);
-    }
-  }
-
-  public void addBeforeInterceptor(Interceptor interceptor) {
-    if (beforeInterceptors == null) {
-      beforeInterceptors = new HashSet<Interceptor>();
-    }
-    beforeInterceptors.add(interceptor);
-  }
-
-  public void addAfterInterceptor(Interceptor interceptor) {
-    if (null == afterInterceptors) {
-      afterInterceptors = new HashSet<Interceptor>();
-    }
-    afterInterceptors.add(interceptor);
-  }
 
   public Method getMethod() {
     return method;

@@ -101,7 +101,7 @@ public class ServiceFactoryBean<T> extends ServiceConfig<T>
 
   private void doExport() {
     if (isExported.compareAndSet(false, true)) {
-      this.serviceHandler = new ServiceHandler<T>(getInterfaceClass(), null, object);
+      this.serviceHandler = new ServiceHandler<T>(getInterfaceClass(), object);
       serviceHandler.setFilter(beanFactory.getFilterChain());
       this.beanFactory.registerProcessor(serviceHandler);
 
