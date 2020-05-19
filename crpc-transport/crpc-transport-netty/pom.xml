@@ -29,17 +29,12 @@
   <dependencies>
     <dependency>
       <groupId>com.github.leeyazhou</groupId>
-      <artifactId>crpc-protocol-api</artifactId>
-      <version>${project.parent.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>com.github.leeyazhou</groupId>
-      <artifactId>crpc-protocol-netty</artifactId>
-      <version>${project.parent.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>com.github.leeyazhou</groupId>
       <artifactId>crpc-transport-api</artifactId>
+      <version>${project.parent.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.github.leeyazhou</groupId>
+      <artifactId>crpc-codec-kryo</artifactId>
       <version>${project.parent.version}</version>
     </dependency>
     <dependency>

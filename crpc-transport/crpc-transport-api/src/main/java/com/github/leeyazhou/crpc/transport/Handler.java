@@ -18,7 +18,7 @@
  */
 package com.github.leeyazhou.crpc.transport;
 
-import com.github.leeyazhou.crpc.protocol.message.ResponseMessage;
+import com.github.leeyazhou.crpc.transport.protocol.message.ResponseMessage;
 
 /**
  * 

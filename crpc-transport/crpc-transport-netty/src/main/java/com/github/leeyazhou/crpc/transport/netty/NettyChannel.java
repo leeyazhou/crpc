@@ -22,8 +22,8 @@ import java.util.concurrent.CompletableFuture;
 import com.github.leeyazhou.crpc.core.Constants;
 import com.github.leeyazhou.crpc.core.URL;
 import com.github.leeyazhou.crpc.core.exception.CrpcConnectException;
-import com.github.leeyazhou.crpc.protocol.message.Message;
 import com.github.leeyazhou.crpc.transport.Channel;
+import com.github.leeyazhou.crpc.transport.protocol.message.Message;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelFutureListener;
 

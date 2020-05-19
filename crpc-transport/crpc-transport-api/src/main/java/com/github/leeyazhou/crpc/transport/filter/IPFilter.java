@@ -19,8 +19,8 @@
 
 package com.github.leeyazhou.crpc.transport.filter;
 
-import com.github.leeyazhou.crpc.protocol.message.ResponseMessage;
 import com.github.leeyazhou.crpc.transport.RpcContext;
+import com.github.leeyazhou.crpc.transport.protocol.message.ResponseMessage;
 
 /**
  * @author leeyazhou

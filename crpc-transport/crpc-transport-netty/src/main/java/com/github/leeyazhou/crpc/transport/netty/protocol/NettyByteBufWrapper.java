@@ -13,10 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.leeyazhou.crpc.protocol.netty;
+package com.github.leeyazhou.crpc.transport.netty.protocol;
 
-import com.github.leeyazhou.crpc.protocol.ByteBufWrapper;
-
+import com.github.leeyazhou.crpc.transport.protocol.ByteBufWrapper;
 import io.netty.buffer.ByteBuf;
 
 public class NettyByteBufWrapper implements ByteBufWrapper {

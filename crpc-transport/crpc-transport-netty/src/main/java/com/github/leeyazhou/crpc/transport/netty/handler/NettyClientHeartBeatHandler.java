@@ -22,11 +22,11 @@ package com.github.leeyazhou.crpc.transport.netty.handler;
 import java.util.concurrent.TimeUnit;
 
 import com.github.leeyazhou.crpc.transport.netty.NettyClient;
+import com.github.leeyazhou.crpc.transport.protocol.message.Message;
+import com.github.leeyazhou.crpc.transport.protocol.message.MessageType;
+import com.github.leeyazhou.crpc.transport.protocol.message.ResponseMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import com.github.leeyazhou.crpc.protocol.message.Message;
-import com.github.leeyazhou.crpc.protocol.message.MessageType;
-import com.github.leeyazhou.crpc.protocol.message.ResponseMessage;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.timeout.IdleState;
 import io.netty.handler.timeout.IdleStateEvent;

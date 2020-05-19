@@ -16,7 +16,7 @@
 /**
  * 
  */
-package com.github.leeyazhou.crpc.protocol.message;
+package com.github.leeyazhou.crpc.transport.protocol.message;
 
 import java.io.Serializable;
 

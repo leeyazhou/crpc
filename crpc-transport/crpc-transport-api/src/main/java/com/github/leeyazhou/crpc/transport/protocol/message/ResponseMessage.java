@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.leeyazhou.crpc.protocol.message;
+package com.github.leeyazhou.crpc.transport.protocol.message;
 
 public class ResponseMessage extends Message {
   private static final long serialVersionUID = 1L;

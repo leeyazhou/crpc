@@ -13,12 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.leeyazhou.crpc.protocol.message;
+package com.github.leeyazhou.crpc.transport.protocol.message;
 
 import java.util.Arrays;
 import java.util.concurrent.atomic.AtomicInteger;
 import com.github.leeyazhou.crpc.codec.CodecType;
-import com.github.leeyazhou.crpc.protocol.SimpleProtocol;
+import com.github.leeyazhou.crpc.transport.protocol.SimpleProtocol;
 
 public class RequestMessage extends Message {
   private static final long serialVersionUID = 1L;

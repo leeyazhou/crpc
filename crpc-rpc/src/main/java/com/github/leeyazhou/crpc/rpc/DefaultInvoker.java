@@ -17,11 +17,11 @@ package com.github.leeyazhou.crpc.rpc;
 
 import java.util.List;
 import com.github.leeyazhou.crpc.config.ServiceGroupConfig;
-import com.github.leeyazhou.crpc.protocol.message.RequestMessage;
-import com.github.leeyazhou.crpc.protocol.message.ResponseMessage;
 import com.github.leeyazhou.crpc.transport.Client;
 import com.github.leeyazhou.crpc.transport.LoadBalance;
 import com.github.leeyazhou.crpc.transport.RpcContext;
+import com.github.leeyazhou.crpc.transport.protocol.message.RequestMessage;
+import com.github.leeyazhou.crpc.transport.protocol.message.ResponseMessage;
 
 public class DefaultInvoker<T> extends AbstractRpcHandler<T> {
 

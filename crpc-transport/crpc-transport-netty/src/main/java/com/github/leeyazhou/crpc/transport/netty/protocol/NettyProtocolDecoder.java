@@ -13,13 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.leeyazhou.crpc.protocol.netty;
+package com.github.leeyazhou.crpc.transport.netty.protocol;
 
 import java.util.List;
-import com.github.leeyazhou.crpc.protocol.Protocol;
-import com.github.leeyazhou.crpc.protocol.ProtocolFactory;
-import com.github.leeyazhou.crpc.protocol.SimpleProtocol;
-import com.github.leeyazhou.crpc.protocol.message.Message;
+import com.github.leeyazhou.crpc.transport.protocol.Protocol;
+import com.github.leeyazhou.crpc.transport.protocol.ProtocolFactory;
+import com.github.leeyazhou.crpc.transport.protocol.SimpleProtocol;
+import com.github.leeyazhou.crpc.transport.protocol.message.Message;
 import com.github.leeyazhou.crpc.core.exception.UnsupportProtocolException;
 
 import io.netty.buffer.ByteBuf;

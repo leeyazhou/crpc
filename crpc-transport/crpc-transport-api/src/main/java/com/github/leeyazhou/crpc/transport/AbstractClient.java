@@ -25,8 +25,8 @@ import com.github.leeyazhou.crpc.core.exception.TimeoutException;
 import com.github.leeyazhou.crpc.core.logger.Logger;
 import com.github.leeyazhou.crpc.core.logger.LoggerFactory;
 import com.github.leeyazhou.crpc.core.util.ServiceLoader;
-import com.github.leeyazhou.crpc.protocol.message.RequestMessage;
-import com.github.leeyazhou.crpc.protocol.message.ResponseMessage;
+import com.github.leeyazhou.crpc.transport.protocol.message.RequestMessage;
+import com.github.leeyazhou.crpc.transport.protocol.message.ResponseMessage;
 
 public abstract class AbstractClient implements Client {
   private static final Logger logger = LoggerFactory.getLogger(AbstractClient.class);

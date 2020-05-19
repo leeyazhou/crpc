@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.leeyazhou.crpc.protocol;
+package com.github.leeyazhou.crpc.transport.protocol;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,9 +23,9 @@ import com.github.leeyazhou.crpc.core.exception.UnsupportProtocolException;
 import com.github.leeyazhou.crpc.core.logger.Logger;
 import com.github.leeyazhou.crpc.core.logger.LoggerFactory;
 import com.github.leeyazhou.crpc.core.util.ServiceLoader;
-import com.github.leeyazhou.crpc.protocol.message.Message;
-import com.github.leeyazhou.crpc.protocol.message.RequestMessage;
-import com.github.leeyazhou.crpc.protocol.message.ResponseMessage;
+import com.github.leeyazhou.crpc.transport.protocol.message.Message;
+import com.github.leeyazhou.crpc.transport.protocol.message.RequestMessage;
+import com.github.leeyazhou.crpc.transport.protocol.message.ResponseMessage;
 
 /**
  * <b>Common RPC Protocol</b><br>

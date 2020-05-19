@@ -23,7 +23,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import com.github.leeyazhou.crpc.core.object.SideType;
-import com.github.leeyazhou.crpc.protocol.message.RequestMessage;
+import com.github.leeyazhou.crpc.transport.protocol.message.RequestMessage;
 
 /**
  * CRPC 上下文信息

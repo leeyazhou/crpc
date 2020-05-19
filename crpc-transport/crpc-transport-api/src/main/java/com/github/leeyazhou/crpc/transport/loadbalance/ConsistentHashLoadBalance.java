@@ -23,8 +23,8 @@ import java.util.SortedMap;
 import java.util.TreeMap;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
-import com.github.leeyazhou.crpc.protocol.message.RequestMessage;
 import com.github.leeyazhou.crpc.transport.Client;
+import com.github.leeyazhou.crpc.transport.protocol.message.RequestMessage;
 
 /**
  * has load balance

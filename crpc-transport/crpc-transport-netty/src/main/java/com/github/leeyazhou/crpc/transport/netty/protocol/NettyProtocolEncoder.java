@@ -13,27 +13,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package com.github.leeyazhou.crpc.transport.netty.protocol;
+
+import com.github.leeyazhou.crpc.transport.protocol.ProtocolFactory;
+import com.github.leeyazhou.crpc.transport.protocol.message.Message;
+import io.netty.buffer.ByteBuf;
+import io.netty.channel.ChannelHandlerContext;
+import io.netty.handler.codec.MessageToByteEncoder;
+
 /**
  * 
- */
-
-package com.github.leeyazhou.crpc.transport;
-
-import java.util.List;
-import com.github.leeyazhou.crpc.transport.protocol.message.RequestMessage;
-
-/**
  * @author leeyazhou
+ *
  */
-public interface LoadBalance {
+public class NettyProtocolEncoder extends MessageToByteEncoder<Message> {
 
-  /**
-   * load balance
-   * 
-   * @param clients client list
-   * @param request request object
-   * @return {@link Client}
-   */
-  Client chooseOne(List<Client> clients, RequestMessage request);
+  @Override
+  protected void encode(ChannelHandlerContext ctx, Message msg, ByteBuf out) throws Exception {
+    NettyByteBufWrapper byteBuffer = new NettyByteBufWrapper(out);
+    ProtocolFactory.getProtocol().encode(byteBuffer, msg);
+  }
 
 }

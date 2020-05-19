@@ -13,25 +13,35 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.leeyazhou.crpc.protocol.netty;
-
-import com.github.leeyazhou.crpc.protocol.ProtocolFactory;
-import com.github.leeyazhou.crpc.protocol.message.Message;
-import io.netty.buffer.ByteBuf;
-import io.netty.channel.ChannelHandlerContext;
-import io.netty.handler.codec.MessageToByteEncoder;
+package com.github.leeyazhou.crpc.transport.protocol;
 
 /**
  * 
- * @author leeyazhou
+ * @author zach
  *
  */
-public class NettyProtocolEncoder extends MessageToByteEncoder<Message> {
+public interface ByteBufWrapper {
 
-  @Override
-  protected void encode(ChannelHandlerContext ctx, Message msg, ByteBuf out) throws Exception {
-    NettyByteBufWrapper byteBuffer = new NettyByteBufWrapper(out);
-    ProtocolFactory.getProtocol().encode(byteBuffer, msg);
-  }
+  ByteBufWrapper get(int capacity);
+
+  void writeByte(int index, byte data);
+
+  void writeByte(byte data);
+
+  byte readByte();
+
+  void writeInt(int data);
+
+  void writeBytes(byte[] data);
+
+  int readableBytes();
+
+  int readInt();
+
+  void readBytes(byte[] dst);
+
+  int readerIndex();
+
+  void setReaderIndex(int readerIndex);
 
 }

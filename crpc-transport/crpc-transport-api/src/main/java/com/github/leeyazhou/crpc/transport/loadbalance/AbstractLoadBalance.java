@@ -22,8 +22,8 @@ package com.github.leeyazhou.crpc.transport.loadbalance;
 import java.util.List;
 import com.github.leeyazhou.crpc.transport.Client;
 import com.github.leeyazhou.crpc.transport.LoadBalance;
+import com.github.leeyazhou.crpc.transport.protocol.message.RequestMessage;
 import com.github.leeyazhou.crpc.core.Constants;
-import com.github.leeyazhou.crpc.protocol.message.RequestMessage;
 
 /**
  * @author leeyazhou

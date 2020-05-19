@@ -9,9 +9,9 @@ import java.util.concurrent.ConcurrentMap;
 import com.github.leeyazhou.crpc.codec.CodecType;
 import com.github.leeyazhou.crpc.core.logger.Logger;
 import com.github.leeyazhou.crpc.core.logger.LoggerFactory;
-import com.github.leeyazhou.crpc.protocol.SimpleProtocol;
-import com.github.leeyazhou.crpc.protocol.message.MessageType;
-import com.github.leeyazhou.crpc.protocol.message.ResponseMessage;
+import com.github.leeyazhou.crpc.transport.protocol.SimpleProtocol;
+import com.github.leeyazhou.crpc.transport.protocol.message.MessageType;
+import com.github.leeyazhou.crpc.transport.protocol.message.ResponseMessage;
 
 /**
  * @author leeyazhou

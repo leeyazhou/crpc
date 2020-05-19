@@ -19,7 +19,7 @@
 package com.github.leeyazhou.crpc.transport;
 
 import java.util.concurrent.CompletableFuture;
-import com.github.leeyazhou.crpc.protocol.message.Message;
+import com.github.leeyazhou.crpc.transport.protocol.message.Message;
 
 /**
  * @author leeyazhou
