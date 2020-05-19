@@ -57,7 +57,7 @@ public class ServiceFactoryBean<T> extends ServiceConfig<T>
   private ProtocolConfig protocolConfig;
   private final AtomicBoolean isExported = new AtomicBoolean(false);
 
-  @SuppressWarnings({ "unchecked" })
+  @SuppressWarnings({"unchecked"})
   @Override
   public void afterPropertiesSet() throws Exception {
     if (object != null) {
@@ -97,8 +97,7 @@ public class ServiceFactoryBean<T> extends ServiceConfig<T>
   }
 
   @Override
-  public void onApplicationEvent(ContextRefreshedEvent event) {
-  }
+  public void onApplicationEvent(ContextRefreshedEvent event) {}
 
   private void doExport() {
     if (isExported.compareAndSet(false, true)) {
@@ -106,7 +105,7 @@ public class ServiceFactoryBean<T> extends ServiceConfig<T>
       serviceHandler.setFilter(beanFactory.getFilterChain());
       this.beanFactory.registerProcessor(serviceHandler);
 
-      RpcUtil.export(configuration, serviceHandler, beanFactory);
+      RpcUtil.export(configuration, beanFactory);
       register();
     }
   }
@@ -133,8 +132,7 @@ public class ServiceFactoryBean<T> extends ServiceConfig<T>
   }
 
   /**
-   * @param object
-   *          the object to set
+   * @param object the object to set
    */
   public void setObject(T object) {
     this.object = object;

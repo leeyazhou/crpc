@@ -15,22 +15,18 @@
  */
 package com.github.leeyazhou.crpc.transport.netty;
 
-import java.util.Map;
-import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.TimeUnit;
-import com.github.leeyazhou.crpc.codec.CodecType;
 import com.github.leeyazhou.crpc.config.Configuration;
 import com.github.leeyazhou.crpc.core.Constants;
 import com.github.leeyazhou.crpc.core.concurrent.NamedThreadFactory;
 import com.github.leeyazhou.crpc.core.exception.ServiceNotFoundException;
 import com.github.leeyazhou.crpc.core.logger.Logger;
 import com.github.leeyazhou.crpc.core.logger.LoggerFactory;
-import com.github.leeyazhou.crpc.protocol.SimpleProtocol;
-import com.github.leeyazhou.crpc.protocol.message.MessageType;
 import com.github.leeyazhou.crpc.protocol.message.ResponseMessage;
 import com.github.leeyazhou.crpc.protocol.netty.NettyProtocolDecoder;
 import com.github.leeyazhou.crpc.protocol.netty.NettyProtocolEncoder;
 import com.github.leeyazhou.crpc.transport.AbstractServer;
+import com.github.leeyazhou.crpc.transport.ChannelManager;
 import com.github.leeyazhou.crpc.transport.Handler;
 import com.github.leeyazhou.crpc.transport.RpcContext;
 import com.github.leeyazhou.crpc.transport.Server;
@@ -46,7 +42,7 @@ import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 
-class NettyServer extends AbstractServer {
+public class NettyServer extends AbstractServer {
 
   private static final Logger logger = LoggerFactory.getLogger(NettyServer.class);
   private NioEventLoopGroup bossGroup;
@@ -54,12 +50,13 @@ class NettyServer extends AbstractServer {
   private ServerBootstrap bootStrap;
   private final Handler<?> handler;
   private final ServerFactory serverFactory;
-  private ConcurrentMap<String, Channel> channels;
   private Channel channel;
+  private ChannelManager channelManager;
 
-  public NettyServer(Configuration configuration, final ServerFactory serverFactory) {
+  public NettyServer(Configuration configuration, final ServerFactory serverFactory, ChannelManager channelManager) {
     super(configuration);
     this.serverFactory = serverFactory;
+    this.channelManager = channelManager;
     this.handler = new Handler<ResponseMessage>() {
 
       @Override
@@ -90,8 +87,7 @@ class NettyServer extends AbstractServer {
     bootStrap.childOption(ChannelOption.SO_REUSEADDR, true);
     bootStrap.childOption(ChannelOption.SO_KEEPALIVE, true);
     bootStrap.childOption(ChannelOption.SINGLE_EVENTEXECUTOR_PER_GROUP, false);
-    final NettyServerHandler nettyServerHandler = new NettyServerHandler(configuration, handler, serverFactory);
-    this.channels = nettyServerHandler.getChannels();
+    final NettyServerHandler nettyServerHandler = new NettyServerHandler(configuration, handler, serverFactory, channelManager);
     bootStrap.childHandler(new ChannelInitializer<SocketChannel>() {
       @Override
       public void initChannel(SocketChannel channel) throws Exception {
@@ -120,16 +116,7 @@ class NettyServer extends AbstractServer {
   @Override
   public void doStop() {
     logger.warn("Server stopped! configuration : " + configuration);
-    if (channels != null) {
-      // logger.info("关闭通道：" + channels);
-      ResponseMessage response = new ResponseMessage(0, CodecType.JDK_CODEC.getId(), SimpleProtocol.PROTOCOL_TYPE,
-          MessageType.MESSAGE_SHUTDOWN);
-      for (Map.Entry<String, Channel> entry : this.channels.entrySet()) {
-        logger.info("通知关闭通道：" + entry.getKey() + ", channel : " + entry.getValue());
-        entry.getValue().writeAndFlush(response);
-      }
-      channels.clear();
-    }
+    channelManager.serverClosed();
     if (channel != null) {
       channel.close();
     }

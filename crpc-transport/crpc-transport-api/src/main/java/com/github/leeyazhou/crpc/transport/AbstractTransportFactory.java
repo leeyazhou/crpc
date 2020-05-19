@@ -47,16 +47,15 @@ import com.github.leeyazhou.crpc.transport.object.SendLimitPolicy;
  */
 public abstract class AbstractTransportFactory implements TransportFactory, NotifyListener {
   private static final Logger logger = LoggerFactory.getLogger(AbstractTransportFactory.class);
-  private static boolean isSendLimitEnabled = false;
+  private boolean isSendLimitEnabled = false;
   // Cache client
-  private final ConnectionManager connectionManager = new ConnectionManager();
+  private final ChannelManager channelManager = new ChannelManager();
   private final ClientManager clientManager = new ClientManager(this);
 
-  static Configuration configuration;
-  static final String location = "crpc.xml";
+  protected Configuration configuration;
 
-  private static final Map<String, LoadBalance> loadBalances = new HashMap<String, LoadBalance>();
-  private static final LoadBalance loadBalanceDefault = new RoundRobinLoadBalance();
+  private final Map<String, LoadBalance> loadBalances = new HashMap<String, LoadBalance>();
+  private final LoadBalance loadBalanceDefault = new RoundRobinLoadBalance();
 
   protected static final ExecutorService executorService =
       Executors.newCachedThreadPool(new NamedThreadFactory("crpc"), 0);
@@ -65,7 +64,7 @@ public abstract class AbstractTransportFactory implements TransportFactory, Noti
 
   @Override
   public void enableSendLimit() {
-    isSendLimitEnabled = true;
+    this.isSendLimitEnabled = true;
   }
 
   /**
@@ -179,7 +178,6 @@ public abstract class AbstractTransportFactory implements TransportFactory, Noti
     }
     for (URL url : urls) {
       try {
-        String beanTypeStr = url.getParameter(Constants.SERVICE_INTERFACE, null);
         clientManager.getOrCreateClient(url);
       } catch (Exception e) {
         logger.error("notify fail", e);
@@ -198,7 +196,7 @@ public abstract class AbstractTransportFactory implements TransportFactory, Noti
 
 
   @Override
-  public ConnectionManager getConnectionManager() {
-    return connectionManager;
+  public ChannelManager getChannelManager() {
+    return channelManager;
   }
 }

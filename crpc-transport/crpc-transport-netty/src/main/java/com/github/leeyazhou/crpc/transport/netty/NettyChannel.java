@@ -18,20 +18,12 @@
  */
 package com.github.leeyazhou.crpc.transport.netty;
 
+import java.util.concurrent.CompletableFuture;
 import com.github.leeyazhou.crpc.core.Constants;
 import com.github.leeyazhou.crpc.core.URL;
 import com.github.leeyazhou.crpc.core.exception.CrpcConnectException;
-import com.github.leeyazhou.crpc.core.exception.CrpcException;
-import com.github.leeyazhou.crpc.core.logger.Logger;
-import com.github.leeyazhou.crpc.core.logger.LoggerFactory;
-import com.github.leeyazhou.crpc.core.util.ExceptionUtil;
-import com.github.leeyazhou.crpc.core.util.ServiceLoader;
-import com.github.leeyazhou.crpc.protocol.message.RequestMessage;
-import com.github.leeyazhou.crpc.protocol.message.ResponseMessage;
-import com.github.leeyazhou.crpc.transport.Client;
-import com.github.leeyazhou.crpc.transport.Connection;
-import com.github.leeyazhou.crpc.transport.TransportFactory;
-import io.netty.channel.Channel;
+import com.github.leeyazhou.crpc.protocol.message.Message;
+import com.github.leeyazhou.crpc.transport.Channel;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelFutureListener;
 
@@ -39,24 +31,20 @@ import io.netty.channel.ChannelFutureListener;
  * @author leeyazhou
  *
  */
-public class NettyConnection implements Connection {
-  private static final Logger logger = LoggerFactory.getLogger(NettyConnection.class);
+public class NettyChannel implements Channel {
   private final io.netty.channel.Channel channel;
-  private final Client client;
   private final String serviceName;
-  private final TransportFactory transportFactory = ServiceLoader.load(TransportFactory.class).load();
   private final URL url;
 
-  public NettyConnection(Channel channel, Client client, URL url) {
+  public NettyChannel(io.netty.channel.Channel channel, URL url) {
     this.channel = channel;
-    this.client = client;
     this.serviceName = url.getParameter(Constants.APPLICATION, null);
     this.url = url;
   }
 
   @Override
-  public void send(final RequestMessage request, final int timeout) {
-
+  public CompletableFuture<Boolean> send(final Message request, final int timeout) {
+    final CompletableFuture<Boolean> ret = new CompletableFuture<Boolean>();
     final long beginTime = System.currentTimeMillis();
     // requestWrapper.getMessageLen();
     ChannelFuture writeFuture = channel.writeAndFlush(request);
@@ -64,14 +52,15 @@ public class NettyConnection implements Connection {
     writeFuture.addListener(new ChannelFutureListener() {
       public void operationComplete(ChannelFuture future) throws Exception {
         if (future.isSuccess()) {
+          ret.complete(Boolean.TRUE);
           return;
         }
         // String errorMsg = "";
         StringBuilder errorMsg = new StringBuilder();
         long invokeTime = System.currentTimeMillis() - beginTime;
         errorMsg.append("fail to send request to ");
-        errorMsg.append(serviceName).append("/").append(client.getUrl().getHost()).append(":")
-            .append(client.getUrl().getPort()).append(", ");
+        errorMsg.append(serviceName).append("/").append(url.getHost()).append(":")
+            .append(url.getPort()).append(", ");
         errorMsg.append(request.toString());
 
         // write timeout
@@ -85,21 +74,13 @@ public class NettyConnection implements Connection {
           if (channel.isActive()) {
             // maybe some exception,so close the channel
             channel.close();
-          } else {
-            transportFactory.getClientManager().removeClient(client);
           }
         }
         Exception ex = new CrpcConnectException(errorMsg.toString(), future.cause());
-        logger.error("", ex);
-        ResponseMessage response = new ResponseMessage(request.id(), request.getCodecType(), request.getProtocolType());
-        response.setError(Boolean.TRUE);
-        response.setResponseClassName(CrpcException.class.getName());
-        // response.setException(ExceptionUtil.getErrorMessage(ex));
-        response.setResponse(ExceptionUtil.getErrorMessage(ex));
-        client.receiveResponse(response);
+        ret.completeExceptionally(ex);
       }
     });
-
+    return ret;
   }
 
   @Override

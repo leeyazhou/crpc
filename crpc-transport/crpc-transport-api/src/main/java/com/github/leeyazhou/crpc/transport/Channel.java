@@ -18,17 +18,18 @@
  */
 package com.github.leeyazhou.crpc.transport;
 
-import com.github.leeyazhou.crpc.protocol.message.RequestMessage;
+import java.util.concurrent.CompletableFuture;
+import com.github.leeyazhou.crpc.protocol.message.Message;
 
 /**
  * @author leeyazhou
  *
  */
-public interface Connection {
+public interface Channel {
 
   String getAddress();
 
-  void send(RequestMessage request, int timeout);
+  CompletableFuture<Boolean> send(Message request, int timeout);
 
   boolean isConnected();
 

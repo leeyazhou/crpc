@@ -14,6 +14,7 @@ import com.github.leeyazhou.crpc.config.Configuration;
 import com.github.leeyazhou.crpc.config.ProtocolConfig;
 import com.github.leeyazhou.crpc.config.ServerConfig;
 import com.github.leeyazhou.crpc.core.concurrent.Executors;
+import com.github.leeyazhou.crpc.transport.ChannelManager;
 import com.github.leeyazhou.crpc.transport.Server;
 import com.github.leeyazhou.crpc.transport.factory.ServerFactory;
 import com.github.leeyazhou.crpc.transport.factory.ServiceHandler;
@@ -50,7 +51,7 @@ public class NettyServerTest {
                 new InternalEchoServiceImpl());
           }
         });
-    server = new NettyServer(configuration, serverFactory);
+    server = new NettyServer(configuration, serverFactory, new ChannelManager());
     server.init();
     server.start();
   }

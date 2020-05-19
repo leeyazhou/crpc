@@ -35,6 +35,7 @@ import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelOption;
 import io.netty.channel.EventLoopGroup;
+import io.netty.channel.WriteBufferWaterMark;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
@@ -48,7 +49,7 @@ public class NettyTransportFactory extends AbstractTransportFactory {
 
   @Override
   public Server createServer(Configuration configuration, ServerFactory beanFactory) {
-    return new NettyServer(configuration, beanFactory);
+    return new NettyServer(configuration, beanFactory, getChannelManager());
   }
 
   @Override
@@ -60,6 +61,7 @@ public class NettyTransportFactory extends AbstractTransportFactory {
 
     bootStrap.group(bussinessGroup).channel(NioSocketChannel.class);
     bootStrap.option(ChannelOption.TCP_NODELAY, true);
+    bootStrap.option(ChannelOption.WRITE_BUFFER_WATER_MARK, new WriteBufferWaterMark(32 * 1024, 64 * 1024));
     bootStrap.option(ChannelOption.SO_REUSEADDR, true);
     bootStrap.option(ChannelOption.CONNECT_TIMEOUT_MILLIS, connectTimeout < 1000 ? 1000 : connectTimeout);
     bootStrap.handler(new ChannelInitializer<SocketChannel>() {
@@ -68,11 +70,11 @@ public class NettyTransportFactory extends AbstractTransportFactory {
         channel.pipeline().addLast("decoder", new NettyProtocolDecoder());
         channel.pipeline().addLast("encoder", new NettyProtocolEncoder());
         channel.pipeline().addLast("heartbeat", new NettyClientHeartBeatHandler(client, 0, 0, 3, TimeUnit.SECONDS));
-        channel.pipeline().addLast("handler", new NettyClientHandler(url, client, getConnectionManager()));
+        channel.pipeline().addLast("handler", new NettyClientHandler(url, client, getChannelManager()));
       }
     });
 
-    
+
     return client;
   }
 

@@ -88,7 +88,7 @@ public interface TransportFactory {
 
   Client createClient(URL url);
 
-  ConnectionManager getConnectionManager();
+  ChannelManager getChannelManager();
 
   ClientManager getClientManager();
 }

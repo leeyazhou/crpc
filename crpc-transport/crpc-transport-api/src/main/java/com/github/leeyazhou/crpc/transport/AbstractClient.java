@@ -42,7 +42,7 @@ public abstract class AbstractClient implements Client {
   }
 
   @Override
-  public ResponseMessage sendRequest(RequestMessage request) {
+  public ResponseMessage request(RequestMessage request) {
     long beginTime = System.currentTimeMillis();
     final RpcResult rpcResult = new RpcResult();
     responses.putIfAbsent(request.id(), rpcResult);
@@ -51,11 +51,11 @@ public abstract class AbstractClient implements Client {
         logger.trace("client ready to send message, request id: " + request.id());
       }
       transportFactory.checkSendLimit();
-      doSendRequest(request, request.getTimeout());
+      doRequest(request, request.getTimeout());
       if (isTraceEnabled) {
         logger.trace("client write message to send buffer,wait for response,request id: " + request.id());
       }
-    } catch (Exception err) {
+    } catch (Throwable err) {
       responses.remove(request.id());
       final String msg = "send request to os sendbuffer error, " + request;
       logger.error(msg, err);
@@ -105,15 +105,11 @@ public abstract class AbstractClient implements Client {
    */
   @Override
   public void receiveResponse(ResponseMessage response) {
-    if (!responses.containsKey(response.id())) {
-      logger.warn("give up the response, request id is:" + response.id() + ", maybe because timeout!");
-      return;
-    }
     RpcResult rpcResult = responses.get(response.id());
     if (rpcResult != null) {
       rpcResult.setResponse(response);
     } else {
-      logger.warn("give up the response,request id is:" + response.id() + ",because queue is null");
+      logger.warn("give up the response because queue is null. id :" + response.id());
     }
   }
 
@@ -129,7 +125,7 @@ public abstract class AbstractClient implements Client {
    * @param timeout timeout
    * @throws Exception any exception
    */
-  public abstract void doSendRequest(RequestMessage request, int timeout) throws Exception;
+  public abstract void doRequest(RequestMessage request, int timeout) throws Exception;
 
   /**
    * result holder

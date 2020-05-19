@@ -13,7 +13,7 @@ import com.github.leeyazhou.crpc.protocol.message.RequestMessage;
 import com.github.leeyazhou.crpc.protocol.message.ResponseMessage;
 import com.github.leeyazhou.crpc.protocol.netty.NettyProtocolDecoder;
 import com.github.leeyazhou.crpc.protocol.netty.NettyProtocolEncoder;
-import com.github.leeyazhou.crpc.transport.ConnectionManager;
+import com.github.leeyazhou.crpc.transport.ChannelManager;
 import com.github.leeyazhou.crpc.transport.netty.handler.NettyClientHandler;
 import com.github.leeyazhou.crpc.transport.netty.handler.NettyClientHeartBeatHandler;
 import com.github.leeyazhou.crpc.transport.service.InternalEchoService;
@@ -37,7 +37,7 @@ public class NettyClientTest extends NettyServerTest {
   public void testSendRequest() {
     final URL url = URL.valueOf("crpc://127.0.0.1:25001").addParameter(Constants.SERVICE_INTERFACE,
         InternalEchoService.class.getName());
-    final ConnectionManager connectionManager = new ConnectionManager();
+    final ChannelManager channelManager = new ChannelManager();
     Bootstrap bootStrap = new Bootstrap();
 
     final NettyClient client = new NettyClient(bootStrap, url);
@@ -53,7 +53,7 @@ public class NettyClientTest extends NettyServerTest {
         channel.pipeline().addLast("decoder", new NettyProtocolDecoder());
         channel.pipeline().addLast("encoder", new NettyProtocolEncoder());
         channel.pipeline().addLast("heartbeat", new NettyClientHeartBeatHandler(client, 0, 0, 3, TimeUnit.SECONDS));
-        channel.pipeline().addLast("handler", new NettyClientHandler(url, client, connectionManager));
+        channel.pipeline().addLast("handler", new NettyClientHandler(url, client, channelManager));
       }
     });
 
@@ -63,7 +63,7 @@ public class NettyClientTest extends NettyServerTest {
         new RequestMessage().setTargetClassName(InternalEchoServiceImpl.class.getName()).setMethodName("echo")
             .setArgs(new Object[] {"PING"}).setArgTypes(new String[] {String.class.getName()}).setTimeout(3000);
 
-    ResponseMessage responseMessage = client.sendRequest(message);
+    ResponseMessage responseMessage = client.request(message);
     Assert.assertEquals("PING", responseMessage.getResponse());
   }
 

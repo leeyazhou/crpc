@@ -40,7 +40,7 @@ public class DefaultInvoker<T> extends AbstractRpcHandler<T> {
     if (response != null) {
       return response;
     }
-    return client.sendRequest(request);
+    return client.request(request);
   }
 
 

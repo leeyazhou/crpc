@@ -41,8 +41,7 @@ public class RpcUtil {
   private static final TransportFactory transportFactory = ServiceLoader.load(TransportFactory.class).load();
   private static final ConcurrentMap<String, Server> servers = new ConcurrentHashMap<String, Server>();
 
-  public static <T> void export(Configuration configuration, ServiceHandler<T> servsiceHandler,
-      ServerFactory beanFactory) {
+  public static <T> void export(Configuration configuration, ServerFactory beanFactory) {
     logger.info("export : " + configuration);
     final String serverKey = configuration.getProtocolConfig().getAddress();
     Server server = servers.get(serverKey);
@@ -52,8 +51,7 @@ public class RpcUtil {
     synchronized (servers) {
       if ((server = servers.get(serverKey)) == null) {
         server = transportFactory.createServer(configuration, beanFactory);
-        Server t = servers.putIfAbsent(serverKey, server);
-        if (t == null) {
+        if (servers.putIfAbsent(serverKey, server) == null) {
           server.init();
           server.start();
         }

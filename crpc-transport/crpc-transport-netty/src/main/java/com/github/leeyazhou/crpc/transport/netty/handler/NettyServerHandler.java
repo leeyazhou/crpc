@@ -17,20 +17,20 @@ package com.github.leeyazhou.crpc.transport.netty.handler;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.atomic.AtomicInteger;
 import com.github.leeyazhou.crpc.config.Configuration;
 import com.github.leeyazhou.crpc.core.Constants;
+import com.github.leeyazhou.crpc.core.URL;
 import com.github.leeyazhou.crpc.core.logger.Logger;
 import com.github.leeyazhou.crpc.core.logger.LoggerFactory;
 import com.github.leeyazhou.crpc.core.util.AddressUtil;
 import com.github.leeyazhou.crpc.protocol.message.RequestMessage;
 import com.github.leeyazhou.crpc.protocol.message.ResponseMessage;
+import com.github.leeyazhou.crpc.transport.ChannelManager;
 import com.github.leeyazhou.crpc.transport.Handler;
 import com.github.leeyazhou.crpc.transport.RpcContext;
 import com.github.leeyazhou.crpc.transport.factory.ServerFactory;
-import io.netty.channel.Channel;
+import com.github.leeyazhou.crpc.transport.netty.NettyChannel;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandler.Sharable;
@@ -54,11 +54,13 @@ public class NettyServerHandler extends SimpleChannelInboundHandler<RequestMessa
   private static final boolean DEBUG_ENABLED = logger.isDebugEnabled();
   private final Handler<?> serverHandler;
   private final ServerFactory serverFactory;
-  private ConcurrentMap<String, Channel> channels = new ConcurrentHashMap<String, Channel>();
+  private final ChannelManager channelManager;
 
-  public NettyServerHandler(Configuration configuration, Handler<?> serverHandler, ServerFactory serverFactory) {
+  public NettyServerHandler(Configuration configuration, Handler<?> serverHandler, ServerFactory serverFactory,
+      ChannelManager channelManager) {
     this.serverHandler = serverHandler;
     this.serverFactory = serverFactory;
+    this.channelManager = channelManager;
   }
 
   @Override
@@ -118,8 +120,9 @@ public class NettyServerHandler extends SimpleChannelInboundHandler<RequestMessa
     if (logger.isInfoEnabled()) {
       logger.info("channel active from " + ctx.channel().remoteAddress());
     }
-    String key = AddressUtil.toAddressString((InetSocketAddress) ctx.channel().remoteAddress());
-    channels.putIfAbsent(key, ctx.channel());
+    InetSocketAddress address = (InetSocketAddress) ctx.channel().remoteAddress();
+    channelManager
+        .addServerChannel(new NettyChannel(ctx.channel(), new URL("crpc", address.getHostName(), address.getPort())));
   }
 
   @Override
@@ -137,18 +140,12 @@ public class NettyServerHandler extends SimpleChannelInboundHandler<RequestMessa
     }
   }
 
-  /**
-   * @return the channels
-   */
-  public ConcurrentMap<String, Channel> getChannels() {
-    return channels;
-  }
 
   @Override
   public void channelInactive(ChannelHandlerContext ctx) throws Exception {
     super.channelInactive(ctx);
     String key = AddressUtil.toAddressString((InetSocketAddress) ctx.channel().remoteAddress());
-    channels.remove(key);
+    channelManager.removeServerChannel(key);
   }
 
 }

@@ -27,7 +27,7 @@ public interface Client {
    * @param request {@link RequestMessage}
    * @return Object return response
    */
-  ResponseMessage sendRequest(RequestMessage request);
+  ResponseMessage request(RequestMessage request);
 
   /**
    * receive response from server
@@ -47,9 +47,9 @@ public interface Client {
   /**
    * connect channel
    * 
-   * @return {@link Connection}
+   * @return {@link Channel}
    */
-  Connection getConnection();
+  Channel getConnection();
 
   /**
    * get server config url

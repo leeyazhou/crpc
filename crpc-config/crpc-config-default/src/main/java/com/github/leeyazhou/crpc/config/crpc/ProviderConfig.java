@@ -64,7 +64,7 @@ public class ProviderConfig {
         } catch (Exception e) {
             logger.error("", e);
         }
-        RpcUtil.export(configuration, null, beanFactory);
+        RpcUtil.export(configuration, beanFactory);
     }
 
     private void prepareEnvironment(ServerConfig serverConfig, DefaultServerFactory beanFactory) throws Exception {

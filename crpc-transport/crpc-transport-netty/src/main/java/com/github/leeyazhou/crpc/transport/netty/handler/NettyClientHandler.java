@@ -25,10 +25,10 @@ import com.github.leeyazhou.crpc.protocol.SimpleProtocol;
 import com.github.leeyazhou.crpc.protocol.message.MessageType;
 import com.github.leeyazhou.crpc.protocol.message.RequestMessage;
 import com.github.leeyazhou.crpc.protocol.message.ResponseMessage;
-import com.github.leeyazhou.crpc.transport.ConnectionManager;
+import com.github.leeyazhou.crpc.transport.ChannelManager;
 import com.github.leeyazhou.crpc.transport.TransportFactory;
+import com.github.leeyazhou.crpc.transport.netty.NettyChannel;
 import com.github.leeyazhou.crpc.transport.netty.NettyClient;
-import com.github.leeyazhou.crpc.transport.netty.NettyConnection;
 import io.netty.channel.ChannelHandler.Sharable;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
@@ -48,14 +48,14 @@ public class NettyClientHandler extends SimpleChannelInboundHandler<ResponseMess
   private final TransportFactory transportFactory = ServiceLoader.load(TransportFactory.class).load();
 
   private final URL url;
-  private final ConnectionManager connectionManager;
+  private final ChannelManager channelManager;
 
   private final NettyClient client;
 
-  public NettyClientHandler(URL url, NettyClient client, ConnectionManager connectionManager) {
+  public NettyClientHandler(URL url, NettyClient client, ChannelManager channelManager) {
     this.url = url;
     this.client = client;
-    this.connectionManager = connectionManager;
+    this.channelManager = channelManager;
   }
 
   @Override
@@ -81,7 +81,8 @@ public class NettyClientHandler extends SimpleChannelInboundHandler<ResponseMess
     if (evt instanceof IdleStateEvent) {
       client.getIdleCount().getAndIncrement();
       if (client.getIdleCount().compareAndSet(3, 0)) {
-        logger.warn("client did't receive heartbeat message from server for long time, so close it! from :" + ctx);
+        logger
+            .warn("client did't receive heartbeat message from server for " + 3 + " times, so close it! from :" + ctx);
         ctx.close().sync();
         return;
       }
@@ -94,12 +95,12 @@ public class NettyClientHandler extends SimpleChannelInboundHandler<ResponseMess
     super.channelInactive(ctx);
     transportFactory.getClientManager().removeClient(client);
     client.connect();
-    connectionManager.removeConnection(url.getAddress());
+    channelManager.removeClientChannel(url.getAddress());
   }
 
   @Override
   public void channelActive(ChannelHandlerContext ctx) throws Exception {
     super.channelActive(ctx);
-    connectionManager.addConnection(new NettyConnection(ctx.channel(), client, url));
+    channelManager.addClientChannel(new NettyChannel(ctx.channel(), url));
   }
 }
