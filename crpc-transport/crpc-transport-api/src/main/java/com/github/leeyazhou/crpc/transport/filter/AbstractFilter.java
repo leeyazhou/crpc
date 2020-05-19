@@ -35,8 +35,7 @@ public abstract class AbstractFilter implements Filter {
 
   /**
    * 
-   * @param next
-   *          next filter
+   * @param next next filter
    */
   public void setNext(Filter next) {
     if (this.next != null) {
@@ -49,8 +48,7 @@ public abstract class AbstractFilter implements Filter {
   /**
    * 执行下一个过滤器
    * 
-   * @param context
-   *          {@link RpcContext}
+   * @param context {@link RpcContext}
    * @return {@link ResponseMessage}
    */
   protected ResponseMessage nextFilter(RpcContext context) {

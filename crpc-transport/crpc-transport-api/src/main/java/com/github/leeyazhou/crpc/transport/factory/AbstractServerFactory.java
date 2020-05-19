@@ -37,14 +37,14 @@ public abstract class AbstractServerFactory implements ServerFactory {
    */
   @Override
   public ExecutorService getExecutorService() {
-    if(executorService==null) {
-      
+    if (executorService == null) {
+
     }
     return executorService;
   }
 
   /**
-   * @param serverConfig the serverConfig to set
+   * @param configuration configuration
    */
   @Override
   public void setConfiguration(Configuration configuration) {

@@ -16,36 +16,35 @@
     limitations under the License.
 
 -->
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
-  <parent>
-    <groupId>com.github.leeyazhou</groupId>
-    <artifactId>crpc-transport</artifactId>
-    <version>1.0.1.RELEASE</version>
-  </parent>
-  <artifactId>crpc-transport-api</artifactId>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>com.github.leeyazhou</groupId>
+        <artifactId>crpc-transport</artifactId>
+        <version>1.0.1.RELEASE</version>
+    </parent>
+    <artifactId>crpc-transport-api</artifactId>
 
-  <dependencies>
-    <dependency>
-      <groupId>com.github.leeyazhou</groupId>
-      <artifactId>crpc-config-api</artifactId>
-      <version>${project.parent.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>com.github.leeyazhou</groupId>
-      <artifactId>crpc-codec-api</artifactId>
-      <version>${project.parent.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>com.github.leeyazhou</groupId>
-      <artifactId>crpc-core</artifactId>
-      <version>${project.parent.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>com.github.leeyazhou</groupId>
-      <artifactId>crpc-registry-api</artifactId>
-      <version>${project.parent.version}</version>
-    </dependency>
-  </dependencies>
+    <dependencies>
+        <dependency>
+            <groupId>com.github.leeyazhou</groupId>
+            <artifactId>crpc-codec-api</artifactId>
+            <version>${project.parent.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.github.leeyazhou</groupId>
+            <artifactId>crpc-config-api</artifactId>
+            <version>${project.parent.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.github.leeyazhou</groupId>
+            <artifactId>crpc-core</artifactId>
+            <version>${project.parent.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.github.leeyazhou</groupId>
+            <artifactId>crpc-registry-api</artifactId>
+            <version>${project.parent.version}</version>
+        </dependency>
+    </dependencies>
 </project>

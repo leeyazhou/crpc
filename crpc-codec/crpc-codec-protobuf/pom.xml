@@ -28,12 +28,12 @@
     <dependencies>
         <dependency>
             <groupId>com.github.leeyazhou</groupId>
-            <artifactId>crpc-core</artifactId>
+            <artifactId>crpc-codec-api</artifactId>
             <version>${project.parent.version}</version>
         </dependency>
         <dependency>
             <groupId>com.github.leeyazhou</groupId>
-            <artifactId>crpc-codec-api</artifactId>
+            <artifactId>crpc-core</artifactId>
             <version>${project.parent.version}</version>
         </dependency>
         <dependency>

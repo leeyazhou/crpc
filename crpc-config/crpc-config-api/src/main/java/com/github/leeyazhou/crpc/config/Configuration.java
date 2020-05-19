@@ -48,32 +48,20 @@ public class Configuration {
   }
 
 
-  /**
-   * @param protocolConfig the protocolConfig to set
-   */
   public Configuration setProtocolConfig(ProtocolConfig protocolConfig) {
     this.protocolConfig = protocolConfig;
     return this;
   }
 
-  /**
-   * @return the protocolConfig
-   */
   public ProtocolConfig getProtocolConfig() {
     return protocolConfig;
   }
 
-  /**
-   * @param serverConfigs the serverConfigs to set
-   */
   public Configuration setServerConfig(ServerConfig serverConfig) {
     this.serverConfig = serverConfig;
     return this;
   }
 
-  /**
-   * @return the serverConfig
-   */
   public ServerConfig getServerConfig() {
     return serverConfig;
   }
@@ -87,33 +75,21 @@ public class Configuration {
     return this;
   }
 
-  /**
-   * @param applicationConfig the applicationConfig to set
-   */
   public Configuration setApplicationConfig(ApplicationConfig applicationConfig) {
     this.applicationConfig = applicationConfig;
     return this;
   }
 
-  /**
-   * @return the applicationConfig
-   */
   public ApplicationConfig getApplicationConfig() {
     return applicationConfig;
   }
 
 
-  /**
-   * @param registryConfigs the registryConfigs to set
-   */
   public Configuration setRegistryConfigs(Set<RegistryConfig> registryConfigs) {
     this.registryConfigs = registryConfigs;
     return this;
   }
 
-  /**
-   * @return the registryConfigs
-   */
   public Set<RegistryConfig> getRegistryConfigs() {
     return registryConfigs;
   }

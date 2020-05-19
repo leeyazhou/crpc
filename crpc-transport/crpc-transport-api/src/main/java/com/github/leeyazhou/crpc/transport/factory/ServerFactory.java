@@ -30,42 +30,42 @@ import com.github.leeyazhou.crpc.transport.FilterChain;
  */
 public interface ServerFactory {
 
-	/**
-	 * 获取缓存的{@link ServiceHandler}
-	 * 
-	 * @param <T>                t
-	 * @param targetInstanceName targetInstanceName
-	 * @return {@link ServiceHandler}
-	 */
-	<T> ServiceHandler<T> getServiceHandler(String targetInstanceName);
+  /**
+   * 获取缓存的{@link ServiceHandler}
+   * 
+   * @param <T> t
+   * @param targetInstanceName targetInstanceName
+   * @return {@link ServiceHandler}
+   */
+  <T> ServiceHandler<T> getServiceHandler(String targetInstanceName);
 
-	/**
-	 * 获取过滤器链
-	 * 
-	 * @return {@link FilterChain}
-	 */
-	Filter getFilterChain();
+  /**
+   * 获取过滤器链
+   * 
+   * @return {@link FilterChain}
+   */
+  Filter getFilterChain();
 
-	/**
-	 * executor service
-	 * 
-	 * @return {@link ExecutorService}
-	 */
-	ExecutorService getExecutorService();
+  /**
+   * executor service
+   * 
+   * @return {@link ExecutorService}
+   */
+  ExecutorService getExecutorService();
 
-	/**
-	 * 注册处理器
-	 * 
-	 * @param <T>            t
-	 * @param serviceHandler serviceHandler
-	 */
-	<T> void registerProcessor(ServiceHandler<T> serviceHandler);
+  /**
+   * 注册处理器
+   * 
+   * @param <T> t
+   * @param serviceHandler serviceHandler
+   */
+  <T> void registerProcessor(ServiceHandler<T> serviceHandler);
 
-	/**
-	 * 设置服务器配置信息
-	 * 
-	 * @param configuration configuration
-	 */
-	void setConfiguration(Configuration configuration);
+  /**
+   * 设置服务器配置信息
+   * 
+   * @param configuration configuration
+   */
+  void setConfiguration(Configuration configuration);
 
 }

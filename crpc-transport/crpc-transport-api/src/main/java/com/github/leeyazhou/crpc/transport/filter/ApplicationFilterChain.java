@@ -13,50 +13,50 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-///**
-// * 
+/// **
+// *
 // */
 //
-//package com.github.crpc.transport.filter;
+// package com.github.crpc.transport.filter;
 //
-//import com.github.crpc.protocol.Response;
-//import com.github.leeyazhou.crpc.transport.Filter;
-//import com.github.crpc.transport.FilterChain;
-//import com.github.crpc.transport.RpcContext;
+// import com.github.crpc.protocol.Response;
+// import com.github.leeyazhou.crpc.transport.Filter;
+// import com.github.crpc.transport.FilterChain;
+// import com.github.crpc.transport.RpcContext;
 //
-///**
+/// **
 // * @author leeyazhou
 // */
-//public class ApplicationFilterChain implements FilterChain {
+// public class ApplicationFilterChain implements FilterChain {
 //
-//  private Filter next;
+// private Filter next;
 //
-//  public ApplicationFilterChain(Filter next) {
-//    this.next = next;
-//  }
+// public ApplicationFilterChain(Filter next) {
+// this.next = next;
+// }
 //
-//  public ApplicationFilterChain() {}
+// public ApplicationFilterChain() {}
 //
-//  @Override
-//  public Response filter(RpcContext context) {
-//    if (next != null) {
-//      return next.handle(context);
-//    }
-//    return null;
-//  }
+// @Override
+// public Response filter(RpcContext context) {
+// if (next != null) {
+// return next.handle(context);
+// }
+// return null;
+// }
 //
-//  /**
-//   * @return the next
-//   */
-//  public Filter getNext() {
-//    return next;
-//  }
+// /**
+// * @return the next
+// */
+// public Filter getNext() {
+// return next;
+// }
 //
-//  /**
-//   * @param next the next to set
-//   */
-//  public void setNext(Filter next) {
-//    this.next = next;
-//  }
+// /**
+// * @param next the next to set
+// */
+// public void setNext(Filter next) {
+// this.next = next;
+// }
 //
-//}
+// }

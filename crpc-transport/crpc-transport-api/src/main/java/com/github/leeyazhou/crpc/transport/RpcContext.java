@@ -53,12 +53,9 @@ public final class RpcContext {
   /**
    * 消费者上下文
    * 
-   * @param request
-   *          请求信息
-   * @param clients
-   *          客户端连接
-   * @param loadBalance
-   *          负载均衡器
+   * @param request 请求信息
+   * @param clients 客户端连接
+   * @param loadBalance 负载均衡器
    * @return {@link RpcContext}
    */
   public static RpcContext consumerContext(RequestMessage request, List<Client> clients, LoadBalance loadBalance) {
@@ -70,8 +67,7 @@ public final class RpcContext {
   /**
    * 生产者上下文
    * 
-   * @param request
-   *          请求信息
+   * @param request 请求信息
    * @return {@link RpcContext}
    */
   public static RpcContext providerContext(RequestMessage request) {

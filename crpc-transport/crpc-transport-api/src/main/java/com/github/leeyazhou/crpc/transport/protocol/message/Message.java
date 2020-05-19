@@ -117,6 +117,7 @@ public abstract class Message implements Serializable {
 
   /**
    * @param id the id to set
+   * @return {@link Message}
    */
   public Message setId(int id) {
     this.id = id;
