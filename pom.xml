@@ -24,6 +24,7 @@
     <packaging>pom</packaging>
     <name>${project.artifactId}</name>
     <description>RPC framework</description>
+    <url>http://www.github.com/leeyazhou/crpc.git</url>
     <organization>
         <name>crpc</name>
         <url>http://www.github.com/leeyazhou/crpc</url>
@@ -622,7 +623,7 @@
                                 <goals>
                                     <goal>jar-no-fork</goal>
                                 </goals>
-                                <phase>install</phase>
+                                <phase>package</phase>
                             </execution>
                         </executions>
                     </plugin>
@@ -636,7 +637,7 @@
                                     <goal>jar</goal>
                                     <goal>aggregate</goal>
                                 </goals>
-                                <phase>install</phase>
+                                <phase>package</phase>
                                 <configuration>
                                     <charset>${project.build.sourceEncoding}</charset>
                                     <encoding>${project.build.sourceEncoding}</encoding>

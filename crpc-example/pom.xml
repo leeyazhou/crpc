@@ -62,11 +62,6 @@
         </dependency>
         <dependency>
             <groupId>com.github.leeyazhou</groupId>
-            <artifactId>crpc-transport-api</artifactId>
-            <version>${project.parent.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.github.leeyazhou</groupId>
             <artifactId>crpc-transport-netty</artifactId>
             <version>${project.parent.version}</version>
         </dependency>
