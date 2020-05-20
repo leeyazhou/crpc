@@ -20,7 +20,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.github.leeyazhou</groupId>
     <artifactId>crpc-parent</artifactId>
-    <version>1.0.1.RELEASE</version>
+    <version>1.0.2-SNAPSHOT</version>
     <packaging>pom</packaging>
     <name>${project.artifactId}</name>
     <description>RPC framework</description>

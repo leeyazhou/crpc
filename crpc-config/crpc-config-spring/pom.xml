@@ -21,7 +21,7 @@
     <parent>
         <groupId>com.github.leeyazhou</groupId>
         <artifactId>crpc-config</artifactId>
-        <version>1.0.1.RELEASE</version>
+        <version>1.0.2-SNAPSHOT</version>
     </parent>
     <artifactId>crpc-config-spring</artifactId>
 
@@ -29,22 +29,22 @@
         <dependency>
             <groupId>com.github.leeyazhou</groupId>
             <artifactId>crpc-config-api</artifactId>
-            <version>1.0.1.RELEASE</version>
+            <version>1.0.2-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>com.github.leeyazhou</groupId>
             <artifactId>crpc-registry-zookeeper</artifactId>
-            <version>1.0.1.RELEASE</version>
+            <version>1.0.2-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>com.github.leeyazhou</groupId>
             <artifactId>crpc-rpc</artifactId>
-            <version>1.0.1.RELEASE</version>
+            <version>1.0.2-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>com.github.leeyazhou</groupId>
             <artifactId>crpc-transport-netty</artifactId>
-            <version>1.0.1.RELEASE</version>
+            <version>1.0.2-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>org.mybatis</groupId>
