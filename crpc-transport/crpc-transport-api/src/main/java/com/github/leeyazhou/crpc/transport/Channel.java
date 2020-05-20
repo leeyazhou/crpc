@@ -18,7 +18,7 @@
  */
 package com.github.leeyazhou.crpc.transport;
 
-import java.util.concurrent.CompletableFuture;
+import com.github.leeyazhou.crpc.core.concurrent.Future;
 import com.github.leeyazhou.crpc.transport.protocol.message.Message;
 
 /**
@@ -29,7 +29,7 @@ public interface Channel {
 
   String getAddress();
 
-  CompletableFuture<Boolean> send(Message request, int timeout);
+  Future send(Message request, int timeout);
 
   boolean isConnected();
 

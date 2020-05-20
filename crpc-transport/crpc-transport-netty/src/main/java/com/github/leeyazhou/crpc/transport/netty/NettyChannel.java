@@ -18,9 +18,9 @@
  */
 package com.github.leeyazhou.crpc.transport.netty;
 
-import java.util.concurrent.CompletableFuture;
 import com.github.leeyazhou.crpc.core.Constants;
 import com.github.leeyazhou.crpc.core.URL;
+import com.github.leeyazhou.crpc.core.concurrent.Future;
 import com.github.leeyazhou.crpc.core.exception.CrpcConnectException;
 import com.github.leeyazhou.crpc.transport.Channel;
 import com.github.leeyazhou.crpc.transport.protocol.message.Message;
@@ -43,8 +43,8 @@ public class NettyChannel implements Channel {
   }
 
   @Override
-  public CompletableFuture<Boolean> send(final Message request, final int timeout) {
-    final CompletableFuture<Boolean> ret = new CompletableFuture<Boolean>();
+  public Future send(final Message request, final int timeout) {
+   final Future ret = new Future();
     final long beginTime = System.currentTimeMillis();
     // requestWrapper.getMessageLen();
     ChannelFuture writeFuture = channel.writeAndFlush(request);
@@ -52,7 +52,7 @@ public class NettyChannel implements Channel {
     writeFuture.addListener(new ChannelFutureListener() {
       public void operationComplete(ChannelFuture future) throws Exception {
         if (future.isSuccess()) {
-          ret.complete(Boolean.TRUE);
+          ret.setSuccess(true);
           return;
         }
         // String errorMsg = "";
@@ -77,7 +77,7 @@ public class NettyChannel implements Channel {
           }
         }
         Exception ex = new CrpcConnectException(errorMsg.toString(), future.cause());
-        ret.completeExceptionally(ex);
+        ret.setException(ex);
       }
     });
     return ret;

@@ -16,9 +16,10 @@
 package com.github.leeyazhou.crpc.transport.netty;
 
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.function.BiConsumer;
 import com.github.leeyazhou.crpc.core.Constants;
 import com.github.leeyazhou.crpc.core.URL;
+import com.github.leeyazhou.crpc.core.concurrent.Future;
+import com.github.leeyazhou.crpc.core.concurrent.FutureListener;
 import com.github.leeyazhou.crpc.core.exception.CrpcException;
 import com.github.leeyazhou.crpc.core.logger.Logger;
 import com.github.leeyazhou.crpc.core.logger.LoggerFactory;
@@ -32,7 +33,6 @@ import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelFutureListener;
 
 public class NettyClient extends AbstractClient {
-
   private static final Logger logger = LoggerFactory.getLogger(NettyClient.class);
   private final AtomicInteger idleCount = new AtomicInteger(0);
   private volatile Channel channel;
@@ -46,21 +46,22 @@ public class NettyClient extends AbstractClient {
 
   @Override
   public void doRequest(final RequestMessage request, int timeout) throws Exception {
-    getConnection().send(request, timeout).whenComplete(new BiConsumer<Boolean, Throwable>() {
+    getConnection().send(request, timeout).addListener(new FutureListener() {
 
       @Override
-      public void accept(Boolean t, Throwable ex) {
-        if (ex == null) {
+      public void onComplete(Future future) {
+        if (future.isSuccess()) {
           return;
         }
         ResponseMessage response = new ResponseMessage(request.id(), request.getCodecType(), request.getProtocolType());
         response.setError(Boolean.TRUE);
         response.setResponseClassName(CrpcException.class.getName());
         // response.setException(ExceptionUtil.getErrorMessage(ex));
-        response.setResponse(ExceptionUtil.getErrorMessage(ex));
+        response.setResponse(ExceptionUtil.getErrorMessage(future.getException()));
         NettyClient.this.receiveResponse(response);
       }
     });
+
   }
 
   @Override
