@@ -18,12 +18,12 @@ package com.github.leeyazhou.crpc.transport.netty;
 import java.util.concurrent.atomic.AtomicInteger;
 import com.github.leeyazhou.crpc.core.Constants;
 import com.github.leeyazhou.crpc.core.URL;
-import com.github.leeyazhou.crpc.core.concurrent.Future;
-import com.github.leeyazhou.crpc.core.concurrent.FutureListener;
 import com.github.leeyazhou.crpc.core.exception.CrpcException;
 import com.github.leeyazhou.crpc.core.logger.Logger;
 import com.github.leeyazhou.crpc.core.logger.LoggerFactory;
 import com.github.leeyazhou.crpc.core.util.ExceptionUtil;
+import com.github.leeyazhou.crpc.core.util.concurrent.Future;
+import com.github.leeyazhou.crpc.core.util.concurrent.FutureListener;
 import com.github.leeyazhou.crpc.transport.AbstractClient;
 import com.github.leeyazhou.crpc.transport.Channel;
 import com.github.leeyazhou.crpc.transport.protocol.message.RequestMessage;
@@ -53,7 +53,8 @@ public class NettyClient extends AbstractClient {
         if (future.isSuccess()) {
           return;
         }
-        ResponseMessage response = new ResponseMessage(request.id(), request.getCodecType(), request.getProtocolType());
+        ResponseMessage response = new ResponseMessage(request.id());
+        response.setCodecType(request.getCodecType()).setProtocolType(request.getProtocolType());
         response.setError(Boolean.TRUE);
         response.setResponseClassName(CrpcException.class.getName());
         // response.setException(ExceptionUtil.getErrorMessage(ex));
@@ -76,18 +77,12 @@ public class NettyClient extends AbstractClient {
         } else {
           String msg = String.format("Client connect server %s:%s fail", host, port);
           logger.error(msg, future.cause());
-          transportFactory.getExecutorService().execute(new Runnable() {
-
-            @Override
-            public void run() {
-              try {
-                Thread.sleep(getUrl().getParameter(Constants.timeout, 3000));
-                connect();
-              } catch (Exception e) {
-                // do nothing
-              }
-            }
-          });
+          try {
+            Thread.sleep(getUrl().getParameter(Constants.timeout, 3000));
+            connect();
+          } catch (Exception e) {
+            // do nothing
+          }
         }
       }
     }).syncUninterruptibly();

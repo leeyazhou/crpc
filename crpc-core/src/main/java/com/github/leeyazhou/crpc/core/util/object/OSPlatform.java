@@ -13,50 +13,56 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-/**
- * 
- */
+package com.github.leeyazhou.crpc.core.util.object;
 
-package com.github.leeyazhou.crpc.core.object;
+public enum OSPlatform {
 
-/**
- * @author leeyazhou
- */
-public enum SideType {
+  Any("any"),
 
-  /**
-   * 消费方
-   */
-  SIDE_CONSUMER((byte) 0),
+  Linux("Linux"),
 
-  /**
-   * 服务方
-   */
-  SIDE_PROVIDER((byte) 1);
+  Mac_OS("Mac OS"),
 
-  private byte code;
+  Mac_OS_X("Mac OS X"),
 
-  /**
-   * 
-   */
-  private SideType(byte code) {
-    this.code = code;
+  Windows("Windows"),
+
+  OS2("OS/2"),
+
+  Solaris("Solaris"),
+
+  SunOS("SunOS"),
+
+  MPEiX("MPE/iX"),
+
+  HP_UX("HP-UX"),
+
+  AIX("AIX"),
+
+  OS390("OS/390"),
+
+  FreeBSD("FreeBSD"),
+
+  Irix("Irix"),
+
+  Digital_Unix("Digital Unix"),
+
+  NetWare_411("NetWare"),
+
+  OSF1("OSF1"),
+
+  OpenVMS("OpenVMS"),
+
+  Others("Others");
+
+  private String desc;
+
+  private OSPlatform(String desc) {
+    this.desc = desc;
   }
 
-  /**
-   * @return the code
-   */
-  public byte getCode() {
-    return code;
+  public String toString() {
+    return desc;
   }
 
-  public static SideType of(int code) {
-    SideType[] values = values();
-    for (SideType item : values) {
-      if (item.getCode() == code) {
-        return item;
-      }
-    }
-    return null;
-  }
 }

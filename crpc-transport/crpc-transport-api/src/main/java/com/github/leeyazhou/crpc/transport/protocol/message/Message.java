@@ -20,6 +20,8 @@
 package com.github.leeyazhou.crpc.transport.protocol.message;
 
 import java.io.Serializable;
+import com.github.leeyazhou.crpc.codec.CodecType;
+import com.github.leeyazhou.crpc.transport.protocol.ProtocolType;
 
 /**
  * @author leeyazhou
@@ -29,9 +31,9 @@ public abstract class Message implements Serializable {
 
   private int version;
 
-  private int protocolType;
+  private byte protocolType;
 
-  private int codecType;
+  private byte codecType;
 
   private Header[] headers;
 
@@ -40,72 +42,75 @@ public abstract class Message implements Serializable {
   /**
    * 消息类型
    */
-  private MessageType messageType = MessageType.MESSAGE_COMMON;
+  private byte messageType;
 
   public Message() {}
-
-  Message(int codecType, int protocolType) {
-    this(codecType, protocolType, MessageType.MESSAGE_COMMON);
-  }
-
-  Message(int codecType, int protocolType, MessageType messageType) {
-    this.codecType = codecType;
-    this.protocolType = protocolType;
-    this.messageType = messageType;
-  }
 
   public int getVersion() {
     return version;
   }
 
-  public void setVersion(int version) {
+  public Message setVersion(int version) {
     this.version = version;
+    return this;
   }
 
-  public int getProtocolType() {
+  public byte getProtocolType() {
     return protocolType;
   }
 
-  public void setProtocolType(int protocolType) {
+  public Message setProtocolType(byte protocolType) {
     this.protocolType = protocolType;
+    return this;
   }
 
-  public int getCodecType() {
+  public Message setProtocolType(ProtocolType protocolType) {
+    this.protocolType = protocolType.getCode();
+    return this;
+  }
+
+  public byte getCodecType() {
     return codecType;
   }
 
-  public void setCodecType(int codecType) {
+  public Message setCodecType(byte codecType) {
     this.codecType = codecType;
+    return this;
   }
+
+  public Message setCodecType(CodecType codecType) {
+    this.codecType = codecType.getCode();
+    return this;
+  }
+
+
 
   /**
    * 消息类型
    * 
    * @return {@link MessageType}
    */
-  public MessageType getMessageType() {
+  public byte getMessageType() {
     return messageType;
   }
 
   /**
-   * {@link MessageType}
-   * 
-   * @param messageType {@link MessageType}
-   */
-  public void setMessageType(MessageType messageType) {
-    this.messageType = messageType;
-  }
-
-  /**
-   * 消息类型<br>
+   * {@link MessageType} * 消息类型<br>
    * 0:普通消息<br>
    * 1:心跳消息
    * 
-   * @param messageTypeCode {@link MessageType}
+   * @param messageType {@link MessageType}
    */
-  public void setMessageType(byte messageTypeCode) {
-    this.messageType = MessageType.of(messageTypeCode);
+  public Message setMessageType(byte messageType) {
+    this.messageType = messageType;
+    return this;
   }
+
+  public Message setMessageType(MessageType messageType) {
+    this.messageType = messageType.getCode();
+    return this;
+  }
+
 
 
   /**
@@ -124,13 +129,15 @@ public abstract class Message implements Serializable {
     return this;
   }
 
-  public void setHeaders(Header[] headers) {
+  public Message setHeaders(Header[] headers) {
     this.headers = headers;
+    return this;
   }
 
   public Header[] getHeaders() {
     return headers;
   }
+
 
   public void addHeader(Header header) {
     if (this.headers == null) {

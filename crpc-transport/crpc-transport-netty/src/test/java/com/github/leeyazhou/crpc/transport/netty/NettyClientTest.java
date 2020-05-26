@@ -23,7 +23,7 @@ import org.junit.Assert;
 import org.junit.Test;
 import com.github.leeyazhou.crpc.core.Constants;
 import com.github.leeyazhou.crpc.core.URL;
-import com.github.leeyazhou.crpc.core.concurrent.NamedThreadFactory;
+import com.github.leeyazhou.crpc.core.util.concurrent.NamedThreadFactory;
 import com.github.leeyazhou.crpc.transport.ChannelManager;
 import com.github.leeyazhou.crpc.transport.netty.handler.NettyClientHandler;
 import com.github.leeyazhou.crpc.transport.netty.handler.NettyClientHeartBeatHandler;

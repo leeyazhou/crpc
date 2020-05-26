@@ -20,13 +20,12 @@
 package com.github.leeyazhou.crpc.transport.netty.handler;
 
 import java.util.concurrent.TimeUnit;
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import com.github.leeyazhou.crpc.transport.netty.NettyClient;
 import com.github.leeyazhou.crpc.transport.protocol.message.Message;
 import com.github.leeyazhou.crpc.transport.protocol.message.MessageType;
 import com.github.leeyazhou.crpc.transport.protocol.message.ResponseMessage;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.timeout.IdleState;
 import io.netty.handler.timeout.IdleStateEvent;
@@ -45,15 +44,12 @@ public class NettyClientHeartBeatHandler extends IdleStateHandler {
    * 心跳检测 Creates a new instance firing {@link IdleStateEvent}s.
    * 
    * @param client NettyClient Instance
-   * @param readerIdleTimeSeconds an {@link IdleStateEvent} whose state is
-   *        {@link IdleState#READER_IDLE} will be triggered when no read was performed for the
-   *        specified period of time. Specify {@code 0} to disable.
-   * @param writerIdleTimeSeconds an {@link IdleStateEvent} whose state is
-   *        {@link IdleState#WRITER_IDLE} will be triggered when no write was performed for the
-   *        specified period of time. Specify {@code 0} to disable.
-   * @param allIdleTimeSeconds an {@link IdleStateEvent} whose state is {@link IdleState#ALL_IDLE}
-   *        will be triggered when neither read nor write was performed for the specified period of
-   *        time. Specify {@code 0} to disable.
+   * @param readerIdleTimeSeconds an {@link IdleStateEvent} whose state is {@link IdleState#READER_IDLE} will be
+   *        triggered when no read was performed for the specified period of time. Specify {@code 0} to disable.
+   * @param writerIdleTimeSeconds an {@link IdleStateEvent} whose state is {@link IdleState#WRITER_IDLE} will be
+   *        triggered when no write was performed for the specified period of time. Specify {@code 0} to disable.
+   * @param allIdleTimeSeconds an {@link IdleStateEvent} whose state is {@link IdleState#ALL_IDLE} will be triggered
+   *        when neither read nor write was performed for the specified period of time. Specify {@code 0} to disable.
    */
   public NettyClientHeartBeatHandler(NettyClient client, int readerIdleTimeSeconds, int writerIdleTimeSeconds,
       int allIdleTimeSeconds) {
@@ -65,17 +61,13 @@ public class NettyClientHeartBeatHandler extends IdleStateHandler {
    * Creates a new instance firing {@link IdleStateEvent}s.
    * 
    * @param client NettyClient Instance
-   * @param readerIdleTime an {@link IdleStateEvent} whose state is {@link IdleState#READER_IDLE} will
-   *        be triggered when no read was performed for the specified period of time. Specify
-   *        {@code 0} to disable.
-   * @param writerIdleTime an {@link IdleStateEvent} whose state is {@link IdleState#WRITER_IDLE} will
-   *        be triggered when no write was performed for the specified period of time. Specify
-   *        {@code 0} to disable.
-   * @param allIdleTime an {@link IdleStateEvent} whose state is {@link IdleState#ALL_IDLE} will be
-   *        triggered when neither read nor write was performed for the specified period of time.
-   *        Specify {@code 0} to disable.
-   * @param unit the {@link TimeUnit} of {@code readerIdleTime}, {@code writeIdleTime}, and
-   *        {@code allIdleTime}
+   * @param readerIdleTime an {@link IdleStateEvent} whose state is {@link IdleState#READER_IDLE} will be triggered when
+   *        no read was performed for the specified period of time. Specify {@code 0} to disable.
+   * @param writerIdleTime an {@link IdleStateEvent} whose state is {@link IdleState#WRITER_IDLE} will be triggered when
+   *        no write was performed for the specified period of time. Specify {@code 0} to disable.
+   * @param allIdleTime an {@link IdleStateEvent} whose state is {@link IdleState#ALL_IDLE} will be triggered when
+   *        neither read nor write was performed for the specified period of time. Specify {@code 0} to disable.
+   * @param unit the {@link TimeUnit} of {@code readerIdleTime}, {@code writeIdleTime}, and {@code allIdleTime}
    */
   public NettyClientHeartBeatHandler(NettyClient client, long readerIdleTime, long writerIdleTime, long allIdleTime,
       TimeUnit unit) {
@@ -91,7 +83,7 @@ public class NettyClientHeartBeatHandler extends IdleStateHandler {
     }
 
     Message header = (Message) msg;
-    if (MessageType.MESSAGE_COMMON.equals(header.getMessageType())) {
+    if (MessageType.MESSAGE_COMMON.getCode() == header.getMessageType()) {
       super.channelRead(ctx, msg);
       return;
     }

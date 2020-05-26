@@ -24,7 +24,7 @@ import java.util.concurrent.ConcurrentMap;
 import com.github.leeyazhou.crpc.codec.CodecType;
 import com.github.leeyazhou.crpc.core.logger.Logger;
 import com.github.leeyazhou.crpc.core.logger.LoggerFactory;
-import com.github.leeyazhou.crpc.transport.protocol.SimpleProtocol;
+import com.github.leeyazhou.crpc.transport.protocol.ProtocolType;
 import com.github.leeyazhou.crpc.transport.protocol.message.MessageType;
 import com.github.leeyazhou.crpc.transport.protocol.message.ResponseMessage;
 
@@ -81,8 +81,9 @@ public class ChannelManager {
 
   public void serverClosed() {
     // logger.info("关闭通道：" + channels);
-    ResponseMessage response =
-        new ResponseMessage(0, CodecType.JDK_CODEC.getId(), SimpleProtocol.PROTOCOL_TYPE, MessageType.MESSAGE_SHUTDOWN);
+    ResponseMessage response = new ResponseMessage();
+    response.setCodecType(CodecType.JDK_CODEC).setProtocolType(ProtocolType.CRPC)
+        .setMessageType(MessageType.MESSAGE_SHUTDOWN);
     for (Map.Entry<String, Channel> entry : serverChannelCache.entrySet()) {
       logger.info("通知关闭通道：" + entry.getKey() + ", channel : " + entry.getValue());
       entry.getValue().send(response, 3000);

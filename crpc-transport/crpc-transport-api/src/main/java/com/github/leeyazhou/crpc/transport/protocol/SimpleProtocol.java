@@ -88,8 +88,6 @@ public class SimpleProtocol implements Protocol {
 
   static final Logger logger = LoggerFactory.getLogger(SimpleProtocol.class);
 
-  public static final int PROTOCOL_TYPE = 1;
-
   public static final byte VERSION = (byte) 1;
 
   public static final int HEADER_LEN = 1 * 2;
@@ -110,18 +108,17 @@ public class SimpleProtocol implements Protocol {
     }
 
     int id = message.id();
-    byte[] bodyBytes = ServiceLoader.load(Codec.class)
-        .load(CodecType.valueOf(message.getCodecType()).getSerializerName()).encode(message);
+    byte[] bodyBytes = ServiceLoader.load(Codec.class).load(CodecType.valueOf(message.getCodecType()).getName()).encode(message);
     int capacity = HEADER_LEN + BODY_HEADER_LEN + bodyBytes.length;
     ByteBufWrapper byteBuffer = bytebufferWrapper.get(capacity);
 
     byteBuffer.writeByte(VERSION);
-    byteBuffer.writeByte((byte) PROTOCOL_TYPE);
+    byteBuffer.writeByte((byte) message.getProtocolType());
 
     byteBuffer.writeByte(VERSION);
     byteBuffer.writeByte(type);
     byteBuffer.writeByte((byte) message.getCodecType());
-    byteBuffer.writeByte((byte) message.getMessageType().getCode());
+    byteBuffer.writeByte((byte) message.getMessageType());
     byteBuffer.writeByte((byte) 0);
     byteBuffer.writeByte((byte) 0);
 
@@ -144,7 +141,7 @@ public class SimpleProtocol implements Protocol {
       throw new UnsupportProtocolException("protocol version :" + version + " is not supported!");
     }
     final byte type = byteBufWrapper.readByte();
-    final int codecType = byteBufWrapper.readByte();
+    final byte codecType = byteBufWrapper.readByte();
     byteBufWrapper.readByte();// messageType
     byteBufWrapper.readByte();// keeped
     byteBufWrapper.readByte();// keeped
@@ -158,11 +155,11 @@ public class SimpleProtocol implements Protocol {
     byte[] bodyBytes = new byte[bodyLen];
     byteBufWrapper.readBytes(bodyBytes);
     Message ret = null;
-    Codec serializer = ServiceLoader.load(Codec.class).load(CodecType.valueOf(codecType).getSerializerName());
+    Codec codec = ServiceLoader.load(Codec.class).load(CodecType.valueOf(codecType).getName());
     if (type == REQUEST) {
-      ret = (Message) serializer.decode(RequestMessage.class.getName(), bodyBytes);
+      ret = (Message) codec.decode(RequestMessage.class.getName(), bodyBytes);
     } else {
-      ret = (Message) serializer.decode(ResponseMessage.class.getName(), bodyBytes);
+      ret = (Message) codec.decode(ResponseMessage.class.getName(), bodyBytes);
     }
     return ret;
   }

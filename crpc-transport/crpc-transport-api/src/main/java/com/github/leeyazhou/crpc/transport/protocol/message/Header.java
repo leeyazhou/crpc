@@ -40,16 +40,18 @@ public class Header implements Serializable {
     return value;
   }
 
-  public void setValue(Object value) {
+  public Header setValue(Object value) {
     this.value = value;
+    return this;
   }
 
   public String getKey() {
     return key;
   }
 
-  public void setKey(String key) {
+  public Header setKey(String key) {
     this.key = key;
+    return this;
   }
 
   @Override

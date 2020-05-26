@@ -22,7 +22,7 @@ package com.github.leeyazhou.crpc.transport;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import com.github.leeyazhou.crpc.core.object.SideType;
+import com.github.leeyazhou.crpc.core.util.object.SideType;
 import com.github.leeyazhou.crpc.transport.protocol.message.RequestMessage;
 
 /**

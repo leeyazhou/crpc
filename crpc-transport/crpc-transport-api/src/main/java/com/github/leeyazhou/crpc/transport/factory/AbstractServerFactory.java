@@ -21,8 +21,8 @@ package com.github.leeyazhou.crpc.transport.factory;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.TimeUnit;
 import com.github.leeyazhou.crpc.config.Configuration;
+import com.github.leeyazhou.crpc.core.util.concurrent.NamedThreadFactory;
 import com.github.leeyazhou.crpc.core.util.concurrent.TaskQueue;
-import com.github.leeyazhou.crpc.core.util.concurrent.TaskThreadFactory;
 import com.github.leeyazhou.crpc.core.util.concurrent.ThreadPoolExecutor;
 
 /**
@@ -49,9 +49,10 @@ public abstract class AbstractServerFactory implements ServerFactory {
   @Override
   public void setConfiguration(Configuration configuration) {
     if (executorService == null) {
-      executorService = new ThreadPoolExecutor(Runtime.getRuntime().availableProcessors() * 2,
-          configuration.getServerConfig().getWorker(), 60L, TimeUnit.SECONDS, new TaskQueue(10000),
-          new TaskThreadFactory("crpc-server-", true, Thread.NORM_PRIORITY));
+      final int availableProcessors = Runtime.getRuntime().availableProcessors();
+      executorService =
+          new ThreadPoolExecutor(Math.max(availableProcessors, 8), configuration.getServerConfig().getWorker(), 60L,
+              TimeUnit.SECONDS, new TaskQueue(10000), new NamedThreadFactory("crpc-worker", true));
     }
   }
 }

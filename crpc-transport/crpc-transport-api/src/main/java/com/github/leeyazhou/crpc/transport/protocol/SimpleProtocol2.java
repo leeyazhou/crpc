@@ -90,8 +90,6 @@ public class SimpleProtocol2 implements Protocol {
 
   private static final Logger logger = LoggerFactory.getLogger(SimpleProtocol2.class);
 
-  public static final int PROTOCOL_TYPE = 1;
-
   public static final byte VERSION = (byte) 1;
 
   public static final int HEADER_LEN = 2;
@@ -148,8 +146,7 @@ public class SimpleProtocol2 implements Protocol {
           requestArgTypes.add(requestArgType.getBytes());
           requestArgTypesLen += requestArgType.getBytes().length;
         }
-        Codec serializer =
-            ServiceLoader.load(Codec.class).load(CodecType.valueOf(request.getCodecType()).getSerializerName());
+        Codec serializer = ServiceLoader.load(Codec.class).load(CodecType.valueOf(message.getCodecType()).getName());
         for (Object requestArg : requestObjects) {
           byte[] requestArgByte = serializer.encode(requestArg);
           requestArgs.add(requestArgByte);
@@ -169,12 +166,12 @@ public class SimpleProtocol2 implements Protocol {
       ByteBufWrapper byteBuffer = bytebufferWrapper.get(capacity);
 
       byteBuffer.writeByte(VERSION);
-      byteBuffer.writeByte((byte) PROTOCOL_TYPE);
+      byteBuffer.writeByte((byte) message.getProtocolType());
 
       byteBuffer.writeByte(VERSION);
       byteBuffer.writeByte(type);
       byteBuffer.writeByte((byte) request.getCodecType());
-      byteBuffer.writeByte((byte) message.getMessageType().getCode());
+      byteBuffer.writeByte((byte) message.getMessageType());
       byteBuffer.writeByte((byte) 0);
       byteBuffer.writeByte((byte) 0);
 
@@ -214,8 +211,7 @@ public class SimpleProtocol2 implements Protocol {
     int error = 0;
     byte[] body = new byte[0];
     byte[] className = new byte[0];
-    Codec serializer =
-        ServiceLoader.load(Codec.class).load(CodecType.valueOf(response.getCodecType()).getSerializerName());
+    Codec serializer = ServiceLoader.load(Codec.class).load(CodecType.valueOf(message.getCodecType()).getName());
     try {
       if (response.getResponse() != null) {
         className = response.getResponse().getClass().getName().getBytes();
@@ -237,12 +233,12 @@ public class SimpleProtocol2 implements Protocol {
     ByteBufWrapper byteBuffer = bytebufferWrapper.get(capacity);
 
     byteBuffer.writeByte(VERSION);
-    byteBuffer.writeByte((byte) PROTOCOL_TYPE);
+    byteBuffer.writeByte((byte) message.getProtocolType());
 
     byteBuffer.writeByte(VERSION);
     byteBuffer.writeByte(type);
     byteBuffer.writeByte((byte) response.getCodecType());
-    byteBuffer.writeByte((byte) message.getMessageType().getCode());
+    byteBuffer.writeByte((byte) message.getMessageType());
     byteBuffer.writeByte((byte) error);
     byteBuffer.writeByte((byte) 0);
 
@@ -262,7 +258,7 @@ public class SimpleProtocol2 implements Protocol {
       return null;
     }
 
-    final int codecType = byteBufWrapper.readByte();
+    final byte codecType = byteBufWrapper.readByte();
     final byte messageType = byteBufWrapper.readByte();
     byteBufWrapper.readByte();// keeped
     byteBufWrapper.readByte();// keeped
@@ -303,14 +299,16 @@ public class SimpleProtocol2 implements Protocol {
       argTypes[i] = new String(argTypeByte);
     }
     Object[] args = new Object[argsCount];
-    Codec serializer = ServiceLoader.load(Codec.class).load(CodecType.valueOf(codecType).getSerializerName());
+    Codec serializer = ServiceLoader.load(Codec.class).load(CodecType.valueOf(codecType).getName());
     for (int i = 0; i < argsCount; i++) {
       byte[] argByte = new byte[argsLen[i]];
       byteBufWrapper.readBytes(argByte);
       args[i] = serializer.decode(argTypes[i], argByte);
     }
-    RequestMessage request = new RequestMessage(new String(targetInstanceByte), new String(methodNameByte), argTypes,
-        args, timeout, requestId, codecType, PROTOCOL_TYPE);
+
+    RequestMessage request =
+        new RequestMessage(new String(targetInstanceByte), new String(methodNameByte), argTypes, args, timeout);
+    request.setId(requestId).setCodecType(codecType).setProtocolType(ProtocolType.CRPC.getCode());
     request.setMessageType(messageType);
     int messageLen = HEADER_LEN + REQUEST_HEADER_LEN + expectedLenInfoLen + expectedLen;
     request.setMessageLen(messageLen);
@@ -324,7 +322,7 @@ public class SimpleProtocol2 implements Protocol {
       wrapper.setReaderIndex(originPos);
       return null;
     }
-    final int codecType = wrapper.readByte();
+    final byte codecType = wrapper.readByte();
     final byte messageType = wrapper.readByte();
     final int error = wrapper.readByte();
     wrapper.readByte();
@@ -341,11 +339,11 @@ public class SimpleProtocol2 implements Protocol {
     byte[] bodyBytes = new byte[bodyLen];
     wrapper.readBytes(bodyBytes);
 
-    ResponseMessage response = new ResponseMessage(requestId, codecType, PROTOCOL_TYPE);
-    response.setResponseClassName(new String(classNameBytes));
+    ResponseMessage response = new ResponseMessage(requestId, new String(classNameBytes));
+    response.setCodecType(codecType).setProtocolType(ProtocolType.CRPC.getCode());
     response.setMessageType(messageType);
     if (bodyLen != 0) {
-      Codec serializer = ServiceLoader.load(Codec.class).load(CodecType.valueOf(codecType).getSerializerName());
+      Codec serializer = ServiceLoader.load(Codec.class).load(CodecType.valueOf(codecType).getName());
       response.setResponse(serializer.decode(response.getResponseClassName(), bodyBytes));
     }
     if (error == 1) {

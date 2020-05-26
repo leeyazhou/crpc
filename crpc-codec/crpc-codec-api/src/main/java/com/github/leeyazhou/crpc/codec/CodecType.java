@@ -24,54 +24,54 @@ public enum CodecType {
   /**
    * Java 原生序列化
    */
-  JDK_CODEC(0, "jdk"),
+  JDK_CODEC((byte) 0, "jdk"),
 
   /**
    * Kryo 序列化
    */
-  KRYO_CODEC(1, "kryo"),
+  KRYO_CODEC((byte) 1, "kryo"),
 
   /**
    * ProtoBuff序列化
    */
-  PB_CODEC(2, "protobuf"),
+  PB_CODEC((byte) 2, "protobuf"),
 
   /**
    * Hessian
    */
-  HESSIAN_CODEC(3, "hessian"),
+  HESSIAN_CODEC((byte) 3, "hessian"),
 
   /**
    * FST
    */
-  FST_CODEC(4, "fst");
+  FST_CODEC((byte) 4, "fst");
 
-  private CodecType(int id, String serializerName) {
-    this.id = id;
-    this.serializerName = serializerName;
+  private CodecType(byte code, String name) {
+    this.code = code;
+    this.name = name;
   }
 
-  public static CodecType valueOf(int id) {
-    return CodecType.values()[id];
+  public static CodecType valueOf(byte code) {
+    return CodecType.values()[code];
   }
 
-  private int id;
-  private String serializerName;
+  private byte code;
+  private String name;
 
   /**
    * 编/解码器的id
    * 
    * @return id
    */
-  public int getId() {
-    return id;
+  public byte getCode() {
+    return code;
   }
 
   /**
    * @return the serializerName
    */
-  public String getSerializerName() {
-    return serializerName;
+  public String getName() {
+    return name;
   }
 
 }

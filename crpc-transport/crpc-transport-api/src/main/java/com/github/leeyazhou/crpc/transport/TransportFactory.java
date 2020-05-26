@@ -18,7 +18,6 @@
  */
 package com.github.leeyazhou.crpc.transport;
 
-import java.util.concurrent.ExecutorService;
 import com.github.leeyazhou.crpc.config.Configuration;
 import com.github.leeyazhou.crpc.config.ServiceConfig;
 import com.github.leeyazhou.crpc.core.URL;
@@ -80,8 +79,6 @@ public interface TransportFactory {
    * @return {@link LoadBalance}
    */
   LoadBalance getLoadBalance(String loadbalance);
-
-  ExecutorService getExecutorService();
 
 
   Server createServer(Configuration configuration, ServerFactory serverFactory);

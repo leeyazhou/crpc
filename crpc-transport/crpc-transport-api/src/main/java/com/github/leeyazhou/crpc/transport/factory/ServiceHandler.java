@@ -70,7 +70,8 @@ public class ServiceHandler<T> implements Handler<T> {
 
     final RequestMessage request = context.getRequest();
 
-    ResponseMessage response = new ResponseMessage(request.id(), request.getCodecType(), request.getProtocolType());
+    ResponseMessage response = new ResponseMessage(request.id());
+    response.setCodecType(request.getCodecType()).setProtocolType(request.getProtocolType());
     String targetInstanceName = request.getTargetClassName();
     String methodName = new String(request.getMethodName());
     String[] argTypes = request.getArgTypes();

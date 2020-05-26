@@ -30,21 +30,14 @@ public class ResponseMessage extends Message {
 
   public ResponseMessage() {}
 
-  public ResponseMessage(int id, int codecType, int protocolType) {
-    this(id, codecType, protocolType, MessageType.MESSAGE_COMMON);
-  }
 
-  public ResponseMessage(int id, int codecType, int protocolType, MessageType messageType) {
-    this(id, codecType, protocolType, null, messageType);
-  }
-
-  public ResponseMessage(int id, int codecType, int protocolType, String responseClassName) {
-    this(id, codecType, protocolType, responseClassName, MessageType.MESSAGE_COMMON);
-  }
-
-  public ResponseMessage(int id, int codecType, int protocolType, String responseClassName, MessageType messageType) {
-    super(codecType, protocolType, messageType);
+  public ResponseMessage(int id) {
     setId(id);
+  }
+
+
+  public ResponseMessage(int id, String responseClassName) {
+    this(id);
     this.responseClassName = responseClassName;
   }
 

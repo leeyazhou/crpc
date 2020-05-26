@@ -22,7 +22,7 @@ import java.util.concurrent.TimeUnit;
 import com.github.leeyazhou.crpc.config.Configuration;
 import com.github.leeyazhou.crpc.core.Constants;
 import com.github.leeyazhou.crpc.core.URL;
-import com.github.leeyazhou.crpc.core.concurrent.NamedThreadFactory;
+import com.github.leeyazhou.crpc.core.util.concurrent.NamedThreadFactory;
 import com.github.leeyazhou.crpc.transport.AbstractTransportFactory;
 import com.github.leeyazhou.crpc.transport.Client;
 import com.github.leeyazhou.crpc.transport.Server;

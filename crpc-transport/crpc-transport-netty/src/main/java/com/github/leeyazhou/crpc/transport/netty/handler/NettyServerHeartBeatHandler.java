@@ -44,15 +44,12 @@ public class NettyServerHeartBeatHandler extends IdleStateHandler {
   /**
    * 心跳检测 Creates a new instance firing {@link IdleStateEvent}s.
    *
-   * @param readerIdleTimeSeconds an {@link IdleStateEvent} whose state is
-   *        {@link IdleState#READER_IDLE} will be triggered when no read was performed for the
-   *        specified period of time. Specify {@code 0} to disable.
-   * @param writerIdleTimeSeconds an {@link IdleStateEvent} whose state is
-   *        {@link IdleState#WRITER_IDLE} will be triggered when no write was performed for the
-   *        specified period of time. Specify {@code 0} to disable.
-   * @param allIdleTimeSeconds an {@link IdleStateEvent} whose state is {@link IdleState#ALL_IDLE}
-   *        will be triggered when neither read nor write was performed for the specified period of
-   *        time. Specify {@code 0} to disable.
+   * @param readerIdleTimeSeconds an {@link IdleStateEvent} whose state is {@link IdleState#READER_IDLE} will be
+   *        triggered when no read was performed for the specified period of time. Specify {@code 0} to disable.
+   * @param writerIdleTimeSeconds an {@link IdleStateEvent} whose state is {@link IdleState#WRITER_IDLE} will be
+   *        triggered when no write was performed for the specified period of time. Specify {@code 0} to disable.
+   * @param allIdleTimeSeconds an {@link IdleStateEvent} whose state is {@link IdleState#ALL_IDLE} will be triggered
+   *        when neither read nor write was performed for the specified period of time. Specify {@code 0} to disable.
    */
   public NettyServerHeartBeatHandler(int readerIdleTimeSeconds, int writerIdleTimeSeconds, int allIdleTimeSeconds) {
     super(readerIdleTimeSeconds, writerIdleTimeSeconds, allIdleTimeSeconds);
@@ -61,17 +58,13 @@ public class NettyServerHeartBeatHandler extends IdleStateHandler {
   /**
    * Creates a new instance firing {@link IdleStateEvent}s.
    *
-   * @param readerIdleTime an {@link IdleStateEvent} whose state is {@link IdleState#READER_IDLE} will
-   *        be triggered when no read was performed for the specified period of time. Specify
-   *        {@code 0} to disable.
-   * @param writerIdleTime an {@link IdleStateEvent} whose state is {@link IdleState#WRITER_IDLE} will
-   *        be triggered when no write was performed for the specified period of time. Specify
-   *        {@code 0} to disable.
-   * @param allIdleTime an {@link IdleStateEvent} whose state is {@link IdleState#ALL_IDLE} will be
-   *        triggered when neither read nor write was performed for the specified period of time.
-   *        Specify {@code 0} to disable.
-   * @param unit the {@link TimeUnit} of {@code readerIdleTime}, {@code writeIdleTime}, and
-   *        {@code allIdleTime}
+   * @param readerIdleTime an {@link IdleStateEvent} whose state is {@link IdleState#READER_IDLE} will be triggered when
+   *        no read was performed for the specified period of time. Specify {@code 0} to disable.
+   * @param writerIdleTime an {@link IdleStateEvent} whose state is {@link IdleState#WRITER_IDLE} will be triggered when
+   *        no write was performed for the specified period of time. Specify {@code 0} to disable.
+   * @param allIdleTime an {@link IdleStateEvent} whose state is {@link IdleState#ALL_IDLE} will be triggered when
+   *        neither read nor write was performed for the specified period of time. Specify {@code 0} to disable.
+   * @param unit the {@link TimeUnit} of {@code readerIdleTime}, {@code writeIdleTime}, and {@code allIdleTime}
    */
   public NettyServerHeartBeatHandler(long readerIdleTime, long writerIdleTime, long allIdleTime, TimeUnit unit) {
     super(readerIdleTime, writerIdleTime, allIdleTime, unit);
@@ -84,14 +77,16 @@ public class NettyServerHeartBeatHandler extends IdleStateHandler {
       return;
     }
 
-    Message header = (Message) msg;
-    if (MessageType.MESSAGE_COMMON.equals(header.getMessageType())) {
+    Message message = (Message) msg;
+    if (MessageType.MESSAGE_COMMON.getCode() == message.getMessageType()) {
       super.channelRead(ctx, msg);
       return;
     }
 
     if (msg instanceof RequestMessage) {
-      ResponseMessage response = new ResponseMessage(0, header.getCodecType(), header.getProtocolType(), MessageType.MESSAGE_HEARTBEAT);
+      ResponseMessage response = new ResponseMessage(0);
+      response.setCodecType(message.getCodecType()).setProtocolType(message.getProtocolType())
+          .setMessageType(MessageType.MESSAGE_HEARTBEAT);
       ChannelFuture channelFuture = ctx.channel().writeAndFlush(response);
       channelFuture.addListener(new ChannelFutureListener() {
         @Override

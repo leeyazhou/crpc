@@ -17,58 +17,49 @@
  * 
  */
 
-package com.github.leeyazhou.crpc.transport.protocol.message;
+package com.github.leeyazhou.crpc.core.util.object;
 
 /**
  * @author leeyazhou
  */
-public enum MessageType {
+public enum RegistryType {
 
   /**
-   * 普通消息
+   * ZooKeeper
    */
-  MESSAGE_COMMON((byte) 0),
+  ZOOKEEPER("com.github.crpc.registry.zookeeper.ZookeeperRegistryFactory"),
 
   /**
-   * 心跳
+   * Redis
    */
-  MESSAGE_HEARTBEAT((byte) 1),
+  REDIS("com.github.crpc.registry.redis.RedisRegistryFactory");
+
+  private String clazzName;
 
   /**
-   * 注册
+   * 
    */
-  MESSAGE_REGISTER((byte) 2),
-
-  /**
-   * 服务器关闭
-   */
-  MESSAGE_SHUTDOWN((byte) 3),
-
-  /**
-   * 服务器重启
-   */
-  MESSAGE_RESTART((byte) 4);
-
-  private byte code;
-
-  private MessageType(byte code) {
-    this.code = code;
+  private RegistryType(String clazzName) {
+    this.clazzName = clazzName;
   }
 
   /**
-   * @return the code
+   * 实现类
+   * 
+   * @return the clazzName
    */
-  public byte getCode() {
-    return code;
+  public String getClazzName() {
+    return clazzName;
   }
 
-  public static MessageType valueOf(int code) {
-    MessageType[] values = values();
-    for (MessageType item : values) {
-      if (item.getCode() == code) {
-        return item;
+  public static RegistryType of(String protocol) {
+    RegistryType[] values = values();
+    for (RegistryType registryType : values) {
+      if (registryType.toString().equalsIgnoreCase(protocol)) {
+        return registryType;
       }
     }
     return null;
   }
+
 }

@@ -18,7 +18,7 @@
  */
 package com.github.leeyazhou.crpc.transport;
 
-import com.github.leeyazhou.crpc.core.concurrent.Future;
+import com.github.leeyazhou.crpc.core.util.concurrent.Future;
 import com.github.leeyazhou.crpc.transport.protocol.message.Message;
 
 /**

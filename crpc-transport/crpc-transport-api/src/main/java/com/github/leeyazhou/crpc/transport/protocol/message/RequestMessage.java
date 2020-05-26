@@ -17,8 +17,6 @@ package com.github.leeyazhou.crpc.transport.protocol.message;
 
 import java.util.Arrays;
 import java.util.concurrent.atomic.AtomicInteger;
-import com.github.leeyazhou.crpc.codec.CodecType;
-import com.github.leeyazhou.crpc.transport.protocol.SimpleProtocol;
 
 public class RequestMessage extends Message {
   private static final long serialVersionUID = 1L;
@@ -37,31 +35,12 @@ public class RequestMessage extends Message {
 
   private int messageLen;
 
-  public RequestMessage() {
-    this(CodecType.KRYO_CODEC.getId(), SimpleProtocol.PROTOCOL_TYPE, MessageType.MESSAGE_COMMON);
-  }
+  public RequestMessage() {}
 
-  /**
-   * 
-   * @param codecType codecType
-   * @param protocolType protocolType
-   * @param messageType {@link MessageType}
-   */
-  public RequestMessage(int codecType, int protocolType, MessageType messageType) {
-    super(codecType, protocolType, messageType);
-  }
-
-  public RequestMessage(String targetClassName, String methodName, String[] argTypes, Object[] args, int timeout,
-      int codecType, int protocolType) {
-    this(targetClassName, methodName, argTypes, args, timeout, incId.incrementAndGet(), codecType, protocolType);
-    incId.compareAndSet(Integer.MAX_VALUE, 0);
-  }
-
-  public RequestMessage(String targetClassName, String methodName, String[] argTypes, Object[] args, int timeout,
-      int id, int codecType, int protocolType) {
-    super(codecType, protocolType);
+  public RequestMessage(String targetClassName, String methodName, String[] argTypes, Object[] args, int timeout) {
     this.args = args;
-    setId(id);
+    setId(incId.incrementAndGet());
+    incId.compareAndSet(Integer.MAX_VALUE, 0);
     this.timeout = timeout;
     this.targetClassName = targetClassName;
     this.methodName = methodName;

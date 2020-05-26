@@ -48,7 +48,7 @@ public class BenchmarkClient extends AbstractBenchmarkClient {
     CountDownLatch countDownlatch = new CountDownLatch(threadNum);
 
     ServiceGroupConfig serviceGroupConfig = new ServiceGroupConfig().setName("userservice");
-    serviceGroupConfig.addProvider(URL.valueOf("tcp://127.0.0.1:12200"));
+    serviceGroupConfig.addProvider(URL.valueOf("tcp://127.0.0.1:25001"));
     UserService userService =
         ServiceLoader.load(ProxyFactory.class).load().getProxy(UserService.class, serviceGroupConfig);
     check(userService);
@@ -72,7 +72,7 @@ public class BenchmarkClient extends AbstractBenchmarkClient {
   private static void check(UserService userService) {
     int i = 0;
     while (i++ < 100) {
-      userService.sayWord("-" + i);
+      userService.sayWord("CRPC");
     }
   }
 

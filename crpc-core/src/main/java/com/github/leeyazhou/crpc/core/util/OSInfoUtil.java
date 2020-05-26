@@ -15,7 +15,7 @@
  */
 package com.github.leeyazhou.crpc.core.util;
 
-import com.github.leeyazhou.crpc.core.object.OSPlatform;
+import com.github.leeyazhou.crpc.core.util.object.OSPlatform;
 
 /**
  * @author leeyazhou

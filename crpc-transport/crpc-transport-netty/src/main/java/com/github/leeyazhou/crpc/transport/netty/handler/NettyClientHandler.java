@@ -25,7 +25,7 @@ import com.github.leeyazhou.crpc.transport.ChannelManager;
 import com.github.leeyazhou.crpc.transport.TransportFactory;
 import com.github.leeyazhou.crpc.transport.netty.NettyChannel;
 import com.github.leeyazhou.crpc.transport.netty.NettyClient;
-import com.github.leeyazhou.crpc.transport.protocol.SimpleProtocol;
+import com.github.leeyazhou.crpc.transport.protocol.ProtocolType;
 import com.github.leeyazhou.crpc.transport.protocol.message.MessageType;
 import com.github.leeyazhou.crpc.transport.protocol.message.RequestMessage;
 import com.github.leeyazhou.crpc.transport.protocol.message.ResponseMessage;
@@ -43,8 +43,8 @@ public class NettyClientHandler extends SimpleChannelInboundHandler<ResponseMess
 
   private static final Logger logger = LoggerFactory.getLogger(NettyClientHandler.class);
   private static final boolean isTraceEnabled = logger.isTraceEnabled();
-  private static final RequestMessage ping =
-      new RequestMessage(CodecType.KRYO_CODEC.getId(), SimpleProtocol.PROTOCOL_TYPE, MessageType.MESSAGE_HEARTBEAT);
+  private static final RequestMessage ping = (RequestMessage) new RequestMessage().setCodecType(CodecType.KRYO_CODEC)
+      .setProtocolType(ProtocolType.CRPC).setMessageType(MessageType.MESSAGE_HEARTBEAT);
   private final TransportFactory transportFactory = ServiceLoader.load(TransportFactory.class).load();
 
   private final URL url;

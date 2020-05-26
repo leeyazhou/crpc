@@ -21,7 +21,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import com.github.leeyazhou.crpc.core.logger.Logger;
 import com.github.leeyazhou.crpc.core.logger.LoggerFactory;
-import com.github.leeyazhou.crpc.core.object.RegistryType;
+import com.github.leeyazhou.crpc.core.util.object.RegistryType;
 import com.github.leeyazhou.crpc.registry.RegistryFactory;
 import com.github.leeyazhou.crpc.transport.Filter;
 import com.github.leeyazhou.crpc.transport.factory.AbstractServerFactory;

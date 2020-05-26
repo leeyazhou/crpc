@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.github.leeyazhou.crpc.core.concurrent;
+package com.github.leeyazhou.crpc.core.util.concurrent;
 
 import java.util.EventListener;
 

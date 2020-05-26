@@ -41,7 +41,7 @@ import com.github.leeyazhou.crpc.transport.RpcContext;
 import com.github.leeyazhou.crpc.transport.TransportFactory;
 import com.github.leeyazhou.crpc.transport.filter.CounterFilter;
 import com.github.leeyazhou.crpc.transport.filter.IPFilter;
-import com.github.leeyazhou.crpc.transport.protocol.SimpleProtocol;
+import com.github.leeyazhou.crpc.transport.protocol.ProtocolType;
 import com.github.leeyazhou.crpc.transport.protocol.message.RequestMessage;
 import com.github.leeyazhou.crpc.transport.protocol.message.ResponseMessage;
 
@@ -55,7 +55,7 @@ public abstract class AbstractRpcHandler<T> implements Handler<T>, InvocationHan
 
   private Class<T> handlerType;
 
-  private int protocolType = SimpleProtocol.PROTOCOL_TYPE;
+  private ProtocolType protocolType = ProtocolType.CRPC;
 
   protected ServiceConfig<T> serviceConfig;
   protected final TransportFactory transportFactory = ServiceLoader.load(TransportFactory.class).load();
@@ -63,10 +63,10 @@ public abstract class AbstractRpcHandler<T> implements Handler<T>, InvocationHan
   protected static Filter filter = null;
 
   public AbstractRpcHandler(Class<T> beanType, ServiceGroupConfig serviceGroupConfig) {
-    this(beanType, serviceGroupConfig, SimpleProtocol.PROTOCOL_TYPE);
+    this(beanType, serviceGroupConfig, ProtocolType.CRPC);
   }
 
-  public AbstractRpcHandler(Class<T> beanType, ServiceGroupConfig serviceGroupConfig, int protocolType) {
+  public AbstractRpcHandler(Class<T> beanType, ServiceGroupConfig serviceGroupConfig, ProtocolType protocolType) {
     this.handlerType = beanType;
     this.protocolType = protocolType;
     buildFilterChain();
@@ -78,7 +78,7 @@ public abstract class AbstractRpcHandler<T> implements Handler<T>, InvocationHan
     serviceConfig.setInterfaceClass(handlerType);
     serviceConfig.setName(serviceGroupConfig.getName());
     serviceConfig.setCodec(serviceGroupConfig.getCodec());
-    serviceConfig.setCodecValue(CodecType.valueOf(serviceConfig.getCodec()).getId());
+    serviceConfig.setCodecValue(CodecType.valueOf(serviceConfig.getCodec()).getCode());
     serviceConfig.setLoadbalance(serviceGroupConfig.getLoadbalance());
     Set<URL> providers = serviceGroupConfig.getProviders();
     if (providers != null && !providers.isEmpty()) {
@@ -125,9 +125,10 @@ public abstract class AbstractRpcHandler<T> implements Handler<T>, InvocationHan
     if ("equals".equals(method.getName()) && argsTypes.length == 1) {
       return this.equals(args[0]);
     }
-
-    RequestMessage request = new RequestMessage(getHandlerType().getName(), method.getName(), argsTypes, args,
-        serviceConfig.getTimeout(), serviceConfig.getCodecValue(), getProtocolType());
+    CodecType codecType = CodecType.valueOf((byte) serviceConfig.getCodecValue());
+    RequestMessage request =
+        new RequestMessage(getHandlerType().getName(), method.getName(), argsTypes, args, serviceConfig.getTimeout());
+    request.setCodecType(codecType).setProtocolType(protocolType);
     List<Client> clients = transportFactory.getClientManager().get(serviceConfig);
     LoadBalance loadBalance = transportFactory.getLoadBalance(serviceConfig.getLoadbalance());
     RpcContext context = RpcContext.consumerContext(request, clients, loadBalance);
@@ -169,7 +170,7 @@ public abstract class AbstractRpcHandler<T> implements Handler<T>, InvocationHan
   /**
    * @return the protocolType
    */
-  public int getProtocolType() {
+  public ProtocolType getProtocolType() {
     return protocolType;
   }
 

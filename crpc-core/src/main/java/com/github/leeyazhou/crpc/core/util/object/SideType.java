@@ -17,49 +17,46 @@
  * 
  */
 
-package com.github.leeyazhou.crpc.core.object;
+package com.github.leeyazhou.crpc.core.util.object;
 
 /**
  * @author leeyazhou
  */
-public enum RegistryType {
+public enum SideType {
 
   /**
-   * ZooKeeper
+   * 消费方
    */
-  ZOOKEEPER("com.github.crpc.registry.zookeeper.ZookeeperRegistryFactory"),
+  SIDE_CONSUMER((byte) 0),
 
   /**
-   * Redis
+   * 服务方
    */
-  REDIS("com.github.crpc.registry.redis.RedisRegistryFactory");
+  SIDE_PROVIDER((byte) 1);
 
-  private String clazzName;
+  private byte code;
 
   /**
    * 
    */
-  private RegistryType(String clazzName) {
-    this.clazzName = clazzName;
+  private SideType(byte code) {
+    this.code = code;
   }
 
   /**
-   * 实现类
-   * 
-   * @return the clazzName
+   * @return the code
    */
-  public String getClazzName() {
-    return clazzName;
+  public byte getCode() {
+    return code;
   }
 
-  public static RegistryType of(String protocol) {
-    RegistryType[] values = values();
-    for (RegistryType registryType : values) {
-      if (registryType.toString().equalsIgnoreCase(protocol)) {
-        return registryType;
+  public static SideType of(int code) {
+    SideType[] values = values();
+    for (SideType item : values) {
+      if (item.getCode() == code) {
+        return item;
       }
     }
     return null;
   }
-
 }

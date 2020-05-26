@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.leeyazhou.crpc.core.concurrent;
+package com.github.leeyazhou.crpc.core.util.concurrent;
 
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -30,8 +30,8 @@ public class NamedThreadFactory implements ThreadFactory {
     this("crpc");
   }
 
-  public NamedThreadFactory(String name) {
-    this(name, false);
+  public NamedThreadFactory(String prefix) {
+    this(prefix, false);
   }
 
   public NamedThreadFactory(String preffix, boolean daemon) {
@@ -43,7 +43,7 @@ public class NamedThreadFactory implements ThreadFactory {
 
   @Override
   public Thread newThread(Runnable runnable) {
-    Thread thread = new Thread(group, runnable, getNewThreadName(), 0);
+    Thread thread = new TaskThread(group, runnable, getNewThreadName(), 0);
     thread.setDaemon(daemon);
     if (thread.getPriority() != Thread.NORM_PRIORITY) {
       thread.setPriority(Thread.NORM_PRIORITY);

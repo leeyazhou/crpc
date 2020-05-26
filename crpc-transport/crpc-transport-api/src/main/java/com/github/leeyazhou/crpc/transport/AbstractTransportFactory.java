@@ -22,14 +22,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ExecutorService;
 import com.github.leeyazhou.crpc.config.Configuration;
 import com.github.leeyazhou.crpc.config.RegistryConfig;
 import com.github.leeyazhou.crpc.config.ServiceConfig;
 import com.github.leeyazhou.crpc.core.Constants;
 import com.github.leeyazhou.crpc.core.URL;
-import com.github.leeyazhou.crpc.core.concurrent.Executors;
-import com.github.leeyazhou.crpc.core.concurrent.NamedThreadFactory;
 import com.github.leeyazhou.crpc.core.exception.CrpcException;
 import com.github.leeyazhou.crpc.core.logger.Logger;
 import com.github.leeyazhou.crpc.core.logger.LoggerFactory;
@@ -57,8 +54,6 @@ public abstract class AbstractTransportFactory implements TransportFactory, Noti
   private final Map<String, LoadBalance> loadBalances = new HashMap<String, LoadBalance>();
   private final LoadBalance loadBalanceDefault = new RoundRobinLoadBalance();
 
-  protected static final ExecutorService executorService =
-      Executors.newCachedThreadPool(new NamedThreadFactory("crpc"), 0);
 
   protected AbstractTransportFactory() {}
 
@@ -184,16 +179,6 @@ public abstract class AbstractTransportFactory implements TransportFactory, Noti
       }
     }
   }
-
-  /**
-   * ExecutorService
-   * 
-   * @return {@link ExecutorService}
-   */
-  public ExecutorService getExecutorService() {
-    return executorService;
-  }
-
 
   @Override
   public ChannelManager getChannelManager() {
