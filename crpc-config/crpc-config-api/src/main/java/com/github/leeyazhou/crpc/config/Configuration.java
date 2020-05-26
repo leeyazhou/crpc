@@ -22,6 +22,7 @@ package com.github.leeyazhou.crpc.config;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import com.github.leeyazhou.crpc.core.logger.Logger;
 import com.github.leeyazhou.crpc.core.logger.LoggerFactory;
@@ -100,7 +101,7 @@ public class Configuration {
   }
 
   public void validate() {
-
+    Objects.requireNonNull(applicationConfig, "applicationConfig can't be null");
   }
 
 }

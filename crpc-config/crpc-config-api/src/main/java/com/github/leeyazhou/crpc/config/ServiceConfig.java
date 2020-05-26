@@ -50,8 +50,9 @@ public class ServiceConfig<T> {
   /**
    * @param codecValue the codecValue to set
    */
-  public void setCodecValue(int codecValue) {
+  public ServiceConfig<T> setCodecValue(int codecValue) {
     this.codecValue = codecValue;
+    return this;
   }
 
   /**
@@ -64,8 +65,9 @@ public class ServiceConfig<T> {
   /**
    * @param name the name to set
    */
-  public void setName(String name) {
+  public ServiceConfig<T> setName(String name) {
     this.name = name;
+    return this;
   }
 
   /**
@@ -78,8 +80,9 @@ public class ServiceConfig<T> {
   /**
    * @param interfaceClass the interfaceClass to set
    */
-  public void setInterfaceClass(Class<T> interfaceClass) {
+  public ServiceConfig<T> setInterfaceClass(Class<T> interfaceClass) {
     this.interfaceClass = interfaceClass;
+    return this;
   }
 
   /**
@@ -92,8 +95,9 @@ public class ServiceConfig<T> {
   /**
    * @param implClass the implClass to set
    */
-  public void setImplClass(Class<T> implClass) {
+  public ServiceConfig<T> setImplClass(Class<T> implClass) {
     this.implClass = implClass;
+    return this;
   }
 
   /**
@@ -106,8 +110,9 @@ public class ServiceConfig<T> {
   /**
    * @param filter the filter to set
    */
-  public void setFilter(String filter) {
+  public ServiceConfig<T> setFilter(String filter) {
     this.filter = filter;
+    return this;
   }
 
   /**
@@ -120,8 +125,9 @@ public class ServiceConfig<T> {
   /**
    * @param codec the codec to set
    */
-  public void setCodec(String codec) {
+  public ServiceConfig<T> setCodec(String codec) {
     this.codec = codec;
+    return this;
   }
 
   /**
@@ -134,8 +140,9 @@ public class ServiceConfig<T> {
   /**
    * @param loadbalance the loadbalance to set
    */
-  public void setLoadbalance(String loadbalance) {
+  public ServiceConfig<T> setLoadbalance(String loadbalance) {
     this.loadbalance = loadbalance;
+    return this;
   }
 
   /**
@@ -148,8 +155,9 @@ public class ServiceConfig<T> {
   /**
    * @param registryConfigs the registryConfigs to set
    */
-  public void setRegistryConfigs(Set<RegistryConfig> registryConfigs) {
+  public ServiceConfig<T> setRegistryConfigs(Set<RegistryConfig> registryConfigs) {
     this.registryConfigs = registryConfigs;
+    return this;
   }
 
   /**
@@ -164,8 +172,9 @@ public class ServiceConfig<T> {
    * 
    * @param urls 直连服务
    */
-  public void setUrls(Set<URL> urls) {
+  public ServiceConfig<T> setUrls(Set<URL> urls) {
     this.urls = urls;
+    return this;
   }
 
   /**
@@ -178,8 +187,9 @@ public class ServiceConfig<T> {
   /**
    * @param timeout the timeout to set
    */
-  public void setTimeout(int timeout) {
+  public ServiceConfig<T> setTimeout(int timeout) {
     this.timeout = timeout;
+    return this;
   }
 
 

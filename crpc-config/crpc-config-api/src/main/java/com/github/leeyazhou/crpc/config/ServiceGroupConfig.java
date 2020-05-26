@@ -37,7 +37,7 @@ public class ServiceGroupConfig {
   private String name;
   private String codec = "KRYO_CODEC";
   private int codecValue;
-  private int worker = Math.max(Runtime.getRuntime().availableProcessors() * 2 + 1, 32);
+  private int worker;
   private String protocol;
   private String loadbalance = "RANDOM";
   private Set<URL> providers = new HashSet<URL>();

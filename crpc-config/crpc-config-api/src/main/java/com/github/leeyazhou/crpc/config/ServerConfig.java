@@ -27,8 +27,7 @@ import java.util.TreeSet;
  * @author leeyazhou
  */
 public class ServerConfig {
-
-  private int worker = Runtime.getRuntime().availableProcessors() * 8;
+  private int worker = 200;
   private Set<String> basepackages = new TreeSet<String>();
   private Set<String> filters = new HashSet<String>();
 
@@ -36,8 +35,9 @@ public class ServerConfig {
     return worker;
   }
 
-  public void setWorker(int worker) {
+  public ServerConfig setWorker(int worker) {
     this.worker = worker;
+    return this;
   }
 
 
@@ -78,8 +78,9 @@ public class ServerConfig {
   /**
    * @param filters the filters to set
    */
-  public void setFilters(Set<String> filters) {
+  public ServerConfig setFilters(Set<String> filters) {
     this.filters = filters;
+    return this;
   }
 
 }
