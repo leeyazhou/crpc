@@ -28,7 +28,9 @@ import org.mockito.stubbing.Answer;
 import com.github.leeyazhou.crpc.config.Configuration;
 import com.github.leeyazhou.crpc.config.ProtocolConfig;
 import com.github.leeyazhou.crpc.config.ServerConfig;
+import com.github.leeyazhou.crpc.config.ServiceConfig;
 import com.github.leeyazhou.crpc.core.util.concurrent.Executors;
+import com.github.leeyazhou.crpc.core.util.function.Supplier;
 import com.github.leeyazhou.crpc.transport.ChannelManager;
 import com.github.leeyazhou.crpc.transport.Server;
 import com.github.leeyazhou.crpc.transport.factory.ServerFactory;
@@ -62,8 +64,15 @@ public class NettyServerTest {
 
           @Override
           public ServiceHandler<InternalEchoServiceImpl> answer(InvocationOnMock invocation) throws Throwable {
-            return new ServiceHandler<InternalEchoServiceImpl>(InternalEchoServiceImpl.class,
-                new InternalEchoServiceImpl());
+            ServiceConfig<InternalEchoServiceImpl> serviceConfig = new ServiceConfig<InternalEchoServiceImpl>();
+            serviceConfig.setServiceType(InternalEchoServiceImpl.class).setInstanceSupplier(new Supplier<InternalEchoServiceImpl>() {
+              
+              @Override
+              public InternalEchoServiceImpl get() {
+                return new InternalEchoServiceImpl();
+              }
+            });
+            return new ServiceHandler<InternalEchoServiceImpl>(serviceConfig);
           }
         });
     server = new NettyServer(configuration, serverFactory, new ChannelManager());

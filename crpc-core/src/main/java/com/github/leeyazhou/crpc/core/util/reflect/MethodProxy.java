@@ -17,7 +17,7 @@
  * 
  */
 
-package com.github.leeyazhou.crpc.transport.factory;
+package com.github.leeyazhou.crpc.core.util.reflect;
 
 import java.lang.reflect.Method;
 import com.github.leeyazhou.crpc.core.logger.Logger;
@@ -32,7 +32,6 @@ public final class MethodProxy {
 
   private Method method;
 
-
   public MethodProxy(Method method) {
     this.method = method;
   }
@@ -41,7 +40,6 @@ public final class MethodProxy {
     Object result = method.invoke(target, args);
     return result;
   }
-
 
 
   public Method getMethod() {

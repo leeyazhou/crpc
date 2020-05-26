@@ -23,7 +23,7 @@ public class RequestMessage extends Message {
 
   private static final AtomicInteger incId = new AtomicInteger(0);
 
-  private String targetClassName;
+  private String serviceTypeName;
 
   private String methodName;
 
@@ -37,12 +37,12 @@ public class RequestMessage extends Message {
 
   public RequestMessage() {}
 
-  public RequestMessage(String targetClassName, String methodName, String[] argTypes, Object[] args, int timeout) {
+  public RequestMessage(String serviceTypeName, String methodName, String[] argTypes, Object[] args, int timeout) {
     this.args = args;
     setId(incId.incrementAndGet());
     incId.compareAndSet(Integer.MAX_VALUE, 0);
     this.timeout = timeout;
-    this.targetClassName = targetClassName;
+    this.serviceTypeName = serviceTypeName;
     this.methodName = methodName;
     this.argTypes = argTypes;
   }
@@ -61,8 +61,8 @@ public class RequestMessage extends Message {
     return this;
   }
 
-  public String getTargetClassName() {
-    return targetClassName;
+  public String getServiceTypeName() {
+    return serviceTypeName;
   }
 
   public String getMethodName() {
@@ -81,8 +81,8 @@ public class RequestMessage extends Message {
     return argTypes;
   }
 
-  public RequestMessage setTargetClassName(String targetClassName) {
-    this.targetClassName = targetClassName;
+  public RequestMessage setServiceTypeName(String serviceTypeName) {
+    this.serviceTypeName = serviceTypeName;
     return this;
   }
 
@@ -106,7 +106,7 @@ public class RequestMessage extends Message {
   public String toString() {
     StringBuilder builder = new StringBuilder();
     builder.append("Request [targetClassName=");
-    builder.append(targetClassName);
+    builder.append(serviceTypeName);
     builder.append(", methodName=");
     builder.append(methodName);
     builder.append(", argTypes=");

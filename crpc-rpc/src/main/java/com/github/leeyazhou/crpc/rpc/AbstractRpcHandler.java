@@ -24,8 +24,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import com.github.leeyazhou.crpc.codec.CodecType;
-import com.github.leeyazhou.crpc.config.ServiceConfig;
-import com.github.leeyazhou.crpc.config.ServiceGroupConfig;
+import com.github.leeyazhou.crpc.config.ReferConfig;
 import com.github.leeyazhou.crpc.core.Constants;
 import com.github.leeyazhou.crpc.core.URL;
 import com.github.leeyazhou.crpc.core.exception.CrpcException;
@@ -57,42 +56,36 @@ public abstract class AbstractRpcHandler<T> implements Handler<T>, InvocationHan
 
   private ProtocolType protocolType = ProtocolType.CRPC;
 
-  protected ServiceConfig<T> serviceConfig;
+  protected ReferConfig<T> referConfig;
   protected final TransportFactory transportFactory = ServiceLoader.load(TransportFactory.class).load();
 
   protected static Filter filter = null;
 
-  public AbstractRpcHandler(Class<T> beanType, ServiceGroupConfig serviceGroupConfig) {
-    this(beanType, serviceGroupConfig, ProtocolType.CRPC);
+  public AbstractRpcHandler(ReferConfig<T> referConfig) {
+    this(referConfig, ProtocolType.CRPC);
   }
 
-  public AbstractRpcHandler(Class<T> beanType, ServiceGroupConfig serviceGroupConfig, ProtocolType protocolType) {
-    this.handlerType = beanType;
+  public AbstractRpcHandler(ReferConfig<T> referConfig, ProtocolType protocolType) {
+    this.referConfig = referConfig;
+    this.handlerType = referConfig.getServiceType();
     this.protocolType = protocolType;
     buildFilterChain();
-    initService(serviceGroupConfig);
+    initService();
   }
 
-  private void initService(ServiceGroupConfig serviceGroupConfig) {
-    ServiceConfig<T> serviceConfig = new ServiceConfig<T>();
-    serviceConfig.setInterfaceClass(handlerType);
-    serviceConfig.setName(serviceGroupConfig.getName());
-    serviceConfig.setCodec(serviceGroupConfig.getCodec());
-    serviceConfig.setCodecValue(CodecType.valueOf(serviceConfig.getCodec()).getCode());
-    serviceConfig.setLoadbalance(serviceGroupConfig.getLoadbalance());
-    Set<URL> providers = serviceGroupConfig.getProviders();
+  private void initService() {
+    Set<URL> providers = referConfig.getUrls();
     if (providers != null && !providers.isEmpty()) {
       Set<URL> urls = new HashSet<URL>();
       for (URL provider : providers) {
-        provider.addParameter(Constants.APPLICATION, serviceGroupConfig.getName());
+        provider.addParameter(Constants.APPLICATION, referConfig.getApplicationConfig().getName());
         provider.addParameter(Constants.VERSION, Constants.CRPC_VERSION);
         provider.addParameter(Constants.SERVICE_INTERFACE, handlerType.getName());
         urls.add(provider);
       }
-      serviceConfig.setUrls(urls);
+      referConfig.setUrls(urls);
     }
-    this.transportFactory.initService(serviceConfig);
-    this.serviceConfig = serviceConfig;
+    this.transportFactory.initService(referConfig);
   }
 
   private void buildFilterChain() {
@@ -111,7 +104,7 @@ public abstract class AbstractRpcHandler<T> implements Handler<T>, InvocationHan
 
   @Override
   public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-    if (serviceConfig == null) {
+    if (referConfig == null) {
       throw new ServiceNotFoundException("server : [" + getUrl() + "] is not found ! ");
     }
     String[] argsTypes = createParamSignature(method.getParameterTypes());
@@ -125,12 +118,12 @@ public abstract class AbstractRpcHandler<T> implements Handler<T>, InvocationHan
     if ("equals".equals(method.getName()) && argsTypes.length == 1) {
       return this.equals(args[0]);
     }
-    CodecType codecType = CodecType.valueOf((byte) serviceConfig.getCodecValue());
+    CodecType codecType = CodecType.valueOf(referConfig.getCodecType());
     RequestMessage request =
-        new RequestMessage(getHandlerType().getName(), method.getName(), argsTypes, args, serviceConfig.getTimeout());
+        new RequestMessage(getHandlerType().getName(), method.getName(), argsTypes, args, referConfig.getTimeout());
     request.setCodecType(codecType).setProtocolType(protocolType);
-    List<Client> clients = transportFactory.getClientManager().get(serviceConfig);
-    LoadBalance loadBalance = transportFactory.getLoadBalance(serviceConfig.getLoadbalance());
+    List<Client> clients = transportFactory.getClientManager().get(referConfig);
+    LoadBalance loadBalance = transportFactory.getLoadBalance(referConfig.getLoadbalance());
     RpcContext context = RpcContext.consumerContext(request, clients, loadBalance);
     return handle(context).getResponse();
   }

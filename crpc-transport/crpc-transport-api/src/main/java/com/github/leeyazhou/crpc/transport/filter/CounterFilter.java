@@ -58,7 +58,7 @@ public class CounterFilter extends AbstractFilter {
       request = QUEUE.poll(5, TimeUnit.SECONDS);
       if (request != null) {
         logger.info("处理请求:" + request);
-        final String mName = request.getTargetClassName() + "." + request.getMethodName();
+        final String mName = request.getServiceTypeName() + "." + request.getMethodName();
         AtomicInteger c = counter.get(mName);
         if (c == null) {
           c = new AtomicInteger(0);
@@ -86,8 +86,4 @@ public class CounterFilter extends AbstractFilter {
     return nextFilter(context);
   }
 
-  @Override
-  public int getOrder() {
-    return 2;
-  }
 }

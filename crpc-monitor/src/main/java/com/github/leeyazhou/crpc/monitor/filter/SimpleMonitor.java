@@ -100,10 +100,10 @@ public class SimpleMonitor extends AbstractMonitor {
       }
     } while (request == null);
     logger.info("request : " + request);
-    MonitorData serviceService = statis.get(request.getTargetClassName());
+    MonitorData serviceService = statis.get(request.getServiceTypeName());
     if (serviceService == null) {
-      serviceService = new MonitorData(request.getTargetClassName());
-      statis.put(request.getTargetClassName(), serviceService);
+      serviceService = new MonitorData(request.getServiceTypeName());
+      statis.put(request.getServiceTypeName(), serviceService);
     } else {
       serviceService.collect(request.getMethodName());
     }

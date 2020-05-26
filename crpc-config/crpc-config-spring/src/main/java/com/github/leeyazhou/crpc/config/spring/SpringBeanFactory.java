@@ -35,7 +35,8 @@ import com.github.leeyazhou.crpc.transport.factory.ServiceHandler;
 public class SpringBeanFactory extends AbstractServerFactory implements ApplicationContextAware {
   private static final Logger logger = LoggerFactory.getLogger(SpringBeanFactory.class);
   private ApplicationContext applicationContext;
-  private final ConcurrentMap<String, ServiceHandler<?>> serviceHandlers = new ConcurrentHashMap<String, ServiceHandler<?>>();
+  private final ConcurrentMap<String, ServiceHandler<?>> serviceHandlers =
+      new ConcurrentHashMap<String, ServiceHandler<?>>();
   private Filter filterChain;
 
   @Override
@@ -61,8 +62,8 @@ public class SpringBeanFactory extends AbstractServerFactory implements Applicat
 
   @Override
   public <T> void registerProcessor(ServiceHandler<T> serviceHandler) {
-    serviceHandlers.putIfAbsent(serviceHandler.getClazz().getName(), serviceHandler);
-    logger.info("注册服务:" + serviceHandler.getClazz().getName() + ", " + serviceHandler);
+    serviceHandlers.putIfAbsent(serviceHandler.getServiceConfig().getName(), serviceHandler);
+    logger.info("注册服务:" + serviceHandler.getServiceConfig().getName() + ", " + serviceHandler);
   }
 
 }

@@ -23,8 +23,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import com.github.leeyazhou.crpc.config.Configuration;
-import com.github.leeyazhou.crpc.config.RegistryConfig;
-import com.github.leeyazhou.crpc.config.ServiceConfig;
+import com.github.leeyazhou.crpc.config.ReferConfig;
 import com.github.leeyazhou.crpc.core.Constants;
 import com.github.leeyazhou.crpc.core.URL;
 import com.github.leeyazhou.crpc.core.exception.CrpcException;
@@ -94,11 +93,11 @@ public abstract class AbstractTransportFactory implements TransportFactory, Noti
   }
 
   @Override
-  public synchronized <T> void initService(final ServiceConfig<T> serviceConfig) {
-    for (RegistryConfig registryConfig : serviceConfig.getRegistryConfigs()) {
-      RegistryFactory registryFactory =
-          ServiceLoader.load(RegistryFactory.class).load(registryConfig.toURL().getProtocol());
-      registryFactory.createRegistry(registryConfig.toURL());
+  public synchronized <T> void initService(final ReferConfig<T> referConfig) {
+    if (referConfig.getRegistryConfig() != null) {
+      RegistryFactory registryF =
+          ServiceLoader.load(RegistryFactory.class).load(referConfig.getRegistryConfig().toURL().getProtocol());
+      registryF.createRegistry(referConfig.getRegistryConfig().toURL());
     }
 
     // 从注册中心获取服务提供者
@@ -115,7 +114,7 @@ public abstract class AbstractTransportFactory implements TransportFactory, Noti
         }
         for (URL url : urls) {
           String beanType = url.getParameter(Constants.SERVICE_INTERFACE, null);
-          if (serviceConfig.getInterfaceClass().getName().equals(beanType)) {
+          if (referConfig.getServiceType().getName().equals(beanType)) {
             String key = url.getHost() + ":" + url.getPort();
             providers.put(key, url);
             registry.subscribe(url, this);// 订阅
@@ -123,7 +122,7 @@ public abstract class AbstractTransportFactory implements TransportFactory, Noti
         }
       }
     }
-    for (URL server : serviceConfig.getUrls()) {
+    for (URL server : referConfig.getUrls()) {
       String key = server.getHost() + ":" + server.getPort();
       providers.put(key, server);
     }
@@ -132,7 +131,7 @@ public abstract class AbstractTransportFactory implements TransportFactory, Noti
     for (URL provider : providers.values()) {
       getClientManager().getOrCreateClient(provider);
     }
-    logger.info("find " + clients.size() + " providers for " + serviceConfig.getName());
+    logger.info("find " + clients.size() + " providers for " + referConfig.getServiceType());
   }
 
   @Override

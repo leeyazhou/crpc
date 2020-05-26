@@ -18,7 +18,6 @@
  */
 package com.github.leeyazhou.crpc.config.spring;
 
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.FactoryBean;
@@ -28,7 +27,7 @@ import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.util.StringUtils;
 import com.github.leeyazhou.crpc.config.Configuration;
-import com.github.leeyazhou.crpc.config.ServiceGroupConfig;
+import com.github.leeyazhou.crpc.config.ReferConfig;
 import com.github.leeyazhou.crpc.core.URL;
 import com.github.leeyazhou.crpc.core.logger.Logger;
 import com.github.leeyazhou.crpc.core.logger.LoggerFactory;
@@ -39,13 +38,12 @@ import com.github.leeyazhou.crpc.rpc.util.RpcUtil;
  * 
  * @author leeyazhou
  */
-public class ReferenceFactoryBean<T> extends ServiceGroupConfig
+public class ReferFactoryBean<T> extends ReferConfig<T>
     implements FactoryBean<T>, InitializingBean, DisposableBean, ApplicationContextAware {
-  protected static final Logger logger = LoggerFactory.getLogger(ReferenceFactoryBean.class);
+  protected static final Logger logger = LoggerFactory.getLogger(ReferFactoryBean.class);
   protected T ref;
   protected Class<T> objectType;
   protected ApplicationContext applicationContext;
-  protected ServiceGroupConfig serviceGroup;
   protected Configuration configuration;
 
   @Override
@@ -69,16 +67,7 @@ public class ReferenceFactoryBean<T> extends ServiceGroupConfig
   }
 
   private T getReference() {
-    ServiceGroupConfig groupConfig = new ServiceGroupConfig();
-    BeanUtils.copyProperties(this, groupConfig);
-    groupConfig.copyNotNull(serviceGroup);
-    this.copyNotNull(serviceGroup);
-    this.configuration.addServiceGroupConfig(groupConfig);
-    if (StringUtils.isEmpty(groupConfig.getName())) {
-      // throw new ServiceNotFoundException("service name can't be null.");
-      groupConfig.setName(getName());
-    }
-    this.ref = RpcUtil.refer(groupConfig, this.objectType);
+    this.ref = RpcUtil.refer(this);
     return ref;
   }
 
@@ -106,19 +95,13 @@ public class ReferenceFactoryBean<T> extends ServiceGroupConfig
   }
 
   public void setAddress(String address) {
-    String[] addresses = StringUtils.tokenizeToStringArray(address, ConfigurableApplicationContext.CONFIG_LOCATION_DELIMITERS);
+    String[] addresses =
+        StringUtils.tokenizeToStringArray(address, ConfigurableApplicationContext.CONFIG_LOCATION_DELIMITERS);
     for (String a : addresses) {
       if (StringUtils.isEmpty(a)) {
         continue;
       }
-      addProvider(URL.valueOf(a));
+      addUrl(URL.valueOf(a));
     }
-  }
-
-  /**
-   * @param serviceGroup the serviceGroup to set
-   */
-  public void setServiceGroup(ServiceGroupConfig serviceGroup) {
-    this.serviceGroup = serviceGroup;
   }
 }

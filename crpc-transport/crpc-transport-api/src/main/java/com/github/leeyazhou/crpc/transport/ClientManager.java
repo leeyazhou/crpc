@@ -22,8 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
-import com.github.leeyazhou.crpc.config.ServiceConfig;
-import com.github.leeyazhou.crpc.config.ServiceGroupConfig;
+import com.github.leeyazhou.crpc.config.ReferConfig;
 import com.github.leeyazhou.crpc.core.URL;
 import com.github.leeyazhou.crpc.core.exception.ServiceNotFoundException;
 
@@ -48,14 +47,14 @@ public class ClientManager {
    * @return list of {@link Client}
    * @throws Exception any exception
    */
-  public <T> List<Client> get(final ServiceConfig<T> serviceConfig) throws Exception {
+  public <T> List<Client> get(final ReferConfig<T> referConfig) throws Exception {
     try {
       List<Client> clients = new ArrayList<Client>();
-      for (URL url : serviceConfig.getUrls()) {
+      for (URL url : referConfig.getUrls()) {
         clients.add(getOrCreateClient(url));
       }
       if (clients == null || clients.isEmpty()) {
-        throw new ServiceNotFoundException("serviceName : " + serviceConfig.getName());
+        throw new ServiceNotFoundException("serviceName : " + referConfig.getApplicationConfig().getName());
       }
       return clients;
     } catch (Exception err) {

@@ -19,11 +19,7 @@
 
 package com.github.leeyazhou.crpc.config;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
 import java.util.Objects;
-import java.util.Set;
 import com.github.leeyazhou.crpc.core.logger.Logger;
 import com.github.leeyazhou.crpc.core.logger.LoggerFactory;
 
@@ -36,18 +32,11 @@ public class Configuration {
   private ApplicationConfig applicationConfig;
   private ProtocolConfig protocolConfig;
 
-  private Map<String, ServiceGroupConfig> serviceGroupConfigs = new HashMap<String, ServiceGroupConfig>();
-  private Set<RegistryConfig> registryConfigs = new HashSet<RegistryConfig>();
+  private RegistryConfig registryConfig;
 
   private ServerConfig serverConfig;
 
   public Configuration() {}
-
-
-  public Map<String, ServiceGroupConfig> getServiceConfigs() {
-    return serviceGroupConfigs;
-  }
-
 
   public Configuration setProtocolConfig(ProtocolConfig protocolConfig) {
     this.protocolConfig = protocolConfig;
@@ -67,15 +56,6 @@ public class Configuration {
     return serverConfig;
   }
 
-  public ServiceGroupConfig getServiceConfig(String serviceName) {
-    return serviceGroupConfigs.get(serviceName);
-  }
-
-  public Configuration addServiceGroupConfig(ServiceGroupConfig serviceGroupConfig) {
-    this.serviceGroupConfigs.put(serviceGroupConfig.getName(), serviceGroupConfig);
-    return this;
-  }
-
   public Configuration setApplicationConfig(ApplicationConfig applicationConfig) {
     this.applicationConfig = applicationConfig;
     return this;
@@ -86,19 +66,15 @@ public class Configuration {
   }
 
 
-  public Configuration setRegistryConfigs(Set<RegistryConfig> registryConfigs) {
-    this.registryConfigs = registryConfigs;
+  public Configuration setRegistryConfig(RegistryConfig registryConfig) {
+    this.registryConfig = registryConfig;
     return this;
   }
 
-  public Set<RegistryConfig> getRegistryConfigs() {
-    return registryConfigs;
+  public RegistryConfig getRegistryConfig() {
+    return registryConfig;
   }
 
-  public Configuration addRegistryConfig(RegistryConfig registryConfig) {
-    registryConfigs.add(registryConfig);
-    return this;
-  }
 
   public void validate() {
     Objects.requireNonNull(applicationConfig, "applicationConfig can't be null");

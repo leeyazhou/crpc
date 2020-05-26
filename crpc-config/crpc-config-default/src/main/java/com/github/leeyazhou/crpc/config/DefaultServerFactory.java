@@ -21,6 +21,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import com.github.leeyazhou.crpc.core.logger.Logger;
 import com.github.leeyazhou.crpc.core.logger.LoggerFactory;
+import com.github.leeyazhou.crpc.core.util.function.Supplier;
 import com.github.leeyazhou.crpc.core.util.object.RegistryType;
 import com.github.leeyazhou.crpc.registry.RegistryFactory;
 import com.github.leeyazhou.crpc.transport.Filter;
@@ -49,7 +50,7 @@ public class DefaultServerFactory extends AbstractServerFactory {
    */
   @Override
   public <T> void registerProcessor(ServiceHandler<T> serviceHandler) {
-    Class<?> lookUp = serviceHandler.getClazz().getInterfaces()[0];
+    Class<?> lookUp = serviceHandler.getHandlerType().getInterfaces()[0];
     String instanceName = lookUp.getName();
     beanClassFactory.put(instanceName, serviceHandler);
   }
@@ -60,12 +61,25 @@ public class DefaultServerFactory extends AbstractServerFactory {
    */
   public <T> ServiceHandler<T> getServiceHandler(String targetInstanceName) {
     @SuppressWarnings("unchecked")
-    ServiceHandler<T> bean = (ServiceHandler<T>) beanClassFactory.get(targetInstanceName);
-    if (bean != null && bean.getInstance() == null) {
+    final ServiceHandler<T> bean = (ServiceHandler<T>) beanClassFactory.get(targetInstanceName);
+    if (bean != null && bean.getServiceConfig().getInstance() == null) {
       synchronized (bean) {
         try {
-          T t = bean.getClazz().newInstance();
-          bean.setInstance(t);
+          bean.getServiceConfig().setInstanceSupplier(new Supplier<T>() {
+
+            @Override
+            public T get() {
+              try {
+                return bean.getServiceConfig().getServiceType().newInstance();
+              } catch (InstantiationException e) {
+                e.printStackTrace();
+              } catch (IllegalAccessException e) {
+                e.printStackTrace();
+              }
+              return null;
+            }
+
+          });
           beanClassFactory.putIfAbsent(targetInstanceName, bean);
         } catch (Exception e) {
           logger.error("", e);

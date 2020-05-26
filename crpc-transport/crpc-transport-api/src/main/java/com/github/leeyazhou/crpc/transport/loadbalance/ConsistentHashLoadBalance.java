@@ -38,7 +38,7 @@ public class ConsistentHashLoadBalance extends AbstractLoadBalance {
 
   @Override
   protected Client doChooseOne(List<Client> clients, RequestMessage request) {
-    String key = request.getTargetClassName();
+    String key = request.getServiceTypeName();
     int identityHashCode = System.identityHashCode(clients);
     ConsistentHashSelector<Client> selector = selectors.get(key);
     if (selector == null || selector.getIdentityHashCode() != identityHashCode) {

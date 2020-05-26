@@ -75,7 +75,7 @@ public class NettyClientTest extends NettyServerTest {
     client.connect();
 
     RequestMessage message =
-        new RequestMessage().setTargetClassName(InternalEchoServiceImpl.class.getName()).setMethodName("echo")
+        new RequestMessage().setServiceTypeName(InternalEchoServiceImpl.class.getName()).setMethodName("echo")
             .setArgs(new Object[] {"PING"}).setArgTypes(new String[] {String.class.getName()}).setTimeout(3000);
 
     ResponseMessage responseMessage = client.request(message);

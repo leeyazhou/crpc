@@ -26,13 +26,16 @@ import org.junit.Test;
 import org.mockito.Mockito;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
+import com.github.leeyazhou.crpc.config.ApplicationConfig;
 import com.github.leeyazhou.crpc.config.Configuration;
 import com.github.leeyazhou.crpc.config.ProtocolConfig;
+import com.github.leeyazhou.crpc.config.ReferConfig;
 import com.github.leeyazhou.crpc.config.ServerConfig;
-import com.github.leeyazhou.crpc.config.ServiceGroupConfig;
+import com.github.leeyazhou.crpc.config.ServiceConfig;
 import com.github.leeyazhou.crpc.core.URL;
 import com.github.leeyazhou.crpc.core.util.ServiceLoader;
 import com.github.leeyazhou.crpc.core.util.concurrent.Executors;
+import com.github.leeyazhou.crpc.core.util.function.Supplier;
 import com.github.leeyazhou.crpc.rpc.proxy.ProxyFactory;
 import com.github.leeyazhou.crpc.transport.Server;
 import com.github.leeyazhou.crpc.transport.TransportFactory;
@@ -68,8 +71,16 @@ public class DefaultInvokerTest {
 
           @Override
           public ServiceHandler<InternalEchoServiceImpl> answer(InvocationOnMock invocation) throws Throwable {
-            return new ServiceHandler<InternalEchoServiceImpl>(InternalEchoServiceImpl.class,
-                new InternalEchoServiceImpl());
+            ServiceConfig<InternalEchoServiceImpl> serviceConfig = new ServiceConfig<InternalEchoServiceImpl>();
+            serviceConfig.setServiceType(InternalEchoServiceImpl.class)
+                .setInstanceSupplier(new Supplier<InternalEchoServiceImpl>() {
+
+                  @Override
+                  public InternalEchoServiceImpl get() {
+                    return new InternalEchoServiceImpl();
+                  }
+                });
+            return new ServiceHandler<InternalEchoServiceImpl>(serviceConfig);
           }
         });
     server = ServiceLoader.load(TransportFactory.class).load().createServer(configuration, serverFactory);
@@ -81,8 +92,10 @@ public class DefaultInvokerTest {
   @Test
   public void testInvoker() {
     ProxyFactory proxyFactory = ServiceLoader.load(ProxyFactory.class).load();
-    ServiceGroupConfig serviceGroupConfig = new ServiceGroupConfig().addProvider(URL.valueOf("crpc://127.0.0.1:25001"));
-    InternalEchoService echoService = proxyFactory.getProxy(InternalEchoService.class, serviceGroupConfig);
+    ReferConfig<InternalEchoService> referConfig =
+        new ReferConfig<InternalEchoService>().setApplicationConfig(new ApplicationConfig().setName("showcase"))
+            .addUrl(URL.valueOf("crpc://127.0.0.1:25001"));
+    InternalEchoService echoService = proxyFactory.getProxy(referConfig);
     String response = echoService.echo("CRPC");
     Assert.assertEquals("CRPC", response);
   }

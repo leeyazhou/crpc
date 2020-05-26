@@ -66,7 +66,7 @@ public class NettyServer extends AbstractServer {
 
       @Override
       public ResponseMessage handle(RpcContext context) {
-        final String targetInstanceName = context.getRequest().getTargetClassName();
+        final String targetInstanceName = context.getRequest().getServiceTypeName();
         final Handler<?> processor = serverFactory.getServiceHandler(targetInstanceName);
         if (processor == null) {
           throw new ServiceNotFoundException(targetInstanceName);

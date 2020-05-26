@@ -18,180 +18,85 @@
  */
 package com.github.leeyazhou.crpc.config;
 
-import java.util.HashSet;
-import java.util.Set;
-import com.github.leeyazhou.crpc.core.URL;
+import com.github.leeyazhou.crpc.core.lifecyle.AbstractInit;
+import com.github.leeyazhou.crpc.core.util.function.Supplier;
+import com.github.leeyazhou.crpc.core.util.reflect.ClassInfo;
 
 /**
  * @author leeyazhou
  */
-public class ServiceConfig<T> {
+public class ServiceConfig<T> extends AbstractInit {
   private String name;
-  private Class<T> interfaceClass;
+  private Class<T> serviceType;
   private Class<T> implClass;
-  private String filter;
-  private String codec;
-  private String loadbalance;
-  private int codecValue;
-  /**
-   * 超时时间/ms
-   */
-  private int timeout = 3000;
-  private Set<RegistryConfig> registryConfigs = new HashSet<RegistryConfig>();
-  private Set<URL> urls = new HashSet<URL>();
+  private T instance;
+  private Supplier<T> instanceSupplier;
+  private ClassInfo<T> classInfo;
 
-  /**
-   * @return the codecValue
-   */
-  public int getCodecValue() {
-    return codecValue;
+  @Override
+  public void doInit() {
+    this.classInfo = new ClassInfo<T>(serviceType);
+    this.classInfo.init();
   }
 
-  /**
-   * @param codecValue the codecValue to set
-   */
-  public ServiceConfig<T> setCodecValue(int codecValue) {
-    this.codecValue = codecValue;
-    return this;
-  }
-
-  /**
-   * @return the name
-   */
   public String getName() {
     return name;
   }
 
-  /**
-   * @param name the name to set
-   */
   public ServiceConfig<T> setName(String name) {
     this.name = name;
     return this;
   }
 
-  /**
-   * @return the interfaceClass
-   */
-  public Class<T> getInterfaceClass() {
-    return interfaceClass;
-  }
-
-  /**
-   * @param interfaceClass the interfaceClass to set
-   */
-  public ServiceConfig<T> setInterfaceClass(Class<T> interfaceClass) {
-    this.interfaceClass = interfaceClass;
-    return this;
-  }
-
-  /**
-   * @return the implClass
-   */
   public Class<T> getImplClass() {
     return implClass;
   }
 
-  /**
-   * @param implClass the implClass to set
-   */
+  public ServiceConfig<T> setServiceType(Class<T> serviceType) {
+    this.serviceType = serviceType;
+    return this;
+  }
+
+  public Class<T> getServiceType() {
+    return serviceType;
+  }
+
   public ServiceConfig<T> setImplClass(Class<T> implClass) {
     this.implClass = implClass;
     return this;
   }
 
-  /**
-   * @return the filter
-   */
-  public String getFilter() {
-    return filter;
-  }
 
-  /**
-   * @param filter the filter to set
-   */
-  public ServiceConfig<T> setFilter(String filter) {
-    this.filter = filter;
+  public ServiceConfig<T> setInstance(T instance) {
+    this.instance = instance;
     return this;
   }
 
-  /**
-   * @return the codec
-   */
-  public String getCodec() {
-    return codec;
+  public Object getInstance() {
+    init();
+    if (instanceSupplier != null) {
+      return instanceSupplier.get();
+    }
+    return instance;
   }
 
   /**
-   * @param codec the codec to set
+   * @param instanceSupplier the instanceSupplier to set
    */
-  public ServiceConfig<T> setCodec(String codec) {
-    this.codec = codec;
-    return this;
+  public void setInstanceSupplier(Supplier<T> instanceSupplier) {
+    this.instanceSupplier = instanceSupplier;
+  }
+
+
+  public Supplier<T> getInstanceSupplier() {
+    return instanceSupplier;
   }
 
   /**
-   * @return the loadbalance
+   * @return the classInfo
    */
-  public String getLoadbalance() {
-    return loadbalance;
+  public ClassInfo<T> getClassInfo() {
+    return classInfo;
   }
-
-  /**
-   * @param loadbalance the loadbalance to set
-   */
-  public ServiceConfig<T> setLoadbalance(String loadbalance) {
-    this.loadbalance = loadbalance;
-    return this;
-  }
-
-  /**
-   * @return the registryConfigs
-   */
-  public Set<RegistryConfig> getRegistryConfigs() {
-    return registryConfigs;
-  }
-
-  /**
-   * @param registryConfigs the registryConfigs to set
-   */
-  public ServiceConfig<T> setRegistryConfigs(Set<RegistryConfig> registryConfigs) {
-    this.registryConfigs = registryConfigs;
-    return this;
-  }
-
-  /**
-   * @return 直连服务
-   */
-  public Set<URL> getUrls() {
-    return urls;
-  }
-
-  /**
-   * 直连
-   * 
-   * @param urls 直连服务
-   */
-  public ServiceConfig<T> setUrls(Set<URL> urls) {
-    this.urls = urls;
-    return this;
-  }
-
-  /**
-   * @return the timeout
-   */
-  public int getTimeout() {
-    return timeout;
-  }
-
-  /**
-   * @param timeout the timeout to set
-   */
-  public ServiceConfig<T> setTimeout(int timeout) {
-    this.timeout = timeout;
-    return this;
-  }
-
-
 
 }

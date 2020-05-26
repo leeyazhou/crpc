@@ -70,7 +70,7 @@ import org.springframework.util.ClassUtils;
 import org.springframework.util.ReflectionUtils;
 import org.springframework.util.StringUtils;
 
-import com.github.leeyazhou.crpc.config.spring.ReferenceFactoryBean;
+import com.github.leeyazhou.crpc.config.spring.ReferFactoryBean;
 import com.github.leeyazhou.crpc.core.annotation.CRPCReference;
 import com.github.leeyazhou.crpc.core.logger.Logger;
 import com.github.leeyazhou.crpc.core.logger.LoggerFactory;
@@ -496,7 +496,7 @@ public class AnnotationBeanPostProcessor extends AutowiredAnnotationBeanPostProc
    */
   @SuppressWarnings("unchecked")
   private Object buildReferenceFactoryBean(Class<?> beanType) throws Exception {
-    ReferenceFactoryBean<Object> factoryBean = new ReferenceFactoryBean<Object>();
+    ReferFactoryBean<Object> factoryBean = new ReferFactoryBean<Object>();
     factoryBean.setObjectType((Class<Object>) beanType);
     factoryBean.setApplicationContext(applicationContext);
     return factoryBean.getObject();

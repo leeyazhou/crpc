@@ -43,6 +43,7 @@ public abstract class AbstractClient implements Client {
 
   @Override
   public ResponseMessage request(RequestMessage request) {
+    validate(request);
     long beginTime = System.currentTimeMillis();
     final RpcResult rpcResult = new RpcResult();
     responses.putIfAbsent(request.id(), rpcResult);
@@ -98,6 +99,15 @@ public abstract class AbstractClient implements Client {
       throw new CrpcException(sb.toString());
     }
     return response;
+  }
+
+  private void validate(RequestMessage requestMessage) {
+    if (requestMessage == null) {
+      return;
+    }
+    if (requestMessage.getTimeout() == 0) {
+      requestMessage.setTimeout(3000);
+    }
   }
 
   /**

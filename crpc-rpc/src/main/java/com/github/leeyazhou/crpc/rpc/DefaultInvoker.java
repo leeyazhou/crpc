@@ -16,7 +16,7 @@
 package com.github.leeyazhou.crpc.rpc;
 
 import java.util.List;
-import com.github.leeyazhou.crpc.config.ServiceGroupConfig;
+import com.github.leeyazhou.crpc.config.ReferConfig;
 import com.github.leeyazhou.crpc.transport.Client;
 import com.github.leeyazhou.crpc.transport.LoadBalance;
 import com.github.leeyazhou.crpc.transport.RpcContext;
@@ -25,8 +25,8 @@ import com.github.leeyazhou.crpc.transport.protocol.message.ResponseMessage;
 
 public class DefaultInvoker<T> extends AbstractRpcHandler<T> {
 
-  public DefaultInvoker(Class<T> beanType, ServiceGroupConfig serviceGroupConfig) {
-    super(beanType, serviceGroupConfig);
+  public DefaultInvoker(ReferConfig<T> referConfig) {
+    super(referConfig);
   }
 
   @Override

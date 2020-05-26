@@ -18,12 +18,11 @@
  */
 package com.github.leeyazhou.crpc.transport.filter;
 
+import com.github.leeyazhou.crpc.core.logger.Logger;
+import com.github.leeyazhou.crpc.core.logger.LoggerFactory;
 import com.github.leeyazhou.crpc.transport.Filter;
 import com.github.leeyazhou.crpc.transport.RpcContext;
 import com.github.leeyazhou.crpc.transport.protocol.message.ResponseMessage;
-import com.github.leeyazhou.crpc.core.Ordered;
-import com.github.leeyazhou.crpc.core.logger.Logger;
-import com.github.leeyazhou.crpc.core.logger.LoggerFactory;
 
 /**
  * @author leeyazhou_y
@@ -73,8 +72,4 @@ public abstract class AbstractFilter implements Filter {
     return null;
   }
 
-  @Override
-  public int getOrder() {
-    return Ordered.HIGHEST_PRECEDENCE;
-  }
 }

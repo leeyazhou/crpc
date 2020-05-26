@@ -22,8 +22,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
 import com.github.leeyazhou.crpc.core.annotation.CRPCSerializable;
+import com.github.leeyazhou.crpc.core.exception.CrpcException;
 import com.github.leeyazhou.crpc.core.exception.SerializeException;
 
 /**
@@ -144,10 +144,14 @@ public final class SerializerUtil {
     return classList.get(className);
   }
 
-  public Class<?> getClazzForName(String className) throws ClassNotFoundException {
+  public Class<?> getClazzForName(String className) {
     Class<?> result = getClazz(className);
     if (result == null) {
-      return Class.forName(className);
+      try {
+        return Class.forName(className);
+      } catch (ClassNotFoundException e) {
+        throw new CrpcException(e);
+      }
     }
     return result;
   }

@@ -155,8 +155,8 @@ public class SimpleProtocol2 implements Protocol {
       }
       byte[] targetInstanceNameByte = new byte[0];
       byte[] methodNameByte = new byte[0];
-      if (request.getTargetClassName() != null) {
-        targetInstanceNameByte = request.getTargetClassName().getBytes();
+      if (request.getServiceTypeName() != null) {
+        targetInstanceNameByte = request.getServiceTypeName().getBytes();
         methodNameByte = request.getMethodName().getBytes();
       }
       int id = request.id();

@@ -19,14 +19,13 @@
 package com.github.leeyazhou.crpc.config.crpc;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
 import com.github.leeyazhou.crpc.config.Configuration;
 import com.github.leeyazhou.crpc.config.DefaultServerFactory;
 import com.github.leeyazhou.crpc.config.RegistryConfig;
 import com.github.leeyazhou.crpc.config.ServerConfig;
+import com.github.leeyazhou.crpc.config.ServiceConfig;
 import com.github.leeyazhou.crpc.core.annotation.CRPCFilterType;
 import com.github.leeyazhou.crpc.core.annotation.CRPCService;
 import com.github.leeyazhou.crpc.core.logger.Logger;
@@ -69,15 +68,14 @@ public class ProviderConfig {
   }
 
   private void prepareEnvironment(ServerConfig serverConfig, DefaultServerFactory beanFactory) throws Exception {
-    if (configuration.getRegistryConfigs() == null || configuration.getRegistryConfigs().isEmpty()) {
+    RegistryConfig registryConfig = configuration.getRegistryConfig();
+    if (registryConfig == null) {
       return;
     }
-    for (RegistryConfig registryConfig : configuration.getRegistryConfigs()) {
-      RegistryFactory registryFactory =
-          ServiceLoader.load(RegistryFactory.class).load(registryConfig.toURL().getProtocol());
+    RegistryFactory registryFactory =
+        ServiceLoader.load(RegistryFactory.class).load(registryConfig.toURL().getProtocol());
 
-      registryFactory.createRegistry(registryConfig.toURL());
-    }
+    registryFactory.createRegistry(registryConfig.toURL());
   }
 
   @SuppressWarnings({"unchecked", "rawtypes"})
@@ -94,7 +92,9 @@ public class ProviderConfig {
       Set<Class<?>> classSet = classScanner.getClassListByAnnotation(CRPCService.class);
       for (Class<?> targetClass : classSet) {
         logger.info("export service : " + targetClass);
-        ServiceHandler<?> serviceHandler = new ServiceHandler(targetClass);
+        ServiceConfig serviceConfig =new ServiceConfig();
+        serviceConfig.setServiceType(targetClass);
+        ServiceHandler<?> serviceHandler = new ServiceHandler(serviceConfig);
         serviceHandler.setFilter(filter);
         beanFactory.registerProcessor(serviceHandler);
       }
@@ -120,16 +120,6 @@ public class ProviderConfig {
         filters.add(filter);
     }
 
-    Collections.sort(filters, new Comparator<Filter>() {
-
-      @Override
-      public int compare(Filter o1, Filter o2) {
-        if (o1.getOrder() > o2.getOrder()) {
-          return 1;
-        }
-        return -1;
-      }
-    });
     for (Filter f : filters) {
       if (head == null) {
         head = f;

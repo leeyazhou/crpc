@@ -19,7 +19,7 @@
 package com.github.leeyazhou.crpc.transport;
 
 import com.github.leeyazhou.crpc.config.Configuration;
-import com.github.leeyazhou.crpc.config.ServiceConfig;
+import com.github.leeyazhou.crpc.config.ReferConfig;
 import com.github.leeyazhou.crpc.core.URL;
 import com.github.leeyazhou.crpc.core.annotation.SPI;
 import com.github.leeyazhou.crpc.transport.factory.ServerFactory;
@@ -70,9 +70,9 @@ public interface TransportFactory {
    * init service
    * 
    * @param <T> t
-   * @param serviceConfig serviceConfig
+   * @param referConfig referConfig
    */
-  <T> void initService(ServiceConfig<T> serviceConfig);
+  <T> void initService(ReferConfig<T> referConfig);
 
   /**
    * @param loadbalance loadbalance

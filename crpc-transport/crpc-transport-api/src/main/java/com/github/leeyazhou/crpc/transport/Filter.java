@@ -19,13 +19,12 @@
 
 package com.github.leeyazhou.crpc.transport;
 
-import com.github.leeyazhou.crpc.core.Ordered;
 import com.github.leeyazhou.crpc.transport.protocol.message.ResponseMessage;
 
 /**
  * @author leeyazhou
  */
-public interface Filter extends Handler<Filter>, Ordered {
+public interface Filter extends Handler<Filter> {
 
   /**
    * 拦截处理时返回结果，如果不拦截的话返回Null

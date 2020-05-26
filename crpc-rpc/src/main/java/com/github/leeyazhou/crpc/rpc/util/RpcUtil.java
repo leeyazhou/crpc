@@ -21,7 +21,7 @@ package com.github.leeyazhou.crpc.rpc.util;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import com.github.leeyazhou.crpc.config.Configuration;
-import com.github.leeyazhou.crpc.config.ServiceGroupConfig;
+import com.github.leeyazhou.crpc.config.ReferConfig;
 import com.github.leeyazhou.crpc.core.logger.Logger;
 import com.github.leeyazhou.crpc.core.logger.LoggerFactory;
 import com.github.leeyazhou.crpc.core.util.ServiceLoader;
@@ -69,9 +69,8 @@ public class RpcUtil {
     }
   }
 
-  public static <T> T refer(ServiceGroupConfig serviceGroupConfig, Class<T> objectType) {
-    T ref = ServiceLoader.load(ProxyFactory.class).load().getProxy(objectType, serviceGroupConfig);
-    return ref;
+  public static <T> T refer(ReferConfig<T> referConfig) {
+    return ServiceLoader.load(ProxyFactory.class).load().getProxy(referConfig);
   }
 
   public static void unrefer() {

@@ -64,9 +64,9 @@ public class ServiceFactoryBean<T> extends ServiceConfig<T>
       setImplClass((Class<T>) this.object.getClass());
       Class<?>[] inerfaces = object.getClass().getInterfaces();
       if (inerfaces != null && inerfaces.length > 0) {
-        setInterfaceClass((Class<T>) inerfaces[0]);
+        setServiceType((Class<T>) inerfaces[0]);
       } else {
-        setInterfaceClass((Class<T>) object.getClass());
+        setServiceType((Class<T>) object.getClass());
       }
     }
 
@@ -101,7 +101,7 @@ public class ServiceFactoryBean<T> extends ServiceConfig<T>
 
   private void doExport() {
     if (isExported.compareAndSet(false, true)) {
-      this.serviceHandler = new ServiceHandler<T>(getInterfaceClass(), object);
+      this.serviceHandler = new ServiceHandler<T>(this);
       serviceHandler.setFilter(beanFactory.getFilterChain());
       this.beanFactory.registerProcessor(serviceHandler);
 
@@ -124,7 +124,7 @@ public class ServiceFactoryBean<T> extends ServiceConfig<T>
       for (Registry registry : registries) {
         URL registryUrl = new URL(protocolConfig.getProtocol(), protocolConfig.getHost(), protocolConfig.getPort());
         registryUrl.addParameter(Constants.APPLICATION, configuration.getApplicationConfig().getName());
-        registryUrl.addParameter(Constants.SERVICE_INTERFACE, getInterfaceClass().getName());
+        registryUrl.addParameter(Constants.SERVICE_INTERFACE, getServiceType().getName());
         registryUrl.addParameter(Constants.TIMESTAMP_KEY, String.valueOf(System.currentTimeMillis()));
         registry.register(registryUrl);
       }
@@ -136,6 +136,7 @@ public class ServiceFactoryBean<T> extends ServiceConfig<T>
    */
   public void setObject(T object) {
     this.object = object;
+    setInstance(object);
   }
 
 }

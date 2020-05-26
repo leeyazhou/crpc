@@ -37,8 +37,4 @@ public class IPFilter extends AbstractFilter {
     return nextFilter(context);
   }
 
-  @Override
-  public int getOrder() {
-    return 1;
-  }
 }

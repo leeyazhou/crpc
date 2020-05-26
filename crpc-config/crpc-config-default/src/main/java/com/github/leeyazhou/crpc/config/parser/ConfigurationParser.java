@@ -109,21 +109,18 @@ public class ConfigurationParser implements IParser<Configuration> {
     Configuration configuration = new Configuration();
 
     NodeList nodeList = rootElement.getChildNodes();
-    ServiceGroupParser serviceGroupConfigParser = new ServiceGroupParser(configuration);
     ServerConfigParser serverParser = new ServerConfigParser(configuration);
     ApplicationConfigParser applicationConfigParser = new ApplicationConfigParser(configuration);
     RegistryConfigParser registryConfigParser = new RegistryConfigParser(configuration);
     ProtocolConfigParser protocolConfigParser = new ProtocolConfigParser(configuration);
     for (int i = 0; i < nodeList.getLength(); i++) {
       Node item = nodeList.item(i);
-      if ("service".equals(item.getNodeName())) {
-        configuration.addServiceGroupConfig(serviceGroupConfigParser.parse(item));
-      } else if ("server".equals(item.getNodeName())) {
+      if  ("server".equals(item.getNodeName())) {
         configuration.setServerConfig(serverParser.parse(item));
       } else if ("application".equals(item.getNodeName())) {
         configuration.setApplicationConfig(applicationConfigParser.parse(item));
       } else if ("registry".equals(item.getNodeName())) {
-        configuration.addRegistryConfig(registryConfigParser.parse(item));
+        configuration.setRegistryConfig(registryConfigParser.parse(item));
       } else if ("protocol".equals(item.getNodeName())) {
         configuration.setProtocolConfig(protocolConfigParser.parse(item));
       }

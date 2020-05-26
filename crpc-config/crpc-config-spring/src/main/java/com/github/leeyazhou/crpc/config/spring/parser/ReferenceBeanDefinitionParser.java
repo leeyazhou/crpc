@@ -23,7 +23,7 @@ import org.springframework.beans.factory.support.RootBeanDefinition;
 import org.springframework.beans.factory.xml.ParserContext;
 import org.w3c.dom.Element;
 
-import com.github.leeyazhou.crpc.config.spring.ReferenceFactoryBean;
+import com.github.leeyazhou.crpc.config.spring.ReferFactoryBean;
 import com.github.leeyazhou.crpc.core.logger.Logger;
 import com.github.leeyazhou.crpc.core.logger.LoggerFactory;
 import com.github.leeyazhou.crpc.core.util.StringUtil;
@@ -44,7 +44,7 @@ public class ReferenceBeanDefinitionParser extends AbstractBeanDefinitionParser 
     logger.info("解析crpc reference");
     String beanName = element.getAttribute(NAME);
     String serviceGroup = element.getAttribute(SERVICE_GROUP);
-    RootBeanDefinition beanDefinition = new RootBeanDefinition(ReferenceFactoryBean.class);
+    RootBeanDefinition beanDefinition = new RootBeanDefinition(ReferFactoryBean.class);
     parsePropertyValue(element, beanDefinition);
     if (StringUtil.isNotBlank(serviceGroup)) {
       beanDefinition.getPropertyValues().addPropertyValue("name", serviceGroup);

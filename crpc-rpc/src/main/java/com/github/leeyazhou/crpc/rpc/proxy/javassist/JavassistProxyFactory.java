@@ -19,7 +19,7 @@
 
 package com.github.leeyazhou.crpc.rpc.proxy.javassist;
 
-import com.github.leeyazhou.crpc.config.ServiceGroupConfig;
+import com.github.leeyazhou.crpc.config.ReferConfig;
 import com.github.leeyazhou.crpc.rpc.proxy.ProxyFactory;
 
 /**
@@ -29,7 +29,7 @@ import com.github.leeyazhou.crpc.rpc.proxy.ProxyFactory;
 public final class JavassistProxyFactory implements ProxyFactory {
 
   @Override
-  public <T> T getProxy(Class<T> objectType, ServiceGroupConfig serviceGroupConfig) {
+  public <T> T getProxy(ReferConfig<T> referConfig) {
     return null;
   }
 
