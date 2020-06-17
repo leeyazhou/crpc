@@ -34,10 +34,10 @@ import com.github.leeyazhou.crpc.transport.netty.protocol.NettyProtocolDecoder;
 import com.github.leeyazhou.crpc.transport.netty.protocol.NettyProtocolEncoder;
 import com.github.leeyazhou.crpc.transport.protocol.message.ResponseMessage;
 import io.netty.bootstrap.ServerBootstrap;
-import io.netty.channel.Channel;
-import io.netty.channel.ChannelFuture;
-import io.netty.channel.ChannelInitializer;
-import io.netty.channel.ChannelOption;
+import io.netty.channel.*;
+import io.netty.channel.epoll.Epoll;
+import io.netty.channel.epoll.EpollEventLoopGroup;
+import io.netty.channel.epoll.EpollServerSocketChannel;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
@@ -45,8 +45,8 @@ import io.netty.channel.socket.nio.NioServerSocketChannel;
 public class NettyServer extends AbstractServer {
 
   private static final Logger logger = LoggerFactory.getLogger(NettyServer.class);
-  private NioEventLoopGroup bossGroup;
-  private NioEventLoopGroup ioGroup;
+  private EventLoopGroup bossGroup;
+  private EventLoopGroup ioGroup;
   private ServerBootstrap bootStrap;
   private final Handler<?> handler;
   private final ServerFactory serverFactory;
@@ -78,15 +78,24 @@ public class NettyServer extends AbstractServer {
 
   @Override
   public void doInit() {
-    this.bossGroup = new NioEventLoopGroup(1, new NamedThreadFactory("crpc-boss"));
-    this.ioGroup = new NioEventLoopGroup(0, new NamedThreadFactory("crpc-io"));
-
     this.bootStrap = new ServerBootstrap();
-    bootStrap.group(bossGroup, ioGroup).channel(NioServerSocketChannel.class);
+    final Class<? extends ServerChannel> socketChannelClass;
+    if(Epoll.isAvailable()){
+      this.bossGroup = new EpollEventLoopGroup(1);
+      this.ioGroup = new EpollEventLoopGroup(0, new NamedThreadFactory("crpc-io"));
+      socketChannelClass = EpollServerSocketChannel.class;
+    } else {
+      this.bossGroup = new NioEventLoopGroup(1, new NamedThreadFactory("crpc-boss"));
+      this.ioGroup = new NioEventLoopGroup(0, new NamedThreadFactory("crpc-io"));
+      socketChannelClass = NioServerSocketChannel.class;
+    }
+
+    bootStrap.group(bossGroup, ioGroup).channel(socketChannelClass);
     bootStrap.childOption(ChannelOption.TCP_NODELAY, true);
     bootStrap.childOption(ChannelOption.SO_REUSEADDR, true);
     bootStrap.childOption(ChannelOption.SO_KEEPALIVE, true);
     bootStrap.childOption(ChannelOption.SINGLE_EVENTEXECUTOR_PER_GROUP, false);
+    bootStrap.childOption(ChannelOption.WRITE_BUFFER_WATER_MARK, WriteBufferWaterMark.DEFAULT);
     final NettyServerHandler nettyServerHandler = new NettyServerHandler(configuration, handler, serverFactory, channelManager);
     bootStrap.childHandler(new ChannelInitializer<SocketChannel>() {
       @Override
@@ -130,7 +139,7 @@ public class NettyServer extends AbstractServer {
   }
 
   /**
-   * 
+   *
    */
   private void afterStartServer() {
     Runtime.getRuntime().addShutdownHook(new ShutdownHook(this));

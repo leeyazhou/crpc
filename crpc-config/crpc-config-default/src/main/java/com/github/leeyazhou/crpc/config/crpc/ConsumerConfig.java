@@ -32,17 +32,11 @@ public class ConsumerConfig<T> extends ReferConfig<T> {
     return this;
   }
 
-
-
   public ConsumerConfig<T> setServiceType(Class<T> serviceType) {
     super.setServiceType(serviceType);
     return this;
   }
 
-
-  /**
-   * @param urls the urls to set
-   */
   public ConsumerConfig<T> setUrls(Set<URL> urls) {
     super.setUrls(urls);
     return this;
