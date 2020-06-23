@@ -47,7 +47,8 @@ public class BenchmarkClient extends AbstractBenchmarkClient {
     CountDownLatch countDownlatch = new CountDownLatch(threadNum);
 
     ApplicationConfig applicationConfig = new ApplicationConfig().setName("showcase");
-    ConsumerConfig<UserService> consumerConfig = new ConsumerConfig<UserService>().setApplicationConfig(applicationConfig).addURL(URL.valueOf("tcp://127.0.0.1:25001"));
+    ConsumerConfig<UserService> consumerConfig = new ConsumerConfig<UserService>().setApplicationConfig(applicationConfig).addURL(URL.valueOf("tcp://127.0.0.1:25001"))
+        .setServiceType(UserService.class);
     UserService userService = consumerConfig.refer();
     check(userService);
     long endTime = System.currentTimeMillis() + runtime * 1000;
