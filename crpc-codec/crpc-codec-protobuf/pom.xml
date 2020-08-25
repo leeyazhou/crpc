@@ -21,7 +21,7 @@
     <parent>
         <groupId>com.github.leeyazhou</groupId>
         <artifactId>crpc-codec</artifactId>
-        <version>1.0.2.RELEASE</version>
+        <version>1.0.3-SNAPSHOT</version>
     </parent>
     <artifactId>crpc-codec-protobuf</artifactId>
 
