@@ -16,6 +16,7 @@
 package com.github.leeyazhou.crpc.transport;
 
 import com.github.leeyazhou.crpc.core.URL;
+import com.github.leeyazhou.crpc.transport.protocol.message.Message;
 import com.github.leeyazhou.crpc.transport.protocol.message.RequestMessage;
 import com.github.leeyazhou.crpc.transport.protocol.message.ResponseMessage;
 
@@ -32,7 +33,7 @@ public interface Client {
   /**
    * receive response from server
    * 
-   * @param response {@link ResponseMessage}
+   * @param response {@link Message}
    */
   void receiveResponse(ResponseMessage response);
 

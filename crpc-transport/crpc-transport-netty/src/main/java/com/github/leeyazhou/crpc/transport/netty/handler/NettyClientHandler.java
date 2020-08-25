@@ -44,7 +44,7 @@ public class NettyClientHandler extends SimpleChannelInboundHandler<ResponseMess
   private static final Logger logger = LoggerFactory.getLogger(NettyClientHandler.class);
   private static final boolean isTraceEnabled = logger.isTraceEnabled();
   private static final RequestMessage ping = (RequestMessage) new RequestMessage().setCodecType(CodecType.KRYO_CODEC)
-      .setProtocolType(ProtocolType.CRPC).setMessageType(MessageType.MESSAGE_HEARTBEAT);
+      .setProtocolType(ProtocolType.CRPC).setMessageType(MessageType.REQUEST);
   private final TransportFactory transportFactory = ServiceLoader.load(TransportFactory.class).load();
 
   private final URL url;

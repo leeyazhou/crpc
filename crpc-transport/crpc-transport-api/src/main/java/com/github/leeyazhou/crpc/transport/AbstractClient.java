@@ -93,8 +93,6 @@ public abstract class AbstractClient implements Client {
       sb.append("], request id is:").append(request.id());
       if (response.getResponse() != null) {
         sb.append(", ").append(response.getResponse());
-      } else if (response.getException() != null) {
-        sb.append(", ").append(response.getException());
       }
       throw new CrpcException(sb.toString());
     }

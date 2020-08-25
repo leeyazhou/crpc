@@ -81,7 +81,11 @@ public class NettyServerHandler extends SimpleChannelInboundHandler<RequestMessa
 
       @Override
       public void run() {
-        returnResponse(ctx, request, beginTime);
+        try {
+          returnResponse(ctx, request, beginTime);
+        } catch (Exception e) {
+          logger.error("", e);
+        }
       }
     });
   }

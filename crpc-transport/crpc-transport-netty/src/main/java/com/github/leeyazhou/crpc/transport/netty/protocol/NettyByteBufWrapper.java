@@ -37,6 +37,16 @@ public class NettyByteBufWrapper implements ByteBufWrapper {
   }
 
   @Override
+  public boolean readBoolean() {
+    return byteBuf.readBoolean();
+  }
+
+  @Override
+  public void writeBoolean(boolean b) {
+    byteBuf.writeBoolean(b);
+  }
+
+  @Override
   public void readBytes(byte[] dst) {
     byteBuf.readBytes(dst);
   }

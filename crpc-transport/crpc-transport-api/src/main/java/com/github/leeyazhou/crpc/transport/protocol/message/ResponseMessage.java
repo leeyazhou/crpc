@@ -18,35 +18,17 @@ package com.github.leeyazhou.crpc.transport.protocol.message;
 public class ResponseMessage extends Message {
   private static final long serialVersionUID = 1L;
 
-  private Object response = null;
+  private Object response;
 
-  private boolean isError = false;
-
-  private String exception = null;
-
-  private int messageLen;
+  private boolean error;
 
   private String responseClassName;
 
   public ResponseMessage() {}
 
 
-  public ResponseMessage(int id) {
-    setId(id);
-  }
-
-
-  public ResponseMessage(int id, String responseClassName) {
-    this(id);
+  public ResponseMessage(String responseClassName) {
     this.responseClassName = responseClassName;
-  }
-
-  public int getMessageLen() {
-    return messageLen;
-  }
-
-  public void setMessageLen(int messageLen) {
-    this.messageLen = messageLen;
   }
 
 
@@ -54,36 +36,30 @@ public class ResponseMessage extends Message {
     return response;
   }
 
-  public void setResponse(Object response) {
+  public ResponseMessage setResponse(Object response) {
     this.response = response;
+    return this;
   }
 
   public boolean isError() {
-    return isError;
-  }
-
-  public String getException() {
-    return exception;
-  }
-
-  public void setException(String exception) {
-    this.exception = exception;
-    isError = true;
+    return error;
   }
 
   public String getResponseClassName() {
     return responseClassName;
   }
 
-  public void setResponseClassName(String responseClassName) {
+  public ResponseMessage setResponseClassName(String responseClassName) {
     this.responseClassName = responseClassName;
+    return this;
   }
 
   /**
    * @param isError the isError to set
    */
-  public void setError(boolean isError) {
-    this.isError = isError;
+  public ResponseMessage setError(boolean isError) {
+    this.error = isError;
+    return this;
   }
 
   @Override
@@ -91,12 +67,8 @@ public class ResponseMessage extends Message {
     StringBuilder builder = new StringBuilder();
     builder.append("Response [response=");
     builder.append(response);
-    builder.append(", isError=");
-    builder.append(isError);
-    builder.append(", exception=");
-    builder.append(exception);
-    builder.append(", messageLen=");
-    builder.append(messageLen);
+    builder.append(", error=");
+    builder.append(error);
     builder.append(", responseClassName=");
     builder.append(responseClassName);
     builder.append("]");

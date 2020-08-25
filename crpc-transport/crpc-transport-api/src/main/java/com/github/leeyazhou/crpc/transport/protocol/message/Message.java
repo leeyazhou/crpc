@@ -26,12 +26,17 @@ import com.github.leeyazhou.crpc.transport.protocol.ProtocolType;
 /**
  * @author leeyazhou
  */
-public abstract class Message implements Serializable {
+public class Message implements Serializable {
   private static final long serialVersionUID = 1L;
 
-  private int version;
+  /**
+   * 消息类型
+   */
+  private byte messageType;
 
-  private byte protocolType;
+  private byte messageCode;
+
+  private byte protocolType = ProtocolType.CRPC.getCode();
 
   private byte codecType;
 
@@ -39,21 +44,7 @@ public abstract class Message implements Serializable {
 
   private int id;
 
-  /**
-   * 消息类型
-   */
-  private byte messageType;
-
   public Message() {}
-
-  public int getVersion() {
-    return version;
-  }
-
-  public Message setVersion(int version) {
-    this.version = version;
-    return this;
-  }
 
   public byte getProtocolType() {
     return protocolType;
@@ -88,18 +79,19 @@ public abstract class Message implements Serializable {
   /**
    * 消息类型
    * 
-   * @return {@link MessageType}
+   * @return {@link MessageCode}
    */
   public byte getMessageType() {
     return messageType;
   }
 
   /**
-   * {@link MessageType} * 消息类型<br>
+   * {@link MessageCode} * 消息类型<br>
    * 0:普通消息<br>
    * 1:心跳消息
    * 
-   * @param messageType {@link MessageType}
+   * @param messageType {@link MessageCode}
+   * @return {@link Message}
    */
   public Message setMessageType(byte messageType) {
     this.messageType = messageType;
@@ -139,17 +131,31 @@ public abstract class Message implements Serializable {
   }
 
 
-  public void addHeader(Header header) {
+  public Message addHeader(Header header) {
     if (this.headers == null) {
       this.headers = new Header[1];
       this.headers[0] = header;
-      return;
+      return this;
     }
 
-    Header[] requestHeader2 = new Header[this.headers.length + 1];
-    System.arraycopy(this.headers, 0, requestHeader2, 0, headers.length);
-    requestHeader2[headers.length + 1] = header;
-    this.headers = requestHeader2;
+    Header[] temp = new Header[this.headers.length + 1];
+    System.arraycopy(this.headers, 0, temp, 0, headers.length);
+    temp[headers.length + 1] = header;
+    this.headers = temp;
+    return this;
+  }
 
+  public byte getMessageCode() {
+    return messageCode;
+  }
+
+  public Message setMessageCode(byte messageCode) {
+    this.messageCode = messageCode;
+    return this;
+  }
+
+  public Message setMessageCode(MessageCode messageCode) {
+    this.messageCode = messageCode.getCode();
+    return this;
   }
 }

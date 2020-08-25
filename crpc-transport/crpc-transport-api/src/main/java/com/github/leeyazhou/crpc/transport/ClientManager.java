@@ -43,7 +43,7 @@ public class ClientManager {
    * get client,create clientNums connections to targetIP:targetPort(or your custom key)
    * 
    * @param <T> t
-   * @param serviceConfig {@link ServiceGroupConfig}
+   * @param referConfig {@link ReferConfig}
    * @return list of {@link Client}
    * @throws Exception any exception
    */

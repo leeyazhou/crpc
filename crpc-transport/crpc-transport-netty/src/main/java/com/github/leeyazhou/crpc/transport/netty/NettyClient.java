@@ -18,12 +18,10 @@ package com.github.leeyazhou.crpc.transport.netty;
 import java.util.concurrent.atomic.AtomicInteger;
 import com.github.leeyazhou.crpc.core.Constants;
 import com.github.leeyazhou.crpc.core.URL;
-import com.github.leeyazhou.crpc.core.exception.CrpcException;
 import com.github.leeyazhou.crpc.core.logger.Logger;
 import com.github.leeyazhou.crpc.core.logger.LoggerFactory;
 import com.github.leeyazhou.crpc.core.util.ExceptionUtil;
-import com.github.leeyazhou.crpc.core.util.concurrent.Future;
-import com.github.leeyazhou.crpc.core.util.concurrent.FutureListener;
+import com.github.leeyazhou.crpc.core.util.function.Consumer;
 import com.github.leeyazhou.crpc.transport.AbstractClient;
 import com.github.leeyazhou.crpc.transport.Channel;
 import com.github.leeyazhou.crpc.transport.protocol.message.RequestMessage;
@@ -46,20 +44,24 @@ public class NettyClient extends AbstractClient {
 
   @Override
   public void doRequest(final RequestMessage request, int timeout) throws Exception {
-    getConnection().send(request, timeout).addListener(new FutureListener() {
+    getConnection().send(request, timeout, new Consumer<Boolean>() {
 
       @Override
-      public void onComplete(Future future) {
-        if (future.isSuccess()) {
-          return;
-        }
-        ResponseMessage response = new ResponseMessage(request.id());
+      public void onError(Throwable exception) {
+        ResponseMessage response = new ResponseMessage();
+        response.setId(request.id());
         response.setCodecType(request.getCodecType()).setProtocolType(request.getProtocolType());
         response.setError(Boolean.TRUE);
-        response.setResponseClassName(CrpcException.class.getName());
-        // response.setException(ExceptionUtil.getErrorMessage(ex));
-        response.setResponse(ExceptionUtil.getErrorMessage(future.getException()));
+
+
+        response.setResponseClassName(String.class.getName());
+        response.setResponse(ExceptionUtil.getErrorMessage(exception));
         NettyClient.this.receiveResponse(response);
+      }
+
+      @Override
+      public void accept(Boolean t) {
+        // do nothing
       }
     });
 

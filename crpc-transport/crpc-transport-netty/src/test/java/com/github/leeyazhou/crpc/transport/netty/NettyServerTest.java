@@ -82,6 +82,7 @@ public class NettyServerTest {
 
   @AfterClass
   public static void afterClass() throws Exception {
+    Thread.sleep(2000);
     server.stop();
   }
 

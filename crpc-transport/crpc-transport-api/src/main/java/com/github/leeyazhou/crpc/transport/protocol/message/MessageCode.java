@@ -16,30 +16,59 @@
 /**
  * 
  */
-package com.github.leeyazhou.crpc.transport.protocol;
+
+package com.github.leeyazhou.crpc.transport.protocol.message;
 
 /**
  * @author leeyazhou
- *
  */
-public enum ProtocolType {
+public enum MessageCode {
 
-  CRPC((byte) 1, "crpc");
+  /**
+   * 普通消息
+   */
+  MESSAGE_COMMON((byte) 0),
 
+  /**
+   * 心跳
+   */
+  MESSAGE_HEARTBEAT((byte) 1),
+
+  /**
+   * 注册
+   */
+  MESSAGE_REGISTER((byte) 2),
+
+  /**
+   * 服务器关闭
+   */
+  MESSAGE_SHUTDOWN((byte) 3),
+
+  /**
+   * 服务器重启
+   */
+  MESSAGE_RESTART((byte) 4);
 
   private byte code;
-  private String name;
 
-  private ProtocolType(byte code, String name) {
+  private MessageCode(byte code) {
     this.code = code;
-    this.name = name;
   }
 
+  /**
+   * @return the code
+   */
   public byte getCode() {
     return code;
   }
 
-  public String getName() {
-    return name;
+  public static MessageCode valueOf(int code) {
+    MessageCode[] values = values();
+    for (MessageCode item : values) {
+      if (item.getCode() == code) {
+        return item;
+      }
+    }
+    return null;
   }
 }

@@ -18,10 +18,15 @@ package com.github.leeyazhou.crpc.transport.protocol.message;
 import java.util.Arrays;
 import java.util.concurrent.atomic.AtomicInteger;
 
+/**
+ * 
+ * @author leeyazhou
+ *
+ */
 public class RequestMessage extends Message {
   private static final long serialVersionUID = 1L;
-
   private static final AtomicInteger incId = new AtomicInteger(0);
+  private boolean oneWay;
 
   private String serviceTypeName;
 
@@ -33,26 +38,15 @@ public class RequestMessage extends Message {
 
   private int timeout;
 
-  private int messageLen;
-
   public RequestMessage() {}
 
-  public RequestMessage(String serviceTypeName, String methodName, String[] argTypes, Object[] args, int timeout) {
-    this.args = args;
-    setId(incId.incrementAndGet());
-    incId.compareAndSet(Integer.MAX_VALUE, 0);
-    this.timeout = timeout;
+  public RequestMessage(String serviceTypeName, String methodName) {
     this.serviceTypeName = serviceTypeName;
     this.methodName = methodName;
-    this.argTypes = argTypes;
   }
 
-  public int getMessageLen() {
-    return messageLen;
-  }
-
-  public RequestMessage setMessageLen(int messageLen) {
-    this.messageLen = messageLen;
+  public RequestMessage fillId() {
+    setId(incId.incrementAndGet());
     return this;
   }
 
@@ -102,6 +96,15 @@ public class RequestMessage extends Message {
     return this;
   }
 
+  public RequestMessage setOneWay(boolean oneWay) {
+    this.oneWay = oneWay;
+    return this;
+  }
+
+  public boolean isOneWay() {
+    return oneWay;
+  }
+
   @Override
   public String toString() {
     StringBuilder builder = new StringBuilder();
@@ -115,8 +118,6 @@ public class RequestMessage extends Message {
     builder.append(Arrays.toString(args));
     builder.append(", timeout=");
     builder.append(timeout);
-    builder.append(", messageLen=");
-    builder.append(messageLen);
     builder.append("]");
     return builder.toString();
 

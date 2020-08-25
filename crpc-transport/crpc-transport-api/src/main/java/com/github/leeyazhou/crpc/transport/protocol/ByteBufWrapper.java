@@ -30,6 +30,10 @@ public interface ByteBufWrapper {
 
   byte readByte();
 
+  boolean readBoolean();
+
+  void writeBoolean(boolean b);
+
   void writeInt(int data);
 
   void writeBytes(byte[] data);

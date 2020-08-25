@@ -78,11 +78,12 @@ public class UserServiceImpl implements UserService {
   }
 
   @Override
-  public boolean sayWord(String name) {
+  public String sayName(String name) {
+    String message = "My name is " + name;
     if (logger.isInfoEnabled()) {
-      logger.info("my name is " + name);
+      logger.info(message);
     }
-    return true;
+    return message;
   }
 
   @Override

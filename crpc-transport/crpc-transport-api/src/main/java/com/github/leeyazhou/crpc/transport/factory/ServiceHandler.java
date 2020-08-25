@@ -27,6 +27,7 @@ import com.github.leeyazhou.crpc.core.util.reflect.MethodProxy;
 import com.github.leeyazhou.crpc.transport.Filter;
 import com.github.leeyazhou.crpc.transport.Handler;
 import com.github.leeyazhou.crpc.transport.RpcContext;
+import com.github.leeyazhou.crpc.transport.protocol.message.MessageType;
 import com.github.leeyazhou.crpc.transport.protocol.message.RequestMessage;
 import com.github.leeyazhou.crpc.transport.protocol.message.ResponseMessage;
 
@@ -60,7 +61,9 @@ public class ServiceHandler<T> implements Handler<T> {
 
     final RequestMessage request = context.getRequest();
 
-    ResponseMessage response = new ResponseMessage(request.id());
+    ResponseMessage response = new ResponseMessage();
+    response.setMessageType(MessageType.RESPONSE);
+    response.setId(request.id());
     response.setCodecType(request.getCodecType()).setProtocolType(request.getProtocolType());
 
     final String methodKey = serviceConfig.getClassInfo().toMethodKey(request.getMethodName(), request.getArgTypes());
@@ -86,7 +89,7 @@ public class ServiceHandler<T> implements Handler<T> {
     } catch (Exception err) {
       logger.error("server handle request error", err);
       response.setError(true);
-      response.setException(ExceptionUtil.getErrorMessage(err));
+      response.setResponse(ExceptionUtil.getErrorMessage(err));
     }
     return response;
   }
@@ -96,7 +99,7 @@ public class ServiceHandler<T> implements Handler<T> {
   public void setFilter(Filter filter) {
     this.filter = filter;
   }
-  
+
   public ServiceConfig<T> getServiceConfig() {
     return serviceConfig;
   }

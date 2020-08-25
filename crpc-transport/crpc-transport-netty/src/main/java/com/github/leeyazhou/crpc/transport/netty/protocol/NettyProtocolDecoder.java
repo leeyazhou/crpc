@@ -16,12 +16,12 @@
 package com.github.leeyazhou.crpc.transport.netty.protocol;
 
 import java.util.List;
+import com.github.leeyazhou.crpc.core.exception.UnsupportProtocolException;
+import com.github.leeyazhou.crpc.transport.protocol.CrpcProtocol;
 import com.github.leeyazhou.crpc.transport.protocol.Protocol;
 import com.github.leeyazhou.crpc.transport.protocol.ProtocolFactory;
-import com.github.leeyazhou.crpc.transport.protocol.SimpleProtocol;
+import com.github.leeyazhou.crpc.transport.protocol.ProtocolType;
 import com.github.leeyazhou.crpc.transport.protocol.message.Message;
-import com.github.leeyazhou.crpc.core.exception.UnsupportProtocolException;
-
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.ByteToMessageDecoder;
@@ -38,21 +38,21 @@ public class NettyProtocolDecoder extends ByteToMessageDecoder {
     NettyByteBufWrapper byteBufWrapper = new NettyByteBufWrapper(in);
 
     final int originPos = byteBufWrapper.readerIndex();
-    if (byteBufWrapper.readableBytes() < SimpleProtocol.HEADER_LEN) {
+    if (byteBufWrapper.readableBytes() < CrpcProtocol.HEADER_LEN) {
       byteBufWrapper.setReaderIndex(originPos);
       return;
     }
 
-    int version = byteBufWrapper.readByte();
-    if (version != SimpleProtocol.VERSION) {
-      throw new UnsupportProtocolException("Unsupport protocol version: " + version);
+    byte magic = byteBufWrapper.readByte();
+    if (magic != ProtocolType.CRPC.getCode()) {
+      throw new UnsupportProtocolException("Unsupport protocol version: " + magic);
     }
 
-    int protocolType = byteBufWrapper.readByte();
-    Protocol protocol = ProtocolFactory.getProtocol();
+    Protocol protocol = ProtocolFactory.getProtocol(magic);
     if (protocol == null) {
-      throw new UnsupportProtocolException("Unsupport protocol type : " + protocolType);
+      throw new UnsupportProtocolException("Unsupport protocol type : " + magic);
     }
+    byteBufWrapper.setReaderIndex(originPos);
     Message msg = protocol.decode(byteBufWrapper, originPos);
     if (msg != null) {
       out.add(msg);

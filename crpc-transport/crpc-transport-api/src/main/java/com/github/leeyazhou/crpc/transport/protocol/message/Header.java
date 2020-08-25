@@ -57,7 +57,7 @@ public class Header implements Serializable {
   @Override
   public String toString() {
     StringBuilder builder = new StringBuilder();
-    builder.append("RequestHeader [key=");
+    builder.append("Header [key=");
     builder.append(key);
     builder.append(", value=");
     builder.append(value);

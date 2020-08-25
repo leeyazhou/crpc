@@ -107,20 +107,20 @@ public abstract class AbstractRpcHandler<T> implements Handler<T>, InvocationHan
     if (referConfig == null) {
       throw new ServiceNotFoundException("server : [" + getUrl() + "] is not found ! ");
     }
-    String[] argsTypes = createParamSignature(method.getParameterTypes());
+    String[] argTypes = createParamSignature(method.getParameterTypes());
 
-    if ("toString".equals(method.getName()) && argsTypes.length == 0) {
+    if ("toString".equals(method.getName()) && argTypes.length == 0) {
       return this.toString();
     }
-    if ("hashCode".equals(method.getName()) && argsTypes.length == 0) {
+    if ("hashCode".equals(method.getName()) && argTypes.length == 0) {
       return this.hashCode();
     }
-    if ("equals".equals(method.getName()) && argsTypes.length == 1) {
+    if ("equals".equals(method.getName()) && argTypes.length == 1) {
       return this.equals(args[0]);
     }
     CodecType codecType = CodecType.valueOf(referConfig.getCodecType());
-    RequestMessage request =
-        new RequestMessage(getHandlerType().getName(), method.getName(), argsTypes, args, referConfig.getTimeout());
+    RequestMessage request = new RequestMessage(getHandlerType().getName(), method.getName()).setArgTypes(argTypes)
+        .setArgs(args).setTimeout(referConfig.getTimeout()).fillId();
     request.setCodecType(codecType).setProtocolType(protocolType);
     List<Client> clients = transportFactory.getClientManager().get(referConfig);
     LoadBalance loadBalance = transportFactory.getLoadBalance(referConfig.getLoadbalance());

@@ -31,7 +31,7 @@ public class NettyProtocolEncoder extends MessageToByteEncoder<Message> {
   @Override
   protected void encode(ChannelHandlerContext ctx, Message msg, ByteBuf out) throws Exception {
     NettyByteBufWrapper byteBuffer = new NettyByteBufWrapper(out);
-    ProtocolFactory.getProtocol().encode(byteBuffer, msg);
+    ProtocolFactory.getProtocol(msg.getProtocolType()).encode(byteBuffer, msg);
   }
 
 }

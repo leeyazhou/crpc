@@ -24,7 +24,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.github.leeyazhou.crpc.transport.netty.NettyClient;
 import com.github.leeyazhou.crpc.transport.protocol.message.Message;
-import com.github.leeyazhou.crpc.transport.protocol.message.MessageType;
+import com.github.leeyazhou.crpc.transport.protocol.message.MessageCode;
 import com.github.leeyazhou.crpc.transport.protocol.message.ResponseMessage;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.timeout.IdleState;
@@ -83,7 +83,7 @@ public class NettyClientHeartBeatHandler extends IdleStateHandler {
     }
 
     Message header = (Message) msg;
-    if (MessageType.MESSAGE_COMMON.getCode() == header.getMessageType()) {
+    if (MessageCode.MESSAGE_COMMON.getCode() == header.getMessageCode()) {
       super.channelRead(ctx, msg);
       return;
     }

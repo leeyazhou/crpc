@@ -48,7 +48,7 @@ public class BenchmarkRunnableImpl implements BenchmarkRunnable {
         break;
       }
       try {
-        boolean ret = userService.sayWord("CRPC");
+        String ret = userService.sayName("CRPC");
         if (logger.isInfoEnabled()) {
           logger.info("sayWord result : " + ret);
         }

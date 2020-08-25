@@ -23,6 +23,7 @@ import java.util.concurrent.TimeUnit;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.github.leeyazhou.crpc.transport.protocol.message.Message;
+import com.github.leeyazhou.crpc.transport.protocol.message.MessageCode;
 import com.github.leeyazhou.crpc.transport.protocol.message.MessageType;
 import com.github.leeyazhou.crpc.transport.protocol.message.RequestMessage;
 import com.github.leeyazhou.crpc.transport.protocol.message.ResponseMessage;
@@ -78,15 +79,15 @@ public class NettyServerHeartBeatHandler extends IdleStateHandler {
     }
 
     Message message = (Message) msg;
-    if (MessageType.MESSAGE_COMMON.getCode() == message.getMessageType()) {
+    if (MessageCode.MESSAGE_COMMON.getCode() == message.getMessageCode()) {
       super.channelRead(ctx, msg);
       return;
     }
 
     if (msg instanceof RequestMessage) {
-      ResponseMessage response = new ResponseMessage(0);
+      ResponseMessage response = new ResponseMessage();
       response.setCodecType(message.getCodecType()).setProtocolType(message.getProtocolType())
-          .setMessageType(MessageType.MESSAGE_HEARTBEAT);
+          .setMessageType(MessageType.RESPONSE).setMessageCode(MessageCode.MESSAGE_HEARTBEAT);
       ChannelFuture channelFuture = ctx.channel().writeAndFlush(response);
       channelFuture.addListener(new ChannelFutureListener() {
         @Override
@@ -100,6 +101,8 @@ public class NettyServerHeartBeatHandler extends IdleStateHandler {
           logger.error("reply heartbeat fail, to : " + ctx.channel().remoteAddress(), future.cause());
         }
       });
+    } else {
+      logger.warn("Message not support： {}", msg);
     }
   }
 }

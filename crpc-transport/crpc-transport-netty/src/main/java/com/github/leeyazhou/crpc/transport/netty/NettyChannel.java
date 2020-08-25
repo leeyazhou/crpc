@@ -21,7 +21,7 @@ package com.github.leeyazhou.crpc.transport.netty;
 import com.github.leeyazhou.crpc.core.Constants;
 import com.github.leeyazhou.crpc.core.URL;
 import com.github.leeyazhou.crpc.core.exception.CrpcConnectException;
-import com.github.leeyazhou.crpc.core.util.concurrent.Future;
+import com.github.leeyazhou.crpc.core.util.function.Consumer;
 import com.github.leeyazhou.crpc.transport.Channel;
 import com.github.leeyazhou.crpc.transport.protocol.message.Message;
 import io.netty.channel.ChannelFuture;
@@ -43,8 +43,23 @@ public class NettyChannel implements Channel {
   }
 
   @Override
-  public Future send(final Message request, final int timeout) {
-   final Future ret = new Future();
+  public void send(Message request, int timeout) {
+    send(request, timeout, new Consumer<Boolean>() {
+      
+      @Override
+      public void onError(Throwable throwable) {
+        
+      }
+      
+      @Override
+      public void accept(Boolean t) {
+        
+      }
+    });
+  }
+  
+  @Override
+  public void send(final Message request, final int timeout, final Consumer<Boolean> consumer) {
     final long beginTime = System.currentTimeMillis();
     // requestWrapper.getMessageLen();
     ChannelFuture writeFuture = channel.writeAndFlush(request);
@@ -52,15 +67,14 @@ public class NettyChannel implements Channel {
     writeFuture.addListener(new ChannelFutureListener() {
       public void operationComplete(ChannelFuture future) throws Exception {
         if (future.isSuccess()) {
-          ret.setSuccess(true);
+          consumer.accept(true);
           return;
         }
         // String errorMsg = "";
         StringBuilder errorMsg = new StringBuilder();
         long invokeTime = System.currentTimeMillis() - beginTime;
         errorMsg.append("fail to send request to ");
-        errorMsg.append(serviceName).append("/").append(url.getHost()).append(":")
-            .append(url.getPort()).append(", ");
+        errorMsg.append(serviceName).append("/").append(url.getHost()).append(":").append(url.getPort()).append(", ");
         errorMsg.append(request.toString());
 
         // write timeout
@@ -77,10 +91,9 @@ public class NettyChannel implements Channel {
           }
         }
         Exception ex = new CrpcConnectException(errorMsg.toString(), future.cause());
-        ret.setException(ex);
+        consumer.onError(ex);
       }
     });
-    return ret;
   }
 
   @Override

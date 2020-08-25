@@ -15,14 +15,39 @@
  */
 package com.github.leeyazhou.crpc.transport.protocol;
 
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
+
 public final class ProtocolFactory {
+  private static ProtocolFactory factory;
+  private final ConcurrentMap<Byte, Protocol> protocolCache = new ConcurrentHashMap<Byte, Protocol>();
 
-  private ProtocolFactory() {}
+  private ProtocolFactory() {
+    register(CrpcProtocol.VERSION, new CrpcProtocol());
+  }
 
-  private static Protocol protocol = new SimpleProtocol();
 
-  public static Protocol getProtocol() {
-    return protocol;
+  private static ProtocolFactory getProtocolFactory() {
+    if (factory == null) {
+      factory = new ProtocolFactory();
+    }
+    return factory;
+  }
+
+  public Protocol get(byte version) {
+    return protocolCache.get(version);
+  }
+
+  public void register(byte version, Protocol protocol) {
+    protocolCache.put(version, protocol);
+  }
+
+  public static Protocol getProtocol(byte version) {
+    return getProtocolFactory().get(version);
+  }
+
+  public static void registerProtocol(byte version, Protocol protocol) {
+    getProtocolFactory().register(version, protocol);
   }
 
 }

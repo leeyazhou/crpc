@@ -31,7 +31,7 @@ public interface UserService {
 
   public boolean say(User user);
 
-  public boolean sayWord(String name);
+  public String sayName(String name);
 
   public boolean say(User user, String mark);
 
@@ -50,7 +50,7 @@ public interface UserService {
   public Map<String, List<User>> complexObject(Map<String, List<User>> users);
 
   public byte[] bigData(byte[] data);
-  
+
   void proxyUserService2();
 
 }

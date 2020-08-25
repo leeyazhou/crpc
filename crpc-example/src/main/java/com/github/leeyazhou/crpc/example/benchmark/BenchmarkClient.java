@@ -71,7 +71,7 @@ public class BenchmarkClient extends AbstractBenchmarkClient {
   private static void check(UserService userService) {
     int i = 0;
     while (i++ < 100) {
-      userService.sayWord("CRPC");
+      userService.sayName("CRPC");
     }
   }
 

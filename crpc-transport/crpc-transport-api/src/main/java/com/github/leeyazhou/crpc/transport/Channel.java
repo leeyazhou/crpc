@@ -18,7 +18,7 @@
  */
 package com.github.leeyazhou.crpc.transport;
 
-import com.github.leeyazhou.crpc.core.util.concurrent.Future;
+import com.github.leeyazhou.crpc.core.util.function.Consumer;
 import com.github.leeyazhou.crpc.transport.protocol.message.Message;
 
 /**
@@ -29,7 +29,9 @@ public interface Channel {
 
   String getAddress();
 
-  Future send(Message request, int timeout);
+  void send(Message request, int timeout, final Consumer<Boolean> consumer);
+
+  void send(Message request, int timeout);
 
   boolean isConnected();
 

@@ -36,6 +36,7 @@ public class ConsumerMain {
     consumerConfig.setServiceType(UserService.class);
 
     UserService userService = consumerConfig.refer();
-    userService.sayWord("CRPC");
+    String message = userService.sayName("CRPC");
+    System.out.println(message);
   }
 }

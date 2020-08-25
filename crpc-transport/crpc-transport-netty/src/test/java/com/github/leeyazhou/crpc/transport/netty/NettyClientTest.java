@@ -29,6 +29,8 @@ import com.github.leeyazhou.crpc.transport.netty.handler.NettyClientHandler;
 import com.github.leeyazhou.crpc.transport.netty.handler.NettyClientHeartBeatHandler;
 import com.github.leeyazhou.crpc.transport.netty.protocol.NettyProtocolDecoder;
 import com.github.leeyazhou.crpc.transport.netty.protocol.NettyProtocolEncoder;
+import com.github.leeyazhou.crpc.transport.protocol.message.Header;
+import com.github.leeyazhou.crpc.transport.protocol.message.MessageType;
 import com.github.leeyazhou.crpc.transport.protocol.message.RequestMessage;
 import com.github.leeyazhou.crpc.transport.protocol.message.ResponseMessage;
 import com.github.leeyazhou.crpc.transport.service.InternalEchoService;
@@ -77,6 +79,9 @@ public class NettyClientTest extends NettyServerTest {
     RequestMessage message =
         new RequestMessage().setServiceTypeName(InternalEchoServiceImpl.class.getName()).setMethodName("echo")
             .setArgs(new Object[] {"PING"}).setArgTypes(new String[] {String.class.getName()}).setTimeout(3000);
+    message.setMessageType(MessageType.REQUEST);
+    message.setTimeout(3000);
+    message.addHeader(new Header("username", "crpc"));
 
     ResponseMessage responseMessage = client.request(message);
     Assert.assertEquals("PING", responseMessage.getResponse());

@@ -15,8 +15,8 @@
  */
 package com.github.leeyazhou.crpc.core.util.concurrent;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import com.github.leeyazhou.crpc.core.logger.Logger;
+import com.github.leeyazhou.crpc.core.logger.LoggerFactory;
 
 /**
  * A Thread implementation that records the time at which it was created.
@@ -24,7 +24,7 @@ import org.apache.commons.logging.LogFactory;
  */
 public class TaskThread extends Thread {
 
-  private static final Log log = LogFactory.getLog(TaskThread.class);
+  private static final Logger log = LoggerFactory.getLogger(TaskThread.class);
   private final long creationTime;
 
   public TaskThread(ThreadGroup group, Runnable target, String name) {
