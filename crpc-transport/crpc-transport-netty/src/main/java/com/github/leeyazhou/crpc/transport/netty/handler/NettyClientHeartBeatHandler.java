@@ -20,8 +20,8 @@
 package com.github.leeyazhou.crpc.transport.netty.handler;
 
 import java.util.concurrent.TimeUnit;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.github.leeyazhou.crpc.core.logger.Logger;
+import com.github.leeyazhou.crpc.core.logger.LoggerFactory;
 import com.github.leeyazhou.crpc.transport.netty.NettyClient;
 import com.github.leeyazhou.crpc.transport.protocol.message.Message;
 import com.github.leeyazhou.crpc.transport.protocol.message.MessageCode;
@@ -35,9 +35,7 @@ import io.netty.handler.timeout.IdleStateHandler;
  * @author leeyazhou
  */
 public class NettyClientHeartBeatHandler extends IdleStateHandler {
-
   private static final Logger logger = LoggerFactory.getLogger(NettyClientHeartBeatHandler.class);
-  private static final boolean TRACE_ENABLED = logger.isTraceEnabled();
   private NettyClient client;
 
   /**
@@ -90,8 +88,8 @@ public class NettyClientHeartBeatHandler extends IdleStateHandler {
 
     if (msg instanceof ResponseMessage) {
       client.getIdleCount().set(0);
-      if (TRACE_ENABLED) {
-        logger.trace("client receive heartbeat from : " + ctx.channel().remoteAddress());
+      if (logger.isDebugEnabled()) {
+        logger.debug("client receive heartbeat from : " + ctx.channel().remoteAddress());
       }
     }
   }

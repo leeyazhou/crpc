@@ -42,7 +42,6 @@ import io.netty.handler.timeout.IdleStateEvent;
 public class NettyClientHandler extends SimpleChannelInboundHandler<ResponseMessage> {
 
   private static final Logger logger = LoggerFactory.getLogger(NettyClientHandler.class);
-  private static final boolean isTraceEnabled = logger.isTraceEnabled();
   private static final RequestMessage ping = (RequestMessage) new RequestMessage().setCodecType(CodecType.KRYO_CODEC)
       .setProtocolType(ProtocolType.CRPC).setMessageType(MessageType.REQUEST);
   private final TransportFactory transportFactory = ServiceLoader.load(TransportFactory.class).load();
@@ -68,9 +67,9 @@ public class NettyClientHandler extends SimpleChannelInboundHandler<ResponseMess
 
   @Override
   protected void channelRead0(ChannelHandlerContext ctx, ResponseMessage response) throws Exception {
-    if (isTraceEnabled) {
+    if (logger.isDebugEnabled()) {
       logger
-          .trace("receive response from server: " + ctx.channel().remoteAddress() + ", request id is:" + response.id());
+          .debug("receive response from server: " + ctx.channel().remoteAddress() + ", request id is:" + response.id());
     }
     client.receiveResponse(response);
   }

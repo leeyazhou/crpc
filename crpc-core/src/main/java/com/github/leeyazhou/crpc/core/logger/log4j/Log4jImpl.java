@@ -34,11 +34,6 @@ public class Log4jImpl implements com.github.leeyazhou.crpc.core.logger.Logger {
   }
 
   @Override
-  public boolean isTraceEnabled() {
-    return logger.isTraceEnabled();
-  }
-
-  @Override
   public void error(String s, Throwable e) {
     logger.log(FQCN, Level.ERROR, s, e);
   }
@@ -56,11 +51,6 @@ public class Log4jImpl implements com.github.leeyazhou.crpc.core.logger.Logger {
   @Override
   public void debug(String msg, Throwable throwable) {
     logger.log(FQCN, Level.DEBUG, msg, throwable);
-  }
-
-  @Override
-  public void trace(String s) {
-    logger.log(FQCN, Level.TRACE, s, null);
   }
 
   @Override

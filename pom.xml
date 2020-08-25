@@ -107,7 +107,7 @@
 
         <sentinel.version>1.4.2</sentinel.version>
         <servlet.version>3.1.0</servlet.version>
-        <slf4j.version>1.7.25</slf4j.version>
+        <slf4j.version>1.7.30</slf4j.version>
         <snappy.version>1.1.7.3</snappy.version>
         <spring.version>4.3.25.RELEASE</spring.version>
         <taglist-maven-plugin.version>2.4</taglist-maven-plugin.version>
@@ -216,7 +216,7 @@
             <dependency>
                 <groupId>org.apache.logging.log4j</groupId>
                 <artifactId>log4j-slf4j-impl</artifactId>
-                <version>2.4.1</version>
+                <version>${log4j2.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.apache.velocity</groupId>
@@ -423,6 +423,7 @@
                         <exclude>LICENSE</exclude>
                         <exclude>mvnw</exclude>
                         <exclude>mvnw.cmd</exclude>
+                        <exclude>.nojekyll</exclude>
                         <exclude>LICENSE</exclude>
                     </excludes>
                 </configuration>

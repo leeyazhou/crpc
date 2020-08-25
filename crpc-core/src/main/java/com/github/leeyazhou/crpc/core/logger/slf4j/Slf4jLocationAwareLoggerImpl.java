@@ -40,11 +40,6 @@ class Slf4jLocationAwareLoggerImpl implements Logger {
   }
 
   @Override
-  public boolean isTraceEnabled() {
-    return logger.isTraceEnabled();
-  }
-
-  @Override
   public boolean isErrorEnabled() {
     return logger.isErrorEnabled();
   }
@@ -77,11 +72,6 @@ class Slf4jLocationAwareLoggerImpl implements Logger {
   @Override
   public void debug(String msg, Throwable throwable) {
     logger.debug(msg, throwable);
-  }
-
-  @Override
-  public void trace(String msg) {
-    logger.log(MARKER, FQCN, LocationAwareLogger.TRACE_INT, msg, null, null);
   }
 
   @Override

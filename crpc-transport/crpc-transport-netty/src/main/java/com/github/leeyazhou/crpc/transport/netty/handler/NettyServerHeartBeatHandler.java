@@ -20,8 +20,8 @@
 package com.github.leeyazhou.crpc.transport.netty.handler;
 
 import java.util.concurrent.TimeUnit;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.github.leeyazhou.crpc.core.logger.Logger;
+import com.github.leeyazhou.crpc.core.logger.LoggerFactory;
 import com.github.leeyazhou.crpc.transport.protocol.message.Message;
 import com.github.leeyazhou.crpc.transport.protocol.message.MessageCode;
 import com.github.leeyazhou.crpc.transport.protocol.message.MessageType;
@@ -38,9 +38,7 @@ import io.netty.handler.timeout.IdleStateHandler;
  * @author leeyazhou
  */
 public class NettyServerHeartBeatHandler extends IdleStateHandler {
-
   private static final Logger logger = LoggerFactory.getLogger(NettyServerHeartBeatHandler.class);
-  private static final Boolean TRACE_ENABLED = logger.isTraceEnabled();
 
   /**
    * 心跳检测 Creates a new instance firing {@link IdleStateEvent}s.
@@ -93,8 +91,8 @@ public class NettyServerHeartBeatHandler extends IdleStateHandler {
         @Override
         public void operationComplete(ChannelFuture future) throws Exception {
           if (future.isSuccess()) {
-            if (TRACE_ENABLED) {
-              logger.trace("reply heartbeat success, to : " + ctx.channel().remoteAddress());
+            if (logger.isDebugEnabled()) {
+              logger.debug("reply heartbeat success, to : " + ctx.channel().remoteAddress());
             }
             return;
           }
@@ -102,7 +100,7 @@ public class NettyServerHeartBeatHandler extends IdleStateHandler {
         }
       });
     } else {
-      logger.warn("Message not support： {}", msg);
+      logger.warn("Message not support：" + msg);
     }
   }
 }

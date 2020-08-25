@@ -31,7 +31,7 @@ import com.github.leeyazhou.crpc.config.ServerConfig;
 public class ProviderMain {
 
   public static void main(String[] args) {
-    ApplicationConfig applicationConfig = new ApplicationConfig().setName("quick-start-provider").setVersion("1.0.1");
+    ApplicationConfig applicationConfig = new ApplicationConfig().setName("benchmark-provider").setVersion("1.0.1");
     ProtocolConfig protocolConfig = new ProtocolConfig().setAddress("crpc://127.0.0.1:25001");
 
     Configuration configuration = new Configuration()

@@ -53,7 +53,6 @@ public class NettyClient extends AbstractClient {
         response.setCodecType(request.getCodecType()).setProtocolType(request.getProtocolType());
         response.setError(Boolean.TRUE);
 
-
         response.setResponseClassName(String.class.getName());
         response.setResponse(ExceptionUtil.getErrorMessage(exception));
         NettyClient.this.receiveResponse(response);

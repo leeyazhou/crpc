@@ -21,7 +21,7 @@ import org.w3c.dom.Node;
  * 
  * @author leeyazhou
  *
- * @param <T>
+ * @param <T> 范型
  */
 public interface IParser<T> {
   T parse(Node node);

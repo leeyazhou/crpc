@@ -30,6 +30,9 @@ public class ServerConfig {
   private int worker = 200;
   private Set<String> basepackages = new TreeSet<String>();
   private Set<String> filters = new HashSet<String>();
+  private int taskQueueSize;
+  private int lowWaterMarker;
+  private int highWaterMarker;
 
   public int getWorker() {
     return worker;
@@ -74,13 +77,50 @@ public class ServerConfig {
   }
 
 
+  public ServerConfig setTaskQueueSize(int taskQueueSize) {
+    this.taskQueueSize = taskQueueSize;
+    return this;
+  }
 
-  /**
-   * @param filters the filters to set
-   */
+  public int getTaskQueueSize() {
+    return taskQueueSize;
+  }
+
   public ServerConfig setFilters(Set<String> filters) {
     this.filters = filters;
     return this;
   }
+
+  public int getLowWaterMarker() {
+    return lowWaterMarker;
+  }
+
+  /**
+   * low water marker
+   * 
+   * @param lowWaterMarker default: 32*1024
+   * @return {@link ServerConfig}
+   */
+  public ServerConfig setLowWaterMarker(int lowWaterMarker) {
+    this.lowWaterMarker = lowWaterMarker;
+    return this;
+  }
+
+  public int getHighWaterMarker() {
+    return highWaterMarker;
+  }
+
+  /**
+   * high water marker
+   * 
+   * @param highWaterMarker default: 64*1024
+   * @return {@link ServerConfig}
+   */
+  public ServerConfig setHighWaterMarker(int highWaterMarker) {
+    this.highWaterMarker = highWaterMarker;
+    return this;
+  }
+
+
 
 }

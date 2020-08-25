@@ -71,10 +71,8 @@ public class DefaultServerFactory extends AbstractServerFactory {
             public T get() {
               try {
                 return bean.getServiceConfig().getServiceType().newInstance();
-              } catch (InstantiationException e) {
-                e.printStackTrace();
-              } catch (IllegalAccessException e) {
-                e.printStackTrace();
+              } catch (Exception e) {
+                logger.error("", e);
               }
               return null;
             }

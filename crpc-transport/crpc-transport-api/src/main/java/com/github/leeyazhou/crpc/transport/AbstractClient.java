@@ -30,7 +30,6 @@ import com.github.leeyazhou.crpc.transport.protocol.message.ResponseMessage;
 
 public abstract class AbstractClient implements Client {
   private static final Logger logger = LoggerFactory.getLogger(AbstractClient.class);
-  private static final boolean isTraceEnabled = logger.isTraceEnabled();
   private static final boolean isDebugEnabled = logger.isDebugEnabled();
   private static final long PRINT_CONSUME_MINTIME = Long.parseLong(System.getProperty("rpc.print.consumetime", "0"));
   protected static ConcurrentMap<Integer, RpcResult> responses = new ConcurrentHashMap<Integer, RpcResult>();
@@ -48,13 +47,13 @@ public abstract class AbstractClient implements Client {
     final RpcResult rpcResult = new RpcResult();
     responses.putIfAbsent(request.id(), rpcResult);
     try {
-      if (isTraceEnabled) {
-        logger.trace("client ready to send message, request id: " + request.id());
+      if (isDebugEnabled) {
+        logger.debug("client ready to send message, request id: " + request.id());
       }
       transportFactory.checkSendLimit();
       doRequest(request, request.getTimeout());
-      if (isTraceEnabled) {
-        logger.trace("client write message to send buffer,wait for response,request id: " + request.id());
+      if (isDebugEnabled) {
+        logger.debug("client write message to send buffer,wait for response,request id: " + request.id());
       }
     } catch (Throwable err) {
       responses.remove(request.id());

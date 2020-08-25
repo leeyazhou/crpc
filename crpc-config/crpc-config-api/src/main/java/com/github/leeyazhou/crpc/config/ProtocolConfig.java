@@ -31,16 +31,10 @@ public class ProtocolConfig {
   private String host;
   private int port;
 
-  /**
-   * @return the address
-   */
   public String getAddress() {
     return address;
   }
 
-  /**
-   * @param address the address to set
-   */
   public ProtocolConfig setAddress(String address) {
     this.address = address;
     URL url = URL.valueOf(address);
@@ -50,46 +44,28 @@ public class ProtocolConfig {
     return this;
   }
 
-  /**
-   * @return the protocol
-   */
   public String getProtocol() {
     return protocol;
   }
 
-  /**
-   * @param protocol the protocol to set
-   */
   public ProtocolConfig setProtocol(String protocol) {
     this.protocol = protocol;
     return this;
   }
 
-  /**
-   * @return the host
-   */
   public String getHost() {
     return host;
   }
 
-  /**
-   * @param host the host to set
-   */
   public ProtocolConfig setHost(String host) {
     this.host = host;
     return this;
   }
 
-  /**
-   * @return the port
-   */
   public int getPort() {
     return port;
   }
 
-  /**
-   * @param port the port to set
-   */
   public ProtocolConfig setPort(int port) {
     this.port = port;
     return this;

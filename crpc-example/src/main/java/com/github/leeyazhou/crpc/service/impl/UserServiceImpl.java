@@ -39,7 +39,6 @@ import com.github.leeyazhou.crpc.service.model.User;
  */
 @CRPCService
 public class UserServiceImpl implements UserService {
-
   private static final Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
 
   private boolean isInfoEnabled = logger.isInfoEnabled();

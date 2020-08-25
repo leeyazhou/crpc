@@ -21,6 +21,7 @@ package com.github.leeyazhou.crpc.transport.factory;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.TimeUnit;
 import com.github.leeyazhou.crpc.config.Configuration;
+import com.github.leeyazhou.crpc.config.ServerConfig;
 import com.github.leeyazhou.crpc.core.util.concurrent.NamedThreadFactory;
 import com.github.leeyazhou.crpc.core.util.concurrent.TaskQueue;
 import com.github.leeyazhou.crpc.core.util.concurrent.ThreadPoolExecutor;
@@ -31,6 +32,8 @@ import com.github.leeyazhou.crpc.core.util.concurrent.ThreadPoolExecutor;
 public abstract class AbstractServerFactory implements ServerFactory {
 
   private ExecutorService executorService;
+  private Configuration configuration;
+  private ServerConfig serverConfig;
 
   /**
    * @return the executorService
@@ -38,6 +41,15 @@ public abstract class AbstractServerFactory implements ServerFactory {
   @Override
   public ExecutorService getExecutorService() {
     if (executorService == null) {
+      synchronized (AbstractServerFactory.class) {
+        if (executorService == null) {
+          final int availableProcessors = Runtime.getRuntime().availableProcessors();
+          final int worker = serverConfig.getWorker();
+          final int taskQueueSize = serverConfig.getTaskQueueSize() <= 0 ? 10000 : serverConfig.getTaskQueueSize();
+          this.executorService = new ThreadPoolExecutor(Math.max(availableProcessors, 8), worker, 60L, TimeUnit.SECONDS,
+              new TaskQueue(taskQueueSize), new NamedThreadFactory("crpc-worker", true));
+        }
+      }
 
     }
     return executorService;
@@ -48,11 +60,7 @@ public abstract class AbstractServerFactory implements ServerFactory {
    */
   @Override
   public void setConfiguration(Configuration configuration) {
-    if (executorService == null) {
-      final int availableProcessors = Runtime.getRuntime().availableProcessors();
-      executorService =
-          new ThreadPoolExecutor(Math.max(availableProcessors, 8), configuration.getServerConfig().getWorker(), 60L,
-              TimeUnit.SECONDS, new TaskQueue(10000), new NamedThreadFactory("crpc-worker", true));
-    }
+    this.configuration = configuration;
+    this.serverConfig = this.configuration.getServerConfig();
   }
 }

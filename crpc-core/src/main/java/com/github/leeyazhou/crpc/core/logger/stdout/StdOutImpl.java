@@ -21,7 +21,6 @@ import com.github.leeyazhou.crpc.core.logger.Logger;
  * @author leeyazhou
  */
 public class StdOutImpl implements Logger {
-  private static final String TRACE = "TRACE ";
   private static final String DEBUG = "DEBUG ";
   private static final String INFO = "INFO ";
   private static final String WARN = "WARN ";
@@ -50,11 +49,6 @@ public class StdOutImpl implements Logger {
   }
 
   @Override
-  public boolean isTraceEnabled() {
-    return true;
-  }
-
-  @Override
   public void error(String msg, Throwable throwable) {
     System.err.println(ERROR + msg);
     throwable.printStackTrace();
@@ -79,11 +73,6 @@ public class StdOutImpl implements Logger {
   @Override
   public void info(String msg) {
     System.out.println(INFO + msg);
-  }
-
-  @Override
-  public void trace(String msg) {
-    System.out.println(TRACE + msg);
   }
 
   @Override

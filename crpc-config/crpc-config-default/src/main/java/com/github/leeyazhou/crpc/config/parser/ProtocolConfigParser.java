@@ -31,7 +31,7 @@ import com.github.leeyazhou.crpc.config.ProtocolConfig;
 public class ProtocolConfigParser extends AbstractParser<ProtocolConfig> {
 
   /**
-   * @param configuration
+   * @param configuration {@link Configuration}
    */
   public ProtocolConfigParser(Configuration configuration) {
     super(configuration);

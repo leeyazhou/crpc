@@ -46,11 +46,6 @@ class Slf4jLoggerImpl implements com.github.leeyazhou.crpc.core.logger.Logger {
   }
 
   @Override
-  public boolean isTraceEnabled() {
-    return logger.isTraceEnabled();
-  }
-
-  @Override
   public void error(String msg, Throwable throwable) {
     logger.error(msg, throwable);
   }
@@ -68,11 +63,6 @@ class Slf4jLoggerImpl implements com.github.leeyazhou.crpc.core.logger.Logger {
   @Override
   public void debug(String msg, Throwable throwable) {
     logger.debug(msg, throwable);
-  }
-
-  @Override
-  public void trace(String msg) {
-    logger.trace(msg);
   }
 
   @Override

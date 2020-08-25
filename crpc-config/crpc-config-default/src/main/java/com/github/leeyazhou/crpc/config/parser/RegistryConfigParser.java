@@ -31,7 +31,7 @@ import com.github.leeyazhou.crpc.config.RegistryConfig;
 public class RegistryConfigParser extends AbstractParser<RegistryConfig> {
 
   /**
-   * @param configuration
+   * @param configuration {@link Configuration}
    */
   public RegistryConfigParser(Configuration configuration) {
     super(configuration);

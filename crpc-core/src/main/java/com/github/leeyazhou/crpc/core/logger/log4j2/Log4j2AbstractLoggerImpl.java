@@ -42,11 +42,6 @@ public class Log4j2AbstractLoggerImpl implements Logger {
   }
 
   @Override
-  public boolean isTraceEnabled() {
-    return logger.isTraceEnabled();
-  }
-
-  @Override
   public void error(String s, Throwable e) {
     logger.logIfEnabled(FQCN, Level.ERROR, MARKER, s, e);
   }
@@ -64,11 +59,6 @@ public class Log4j2AbstractLoggerImpl implements Logger {
   @Override
   public void debug(String s, Throwable t) {
     logger.logIfEnabled(FQCN, Level.DEBUG, MARKER, s, t);
-  }
-
-  @Override
-  public void trace(String s) {
-    logger.logIfEnabled(FQCN, Level.TRACE, MARKER, s);
   }
 
   @Override

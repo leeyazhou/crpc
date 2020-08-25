@@ -40,11 +40,6 @@ public class Log4j2Impl implements Logger {
   }
 
   @Override
-  public boolean isTraceEnabled() {
-    return logger.isTraceEnabled();
-  }
-
-  @Override
   public void error(String s, Throwable e) {
     logger.error(s, e);
   }
@@ -62,11 +57,6 @@ public class Log4j2Impl implements Logger {
   @Override
   public void debug(String msg, Throwable throwable) {
     logger.debug(msg, throwable);
-  }
-
-  @Override
-  public void trace(String s) {
-    logger.trace(s);
   }
 
   @Override

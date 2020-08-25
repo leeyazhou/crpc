@@ -34,7 +34,13 @@ import com.github.leeyazhou.crpc.transport.netty.protocol.NettyProtocolDecoder;
 import com.github.leeyazhou.crpc.transport.netty.protocol.NettyProtocolEncoder;
 import com.github.leeyazhou.crpc.transport.protocol.message.ResponseMessage;
 import io.netty.bootstrap.ServerBootstrap;
-import io.netty.channel.*;
+import io.netty.channel.Channel;
+import io.netty.channel.ChannelFuture;
+import io.netty.channel.ChannelInitializer;
+import io.netty.channel.ChannelOption;
+import io.netty.channel.EventLoopGroup;
+import io.netty.channel.ServerChannel;
+import io.netty.channel.WriteBufferWaterMark;
 import io.netty.channel.epoll.Epoll;
 import io.netty.channel.epoll.EpollEventLoopGroup;
 import io.netty.channel.epoll.EpollServerSocketChannel;
@@ -42,8 +48,11 @@ import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 
+/**
+ * 
+ * @author leeyazhou
+ */
 public class NettyServer extends AbstractServer {
-
   private static final Logger logger = LoggerFactory.getLogger(NettyServer.class);
   private EventLoopGroup bossGroup;
   private EventLoopGroup ioGroup;
@@ -80,7 +89,7 @@ public class NettyServer extends AbstractServer {
   public void doInit() {
     this.bootStrap = new ServerBootstrap();
     final Class<? extends ServerChannel> socketChannelClass;
-    if(Epoll.isAvailable()){
+    if (Epoll.isAvailable()) {
       this.bossGroup = new EpollEventLoopGroup(1);
       this.ioGroup = new EpollEventLoopGroup(0, new NamedThreadFactory("crpc-io"));
       socketChannelClass = EpollServerSocketChannel.class;
@@ -95,8 +104,15 @@ public class NettyServer extends AbstractServer {
     bootStrap.childOption(ChannelOption.SO_REUSEADDR, true);
     bootStrap.childOption(ChannelOption.SO_KEEPALIVE, true);
     bootStrap.childOption(ChannelOption.SINGLE_EVENTEXECUTOR_PER_GROUP, false);
-    bootStrap.childOption(ChannelOption.WRITE_BUFFER_WATER_MARK, WriteBufferWaterMark.DEFAULT);
-    final NettyServerHandler nettyServerHandler = new NettyServerHandler(configuration, handler, serverFactory, channelManager);
+    WriteBufferWaterMark bufferWaterMark = WriteBufferWaterMark.DEFAULT;
+    if (getServerConfig().getLowWaterMarker() > 0
+        && getServerConfig().getHighWaterMarker() > getServerConfig().getLowWaterMarker()) {
+      bufferWaterMark =
+          new WriteBufferWaterMark(getServerConfig().getLowWaterMarker(), getServerConfig().getHighWaterMarker());
+    }
+    bootStrap.childOption(ChannelOption.WRITE_BUFFER_WATER_MARK, bufferWaterMark);
+    final NettyServerHandler nettyServerHandler =
+        new NettyServerHandler(configuration, handler, serverFactory, channelManager);
     bootStrap.childHandler(new ChannelInitializer<SocketChannel>() {
       @Override
       public void initChannel(SocketChannel channel) throws Exception {
@@ -115,7 +131,7 @@ public class NettyServer extends AbstractServer {
         bootStrap.bind(configuration.getProtocolConfig().getHost(), configuration.getProtocolConfig().getPort())
             .syncUninterruptibly();
     this.channel = channelFuture.channel();
-    afterStartServer();
+    Runtime.getRuntime().addShutdownHook(new ShutdownHook(this));
     logger.info(String.format("Server is running at %s://%s:%s, businessThreads : %s",
         configuration.getProtocolConfig().getProtocol(), configuration.getProtocolConfig().getHost(),
         configuration.getProtocolConfig().getPort(), configuration.getServerConfig().getWorker()));
@@ -138,12 +154,6 @@ public class NettyServer extends AbstractServer {
 
   }
 
-  /**
-   *
-   */
-  private void afterStartServer() {
-    Runtime.getRuntime().addShutdownHook(new ShutdownHook(this));
-  }
 
   private static class ShutdownHook extends Thread {
     private Server server;

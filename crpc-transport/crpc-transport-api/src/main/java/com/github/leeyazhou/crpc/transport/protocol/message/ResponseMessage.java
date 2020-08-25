@@ -54,9 +54,6 @@ public class ResponseMessage extends Message {
     return this;
   }
 
-  /**
-   * @param isError the isError to set
-   */
   public ResponseMessage setError(boolean isError) {
     this.error = isError;
     return this;

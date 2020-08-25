@@ -183,17 +183,11 @@ public class URL implements Serializable {
     return registryType;
   }
 
-  /**
-   * @param registryType the registryType to set
-   */
   public URL setRegistryType(String registryType) {
     this.registryType = registryType;
     return this;
   }
 
-  /**
-   * @param protocol the protocol to set
-   */
   public URL setProtocol(String protocol) {
     this.protocol = protocol;
     return this;

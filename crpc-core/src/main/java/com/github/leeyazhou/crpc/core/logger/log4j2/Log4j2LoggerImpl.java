@@ -37,11 +37,6 @@ public class Log4j2LoggerImpl implements com.github.leeyazhou.crpc.core.logger.L
   }
 
   @Override
-  public boolean isTraceEnabled() {
-    return logger.isTraceEnabled();
-  }
-
-  @Override
   public void error(String s, Throwable e) {
     logger.error(MARKER, s, e);
   }
@@ -59,11 +54,6 @@ public class Log4j2LoggerImpl implements com.github.leeyazhou.crpc.core.logger.L
   @Override
   public void debug(String msg, Throwable throwable) {
     logger.debug(MARKER, msg, throwable);
-  }
-
-  @Override
-  public void trace(String s) {
-    logger.trace(MARKER, s);
   }
 
   @Override

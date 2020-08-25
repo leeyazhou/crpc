@@ -79,47 +79,28 @@ public class ReferConfig<T> {
     return this;
   }
 
-  /**
-   * @param timeout the timeout to set
-   */
   public ReferConfig<T> setTimeout(int timeout) {
     this.timeout = timeout;
     return this;
   }
 
-  /**
-   * @return the timeout
-   */
   public int getTimeout() {
     return timeout;
   }
 
-  /**
-   * @return the codecType
-   */
   public byte getCodecType() {
     return codecType;
   }
 
-  /**
-   * @param codecType the codecType to set
-   */
   public ReferConfig<T> setCodecType(byte codecType) {
     this.codecType = codecType;
     return this;
   }
 
-  /**
-   * @return
-   */
   public String getLoadbalance() {
-    // TODO Auto-generated method stub
     return loadbalance;
   }
 
-  /**
-   * @param loadbalance the loadbalance to set
-   */
   public ReferConfig<T> setLoadbalance(String loadbalance) {
     this.loadbalance = loadbalance;
     return this;

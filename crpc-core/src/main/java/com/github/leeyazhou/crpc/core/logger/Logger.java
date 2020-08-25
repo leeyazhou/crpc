@@ -25,8 +25,6 @@ public interface Logger {
 
   boolean isDebugEnabled();
 
-  boolean isTraceEnabled();
-
   void error(String msg, Throwable throwable);
 
   void error(String msg);
@@ -38,11 +36,7 @@ public interface Logger {
 
   void info(String msg);
 
-
-  void trace(String msg);
-
   void warn(String msg);
-
 
   void warn(String msg, Throwable throwable);
 
