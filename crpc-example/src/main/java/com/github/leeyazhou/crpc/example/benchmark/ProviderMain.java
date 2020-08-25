@@ -21,8 +21,8 @@ package com.github.leeyazhou.crpc.example.benchmark;
 import com.github.leeyazhou.crpc.config.ApplicationConfig;
 import com.github.leeyazhou.crpc.config.Configuration;
 import com.github.leeyazhou.crpc.config.ProtocolConfig;
+import com.github.leeyazhou.crpc.config.ProviderConfig;
 import com.github.leeyazhou.crpc.config.ServerConfig;
-import com.github.leeyazhou.crpc.config.crpc.ProviderConfig;
 
 /**
  * @author leeyazhou

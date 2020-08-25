@@ -21,8 +21,6 @@ package com.github.leeyazhou.crpc.core.util.reflect;
 import java.lang.reflect.Method;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
-import com.github.leeyazhou.crpc.core.lifecyle.AbstractInit;
-import com.github.leeyazhou.crpc.core.lifecyle.Init;
 import com.github.leeyazhou.crpc.core.logger.Logger;
 import com.github.leeyazhou.crpc.core.logger.LoggerFactory;
 
@@ -30,7 +28,7 @@ import com.github.leeyazhou.crpc.core.logger.LoggerFactory;
  * @author leeyazhou
  *
  */
-public class ClassInfo<T> extends AbstractInit implements Init {
+public class ClassInfo<T> {
   private static final Logger logger = LoggerFactory.getLogger(ClassInfo.class);
   public static final String METHOD_SEPARATOR = "$";
   public static final String ARG_SEPARATOR = "_";
@@ -41,8 +39,7 @@ public class ClassInfo<T> extends AbstractInit implements Init {
     this.serviceType = serviceType;
   }
 
-  @Override
-  public void doInit() {
+  public void init() {
     Method[] methods = serviceType.getDeclaredMethods();
     for (Method method : methods) {
       Class<?>[] argTypes = method.getParameterTypes();

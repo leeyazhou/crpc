@@ -56,7 +56,7 @@ public class DefaultServerFactory extends AbstractServerFactory {
   }
 
   /**
-   * @param targetInstanceName 类类型
+   * @param targetInstanceName 类型
    * @return instance of type
    */
   public <T> ServiceHandler<T> getServiceHandler(String targetInstanceName) {

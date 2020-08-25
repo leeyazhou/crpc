@@ -32,10 +32,9 @@ public class DefaultInvoker<T> extends AbstractRpcHandler<T> {
   @Override
   protected ResponseMessage doInvoke(RpcContext context) throws Exception {
     final RequestMessage request = context.getRequest();
-    final List<Client> clients = context.getClients();
-    final LoadBalance loadBalance = context.getLoadBalance();
+    List<Client> clients = transportFactory.getClientManager().get(referConfig);
+    LoadBalance loadBalance = transportFactory.getLoadBalance(referConfig.getLoadbalance());
     Client client = loadBalance.chooseOne(clients, request);
-    context.setChoosedClient(client);
     ResponseMessage response = filter.handle(context);
     if (response != null) {
       return response;

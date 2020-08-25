@@ -30,7 +30,7 @@ public class IPFilter extends AbstractFilter {
   @Override
   public ResponseMessage handle(RpcContext context) {
     if (context.isConsumerSide())
-      logger.info("IP过滤器:" + context.getChoosedClient().getUrl().getAddress());
+      logger.info("IP过滤器:" + context.getRequest());
     else {
       logger.info("IP过滤器服务器端 : " + context.getRequest());
     }

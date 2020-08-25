@@ -16,12 +16,9 @@
 /**
  * 
  */
-package com.github.leeyazhou.crpc.config.crpc;
+package com.github.leeyazhou.crpc.config;
 
 import java.util.Set;
-import com.github.leeyazhou.crpc.config.ApplicationConfig;
-import com.github.leeyazhou.crpc.config.ReferConfig;
-import com.github.leeyazhou.crpc.config.RegistryConfig;
 import com.github.leeyazhou.crpc.core.URL;
 import com.github.leeyazhou.crpc.core.util.ServiceLoader;
 import com.github.leeyazhou.crpc.rpc.proxy.ProxyFactory;

@@ -17,6 +17,12 @@ package com.github.leeyazhou.crpc.config;
 
 import org.w3c.dom.Node;
 
+/**
+ * 
+ * @author leeyazhou
+ *
+ * @param <T>
+ */
 public interface IParser<T> {
   T parse(Node node);
 }

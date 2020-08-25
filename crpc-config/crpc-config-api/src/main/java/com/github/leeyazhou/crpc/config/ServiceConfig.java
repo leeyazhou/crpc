@@ -18,14 +18,14 @@
  */
 package com.github.leeyazhou.crpc.config;
 
-import com.github.leeyazhou.crpc.core.lifecyle.AbstractInit;
+import com.github.leeyazhou.crpc.core.lifecyle.AbstractLifecycle;
 import com.github.leeyazhou.crpc.core.util.function.Supplier;
 import com.github.leeyazhou.crpc.core.util.reflect.ClassInfo;
 
 /**
  * @author leeyazhou
  */
-public class ServiceConfig<T> extends AbstractInit {
+public class ServiceConfig<T> extends AbstractLifecycle {
   private String name;
   private Class<T> serviceType;
   private Class<T> implClass;
@@ -38,6 +38,12 @@ public class ServiceConfig<T> extends AbstractInit {
     this.classInfo = new ClassInfo<T>(serviceType);
     this.classInfo.init();
   }
+
+  @Override
+  protected void doStart() {}
+
+  @Override
+  protected void doStop() {}
 
   public String getName() {
     return name;

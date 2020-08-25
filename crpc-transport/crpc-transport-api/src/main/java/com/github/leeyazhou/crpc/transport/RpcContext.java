@@ -33,17 +33,11 @@ import com.github.leeyazhou.crpc.transport.protocol.message.RequestMessage;
  */
 public final class RpcContext {
   private final RequestMessage request;
-  private List<Client> clients;
-  private Client choosedClient;
-  private LoadBalance loadBalance;
   private SideType sideType;
-
   private Map<String, Object> attachements;
 
   private RpcContext(RequestMessage request, List<Client> clients, LoadBalance loadBalance) {
     this.request = request;
-    this.clients = clients;
-    this.loadBalance = loadBalance;
   }
 
   private RpcContext(RequestMessage request) {
@@ -54,12 +48,10 @@ public final class RpcContext {
    * 消费者上下文
    * 
    * @param request 请求信息
-   * @param clients 客户端连接
-   * @param loadBalance 负载均衡器
    * @return {@link RpcContext}
    */
-  public static RpcContext consumerContext(RequestMessage request, List<Client> clients, LoadBalance loadBalance) {
-    RpcContext ret = new RpcContext(request, clients, loadBalance);
+  public static RpcContext consumerContext(RequestMessage request) {
+    RpcContext ret = new RpcContext(request);
     ret.setSideType(SideType.SIDE_CONSUMER);
     return ret;
   }
@@ -103,22 +95,7 @@ public final class RpcContext {
     return this;
   }
 
-  public List<Client> getClients() {
-    return clients;
-  }
-
-  public LoadBalance getLoadBalance() {
-    return loadBalance;
-  }
-
-  public Client getChoosedClient() {
-    return choosedClient;
-  }
-
-  public RpcContext setChoosedClient(Client choosedClient) {
-    this.choosedClient = choosedClient;
-    return this;
-  }
+  
 
   public RpcContext addAttachement(String key, Object value) {
     if (this.attachements == null) {

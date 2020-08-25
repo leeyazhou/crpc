@@ -16,18 +16,14 @@
 /**
  *
  */
-package com.github.leeyazhou.crpc.config.crpc;
+package com.github.leeyazhou.crpc.config;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
-import com.github.leeyazhou.crpc.config.Configuration;
-import com.github.leeyazhou.crpc.config.DefaultServerFactory;
-import com.github.leeyazhou.crpc.config.RegistryConfig;
-import com.github.leeyazhou.crpc.config.ServerConfig;
-import com.github.leeyazhou.crpc.config.ServiceConfig;
 import com.github.leeyazhou.crpc.core.annotation.CRPCFilterType;
 import com.github.leeyazhou.crpc.core.annotation.CRPCService;
+import com.github.leeyazhou.crpc.core.exception.CrpcException;
 import com.github.leeyazhou.crpc.core.logger.Logger;
 import com.github.leeyazhou.crpc.core.logger.LoggerFactory;
 import com.github.leeyazhou.crpc.core.scanner.ClassScanner;
@@ -56,6 +52,7 @@ public class ProviderConfig {
    * 暴露服务
    */
   public void export() {
+    validate();
     DefaultServerFactory beanFactory = new DefaultServerFactory();
     beanFactory.setConfiguration(configuration);
     try {
@@ -65,6 +62,18 @@ public class ProviderConfig {
       logger.error("", e);
     }
     RpcUtil.export(configuration, beanFactory);
+  }
+
+  private void validate() {
+    if (configuration == null) {
+      throw new CrpcException("configuration不能为空");
+    }
+    if (configuration.getApplicationConfig() == null) {
+      throw new CrpcException("applicationConfig不能为空");
+    }
+    if (configuration.getProtocolConfig() == null) {
+      throw new CrpcException("protocolConfig不能为空");
+    }
   }
 
   private void prepareEnvironment(ServerConfig serverConfig, DefaultServerFactory beanFactory) throws Exception {
@@ -92,7 +101,7 @@ public class ProviderConfig {
       Set<Class<?>> classSet = classScanner.getClassListByAnnotation(CRPCService.class);
       for (Class<?> targetClass : classSet) {
         logger.info("export service : " + targetClass);
-        ServiceConfig serviceConfig =new ServiceConfig();
+        ServiceConfig serviceConfig = new ServiceConfig();
         serviceConfig.setServiceType(targetClass);
         ServiceHandler<?> serviceHandler = new ServiceHandler(serviceConfig);
         serviceHandler.setFilter(filter);

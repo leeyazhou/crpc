@@ -19,7 +19,7 @@
 package com.github.leeyazhou.crpc.example.quickstart;
 
 import com.github.leeyazhou.crpc.config.ApplicationConfig;
-import com.github.leeyazhou.crpc.config.crpc.ConsumerConfig;
+import com.github.leeyazhou.crpc.config.ConsumerConfig;
 import com.github.leeyazhou.crpc.core.URL;
 import com.github.leeyazhou.crpc.service.UserService;
 
@@ -30,8 +30,9 @@ import com.github.leeyazhou.crpc.service.UserService;
 public class ConsumerMain {
 
   public static void main(String[] args) {
+    ApplicationConfig applicationConfig = new ApplicationConfig().setName("showcase");
     ConsumerConfig<UserService> consumerConfig =
-        new ConsumerConfig<UserService>().setApplicationConfig(new ApplicationConfig().setName("showcase"));
+        new ConsumerConfig<UserService>().setApplicationConfig(applicationConfig);
     consumerConfig.addURL(URL.valueOf("crpc://127.0.0.1:25001"));
     consumerConfig.setServiceType(UserService.class);
 

@@ -21,7 +21,6 @@ package com.github.leeyazhou.crpc.rpc;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import com.github.leeyazhou.crpc.codec.CodecType;
 import com.github.leeyazhou.crpc.config.ReferConfig;
@@ -32,10 +31,8 @@ import com.github.leeyazhou.crpc.core.exception.ServiceNotFoundException;
 import com.github.leeyazhou.crpc.core.logger.Logger;
 import com.github.leeyazhou.crpc.core.logger.LoggerFactory;
 import com.github.leeyazhou.crpc.core.util.ServiceLoader;
-import com.github.leeyazhou.crpc.transport.Client;
 import com.github.leeyazhou.crpc.transport.Filter;
 import com.github.leeyazhou.crpc.transport.Handler;
-import com.github.leeyazhou.crpc.transport.LoadBalance;
 import com.github.leeyazhou.crpc.transport.RpcContext;
 import com.github.leeyazhou.crpc.transport.TransportFactory;
 import com.github.leeyazhou.crpc.transport.filter.CounterFilter;
@@ -94,13 +91,10 @@ public abstract class AbstractRpcHandler<T> implements Handler<T>, InvocationHan
         if (filter == null) {
           filter = new IPFilter();
           filter.setNext(new CounterFilter());
-          logger.warn("测试消费端拦截器:" + filter);
         }
       }
     }
   }
-
-
 
   @Override
   public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
@@ -122,9 +116,8 @@ public abstract class AbstractRpcHandler<T> implements Handler<T>, InvocationHan
     RequestMessage request = new RequestMessage(getHandlerType().getName(), method.getName()).setArgTypes(argTypes)
         .setArgs(args).setTimeout(referConfig.getTimeout()).fillId();
     request.setCodecType(codecType).setProtocolType(protocolType);
-    List<Client> clients = transportFactory.getClientManager().get(referConfig);
-    LoadBalance loadBalance = transportFactory.getLoadBalance(referConfig.getLoadbalance());
-    RpcContext context = RpcContext.consumerContext(request, clients, loadBalance);
+    
+    RpcContext context = RpcContext.consumerContext(request);
     return handle(context).getResponse();
   }
 
@@ -148,9 +141,6 @@ public abstract class AbstractRpcHandler<T> implements Handler<T>, InvocationHan
     }
   }
 
-  /**
-   * @return the url
-   */
   public URL getUrl() {
     return url;
   }
@@ -160,9 +150,6 @@ public abstract class AbstractRpcHandler<T> implements Handler<T>, InvocationHan
     return handlerType;
   }
 
-  /**
-   * @return the protocolType
-   */
   public ProtocolType getProtocolType() {
     return protocolType;
   }

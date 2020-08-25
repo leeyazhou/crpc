@@ -98,6 +98,11 @@ public class ClientManager {
     return client;
   }
 
+  public Client getClient(URL url) {
+    final String key = toKey(url);
+    return clientCache.get(key);
+  }
+
   public long getSendingBytesSize() throws Exception {
     long sendingBytesSize = 0;
     for (Client client : clientCache.values()) {

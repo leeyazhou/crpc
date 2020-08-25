@@ -24,7 +24,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.concurrent.CountDownLatch;
 import com.github.leeyazhou.crpc.config.ApplicationConfig;
-import com.github.leeyazhou.crpc.config.crpc.ConsumerConfig;
+import com.github.leeyazhou.crpc.config.ConsumerConfig;
 import com.github.leeyazhou.crpc.core.URL;
 import com.github.leeyazhou.crpc.service.UserService;
 
