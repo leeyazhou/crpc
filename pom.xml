@@ -78,7 +78,7 @@
         <fst.version>2.57</fst.version>
         <github.org>leeyazhou</github.org>
         <github.repo>crpc</github.repo>
-        <guava.version>20.0</guava.version>
+        <guava.version>24.1.1</guava.version>
         <guice.version>4.1.0</guice.version>
         <hessian.version>4.0.38</hessian.version>
         <java.version>1.6</java.version>
