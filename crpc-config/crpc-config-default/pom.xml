@@ -29,17 +29,17 @@
         <dependency>
             <groupId>com.github.leeyazhou</groupId>
             <artifactId>crpc-config-api</artifactId>
-            <version>1.0.2-SNAPSHOT</version>
+            <version>${project.parent.version}</version>
         </dependency>
         <dependency>
             <groupId>com.github.leeyazhou</groupId>
             <artifactId>crpc-rpc</artifactId>
-            <version>1.0.2-SNAPSHOT</version>
+            <version>${project.parent.version}</version>
         </dependency>
         <dependency>
             <groupId>com.github.leeyazhou</groupId>
             <artifactId>crpc-transport-api</artifactId>
-            <version>1.0.2-SNAPSHOT</version>
+            <version>${project.parent.version}</version>
         </dependency>
     </dependencies>
 </project>

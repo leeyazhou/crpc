@@ -29,7 +29,7 @@
         <dependency>
             <groupId>com.github.leeyazhou</groupId>
             <artifactId>crpc-core</artifactId>
-            <version>1.0.2-SNAPSHOT</version>
+            <version>${project.parent.version}</version>
         </dependency>
     </dependencies>
 </project>
