@@ -26,6 +26,7 @@ import com.github.leeyazhou.crpc.transport.TransportFactory;
 import com.github.leeyazhou.crpc.transport.netty.NettyChannel;
 import com.github.leeyazhou.crpc.transport.netty.NettyClient;
 import com.github.leeyazhou.crpc.transport.protocol.ProtocolType;
+import com.github.leeyazhou.crpc.transport.protocol.message.MessageCode;
 import com.github.leeyazhou.crpc.transport.protocol.message.MessageType;
 import com.github.leeyazhou.crpc.transport.protocol.message.RequestMessage;
 import com.github.leeyazhou.crpc.transport.protocol.message.ResponseMessage;
@@ -42,8 +43,9 @@ import io.netty.handler.timeout.IdleStateEvent;
 public class NettyClientHandler extends SimpleChannelInboundHandler<ResponseMessage> {
 
   private static final Logger logger = LoggerFactory.getLogger(NettyClientHandler.class);
-  private static final RequestMessage ping = (RequestMessage) new RequestMessage().setCodecType(CodecType.KRYO_CODEC)
-      .setProtocolType(ProtocolType.CRPC).setMessageType(MessageType.REQUEST);
+  private static final RequestMessage ping =
+      (RequestMessage) new RequestMessage().setTimeout(3000).setMessageCode(MessageCode.MESSAGE_HEARTBEAT)
+          .setCodecType(CodecType.KRYO_CODEC).setProtocolType(ProtocolType.CRPC).setMessageType(MessageType.REQUEST);
   private final TransportFactory transportFactory = ServiceLoader.load(TransportFactory.class).load();
 
   private final URL url;

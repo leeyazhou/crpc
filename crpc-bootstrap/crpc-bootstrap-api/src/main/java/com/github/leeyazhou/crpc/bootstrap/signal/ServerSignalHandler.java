@@ -20,17 +20,16 @@
 package com.github.leeyazhou.crpc.bootstrap.signal;
 
 import java.util.List;
-
-import com.github.leeyazhou.crpc.transport.Server;
 import com.github.leeyazhou.crpc.core.logger.Logger;
 import com.github.leeyazhou.crpc.core.logger.LoggerFactory;
-
+import com.github.leeyazhou.crpc.transport.Server;
 import sun.misc.Signal;
 import sun.misc.SignalHandler;
 
 /**
  * @author leeyazhou
  */
+@SuppressWarnings("restriction")
 public class ServerSignalHandler implements SignalHandler {
 
   private static final Logger logger = LoggerFactory.getLogger(ServerSignalHandler.class);
@@ -46,7 +45,7 @@ public class ServerSignalHandler implements SignalHandler {
       logger.info("receive a signal named " + signal + ", so close the server now !");
       if (servers != null) {
         for (Server server : servers) {
-          server.stop();
+          server.shutdown();
         }
       } else {
         logger.warn("the server is already closed ! So discard this signal !");

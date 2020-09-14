@@ -18,6 +18,8 @@
  */
 package com.github.leeyazhou.crpc.transport.factory;
 
+import java.util.ArrayList;
+import java.util.List;
 import com.github.leeyazhou.crpc.config.ServiceConfig;
 import com.github.leeyazhou.crpc.core.exception.ServiceMethodNotFoundException;
 import com.github.leeyazhou.crpc.core.logger.Logger;
@@ -25,8 +27,10 @@ import com.github.leeyazhou.crpc.core.logger.LoggerFactory;
 import com.github.leeyazhou.crpc.core.util.ExceptionUtil;
 import com.github.leeyazhou.crpc.core.util.reflect.MethodProxy;
 import com.github.leeyazhou.crpc.transport.Filter;
+import com.github.leeyazhou.crpc.transport.FilterChain;
 import com.github.leeyazhou.crpc.transport.Handler;
 import com.github.leeyazhou.crpc.transport.RpcContext;
+import com.github.leeyazhou.crpc.transport.filter.ApplicationFilterChain;
 import com.github.leeyazhou.crpc.transport.protocol.message.MessageType;
 import com.github.leeyazhou.crpc.transport.protocol.message.RequestMessage;
 import com.github.leeyazhou.crpc.transport.protocol.message.ResponseMessage;
@@ -36,12 +40,12 @@ import com.github.leeyazhou.crpc.transport.protocol.message.ResponseMessage;
  */
 public class ServiceHandler<T> implements Handler<T> {
   private static final Logger logger = LoggerFactory.getLogger(ServiceHandler.class);
-  private Filter filter;
+  private List<Filter> filters;
   private ServiceConfig<T> serviceConfig;
 
   public ServiceHandler(ServiceConfig<T> serviceConfig) {
     this.serviceConfig = serviceConfig;
-    serviceConfig.init();
+    this.serviceConfig.init();
   }
 
 
@@ -50,15 +54,7 @@ public class ServiceHandler<T> implements Handler<T> {
     return serviceConfig.getServiceType();
   }
 
-  @Override
-  public ResponseMessage handle(final RpcContext context) {
-    if (filter != null) {
-      ResponseMessage filterResponse = filter.handle(context);
-      if (filterResponse != null) {
-        return filterResponse;
-      }
-    }
-
+  public ResponseMessage doHandle(RpcContext context) {
     final RequestMessage request = context.getRequest();
 
     ResponseMessage response = new ResponseMessage();
@@ -94,14 +90,37 @@ public class ServiceHandler<T> implements Handler<T> {
     return response;
   }
 
+  private FilterChain buildFilterChain() {
+    ApplicationFilterChain filterChain = new ApplicationFilterChain();
+    filterChain.setFilters(filters);
+    filterChain.setServiceHandler(this);
+    return filterChain;
+  }
+
+  @Override
+  public ResponseMessage handle(final RpcContext context) {
+    FilterChain filterChain = buildFilterChain();
+    return filterChain.doFilter(context);
+  }
 
 
-  public void setFilter(Filter filter) {
-    this.filter = filter;
+  public ServiceHandler<T> addFilter(Filter filter) {
+    if (filters == null) {
+      this.filters = new ArrayList<Filter>();
+    }
+    this.filters.add(filter);
+    return this;
+  }
+
+  public ServiceHandler<T> setFilters(List<Filter> filters) {
+    this.filters = filters;
+    return this;
   }
 
   public ServiceConfig<T> getServiceConfig() {
     return serviceConfig;
   }
+
+
 
 }

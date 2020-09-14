@@ -24,12 +24,16 @@ import com.github.leeyazhou.crpc.transport.protocol.message.ResponseMessage;
 /**
  * @author leeyazhou
  */
-public interface Filter extends Handler<Filter> {
+public interface Filter {
+
 
   /**
-   * 拦截处理时返回结果，如果不拦截的话返回Null
+   * filter
+   * 
+   * @param context {@link RpcContext}
+   * @param filterChain {@link FilterChain}
+   * @return {@link ResponseMessage}
    */
-  ResponseMessage handle(RpcContext context);
+  ResponseMessage filter(RpcContext context, FilterChain filterChain);
 
-  void setNext(Filter filter);
 }

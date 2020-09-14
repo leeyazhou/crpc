@@ -18,7 +18,6 @@ package com.github.leeyazhou.crpc.transport.netty.handler;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.util.concurrent.atomic.AtomicInteger;
-import com.github.leeyazhou.crpc.config.Configuration;
 import com.github.leeyazhou.crpc.core.Constants;
 import com.github.leeyazhou.crpc.core.URL;
 import com.github.leeyazhou.crpc.core.logger.Logger;
@@ -41,6 +40,7 @@ import io.netty.handler.timeout.IdleStateEvent;
 
 /**
  * @author zach
+ * @author leeyazhou
  *
  */
 @Sharable
@@ -56,8 +56,7 @@ public class NettyServerHandler extends SimpleChannelInboundHandler<RequestMessa
   private final ServerFactory serverFactory;
   private final ChannelManager channelManager;
 
-  public NettyServerHandler(Configuration configuration, Handler<?> serverHandler, ServerFactory serverFactory,
-      ChannelManager channelManager) {
+  public NettyServerHandler(Handler<?> serverHandler, ServerFactory serverFactory, ChannelManager channelManager) {
     this.serverHandler = serverHandler;
     this.serverFactory = serverFactory;
     this.channelManager = channelManager;

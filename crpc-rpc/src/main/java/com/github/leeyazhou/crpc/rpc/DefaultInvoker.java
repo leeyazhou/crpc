@@ -17,9 +17,12 @@ package com.github.leeyazhou.crpc.rpc;
 
 import java.util.List;
 import com.github.leeyazhou.crpc.config.ReferConfig;
+import com.github.leeyazhou.crpc.core.util.ServiceLoader;
 import com.github.leeyazhou.crpc.transport.Client;
+import com.github.leeyazhou.crpc.transport.Filter;
 import com.github.leeyazhou.crpc.transport.LoadBalance;
 import com.github.leeyazhou.crpc.transport.RpcContext;
+import com.github.leeyazhou.crpc.transport.filter.ApplicationFilterChain;
 import com.github.leeyazhou.crpc.transport.protocol.message.RequestMessage;
 import com.github.leeyazhou.crpc.transport.protocol.message.ResponseMessage;
 
@@ -35,12 +38,23 @@ public class DefaultInvoker<T> extends AbstractRpcHandler<T> {
     List<Client> clients = transportFactory.getClientManager().get(referConfig);
     LoadBalance loadBalance = transportFactory.getLoadBalance(referConfig.getLoadbalance());
     Client client = loadBalance.chooseOne(clients, request);
-    ResponseMessage response = filter.handle(context);
-    if (response != null) {
-      return response;
+    ApplicationFilterChain filterChain = buildFilterChain();
+    ResponseMessage message = filterChain.doFilter(context);
+    if (message != null) {
+      return message;
     }
     return client.request(request);
   }
 
+  private ApplicationFilterChain buildFilterChain() {
+    ApplicationFilterChain filterChain = new ApplicationFilterChain();
+    if (referConfig.getFilters() != null) {
+      for (String filterStr : referConfig.getFilters()) {
+        Filter filter = ServiceLoader.load(Filter.class).load(filterStr);
+        filterChain.addFilter(filter);
+      }
+    }
+    return filterChain;
+  }
 
 }

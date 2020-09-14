@@ -111,8 +111,7 @@ public class NettyServer extends AbstractServer {
           new WriteBufferWaterMark(getServerConfig().getLowWaterMarker(), getServerConfig().getHighWaterMarker());
     }
     bootStrap.childOption(ChannelOption.WRITE_BUFFER_WATER_MARK, bufferWaterMark);
-    final NettyServerHandler nettyServerHandler =
-        new NettyServerHandler(configuration, handler, serverFactory, channelManager);
+    final NettyServerHandler nettyServerHandler = new NettyServerHandler(handler, serverFactory, channelManager);
     bootStrap.childHandler(new ChannelInitializer<SocketChannel>() {
       @Override
       public void initChannel(SocketChannel channel) throws Exception {
@@ -126,7 +125,7 @@ public class NettyServer extends AbstractServer {
   }
 
   @Override
-  protected void doStart() {
+  protected void doStartup() {
     ChannelFuture channelFuture =
         bootStrap.bind(configuration.getProtocolConfig().getHost(), configuration.getProtocolConfig().getPort())
             .syncUninterruptibly();
@@ -139,7 +138,7 @@ public class NettyServer extends AbstractServer {
   }
 
   @Override
-  public void doStop() {
+  public void doShutdown() {
     logger.warn("Server stopped! configuration : " + configuration);
     channelManager.serverClosed();
     if (channel != null) {
@@ -165,7 +164,7 @@ public class NettyServer extends AbstractServer {
     @Override
     public void run() {
       try {
-        server.stop();
+        server.shutdown();
       } catch (Exception e) {
         // to do nothing
       }

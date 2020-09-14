@@ -16,7 +16,6 @@
 package com.github.leeyazhou.crpc.core.lifecyle;
 
 import java.util.concurrent.atomic.AtomicBoolean;
-
 import com.github.leeyazhou.crpc.core.logger.Logger;
 import com.github.leeyazhou.crpc.core.logger.LoggerFactory;
 
@@ -45,7 +44,7 @@ public abstract class AbstractLifecycle implements Lifecycle {
   }
 
   @Override
-  public void start() {
+  public void startup() {
     if (init.get() == false) {
       init();
     }
@@ -53,17 +52,17 @@ public abstract class AbstractLifecycle implements Lifecycle {
       if (logger.isDebugEnabled()) {
         logger.debug("Start " + this);
       }
-      doStart();
+      doStartup();
     }
   }
 
   @Override
-  public void stop() {
+  public void shutdown() {
     if (running.compareAndSet(true, false)) {
       if (logger.isDebugEnabled()) {
         logger.debug("Stop " + this);
       }
-      doStop();
+      doShutdown();
     }
   }
 
@@ -75,10 +74,10 @@ public abstract class AbstractLifecycle implements Lifecycle {
   /**
    * do start thing.
    */
-  protected abstract void doStart();
+  protected abstract void doStartup();
 
   /**
    * do stop thing.
    */
-  protected abstract void doStop();
+  protected abstract void doShutdown();
 }

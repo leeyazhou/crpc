@@ -21,6 +21,7 @@ package com.github.leeyazhou.crpc.transport.filter;
 import com.github.leeyazhou.crpc.core.logger.Logger;
 import com.github.leeyazhou.crpc.core.logger.LoggerFactory;
 import com.github.leeyazhou.crpc.transport.Filter;
+import com.github.leeyazhou.crpc.transport.FilterChain;
 import com.github.leeyazhou.crpc.transport.RpcContext;
 import com.github.leeyazhou.crpc.transport.protocol.message.ResponseMessage;
 
@@ -30,46 +31,12 @@ import com.github.leeyazhou.crpc.transport.protocol.message.ResponseMessage;
  */
 public abstract class AbstractFilter implements Filter {
   protected final Logger logger = LoggerFactory.getLogger(getClass());
-  public Filter next;
-
-  /**
-   * 
-   * @param next next filter
-   */
-  public void setNext(Filter next) {
-    if (this.next != null) {
-      this.next.setNext(next);
-    } else {
-      this.next = next;
-    }
-  }
-
-  /**
-   * 执行下一个过滤器
-   * 
-   * @param context {@link RpcContext}
-   * @return {@link ResponseMessage}
-   */
-  protected ResponseMessage nextFilter(RpcContext context) {
-    if (next != null) {
-      return next.handle(context);
-    }
-    return null;
-  }
 
   @Override
-  public Class<Filter> getHandlerType() {
-    return Filter.class;
+  public ResponseMessage filter(RpcContext context, FilterChain filterChain) {
+    return doFilter(context, filterChain);
   }
 
-  @Override
-  public Filter clone() {
-    try {
-      return (Filter) super.clone();
-    } catch (CloneNotSupportedException e) {
-      logger.error("", e);
-    }
-    return null;
-  }
+  protected abstract ResponseMessage doFilter(RpcContext context, FilterChain filterChain);
 
 }

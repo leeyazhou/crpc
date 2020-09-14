@@ -19,6 +19,7 @@
 package com.github.leeyazhou.crpc.config;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import com.github.leeyazhou.crpc.core.URL;
 
@@ -34,6 +35,7 @@ public class ReferConfig<T> {
   private int timeout;
   private byte codecType;
   private String loadbalance;
+  private List<String> filters;
 
   public Class<T> getServiceType() {
     return serviceType;
@@ -99,6 +101,15 @@ public class ReferConfig<T> {
 
   public String getLoadbalance() {
     return loadbalance;
+  }
+
+
+  public void setFilters(List<String> filters) {
+    this.filters = filters;
+  }
+
+  public List<String> getFilters() {
+    return filters;
   }
 
   public ReferConfig<T> setLoadbalance(String loadbalance) {

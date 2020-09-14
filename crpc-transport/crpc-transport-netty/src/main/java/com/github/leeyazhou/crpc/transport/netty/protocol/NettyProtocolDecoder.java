@@ -53,7 +53,7 @@ public class NettyProtocolDecoder extends ByteToMessageDecoder {
       throw new UnsupportProtocolException("Unsupport protocol type : " + magic);
     }
     byteBufWrapper.setReaderIndex(originPos);
-    Message msg = protocol.decode(byteBufWrapper, originPos);
+    Message msg = protocol.decode(byteBufWrapper);
     if (msg != null) {
       out.add(msg);
     }

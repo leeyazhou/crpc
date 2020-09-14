@@ -46,7 +46,8 @@ public class FieldUtil {
       }
       method.invoke(classObject, propertyValue);
     } catch (Exception err) {
-      throw new CrpcException(err);
+      throw new CrpcException(
+          "property : " + property + ", propertyValue : " + propertyValue + ", object : " + classObject, err);
     }
   }
 }

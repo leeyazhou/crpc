@@ -19,7 +19,8 @@
 
 package com.github.leeyazhou.crpc.config;
 
-import java.util.HashSet;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -29,7 +30,7 @@ import java.util.TreeSet;
 public class ServerConfig {
   private int worker = 200;
   private Set<String> basepackages = new TreeSet<String>();
-  private Set<String> filters = new HashSet<String>();
+  private List<String> filters = new ArrayList<String>();
   private int taskQueueSize;
   private int lowWaterMarker;
   private int highWaterMarker;
@@ -44,7 +45,7 @@ public class ServerConfig {
   }
 
 
-  public Set<String> getFilters() {
+  public List<String> getFilters() {
     return filters;
   }
 
@@ -86,7 +87,7 @@ public class ServerConfig {
     return taskQueueSize;
   }
 
-  public ServerConfig setFilters(Set<String> filters) {
+  public ServerConfig setFilters(List<String> filters) {
     this.filters = filters;
     return this;
   }

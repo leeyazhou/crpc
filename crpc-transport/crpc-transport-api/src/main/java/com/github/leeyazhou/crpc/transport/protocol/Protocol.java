@@ -39,9 +39,8 @@ public interface Protocol {
    * decode stream to object
    * 
    * @param byteBufwrapper ByteBufferWrapper
-   * @param originPos originPos
    * @return AbstractWrapper
    * @throws Exception any exception
    */
-  Message decode(ByteBufWrapper byteBufwrapper, int originPos) throws Exception;
+  Message decode(ByteBufWrapper byteBufwrapper) throws Exception;
 }

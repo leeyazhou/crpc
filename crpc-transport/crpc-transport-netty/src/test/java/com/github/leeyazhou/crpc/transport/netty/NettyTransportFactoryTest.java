@@ -41,8 +41,8 @@ public class NettyTransportFactoryTest {
         new Configuration().setProtocolConfig(new ProtocolConfig().setAddress("crpc://127.0.0.1:25001"))
             .setServerConfig(new ServerConfig().addBasepackage("com.github.leeyazhou.crpc"));
     Server server = transportFactory.createServer(configuration, null);
-    server.start();
-    server.stop();
+    server.startup();
+    server.shutdown();
   }
 
   @Test

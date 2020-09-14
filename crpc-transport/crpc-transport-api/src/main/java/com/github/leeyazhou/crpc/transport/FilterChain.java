@@ -26,6 +26,6 @@ import com.github.leeyazhou.crpc.transport.protocol.message.ResponseMessage;
  */
 public interface FilterChain {
 
-  ResponseMessage filter(RpcContext context);
+  ResponseMessage doFilter(RpcContext context);
 
 }

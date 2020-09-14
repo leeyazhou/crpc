@@ -24,10 +24,11 @@ import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
+import com.github.leeyazhou.crpc.core.util.LRUCache;
+import com.github.leeyazhou.crpc.transport.FilterChain;
 import com.github.leeyazhou.crpc.transport.RpcContext;
 import com.github.leeyazhou.crpc.transport.protocol.message.RequestMessage;
 import com.github.leeyazhou.crpc.transport.protocol.message.ResponseMessage;
-import com.github.leeyazhou.crpc.core.util.LRUCache;
 
 /**
  * @author leeyazhou
@@ -81,9 +82,9 @@ public class CounterFilter extends AbstractFilter {
   }
 
   @Override
-  public ResponseMessage handle(RpcContext context) {
+  public ResponseMessage doFilter(RpcContext context, FilterChain filterChain) {
     QUEUE.offer(context.getRequest());
-    return nextFilter(context);
+    return filterChain.doFilter(context);
   }
 
 }

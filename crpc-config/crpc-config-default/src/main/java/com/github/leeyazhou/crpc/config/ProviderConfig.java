@@ -57,7 +57,7 @@ public class ProviderConfig {
     beanFactory.setConfiguration(configuration);
     try {
       prepareEnvironment(configuration.getServerConfig(), beanFactory);
-      initBeans(configuration.getServerConfig(), beanFactory);
+      scan(configuration.getServerConfig(), beanFactory);
     } catch (Exception e) {
       logger.error("", e);
     }
@@ -88,12 +88,12 @@ public class ProviderConfig {
   }
 
   @SuppressWarnings({"unchecked", "rawtypes"})
-  private void initBeans(ServerConfig serverConfig, DefaultServerFactory beanFactory) throws Exception {
+  private void scan(ServerConfig serverConfig, DefaultServerFactory beanFactory) throws Exception {
     Set<String> basepackages = serverConfig.getBasepackages();
     if (basepackages == null || basepackages.isEmpty()) {
       throw new IllegalAccessException("basepackage is required ! ");
     }
-    Filter filter = buildFilterChain(serverConfig);
+    List<Filter> filters = buildFilterChain(serverConfig);
 
     for (String basepackage : basepackages) {
       logger.info("scan service at basepackage : " + basepackage);
@@ -104,18 +104,17 @@ public class ProviderConfig {
         ServiceConfig serviceConfig = new ServiceConfig();
         serviceConfig.setServiceType(targetClass);
         ServiceHandler<?> serviceHandler = new ServiceHandler(serviceConfig);
-        serviceHandler.setFilter(filter);
+        serviceHandler.setFilters(filters);
         beanFactory.registerProcessor(serviceHandler);
       }
     }
 
   }
 
-  private Filter buildFilterChain(ServerConfig serverConfig) throws Exception {
+  private List<Filter> buildFilterChain(ServerConfig serverConfig) throws Exception {
     // init filters
-    Set<String> filtersSet = serverConfig.getFilters();
+    List<String> filtersSet = serverConfig.getFilters();
     logger.info("begin scan filters : " + filtersSet.size());
-    Filter head = null;
 
     List<Filter> filters = new ArrayList<Filter>(filtersSet.size());
 
@@ -129,15 +128,8 @@ public class ProviderConfig {
         filters.add(filter);
     }
 
-    for (Filter f : filters) {
-      if (head == null) {
-        head = f;
-        continue;
-      }
-      head.setNext(f);
-    }
 
-    return head;
+    return filters;
   }
 
   private boolean isProviderSideFilter(Class<Filter> clazz) {

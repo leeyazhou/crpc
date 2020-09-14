@@ -84,7 +84,7 @@ public class DefaultInvokerTest {
           }
         });
     server = ServiceLoader.load(TransportFactory.class).load().createServer(configuration, serverFactory);
-    server.start();
+    server.startup();
   }
 
 
@@ -103,6 +103,6 @@ public class DefaultInvokerTest {
   @AfterClass
   public static void afterClass() throws Exception {
     // Thread.sleep(3000);
-    server.stop();
+    server.shutdown();
   }
 }

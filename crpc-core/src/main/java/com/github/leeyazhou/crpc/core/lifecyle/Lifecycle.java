@@ -28,14 +28,14 @@ public interface Lifecycle {
   void init();
 
   /**
-   * start
+   * start up
    */
-  void start();
+  void startup();
 
   /**
-   * stop
+   * shutdown
    */
-  void stop();
+  void shutdown();
 
   /**
    * whether is running?

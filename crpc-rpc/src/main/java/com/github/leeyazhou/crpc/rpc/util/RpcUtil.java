@@ -53,7 +53,7 @@ public class RpcUtil {
         server = transportFactory.createServer(configuration, beanFactory);
         if (servers.putIfAbsent(serverKey, server) == null) {
           server.init();
-          server.start();
+          server.startup();
         }
       }
     }
@@ -65,7 +65,7 @@ public class RpcUtil {
     final String serverKey = configuration.getProtocolConfig().getAddress();
     Server server = servers.remove(serverKey);
     if (server != null) {
-      server.stop();
+      server.shutdown();
     }
   }
 

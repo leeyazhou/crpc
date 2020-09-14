@@ -15,6 +15,7 @@
  */
 package com.github.leeyazhou.crpc.monitor;
 
+import com.github.leeyazhou.crpc.transport.FilterChain;
 import com.github.leeyazhou.crpc.transport.RpcContext;
 import com.github.leeyazhou.crpc.transport.filter.AbstractFilter;
 import com.github.leeyazhou.crpc.transport.protocol.message.ResponseMessage;
@@ -25,10 +26,10 @@ import com.github.leeyazhou.crpc.transport.protocol.message.ResponseMessage;
 public abstract class AbstractMonitor extends AbstractFilter implements Monitor {
 
   @Override
-  public ResponseMessage handle(RpcContext context) {
+  public ResponseMessage doFilter(RpcContext context, FilterChain filterChain) {
     logger.info("Monitor过滤器");
     collect(context);
-    return nextFilter(context);
+    return filterChain.doFilter(context);
   }
 
 }

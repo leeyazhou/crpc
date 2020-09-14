@@ -13,50 +13,57 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-/// **
-// *
-// */
-//
-// package com.github.crpc.transport.filter;
-//
-// import com.github.crpc.protocol.Response;
-// import com.github.leeyazhou.crpc.transport.Filter;
-// import com.github.crpc.transport.FilterChain;
-// import com.github.crpc.transport.RpcContext;
-//
-/// **
-// * @author leeyazhou
-// */
-// public class ApplicationFilterChain implements FilterChain {
-//
-// private Filter next;
-//
-// public ApplicationFilterChain(Filter next) {
-// this.next = next;
-// }
-//
-// public ApplicationFilterChain() {}
-//
-// @Override
-// public Response filter(RpcContext context) {
-// if (next != null) {
-// return next.handle(context);
-// }
-// return null;
-// }
-//
-// /**
-// * @return the next
-// */
-// public Filter getNext() {
-// return next;
-// }
-//
-// /**
-// * @param next the next to set
-// */
-// public void setNext(Filter next) {
-// this.next = next;
-// }
-//
-// }
+
+package com.github.leeyazhou.crpc.transport.filter;
+
+import java.util.ArrayList;
+import java.util.List;
+import com.github.leeyazhou.crpc.transport.Filter;
+import com.github.leeyazhou.crpc.transport.FilterChain;
+import com.github.leeyazhou.crpc.transport.RpcContext;
+import com.github.leeyazhou.crpc.transport.factory.ServiceHandler;
+import com.github.leeyazhou.crpc.transport.protocol.message.ResponseMessage;
+
+/**
+ * 
+ * @author leeyazhou
+ *
+ */
+public class ApplicationFilterChain implements FilterChain {
+
+  private List<Filter> filters;
+  private int currentIndex;
+  private ServiceHandler<?> serviceHandler;
+
+  @Override
+  public ResponseMessage doFilter(RpcContext context) {
+    if (filters != null && currentIndex < filters.size()) {
+      ResponseMessage res = filters.get(currentIndex++).filter(context, this);
+      if (res != null) {
+        return res;
+      }
+    }
+    if (serviceHandler == null) {
+      return null;
+    }
+    return serviceHandler.doHandle(context);
+  }
+
+
+  public ApplicationFilterChain addFilter(Filter filter) {
+    if (this.filters == null) {
+      this.filters = new ArrayList<Filter>();
+    }
+    this.filters.add(filter);
+    return this;
+  }
+
+  public ApplicationFilterChain setFilters(List<Filter> filters) {
+    this.filters = filters;
+    return this;
+  }
+
+  public void setServiceHandler(ServiceHandler<?> serviceHandler) {
+    this.serviceHandler = serviceHandler;
+  }
+}

@@ -77,13 +77,13 @@ public class NettyServerTest {
         });
     server = new NettyServer(configuration, serverFactory, new ChannelManager());
     server.init();
-    server.start();
+    server.startup();
   }
 
   @AfterClass
   public static void afterClass() throws Exception {
     Thread.sleep(2000);
-    server.stop();
+    server.shutdown();
   }
 
   @Test

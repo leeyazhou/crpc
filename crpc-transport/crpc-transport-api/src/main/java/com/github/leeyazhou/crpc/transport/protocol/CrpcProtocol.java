@@ -147,7 +147,8 @@ public class CrpcProtocol implements Protocol {
   }
 
   @Override
-  public Message decode(ByteBufWrapper byteBufWrapper, int originPos) throws Exception {
+  public Message decode(ByteBufWrapper byteBufWrapper) throws Exception {
+    final int originPos = byteBufWrapper.readerIndex();
     if (byteBufWrapper.readableBytes() < HEADER_LEN) {
       byteBufWrapper.setReaderIndex(originPos);
       return null;
@@ -189,9 +190,13 @@ public class CrpcProtocol implements Protocol {
           .setResponse(response.getResponse());
     }
 
-    message.setHeaders(headers).setMessageType(messageType).setMessageCode(messageCode)// .setProtocolType(protocol)
-        .setCodecType(codecType).setId(id).setHeaders(headers);
-
+    message.setHeaders(headers);
+    message.setMessageType(messageType);
+    message.setMessageCode(messageCode);
+    message.setProtocolType(ProtocolType.CRPC);
+    message.setCodecType(codecType);
+    message.setId(id);
+    message.setHeaders(headers);
     return message;
   }
 

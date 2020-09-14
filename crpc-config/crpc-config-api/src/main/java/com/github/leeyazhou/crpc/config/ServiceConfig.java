@@ -40,10 +40,10 @@ public class ServiceConfig<T> extends AbstractLifecycle {
   }
 
   @Override
-  protected void doStart() {}
+  protected void doStartup() {}
 
   @Override
-  protected void doStop() {}
+  protected void doShutdown() {}
 
   public String getName() {
     return name;

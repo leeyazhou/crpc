@@ -31,12 +31,9 @@ import com.github.leeyazhou.crpc.core.exception.ServiceNotFoundException;
 import com.github.leeyazhou.crpc.core.logger.Logger;
 import com.github.leeyazhou.crpc.core.logger.LoggerFactory;
 import com.github.leeyazhou.crpc.core.util.ServiceLoader;
-import com.github.leeyazhou.crpc.transport.Filter;
 import com.github.leeyazhou.crpc.transport.Handler;
 import com.github.leeyazhou.crpc.transport.RpcContext;
 import com.github.leeyazhou.crpc.transport.TransportFactory;
-import com.github.leeyazhou.crpc.transport.filter.CounterFilter;
-import com.github.leeyazhou.crpc.transport.filter.IPFilter;
 import com.github.leeyazhou.crpc.transport.protocol.ProtocolType;
 import com.github.leeyazhou.crpc.transport.protocol.message.RequestMessage;
 import com.github.leeyazhou.crpc.transport.protocol.message.ResponseMessage;
@@ -56,8 +53,6 @@ public abstract class AbstractRpcHandler<T> implements Handler<T>, InvocationHan
   protected ReferConfig<T> referConfig;
   protected final TransportFactory transportFactory = ServiceLoader.load(TransportFactory.class).load();
 
-  protected static Filter filter = null;
-
   public AbstractRpcHandler(ReferConfig<T> referConfig) {
     this(referConfig, ProtocolType.CRPC);
   }
@@ -66,7 +61,6 @@ public abstract class AbstractRpcHandler<T> implements Handler<T>, InvocationHan
     this.referConfig = referConfig;
     this.handlerType = referConfig.getServiceType();
     this.protocolType = protocolType;
-    buildFilterChain();
     initService();
   }
 
@@ -85,16 +79,6 @@ public abstract class AbstractRpcHandler<T> implements Handler<T>, InvocationHan
     this.transportFactory.initService(referConfig);
   }
 
-  private void buildFilterChain() {
-    if (filter == null) {
-      synchronized (AbstractRpcHandler.class) {
-        if (filter == null) {
-          filter = new IPFilter();
-          filter.setNext(new CounterFilter());
-        }
-      }
-    }
-  }
 
   @Override
   public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
