@@ -33,7 +33,7 @@ public class ProviderMain {
   public static void main(String[] args) {
     ApplicationConfig applicationConfig = new ApplicationConfig().setName("quick-start-provider").setVersion("1.0.1");
     ProtocolConfig protocolConfig = new ProtocolConfig().setAddress("crpc://127.0.0.1:25001");
-    ServerConfig serverConfig = new ServerConfig().addBasepackage("com.github.leeyazhou.crpc.service");
+    ServerConfig serverConfig = new ServerConfig().addBasepackage("com.github.leeyazhou.crpc.example.service");
 
     Configuration configuration = new Configuration()
                 .setApplicationConfig(applicationConfig)

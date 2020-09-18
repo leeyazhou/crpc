@@ -26,7 +26,7 @@ import java.util.concurrent.CountDownLatch;
 import com.github.leeyazhou.crpc.config.ApplicationConfig;
 import com.github.leeyazhou.crpc.config.ConsumerConfig;
 import com.github.leeyazhou.crpc.core.URL;
-import com.github.leeyazhou.crpc.service.UserService;
+import com.github.leeyazhou.crpc.example.service.UserService;
 
 /**
  * @author leeyazhou

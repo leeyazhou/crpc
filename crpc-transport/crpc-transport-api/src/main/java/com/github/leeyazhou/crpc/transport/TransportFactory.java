@@ -22,6 +22,7 @@ import com.github.leeyazhou.crpc.config.Configuration;
 import com.github.leeyazhou.crpc.config.ReferConfig;
 import com.github.leeyazhou.crpc.core.URL;
 import com.github.leeyazhou.crpc.core.annotation.SPI;
+import com.github.leeyazhou.crpc.transport.connection.ConnectionManager;
 import com.github.leeyazhou.crpc.transport.factory.ServerFactory;
 import com.github.leeyazhou.crpc.transport.object.SendLimitPolicy;
 

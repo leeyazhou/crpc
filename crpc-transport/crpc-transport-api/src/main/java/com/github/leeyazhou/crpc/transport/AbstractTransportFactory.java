@@ -33,6 +33,7 @@ import com.github.leeyazhou.crpc.core.util.ServiceLoader;
 import com.github.leeyazhou.crpc.registry.NotifyListener;
 import com.github.leeyazhou.crpc.registry.Registry;
 import com.github.leeyazhou.crpc.registry.RegistryFactory;
+import com.github.leeyazhou.crpc.transport.connection.ConnectionManager;
 import com.github.leeyazhou.crpc.transport.loadbalance.LoadBalanceType;
 import com.github.leeyazhou.crpc.transport.loadbalance.RandomLoadBalance;
 import com.github.leeyazhou.crpc.transport.loadbalance.RoundRobinLoadBalance;

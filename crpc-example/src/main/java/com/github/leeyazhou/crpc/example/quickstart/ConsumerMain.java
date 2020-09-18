@@ -21,7 +21,7 @@ package com.github.leeyazhou.crpc.example.quickstart;
 import com.github.leeyazhou.crpc.config.ApplicationConfig;
 import com.github.leeyazhou.crpc.config.ConsumerConfig;
 import com.github.leeyazhou.crpc.core.URL;
-import com.github.leeyazhou.crpc.service.UserService;
+import com.github.leeyazhou.crpc.example.service.UserService;
 
 /**
  * @author leeyazhou
@@ -37,7 +37,7 @@ public class ConsumerMain {
     consumerConfig.setServiceType(UserService.class);
 
     UserService userService = consumerConfig.refer();
-    String message = userService.sayName("CRPC");
+    String message = userService.sayName("crpc");
     System.out.println(message);
   }
 }

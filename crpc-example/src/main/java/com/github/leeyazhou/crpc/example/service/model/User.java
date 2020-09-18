@@ -17,7 +17,7 @@
  * 
  */
 
-package com.github.leeyazhou.crpc.service.model;
+package com.github.leeyazhou.crpc.example.service.model;
 
 import java.io.Serializable;
 

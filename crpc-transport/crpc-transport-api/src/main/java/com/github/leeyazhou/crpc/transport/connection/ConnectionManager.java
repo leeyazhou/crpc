@@ -16,7 +16,7 @@
 /**
  * 
  */
-package com.github.leeyazhou.crpc.transport;
+package com.github.leeyazhou.crpc.transport.connection;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;

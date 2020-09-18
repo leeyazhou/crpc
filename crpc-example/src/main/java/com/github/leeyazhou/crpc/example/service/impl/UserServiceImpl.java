@@ -17,7 +17,7 @@
  * 
  */
 
-package com.github.leeyazhou.crpc.service.impl;
+package com.github.leeyazhou.crpc.example.service.impl;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,23 +27,27 @@ import java.util.TimerTask;
 import java.util.concurrent.atomic.AtomicInteger;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import com.github.leeyazhou.crpc.core.annotation.CRPCService;
-import com.github.leeyazhou.crpc.service.UserService2;
-import com.github.leeyazhou.crpc.service.model.User;
+import com.github.leeyazhou.crpc.example.service.UserService;
+import com.github.leeyazhou.crpc.example.service.UserService2;
+import com.github.leeyazhou.crpc.example.service.model.User;
 
 /**
  * 
  * @author leeyazhou
  */
 @CRPCService
-public class UserServiceImpl2 implements UserService2 {
-
-  private static final Logger logger = LoggerFactory.getLogger(UserServiceImpl2.class);
+public class UserServiceImpl implements UserService {
+  private static final Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
 
   private boolean isInfoEnabled = logger.isInfoEnabled();
   private static final AtomicInteger count = new AtomicInteger(0);
 
   private static final Timer timer = new Timer("request");
+
+  @Autowired
+  UserService2 userService2;
   static {
     timer.scheduleAtFixedRate(new TimerTask() {
 
@@ -73,11 +77,12 @@ public class UserServiceImpl2 implements UserService2 {
   }
 
   @Override
-  public boolean sayWord(String name) {
+  public String sayName(String name) {
+    String message = "My name is " + name;
     if (logger.isInfoEnabled()) {
-      logger.info("my name is {} ", name);
+      logger.info(message);
     }
-    return true;
+    return message;
   }
 
   @Override
@@ -108,6 +113,11 @@ public class UserServiceImpl2 implements UserService2 {
   public byte[] bigData(byte[] data) {
     logger.info("收到数据包长度:" + data.length);
     return data;
+  }
+
+  @Override
+  public void proxyUserService2() {
+    logger.info("userService2 : " + userService2);
   }
 
 }

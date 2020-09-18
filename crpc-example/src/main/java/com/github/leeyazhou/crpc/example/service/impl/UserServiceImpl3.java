@@ -16,11 +16,11 @@
 /**
  * 
  */
-package com.github.leeyazhou.crpc.service.impl;
+package com.github.leeyazhou.crpc.example.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.github.leeyazhou.crpc.service.UserService;
+import com.github.leeyazhou.crpc.example.service.UserService;
 
 /**
  * @author leeyazhou

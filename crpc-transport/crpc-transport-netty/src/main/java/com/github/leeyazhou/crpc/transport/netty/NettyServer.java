@@ -22,10 +22,10 @@ import com.github.leeyazhou.crpc.core.logger.Logger;
 import com.github.leeyazhou.crpc.core.logger.LoggerFactory;
 import com.github.leeyazhou.crpc.core.util.concurrent.NamedThreadFactory;
 import com.github.leeyazhou.crpc.transport.AbstractServer;
-import com.github.leeyazhou.crpc.transport.ConnectionManager;
 import com.github.leeyazhou.crpc.transport.Handler;
 import com.github.leeyazhou.crpc.transport.Server;
 import com.github.leeyazhou.crpc.transport.ServerHandler;
+import com.github.leeyazhou.crpc.transport.connection.ConnectionManager;
 import com.github.leeyazhou.crpc.transport.netty.handler.NettyServerHandler;
 import com.github.leeyazhou.crpc.transport.netty.handler.NettyServerHeartBeatHandler;
 import com.github.leeyazhou.crpc.transport.netty.protocol.NettyProtocolDecoder;
@@ -106,13 +106,11 @@ public class NettyServer extends AbstractServer {
   @Override
   protected void doStartup() {
     ChannelFuture channelFuture =
-        bootStrap.bind(configuration.getProtocolConfig().getHost(), configuration.getProtocolConfig().getPort())
-            .syncUninterruptibly();
+        bootStrap.bind(protocolConfig.getHost(), protocolConfig.getPort()).syncUninterruptibly();
     this.channel = channelFuture.channel();
     Runtime.getRuntime().addShutdownHook(new ShutdownHook(this));
-    logger.info(String.format("Server is running at %s://%s:%s, businessThreads : %s",
-        configuration.getProtocolConfig().getProtocol(), configuration.getProtocolConfig().getHost(),
-        configuration.getProtocolConfig().getPort(), configuration.getServerConfig().getWorker()));
+    logger.info(String.format("Server is running at %s://%s:%s, businessThreads : %s", protocolConfig.getProtocol(),
+        protocolConfig.getHost(), protocolConfig.getPort(), serverConfig.getWorker()));
 
   }
 

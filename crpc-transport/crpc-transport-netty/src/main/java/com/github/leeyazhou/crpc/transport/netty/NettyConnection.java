@@ -24,7 +24,7 @@ import com.github.leeyazhou.crpc.core.exception.CrpcConnectException;
 import com.github.leeyazhou.crpc.core.logger.Logger;
 import com.github.leeyazhou.crpc.core.logger.LoggerFactory;
 import com.github.leeyazhou.crpc.core.util.function.Consumer;
-import com.github.leeyazhou.crpc.transport.Connection;
+import com.github.leeyazhou.crpc.transport.connection.Connection;
 import com.github.leeyazhou.crpc.transport.protocol.message.Message;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelFutureListener;

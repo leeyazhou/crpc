@@ -23,7 +23,7 @@ import com.github.leeyazhou.crpc.core.logger.LoggerFactory;
 import com.github.leeyazhou.crpc.core.util.ExceptionUtil;
 import com.github.leeyazhou.crpc.core.util.function.Consumer;
 import com.github.leeyazhou.crpc.transport.AbstractClient;
-import com.github.leeyazhou.crpc.transport.Connection;
+import com.github.leeyazhou.crpc.transport.connection.Connection;
 import com.github.leeyazhou.crpc.transport.protocol.message.RequestMessage;
 import com.github.leeyazhou.crpc.transport.protocol.message.ResponseMessage;
 import io.netty.bootstrap.Bootstrap;

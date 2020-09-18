@@ -20,6 +20,7 @@
 package com.github.leeyazhou.crpc.transport;
 
 import com.github.leeyazhou.crpc.config.Configuration;
+import com.github.leeyazhou.crpc.config.ProtocolConfig;
 import com.github.leeyazhou.crpc.config.ServerConfig;
 import com.github.leeyazhou.crpc.core.lifecyle.AbstractLifecycle;
 
@@ -30,13 +31,19 @@ public abstract class AbstractServer extends AbstractLifecycle implements Server
 
   protected Configuration configuration;
   protected ServerConfig serverConfig;
+  protected ProtocolConfig protocolConfig;
 
   public AbstractServer(Configuration configuration) {
     this.configuration = configuration;
     this.serverConfig = configuration.getServerConfig();
+    this.protocolConfig = configuration.getProtocolConfig();
   }
 
   public ServerConfig getServerConfig() {
     return serverConfig;
+  }
+
+  public ProtocolConfig getProtocolConfig() {
+    return protocolConfig;
   }
 }

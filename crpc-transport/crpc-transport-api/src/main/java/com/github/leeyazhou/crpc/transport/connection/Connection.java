@@ -16,7 +16,7 @@
 /**
  * 
  */
-package com.github.leeyazhou.crpc.transport;
+package com.github.leeyazhou.crpc.transport.connection;
 
 import com.github.leeyazhou.crpc.core.util.function.Consumer;
 import com.github.leeyazhou.crpc.transport.protocol.message.Message;

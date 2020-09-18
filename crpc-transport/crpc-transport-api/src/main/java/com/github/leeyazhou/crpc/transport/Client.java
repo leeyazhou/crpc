@@ -16,6 +16,7 @@
 package com.github.leeyazhou.crpc.transport;
 
 import com.github.leeyazhou.crpc.core.URL;
+import com.github.leeyazhou.crpc.transport.connection.Connection;
 import com.github.leeyazhou.crpc.transport.protocol.message.Message;
 import com.github.leeyazhou.crpc.transport.protocol.message.RequestMessage;
 import com.github.leeyazhou.crpc.transport.protocol.message.ResponseMessage;
