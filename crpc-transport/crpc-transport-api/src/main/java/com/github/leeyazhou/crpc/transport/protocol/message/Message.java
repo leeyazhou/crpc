@@ -26,7 +26,7 @@ import com.github.leeyazhou.crpc.transport.protocol.ProtocolType;
 /**
  * @author leeyazhou
  */
-public class Message implements Serializable {
+public abstract class Message implements Serializable {
   private static final long serialVersionUID = 1L;
 
   /**
@@ -43,6 +43,7 @@ public class Message implements Serializable {
   private Header[] headers;
 
   private int id;
+  private int timeout;
 
   public Message() {}
 
@@ -73,8 +74,6 @@ public class Message implements Serializable {
     this.codecType = codecType.getCode();
     return this;
   }
-
-
 
   /**
    * 消息类型
@@ -157,5 +156,14 @@ public class Message implements Serializable {
   public Message setMessageCode(MessageCode messageCode) {
     this.messageCode = messageCode.getCode();
     return this;
+  }
+
+  public Message setTimeout(int timeout) {
+    this.timeout = timeout;
+    return this;
+  }
+
+  public int getTimeout() {
+    return timeout;
   }
 }

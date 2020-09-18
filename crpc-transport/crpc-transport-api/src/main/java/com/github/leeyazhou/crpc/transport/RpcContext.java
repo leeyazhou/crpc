@@ -95,7 +95,7 @@ public final class RpcContext {
     return this;
   }
 
-  
+
 
   public RpcContext addAttachement(String key, Object value) {
     if (this.attachements == null) {
@@ -112,6 +112,13 @@ public final class RpcContext {
    */
   public Map<String, Object> getAttachements() {
     return attachements;
+  }
+
+  public Object getAttachement(String key) {
+    if (attachements == null) {
+      return null;
+    }
+    return attachements.get(key);
   }
 
   @Override

@@ -21,10 +21,10 @@ import com.github.leeyazhou.crpc.core.URL;
 import com.github.leeyazhou.crpc.core.logger.Logger;
 import com.github.leeyazhou.crpc.core.logger.LoggerFactory;
 import com.github.leeyazhou.crpc.core.util.ServiceLoader;
-import com.github.leeyazhou.crpc.transport.ChannelManager;
+import com.github.leeyazhou.crpc.transport.ConnectionManager;
 import com.github.leeyazhou.crpc.transport.TransportFactory;
-import com.github.leeyazhou.crpc.transport.netty.NettyChannel;
 import com.github.leeyazhou.crpc.transport.netty.NettyClient;
+import com.github.leeyazhou.crpc.transport.netty.NettyConnection;
 import com.github.leeyazhou.crpc.transport.protocol.ProtocolType;
 import com.github.leeyazhou.crpc.transport.protocol.message.MessageCode;
 import com.github.leeyazhou.crpc.transport.protocol.message.MessageType;
@@ -49,14 +49,14 @@ public class NettyClientHandler extends SimpleChannelInboundHandler<ResponseMess
   private final TransportFactory transportFactory = ServiceLoader.load(TransportFactory.class).load();
 
   private final URL url;
-  private final ChannelManager channelManager;
+  private final ConnectionManager connectionManager;
 
   private final NettyClient client;
 
-  public NettyClientHandler(URL url, NettyClient client, ChannelManager channelManager) {
+  public NettyClientHandler(URL url, NettyClient client, ConnectionManager channelManager) {
     this.url = url;
     this.client = client;
-    this.channelManager = channelManager;
+    this.connectionManager = channelManager;
   }
 
   @Override
@@ -87,7 +87,7 @@ public class NettyClientHandler extends SimpleChannelInboundHandler<ResponseMess
         ctx.close().sync();
         return;
       }
-      client.getConnection().send(ping, 3000);
+      client.getConnection().sendRequest(ping);
     }
   }
 
@@ -96,12 +96,12 @@ public class NettyClientHandler extends SimpleChannelInboundHandler<ResponseMess
     super.channelInactive(ctx);
     transportFactory.getClientManager().removeClient(client);
     client.connect();
-    channelManager.removeClientChannel(url.getAddress());
+    connectionManager.removeClientConnection(url.getAddress());
   }
 
   @Override
   public void channelActive(ChannelHandlerContext ctx) throws Exception {
     super.channelActive(ctx);
-    channelManager.addClientChannel(new NettyChannel(ctx.channel(), url));
+    connectionManager.addClientConnection(new NettyConnection(ctx.channel(), url));
   }
 }

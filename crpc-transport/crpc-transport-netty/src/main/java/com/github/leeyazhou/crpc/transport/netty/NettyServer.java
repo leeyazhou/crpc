@@ -18,21 +18,18 @@ package com.github.leeyazhou.crpc.transport.netty;
 import java.util.concurrent.TimeUnit;
 import com.github.leeyazhou.crpc.config.Configuration;
 import com.github.leeyazhou.crpc.core.Constants;
-import com.github.leeyazhou.crpc.core.exception.ServiceNotFoundException;
 import com.github.leeyazhou.crpc.core.logger.Logger;
 import com.github.leeyazhou.crpc.core.logger.LoggerFactory;
 import com.github.leeyazhou.crpc.core.util.concurrent.NamedThreadFactory;
 import com.github.leeyazhou.crpc.transport.AbstractServer;
-import com.github.leeyazhou.crpc.transport.ChannelManager;
+import com.github.leeyazhou.crpc.transport.ConnectionManager;
 import com.github.leeyazhou.crpc.transport.Handler;
-import com.github.leeyazhou.crpc.transport.RpcContext;
 import com.github.leeyazhou.crpc.transport.Server;
-import com.github.leeyazhou.crpc.transport.factory.ServerFactory;
+import com.github.leeyazhou.crpc.transport.ServerHandler;
 import com.github.leeyazhou.crpc.transport.netty.handler.NettyServerHandler;
 import com.github.leeyazhou.crpc.transport.netty.handler.NettyServerHeartBeatHandler;
 import com.github.leeyazhou.crpc.transport.netty.protocol.NettyProtocolDecoder;
 import com.github.leeyazhou.crpc.transport.netty.protocol.NettyProtocolEncoder;
-import com.github.leeyazhou.crpc.transport.protocol.message.ResponseMessage;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
@@ -57,32 +54,14 @@ public class NettyServer extends AbstractServer {
   private EventLoopGroup bossGroup;
   private EventLoopGroup ioGroup;
   private ServerBootstrap bootStrap;
-  private final Handler<?> handler;
-  private final ServerFactory serverFactory;
+  private final Handler<?> serverHandler;
   private Channel channel;
-  private ChannelManager channelManager;
+  private ConnectionManager connectionManager;
 
-  public NettyServer(Configuration configuration, final ServerFactory serverFactory, ChannelManager channelManager) {
+  public NettyServer(Configuration configuration, ConnectionManager channelManager, ServerHandler serverHandler) {
     super(configuration);
-    this.serverFactory = serverFactory;
-    this.channelManager = channelManager;
-    this.handler = new Handler<ResponseMessage>() {
-
-      @Override
-      public Class<ResponseMessage> getHandlerType() {
-        return ResponseMessage.class;
-      }
-
-      @Override
-      public ResponseMessage handle(RpcContext context) {
-        final String targetInstanceName = context.getRequest().getServiceTypeName();
-        final Handler<?> processor = serverFactory.getServiceHandler(targetInstanceName);
-        if (processor == null) {
-          throw new ServiceNotFoundException(targetInstanceName);
-        }
-        return processor.handle(context);
-      }
-    };
+    this.connectionManager = channelManager;
+    this.serverHandler = serverHandler;
   }
 
   @Override
@@ -111,7 +90,7 @@ public class NettyServer extends AbstractServer {
           new WriteBufferWaterMark(getServerConfig().getLowWaterMarker(), getServerConfig().getHighWaterMarker());
     }
     bootStrap.childOption(ChannelOption.WRITE_BUFFER_WATER_MARK, bufferWaterMark);
-    final NettyServerHandler nettyServerHandler = new NettyServerHandler(handler, serverFactory, channelManager);
+    final NettyServerHandler nettyServerHandler = new NettyServerHandler(serverHandler, connectionManager);
     bootStrap.childHandler(new ChannelInitializer<SocketChannel>() {
       @Override
       public void initChannel(SocketChannel channel) throws Exception {
@@ -140,7 +119,7 @@ public class NettyServer extends AbstractServer {
   @Override
   public void doShutdown() {
     logger.warn("Server stopped! configuration : " + configuration);
-    channelManager.serverClosed();
+    connectionManager.serverClosed();
     if (channel != null) {
       channel.close();
     }

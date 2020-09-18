@@ -24,7 +24,7 @@ import org.junit.Test;
 import com.github.leeyazhou.crpc.core.Constants;
 import com.github.leeyazhou.crpc.core.URL;
 import com.github.leeyazhou.crpc.core.util.concurrent.NamedThreadFactory;
-import com.github.leeyazhou.crpc.transport.ChannelManager;
+import com.github.leeyazhou.crpc.transport.ConnectionManager;
 import com.github.leeyazhou.crpc.transport.netty.handler.NettyClientHandler;
 import com.github.leeyazhou.crpc.transport.netty.handler.NettyClientHeartBeatHandler;
 import com.github.leeyazhou.crpc.transport.netty.protocol.NettyProtocolDecoder;
@@ -54,7 +54,7 @@ public class NettyClientTest extends NettyServerTest {
   public void testSendRequest() {
     final URL url = URL.valueOf("crpc://127.0.0.1:25001").addParameter(Constants.SERVICE_INTERFACE,
         InternalEchoService.class.getName());
-    final ChannelManager channelManager = new ChannelManager();
+    final ConnectionManager channelManager = new ConnectionManager();
     Bootstrap bootStrap = new Bootstrap();
 
     final NettyClient client = new NettyClient(bootStrap, url);

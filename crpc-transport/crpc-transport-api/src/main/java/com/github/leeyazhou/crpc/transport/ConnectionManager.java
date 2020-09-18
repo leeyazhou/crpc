@@ -33,21 +33,21 @@ import com.github.leeyazhou.crpc.transport.protocol.message.ResponseMessage;
  * @author leeyazhou
  *
  */
-public class ChannelManager {
-  private static final Logger logger = LoggerFactory.getLogger(ChannelManager.class);
-  private final ConcurrentMap<String, Channel> clientChannelCache = new ConcurrentHashMap<String, Channel>();
-  private final ConcurrentMap<String, Channel> serverChannelCache = new ConcurrentHashMap<String, Channel>();
+public class ConnectionManager {
+  private static final Logger logger = LoggerFactory.getLogger(ConnectionManager.class);
+  private final ConcurrentMap<String, Connection> clientChannelCache = new ConcurrentHashMap<String, Connection>();
+  private final ConcurrentMap<String, Connection> serverChannelCache = new ConcurrentHashMap<String, Connection>();
 
-  public Channel getClientChannel(String address) {
+  public Connection getClientConnection(String address) {
     return clientChannelCache.get(address);
   }
 
-  public boolean addClientChannel(Channel channel) {
-    if (channel == null) {
+  public boolean addClientConnection(Connection connection) {
+    if (connection == null) {
       return false;
     }
 
-    Channel temp = clientChannelCache.putIfAbsent(channel.getAddress(), channel);
+    Connection temp = clientChannelCache.putIfAbsent(connection.getAddress(), connection);
     if (temp != null) {
       return false;
     }
@@ -55,20 +55,20 @@ public class ChannelManager {
 
   }
 
-  public void removeClientChannel(final String address) {
+  public void removeClientConnection(final String address) {
     clientChannelCache.remove(address);
   }
 
-  public Channel getServerChannel(String address) {
+  public Connection getServerConnection(String address) {
     return serverChannelCache.get(address);
   }
 
-  public boolean addServerChannel(Channel channel) {
-    if (channel == null) {
+  public boolean addServerConnection(Connection connection) {
+    if (connection == null) {
       return false;
     }
 
-    Channel temp = serverChannelCache.putIfAbsent(channel.getAddress(), channel);
+    Connection temp = serverChannelCache.putIfAbsent(connection.getAddress(), connection);
     if (temp != null) {
       return false;
     }
@@ -76,6 +76,10 @@ public class ChannelManager {
 
   }
 
+  /**
+   * 
+   * @param address address, for example: crpc://127.0.0.1:25001
+   */
   public void removeServerChannel(final String address) {
     serverChannelCache.remove(address);
   }
@@ -85,9 +89,9 @@ public class ChannelManager {
     ResponseMessage message = new ResponseMessage();
     message.setCodecType(CodecType.JDK_CODEC).setProtocolType(ProtocolType.CRPC).setMessageType(MessageType.RESPONSE);
     message.setMessageCode(MessageCode.MESSAGE_SHUTDOWN);
-    for (Map.Entry<String, Channel> entry : serverChannelCache.entrySet()) {
+    for (Map.Entry<String, Connection> entry : serverChannelCache.entrySet()) {
       logger.info("通知关闭通道：" + entry.getKey() + ", channel : " + entry.getValue());
-      entry.getValue().send(message, 3000);
+      entry.getValue().sendRequest(message);
     }
     serverChannelCache.clear();
   }

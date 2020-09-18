@@ -21,8 +21,10 @@ package com.github.leeyazhou.crpc.transport.netty;
 import com.github.leeyazhou.crpc.core.Constants;
 import com.github.leeyazhou.crpc.core.URL;
 import com.github.leeyazhou.crpc.core.exception.CrpcConnectException;
+import com.github.leeyazhou.crpc.core.logger.Logger;
+import com.github.leeyazhou.crpc.core.logger.LoggerFactory;
 import com.github.leeyazhou.crpc.core.util.function.Consumer;
-import com.github.leeyazhou.crpc.transport.Channel;
+import com.github.leeyazhou.crpc.transport.Connection;
 import com.github.leeyazhou.crpc.transport.protocol.message.Message;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelFutureListener;
@@ -31,35 +33,37 @@ import io.netty.channel.ChannelFutureListener;
  * @author leeyazhou
  *
  */
-public class NettyChannel implements Channel {
+public class NettyConnection implements Connection {
+  private static final Logger logger = LoggerFactory.getLogger(NettyConnection.class);
   private final io.netty.channel.Channel channel;
   private final String serviceName;
   private final URL url;
 
-  public NettyChannel(io.netty.channel.Channel channel, URL url) {
+  public NettyConnection(io.netty.channel.Channel channel, URL url) {
     this.channel = channel;
     this.serviceName = url.getParameter(Constants.APPLICATION, null);
     this.url = url;
   }
 
   @Override
-  public void send(Message request, int timeout) {
-    send(request, timeout, new Consumer<Boolean>() {
-      
+  public void sendRequest(Message request) {
+    sendRequest(request, new Consumer<Boolean>() {
+
       @Override
       public void onError(Throwable throwable) {
-        
+
       }
-      
+
       @Override
       public void accept(Boolean t) {
-        
+
       }
     });
   }
-  
+
   @Override
-  public void send(final Message request, final int timeout, final Consumer<Boolean> consumer) {
+  public void sendRequest(final Message request, final Consumer<Boolean> consumer) {
+    final long timeout = request.getTimeout();
     final long beginTime = System.currentTimeMillis();
     // requestWrapper.getMessageLen();
     ChannelFuture writeFuture = channel.writeAndFlush(request);
@@ -92,6 +96,25 @@ public class NettyChannel implements Channel {
         }
         Exception ex = new CrpcConnectException(errorMsg.toString(), future.cause());
         consumer.onError(ex);
+      }
+    });
+  }
+
+  @Override
+  public void sendResponse(Message request) {
+    sendResponse(request, null);
+  }
+
+  @Override
+  public void sendResponse(final Message response, final Consumer<Boolean> consumer) {
+    this.channel.writeAndFlush(response).addListener(new ChannelFutureListener() {
+      public void operationComplete(ChannelFuture future) throws Exception {
+        if (future.isSuccess()) {
+          consumer.accept(true);
+        } else {
+          consumer.onError(future.cause());
+          logger.error("server write response error, id : " + response.id(), future.cause());
+        }
       }
     });
   }

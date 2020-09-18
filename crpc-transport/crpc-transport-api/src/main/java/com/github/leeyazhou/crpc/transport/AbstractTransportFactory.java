@@ -45,7 +45,7 @@ public abstract class AbstractTransportFactory implements TransportFactory, Noti
   private static final Logger logger = LoggerFactory.getLogger(AbstractTransportFactory.class);
   private boolean isSendLimitEnabled = false;
   // Cache client
-  private final ChannelManager channelManager = new ChannelManager();
+  private final ConnectionManager channelManager = new ConnectionManager();
   private final ClientManager clientManager = new ClientManager(this);
 
   protected Configuration configuration;
@@ -180,7 +180,7 @@ public abstract class AbstractTransportFactory implements TransportFactory, Noti
   }
 
   @Override
-  public ChannelManager getChannelManager() {
+  public ConnectionManager getConnectionManager() {
     return channelManager;
   }
 }

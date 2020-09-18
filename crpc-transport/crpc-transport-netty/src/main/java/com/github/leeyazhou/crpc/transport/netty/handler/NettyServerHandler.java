@@ -16,22 +16,17 @@
 package com.github.leeyazhou.crpc.transport.netty.handler;
 
 import java.io.IOException;
-import java.net.InetSocketAddress;
 import java.util.concurrent.atomic.AtomicInteger;
 import com.github.leeyazhou.crpc.core.Constants;
 import com.github.leeyazhou.crpc.core.URL;
 import com.github.leeyazhou.crpc.core.logger.Logger;
 import com.github.leeyazhou.crpc.core.logger.LoggerFactory;
-import com.github.leeyazhou.crpc.core.util.AddressUtil;
-import com.github.leeyazhou.crpc.transport.ChannelManager;
+import com.github.leeyazhou.crpc.transport.ConnectionManager;
 import com.github.leeyazhou.crpc.transport.Handler;
 import com.github.leeyazhou.crpc.transport.RpcContext;
-import com.github.leeyazhou.crpc.transport.factory.ServerFactory;
-import com.github.leeyazhou.crpc.transport.netty.NettyChannel;
+import com.github.leeyazhou.crpc.transport.netty.NettyConnection;
+import com.github.leeyazhou.crpc.transport.netty.util.ChannelUtil;
 import com.github.leeyazhou.crpc.transport.protocol.message.RequestMessage;
-import com.github.leeyazhou.crpc.transport.protocol.message.ResponseMessage;
-import io.netty.channel.ChannelFuture;
-import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandler.Sharable;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
@@ -53,13 +48,11 @@ public class NettyServerHandler extends SimpleChannelInboundHandler<RequestMessa
 
   private static final boolean DEBUG_ENABLED = logger.isDebugEnabled();
   private final Handler<?> serverHandler;
-  private final ServerFactory serverFactory;
-  private final ChannelManager channelManager;
+  private final ConnectionManager connectionManager;
 
-  public NettyServerHandler(Handler<?> serverHandler, ServerFactory serverFactory, ChannelManager channelManager) {
+  public NettyServerHandler(Handler<?> serverHandler, ConnectionManager channelManager) {
     this.serverHandler = serverHandler;
-    this.serverFactory = serverFactory;
-    this.channelManager = channelManager;
+    this.connectionManager = channelManager;
   }
 
   @Override
@@ -75,46 +68,12 @@ public class NettyServerHandler extends SimpleChannelInboundHandler<RequestMessa
   @Override
   protected void channelRead0(final ChannelHandlerContext ctx, final RequestMessage request) throws Exception {
     idleCount.set(0);
-    serverFactory.getExecutorService().execute(new Runnable() {
-      private long beginTime = System.currentTimeMillis();
 
-      @Override
-      public void run() {
-        try {
-          returnResponse(ctx, request, beginTime);
-        } catch (Exception e) {
-          logger.error("", e);
-        }
-      }
-    });
-  }
-
-  private void returnResponse(final ChannelHandlerContext ctx, final RequestMessage request, long beginTime) {
-    long invokeTime;
-    // already timeout,so not return
-    if ((invokeTime = System.currentTimeMillis() - beginTime) >= request.getTimeout() && logger.isWarnEnabled()) {
-      logger.warn("timeout(" + request.getTimeout() + "ms < invoketime : " + invokeTime
-          + "ms), so give up send response to client, requestId is:" + request.id() + ", client address : "
-          + ctx.channel().remoteAddress());
-      return;
-    }
     RpcContext context = RpcContext.providerContext(request);
-    ResponseMessage response = serverHandler.handle(context);
-    // already timeout,so not return
-    if ((invokeTime = System.currentTimeMillis() - beginTime) >= request.getTimeout() && logger.isWarnEnabled()) {
-      logger.warn("timeout(" + request.getTimeout() + "ms < invoketime : " + invokeTime
-          + "ms), so give up send response to client, requestId is:" + request.id() + ", client address : "
-          + ctx.channel().remoteAddress());
-      return;
-    }
-    ctx.channel().writeAndFlush(response).addListener(new ChannelFutureListener() {
-      public void operationComplete(ChannelFuture future) throws Exception {
-        if (!future.isSuccess()) {
-          logger.error("server write response error, request id is: " + request.id(), future.cause());
-        }
-      }
-    });
+    URL url = ChannelUtil.toUrl(ctx);
+    context.addAttachement("url", url);
 
+    serverHandler.handle(context);
   }
 
   @Override
@@ -123,9 +82,8 @@ public class NettyServerHandler extends SimpleChannelInboundHandler<RequestMessa
     if (logger.isInfoEnabled()) {
       logger.info("channel active from " + ctx.channel().remoteAddress());
     }
-    InetSocketAddress address = (InetSocketAddress) ctx.channel().remoteAddress();
-    channelManager
-        .addServerChannel(new NettyChannel(ctx.channel(), new URL("crpc", address.getHostName(), address.getPort())));
+    URL url = ChannelUtil.toUrl(ctx);
+    connectionManager.addServerConnection(new NettyConnection(ctx.channel(), url));
   }
 
   @Override
@@ -147,8 +105,8 @@ public class NettyServerHandler extends SimpleChannelInboundHandler<RequestMessa
   @Override
   public void channelInactive(ChannelHandlerContext ctx) throws Exception {
     super.channelInactive(ctx);
-    String key = AddressUtil.toAddressString((InetSocketAddress) ctx.channel().remoteAddress());
-    channelManager.removeServerChannel(key);
+    URL url = ChannelUtil.toUrl(ctx);
+    connectionManager.removeServerChannel(url.getAddress());
   }
 
 }

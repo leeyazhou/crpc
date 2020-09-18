@@ -23,7 +23,7 @@ import com.github.leeyazhou.crpc.core.logger.LoggerFactory;
 import com.github.leeyazhou.crpc.core.util.ExceptionUtil;
 import com.github.leeyazhou.crpc.core.util.function.Consumer;
 import com.github.leeyazhou.crpc.transport.AbstractClient;
-import com.github.leeyazhou.crpc.transport.Channel;
+import com.github.leeyazhou.crpc.transport.Connection;
 import com.github.leeyazhou.crpc.transport.protocol.message.RequestMessage;
 import com.github.leeyazhou.crpc.transport.protocol.message.ResponseMessage;
 import io.netty.bootstrap.Bootstrap;
@@ -33,7 +33,7 @@ import io.netty.channel.ChannelFutureListener;
 public class NettyClient extends AbstractClient {
   private static final Logger logger = LoggerFactory.getLogger(NettyClient.class);
   private final AtomicInteger idleCount = new AtomicInteger(0);
-  private volatile Channel channel;
+  private volatile Connection channel;
 
   private final Bootstrap bootStrap;
 
@@ -43,8 +43,8 @@ public class NettyClient extends AbstractClient {
   }
 
   @Override
-  public void doRequest(final RequestMessage request, int timeout) throws Exception {
-    getConnection().send(request, timeout, new Consumer<Boolean>() {
+  public void doRequest(final RequestMessage request) throws Exception {
+    getConnection().sendRequest(request, new Consumer<Boolean>() {
 
       @Override
       public void onError(Throwable exception) {
@@ -61,6 +61,9 @@ public class NettyClient extends AbstractClient {
       @Override
       public void accept(Boolean t) {
         // do nothing
+        if (request.isOneWay()) {
+          NettyClient.this.receiveResponse(null);
+        }
       }
     });
 
@@ -87,7 +90,7 @@ public class NettyClient extends AbstractClient {
         }
       }
     }).syncUninterruptibly();
-    this.channel = new NettyChannel(channelFuture.channel(), getUrl());
+    this.channel = new NettyConnection(channelFuture.channel(), getUrl());
     return channelFuture.awaitUninterruptibly().isSuccess();
   }
 
@@ -98,7 +101,7 @@ public class NettyClient extends AbstractClient {
   }
 
   @Override
-  public Channel getConnection() {
+  public Connection getConnection() {
     return this.channel;
   }
 

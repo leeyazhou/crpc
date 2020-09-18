@@ -48,12 +48,12 @@ public abstract class AbstractClient implements Client {
     responses.putIfAbsent(request.id(), rpcResult);
     try {
       if (isDebugEnabled) {
-        logger.debug("client ready to send message, request id: " + request.id());
+        logger.debug("client ready to send request message, request id: " + request.id());
       }
       transportFactory.checkSendLimit();
-      doRequest(request, request.getTimeout());
+      doRequest(request);
       if (isDebugEnabled) {
-        logger.debug("client write message to send buffer,wait for response,request id: " + request.id());
+        logger.debug("client write message to send buffer, wait for response,request id: " + request.id());
       }
     } catch (Throwable err) {
       responses.remove(request.id());
@@ -83,8 +83,8 @@ public abstract class AbstractClient implements Client {
       }
     }
     if (response == null) {
-      String errorMsg = "receive response timeout(" + request.getTimeout() + " ms),server is: " + this.url.getHost()
-          + ":" + this.url.getPort() + " request id is:" + request.id() + ", queue : " + responses.size();
+      String errorMsg = "receive response timeout(" + request.getTimeout() + " ms), server is: " + this.url.getHost()
+          + ":" + this.url.getPort() + ", request id is:" + request.id() + ", queue size : " + responses.size();
       throw new TimeoutException(errorMsg);
     } else if (response.isError()) {
       StringBuilder sb = new StringBuilder("server error, server is: [");
@@ -129,10 +129,9 @@ public abstract class AbstractClient implements Client {
    * send request to os sendbuffer,must ensure write result
    * 
    * @param request {@link RequestMessage}
-   * @param timeout timeout
    * @throws Exception any exception
    */
-  public abstract void doRequest(RequestMessage request, int timeout) throws Exception;
+  public abstract void doRequest(RequestMessage request) throws Exception;
 
   /**
    * result holder
@@ -140,7 +139,7 @@ public abstract class AbstractClient implements Client {
    * @author leeyazhou
    *
    */
-  class RpcResult {
+  private class RpcResult {
     private final CountDownLatch countDownLatch;
     private ResponseMessage response;
 

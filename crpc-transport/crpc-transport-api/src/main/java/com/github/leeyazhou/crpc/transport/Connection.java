@@ -25,14 +25,18 @@ import com.github.leeyazhou.crpc.transport.protocol.message.Message;
  * @author leeyazhou
  *
  */
-public interface Channel {
+public interface Connection {
 
   String getAddress();
 
-  void send(Message request, int timeout, final Consumer<Boolean> consumer);
+  void sendRequest(Message request, Consumer<Boolean> consumer);
 
-  void send(Message request, int timeout);
+  void sendRequest(Message request);
 
   boolean isConnected();
+
+  void sendResponse(Message request, Consumer<Boolean> consumer);
+
+  void sendResponse(Message request);
 
 }
