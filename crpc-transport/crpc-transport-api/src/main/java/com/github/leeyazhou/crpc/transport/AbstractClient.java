@@ -17,7 +17,6 @@ package com.github.leeyazhou.crpc.transport;
 
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
-import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import com.github.leeyazhou.crpc.core.URL;
 import com.github.leeyazhou.crpc.core.exception.CrpcException;
@@ -133,29 +132,4 @@ public abstract class AbstractClient implements Client {
    */
   public abstract void doRequest(RequestMessage request) throws Exception;
 
-  /**
-   * result holder
-   * 
-   * @author leeyazhou
-   *
-   */
-  private class RpcResult {
-    private final CountDownLatch countDownLatch;
-    private ResponseMessage response;
-
-    public RpcResult() {
-      countDownLatch = new CountDownLatch(1);
-    }
-
-    public ResponseMessage getResponse(long timeout, TimeUnit unit) throws InterruptedException {
-      countDownLatch.await(timeout, unit);
-      return response;
-    }
-
-    public void setResponse(ResponseMessage response) {
-      this.response = response;
-      countDownLatch.countDown();
-    }
-
-  }
 }

@@ -16,22 +16,29 @@
 /**
  * 
  */
+package com.github.leeyazhou.crpc.config.parser;
 
-package com.github.leeyazhou.crpc.filter;
-
-import com.github.leeyazhou.crpc.rpc.api.Handler;
-import com.github.leeyazhou.crpc.rpc.api.Invocation;
-import com.github.leeyazhou.crpc.rpc.api.Result;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import com.github.leeyazhou.crpc.config.ApplicationConfig;
+import com.github.leeyazhou.crpc.config.Configuration;
 
 /**
  * @author leeyazhou
+ *
  */
-public class IPFilter extends AbstractFilter {
+public class ApplicationConfigParser extends AbstractParser<ApplicationConfig> {
+
+  public ApplicationConfigParser(Configuration configuration) {
+    super(configuration);
+  }
 
   @Override
-  protected Result doFilter(Handler<?> handler, Invocation context) {
-    logger.info("IP过滤器:" + context);
-    return handler.handle(context);
+  public ApplicationConfig parse(Node node) {
+    ApplicationConfig applicationConfig = new ApplicationConfig();
+
+    parseProperties((Element) node, applicationConfig);
+    return applicationConfig;
   }
 
 }

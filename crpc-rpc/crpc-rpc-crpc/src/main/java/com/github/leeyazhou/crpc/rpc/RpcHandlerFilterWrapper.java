@@ -16,10 +16,12 @@
 /**
  * 
  */
-package com.github.leeyazhou.crpc.transport.factory;
+package com.github.leeyazhou.crpc.rpc;
 
+import java.util.ArrayList;
 import java.util.List;
-import com.github.leeyazhou.crpc.config.ServiceConfig;
+import com.github.leeyazhou.crpc.config.ReferConfig;
+import com.github.leeyazhou.crpc.core.util.ServiceLoader;
 import com.github.leeyazhou.crpc.filter.Filter;
 import com.github.leeyazhou.crpc.rpc.api.Handler;
 import com.github.leeyazhou.crpc.rpc.api.Invocation;
@@ -29,40 +31,42 @@ import com.github.leeyazhou.crpc.rpc.api.Result;
  * @author leeyazhou
  *
  */
-public class ServiceHandlerFilterWrapper<T> implements Handler<T> {
-  private ServiceConfig<T> serviceConfig;
-  private ServiceHandler<T> serviceHandler;
+public class RpcHandlerFilterWrapper<T> implements Handler<T> {
+  private ReferConfig<T> referConfig;
   private Handler<T> handler;
   private List<Filter> filters;
 
-  public ServiceHandlerFilterWrapper(ServiceConfig<T> serviceConfig, List<Filter> filters) {
-    this.serviceConfig = serviceConfig;
-    this.filters = filters;
-    this.serviceHandler = new ServiceHandler<T>(this.serviceConfig);
-    this.handler = buildHandlerChain(serviceHandler, this.filters);
+  public RpcHandlerFilterWrapper(ReferConfig<T> referConfig) {
+    this.referConfig = referConfig;
+    this.filters = buildFilters();
+    this.handler = buildHandlerChain();
   }
 
-  @Override
-  public Class<T> getHandlerType() {
-    return serviceConfig.getServiceType();
+
+
+  private List<Filter> buildFilters() {
+    this.filters = new ArrayList<Filter>();
+    if (referConfig.getFilters() != null) {
+      for (String filterStr : referConfig.getFilters()) {
+        filters.add(ServiceLoader.load(Filter.class).load(filterStr));
+      }
+    }
+    return filters;
   }
 
-  @Override
-  public Result handle(Invocation context) {
-    return this.handler.handle(context);
-  }
 
-  private Handler<T> buildHandlerChain(final ServiceHandler<T> serviceHandler, List<Filter> filters) {
-    Handler<T> last = serviceHandler;
+
+  private Handler<T> buildHandlerChain() {
+    Handler<T> last = new RpcHandler<T>(referConfig);
     if (filters != null) {
       for (int i = filters.size() - 1; i >= 0; i--) {
         final Filter filter = filters.get(i);
-        final Handler<?> next = last;
+        final Handler<T> next = last;
         last = new Handler<T>() {
 
           @Override
           public Class<T> getHandlerType() {
-            return serviceHandler.getHandlerType();
+            return next.getHandlerType();
           }
 
           @Override
@@ -70,10 +74,22 @@ public class ServiceHandlerFilterWrapper<T> implements Handler<T> {
             return filter.filter(next, context);
           }
         };
-
       }
     }
     return last;
   }
 
+
+
+  @Override
+  public Result handle(Invocation context) {
+    return handler.handle(context);
+  }
+
+
+
+  @Override
+  public Class<T> getHandlerType() {
+    return referConfig.getServiceType();
+  }
 }

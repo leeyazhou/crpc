@@ -26,33 +26,11 @@
         <version>1.0.3-SNAPSHOT</version>
     </parent>
     <artifactId>crpc-rpc</artifactId>
-    <packaging>jar</packaging>
+    <packaging>pom</packaging>
 
-    <dependencies>
-        <dependency>
-            <groupId>com.github.leeyazhou</groupId>
-            <artifactId>crpc-config-api</artifactId>
-            <version>${project.parent.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.github.leeyazhou</groupId>
-            <artifactId>crpc-registry-api</artifactId>
-            <version>${project.parent.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.github.leeyazhou</groupId>
-            <artifactId>crpc-transport-api</artifactId>
-            <version>${project.parent.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.github.leeyazhou</groupId>
-            <artifactId>crpc-transport-netty</artifactId>
-            <version>${project.parent.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.javassist</groupId>
-            <artifactId>javassist</artifactId>
-        </dependency>
-    </dependencies>
+    <modules>
+    	<module>crpc-rpc-api</module>
+        <module>crpc-rpc-crpc</module>
+    </modules>
 
 </project>

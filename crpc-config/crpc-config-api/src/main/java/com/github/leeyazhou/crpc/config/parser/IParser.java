@@ -13,25 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package com.github.leeyazhou.crpc.config.parser;
+
+import org.w3c.dom.Node;
+
 /**
  * 
- */
-
-package com.github.leeyazhou.crpc.filter;
-
-import com.github.leeyazhou.crpc.rpc.api.Handler;
-import com.github.leeyazhou.crpc.rpc.api.Invocation;
-import com.github.leeyazhou.crpc.rpc.api.Result;
-
-/**
  * @author leeyazhou
+ *
+ * @param <T> 范型
  */
-public class IPFilter extends AbstractFilter {
-
-  @Override
-  protected Result doFilter(Handler<?> handler, Invocation context) {
-    logger.info("IP过滤器:" + context);
-    return handler.handle(context);
-  }
-
+public interface IParser<T> {
+  T parse(Node node);
 }

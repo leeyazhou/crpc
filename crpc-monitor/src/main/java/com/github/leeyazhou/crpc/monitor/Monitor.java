@@ -19,7 +19,7 @@
 
 package com.github.leeyazhou.crpc.monitor;
 
-import com.github.leeyazhou.crpc.transport.Invocation;
+import com.github.leeyazhou.crpc.rpc.api.Invocation;
 
 /**
  * @author leeyazhou

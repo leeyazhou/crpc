@@ -16,22 +16,30 @@
 /**
  * 
  */
-
-package com.github.leeyazhou.crpc.filter;
-
-import com.github.leeyazhou.crpc.rpc.api.Handler;
-import com.github.leeyazhou.crpc.rpc.api.Invocation;
-import com.github.leeyazhou.crpc.rpc.api.Result;
+package com.github.leeyazhou.crpc.rpc.api;
 
 /**
+ * 
+ * 处理器
+ * 
  * @author leeyazhou
+ *
  */
-public class IPFilter extends AbstractFilter {
+public interface Handler<T> {
 
-  @Override
-  protected Result doFilter(Handler<?> handler, Invocation context) {
-    logger.info("IP过滤器:" + context);
-    return handler.handle(context);
-  }
+  /**
+   * 处理器代理类
+   * 
+   * @return 处理器代理类
+   */
+  Class<T> getHandlerType();
+
+  /**
+   * 请求处理
+   * 
+   * @param context 请求上下文
+   * @return 结果 {@link Result}
+   */
+  Result handle(Invocation context);
 
 }

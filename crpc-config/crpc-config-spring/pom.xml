@@ -38,7 +38,7 @@
         </dependency>
         <dependency>
             <groupId>com.github.leeyazhou</groupId>
-            <artifactId>crpc-rpc</artifactId>
+            <artifactId>crpc-rpc-crpc</artifactId>
             <version>${project.parent.version}</version>
         </dependency>
         <dependency>

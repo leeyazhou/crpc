@@ -46,5 +46,10 @@
             <artifactId>crpc-registry-api</artifactId>
             <version>${project.parent.version}</version>
         </dependency>
+        <dependency>
+			<groupId>com.github.leeyazhou</groupId>
+			<artifactId>crpc-filter</artifactId>
+			<version>${project.parent.version}</version>
+		</dependency>
     </dependencies>
 </project>

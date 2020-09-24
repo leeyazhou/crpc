@@ -26,12 +26,16 @@ import com.github.leeyazhou.crpc.rpc.api.Result;
 /**
  * @author leeyazhou
  */
-public class IPFilter extends AbstractFilter {
+public interface Filter {
 
-  @Override
-  protected Result doFilter(Handler<?> handler, Invocation context) {
-    logger.info("IP过滤器:" + context);
-    return handler.handle(context);
-  }
+
+  /**
+   * filter
+   * 
+   * @param handler handler
+   * @param context {@link Invocation}
+   * @return {@link Result}
+   */
+  Result filter(Handler<?> handler, Invocation context);
 
 }

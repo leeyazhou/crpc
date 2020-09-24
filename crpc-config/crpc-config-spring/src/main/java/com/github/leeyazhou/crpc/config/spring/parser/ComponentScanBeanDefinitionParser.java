@@ -18,7 +18,6 @@ package com.github.leeyazhou.crpc.config.spring.parser;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
-
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.config.BeanDefinitionHolder;
 import org.springframework.beans.factory.config.RuntimeBeanReference;
@@ -35,12 +34,12 @@ import org.w3c.dom.Element;
 import com.github.leeyazhou.crpc.config.Configuration;
 import com.github.leeyazhou.crpc.config.spring.ServiceFactoryBean;
 import com.github.leeyazhou.crpc.config.spring.SpringBeanFactory;
-import com.github.leeyazhou.crpc.transport.Filter;
 import com.github.leeyazhou.crpc.core.annotation.CRPCService;
 import com.github.leeyazhou.crpc.core.logger.Logger;
 import com.github.leeyazhou.crpc.core.logger.LoggerFactory;
 import com.github.leeyazhou.crpc.core.util.ServiceLoader;
 import com.github.leeyazhou.crpc.core.util.StringUtil;
+import com.github.leeyazhou.crpc.filter.Filter;
 
 /**
  * 

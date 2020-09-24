@@ -33,7 +33,7 @@ import com.github.leeyazhou.crpc.core.util.concurrent.TaskQueue;
 import com.github.leeyazhou.crpc.core.util.concurrent.ThreadPoolExecutor;
 import com.github.leeyazhou.crpc.core.util.object.RegistryType;
 import com.github.leeyazhou.crpc.registry.RegistryFactory;
-import com.github.leeyazhou.crpc.transport.Handler;
+import com.github.leeyazhou.crpc.rpc.api.Handler;
 
 /**
  * @author leeyazhou
