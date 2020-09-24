@@ -28,8 +28,8 @@ import com.github.leeyazhou.crpc.transport.connection.Connection;
 import com.github.leeyazhou.crpc.transport.protocol.message.RequestMessage;
 import com.github.leeyazhou.crpc.transport.protocol.message.ResponseMessage;
 import com.github.leeyazhou.crpc.transport.protocol.payload.Payload;
-import com.github.leeyazhou.crpc.transport.protocol.payload.RequestBody;
-import com.github.leeyazhou.crpc.transport.protocol.payload.ResponseBody;
+import com.github.leeyazhou.crpc.transport.protocol.payload.RequestPayloadBody;
+import com.github.leeyazhou.crpc.transport.protocol.payload.ResponsePayloadBody;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelFutureListener;
 
@@ -79,7 +79,7 @@ public class NettyConnection implements Connection {
     payLoad.setHeaders(request.getHeaders());
     payLoad.setCodecType(request.getCodecType());
 
-    RequestBody body = new RequestBody();
+    RequestPayloadBody body = new RequestPayloadBody();
     payLoad.setPayloadBody(body);
     body.setArgs(request.getArgs());
     body.setArgTypes(request.getArgTypes());
@@ -90,7 +90,7 @@ public class NettyConnection implements Connection {
 
 
 
-    ChannelFuture writeFuture = channel.writeAndFlush(request);
+    ChannelFuture writeFuture = channel.writeAndFlush(payLoad);
     // use listener to avoid wait for write & thread context switch
     writeFuture.addListener(new ChannelFutureListener() {
       public void operationComplete(ChannelFuture future) throws Exception {
@@ -150,13 +150,13 @@ public class NettyConnection implements Connection {
     payLoad.setHeaders(response.getHeaders());
     payLoad.setCodecType(response.getCodecType());
 
-    ResponseBody body = new ResponseBody();
+    ResponsePayloadBody body = new ResponsePayloadBody();
     payLoad.setPayloadBody(body);
     body.setError(response.isError());
     body.setResponse(response.getResponse());
     body.setResponseClassName(response.getResponseClassName());
 
-    this.channel.writeAndFlush(response).addListener(new ChannelFutureListener() {
+    this.channel.writeAndFlush(payLoad).addListener(new ChannelFutureListener() {
       public void operationComplete(ChannelFuture future) throws Exception {
         if (future.isSuccess()) {
           consumer.accept(true);

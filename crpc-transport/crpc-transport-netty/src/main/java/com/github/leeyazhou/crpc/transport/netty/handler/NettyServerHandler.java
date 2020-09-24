@@ -26,7 +26,8 @@ import com.github.leeyazhou.crpc.rpc.Invocation;
 import com.github.leeyazhou.crpc.transport.connection.ConnectionManager;
 import com.github.leeyazhou.crpc.transport.netty.NettyConnection;
 import com.github.leeyazhou.crpc.transport.netty.util.ChannelUtil;
-import com.github.leeyazhou.crpc.transport.protocol.message.RequestMessage;
+import com.github.leeyazhou.crpc.transport.protocol.payload.Payload;
+import com.github.leeyazhou.crpc.transport.protocol.payload.RequestPayloadBody;
 import io.netty.channel.ChannelHandler.Sharable;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
@@ -39,7 +40,7 @@ import io.netty.handler.timeout.IdleStateEvent;
  *
  */
 @Sharable
-public class NettyServerHandler extends SimpleChannelInboundHandler<RequestMessage> {
+public class NettyServerHandler extends SimpleChannelInboundHandler<Payload> {
 
   private static final Logger logger = LoggerFactory.getLogger(NettyServerHandler.class);
 
@@ -66,9 +67,11 @@ public class NettyServerHandler extends SimpleChannelInboundHandler<RequestMessa
   }
 
   @Override
-  protected void channelRead0(final ChannelHandlerContext ctx, final RequestMessage request) throws Exception {
+  protected void channelRead0(final ChannelHandlerContext ctx, final Payload payload) throws Exception {
     idleCount.set(0);
 
+    RequestPayloadBody request = (RequestPayloadBody) payload.getPayloadBody();
+    
     Invocation invocation = new Invocation();
     invocation.setArgs(request.getArgs());
     invocation.setArgTypes(request.getArgTypes());
@@ -79,7 +82,7 @@ public class NettyServerHandler extends SimpleChannelInboundHandler<RequestMessa
 
     URL url = ChannelUtil.toUrl(ctx);
     invocation.addAttachement("url", url);
-    invocation.addAttachement("requestMessage", request);
+    invocation.addAttachement("payload", payload);
 
     serverHandler.handle(invocation);
   }

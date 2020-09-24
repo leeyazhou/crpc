@@ -30,6 +30,8 @@ import com.github.leeyazhou.crpc.transport.protocol.message.MessageCode;
 import com.github.leeyazhou.crpc.transport.protocol.message.MessageType;
 import com.github.leeyazhou.crpc.transport.protocol.message.RequestMessage;
 import com.github.leeyazhou.crpc.transport.protocol.message.ResponseMessage;
+import com.github.leeyazhou.crpc.transport.protocol.payload.Payload;
+import com.github.leeyazhou.crpc.transport.protocol.payload.ResponsePayloadBody;
 import io.netty.channel.ChannelHandler.Sharable;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
@@ -40,7 +42,7 @@ import io.netty.handler.timeout.IdleStateEvent;
  * @author leeyazhou
  */
 @Sharable
-public class NettyClientHandler extends SimpleChannelInboundHandler<ResponseMessage> {
+public class NettyClientHandler extends SimpleChannelInboundHandler<Payload> {
 
   private static final Logger logger = LoggerFactory.getLogger(NettyClientHandler.class);
   private static final RequestMessage ping =
@@ -68,11 +70,26 @@ public class NettyClientHandler extends SimpleChannelInboundHandler<ResponseMess
   }
 
   @Override
-  protected void channelRead0(ChannelHandlerContext ctx, ResponseMessage response) throws Exception {
+  protected void channelRead0(ChannelHandlerContext ctx, Payload payload) throws Exception {
     if (logger.isDebugEnabled()) {
       logger
-          .debug("receive response from server: " + ctx.channel().remoteAddress() + ", request id is:" + response.id());
+          .debug("receive response from server: " + ctx.channel().remoteAddress() + ", request id is:" + payload.id());
     }
+    ResponsePayloadBody payloadBody = (ResponsePayloadBody) payload.getPayloadBody();
+
+    ResponseMessage response = new ResponseMessage();
+    response.setCodecType(payload.getCodecType());
+    response.setHeaders(payload.getHeaders());
+    response.setId(payload.id());
+    response.setMessageCode(payload.getMessageCode());
+    response.setMessageType(payload.getMessageType());
+    response.setProtocolType(payload.getProtocolType());
+
+    response.setResponse(payloadBody.getResponse());
+    response.setResponseClassName(payloadBody.getResponseClassName());
+    response.setError(payloadBody.isError());
+
+
     client.receiveResponse(response);
   }
 

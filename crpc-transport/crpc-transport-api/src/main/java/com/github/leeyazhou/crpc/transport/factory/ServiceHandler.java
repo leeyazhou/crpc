@@ -28,8 +28,9 @@ import com.github.leeyazhou.crpc.rpc.Handler;
 import com.github.leeyazhou.crpc.rpc.Invocation;
 import com.github.leeyazhou.crpc.rpc.Result;
 import com.github.leeyazhou.crpc.transport.protocol.message.MessageType;
-import com.github.leeyazhou.crpc.transport.protocol.message.RequestMessage;
 import com.github.leeyazhou.crpc.transport.protocol.message.ResponseMessage;
+import com.github.leeyazhou.crpc.transport.protocol.payload.Payload;
+import com.github.leeyazhou.crpc.transport.protocol.payload.RequestPayloadBody;
 
 /**
  * @author leeyazhou
@@ -50,13 +51,14 @@ public class ServiceHandler<T> implements Handler<T> {
   }
 
   public ResponseMessage doHandle(Invocation context) {
-    final RequestMessage request = (RequestMessage) context.getAttachement("requestMessage");
+    final Payload payload = (Payload) context.getAttachement("payload");
+    final RequestPayloadBody request = (RequestPayloadBody) payload.getPayloadBody();
 
     ResponseMessage response = new ResponseMessage();
     response.setMessageType(MessageType.RESPONSE);
-    response.setId(request.id());
-    response.setCodecType(request.getCodecType());
-    response.setProtocolType(request.getProtocolType());
+    response.setId(payload.id());
+    response.setCodecType(payload.getCodecType());
+    response.setProtocolType(payload.getProtocolType());
 
     final String methodKey = serviceConfig.getClassInfo().toMethodKey(request.getMethodName(), request.getArgTypes());
     MethodProxy method = serviceConfig.getClassInfo().getMethod(methodKey);

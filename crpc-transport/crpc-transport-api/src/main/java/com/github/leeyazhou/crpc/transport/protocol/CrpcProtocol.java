@@ -21,12 +21,10 @@ import com.github.leeyazhou.crpc.core.logger.Logger;
 import com.github.leeyazhou.crpc.core.logger.LoggerFactory;
 import com.github.leeyazhou.crpc.core.util.ServiceLoader;
 import com.github.leeyazhou.crpc.transport.protocol.message.Header;
-import com.github.leeyazhou.crpc.transport.protocol.message.Message;
-import com.github.leeyazhou.crpc.transport.protocol.message.MessageType;
-import com.github.leeyazhou.crpc.transport.protocol.message.RequestMessage;
-import com.github.leeyazhou.crpc.transport.protocol.message.ResponseMessage;
-import com.github.leeyazhou.crpc.transport.protocol.payload.RequestBody;
-import com.github.leeyazhou.crpc.transport.protocol.payload.ResponseBody;
+import com.github.leeyazhou.crpc.transport.protocol.payload.Payload;
+import com.github.leeyazhou.crpc.transport.protocol.payload.PayloadBody;
+import com.github.leeyazhou.crpc.transport.protocol.payload.RequestPayloadBody;
+import com.github.leeyazhou.crpc.transport.protocol.payload.ResponsePayloadBody;
 
 /**
  * <b>Common RPC Protocol</b><br>
@@ -98,49 +96,33 @@ public class CrpcProtocol implements Protocol {
 
 
   @Override
-  public ByteBufWrapper encode(ByteBufWrapper bytebufferWrapper, Message message) throws Exception {
-    int id = message.id();
-    Codec codec = ServiceLoader.load(Codec.class).load(CodecType.valueOf(message.getCodecType()).getName());
-    byte[] bodyBytes = null;
-    if (message.getMessageType() == MessageType.REQUEST.getCode()) {
-      RequestMessage request = (RequestMessage) message;
-      RequestBody invocation = new RequestBody();
-      invocation.setArgs(request.getArgs());
-      invocation.setArgTypes(request.getArgTypes());
-      invocation.setMethodName(request.getMethodName());
-      invocation.setServiceTypeName(request.getServiceTypeName());
-      invocation.setTimeout(request.getTimeout());
-      bodyBytes = codec.encode(invocation);
-    } else {
-      ResponseMessage response = (ResponseMessage) message;
-      ResponseBody invocationResponse = new ResponseBody();
-      invocationResponse.setError(response.isError());
-      invocationResponse.setResponse(response.getResponse());
-      invocationResponse.setResponseClassName(response.getResponseClassName());
-      bodyBytes = codec.encode(invocationResponse);
-    }
-
-    byte[] headerBytes = codec.encode(message.getHeaders());
+  public ByteBufWrapper encode(ByteBufWrapper bytebufferWrapper, Payload payload) throws Exception {
+    int id = payload.id();
+    Codec codec = ServiceLoader.load(Codec.class).load(CodecType.valueOf(payload.getCodecType()).getName());
+    byte[] bodyBytes = codec.encode(payload.getPayloadBody());
+    byte[] headerBytes = codec.encode(payload.getHeaders());
+    payload.setHeaderLength(headerBytes.length);
+    payload.setBodyLength(bodyBytes.length);
 
 
-    final int capacity = HEADER_LEN + headerBytes.length + bodyBytes.length;
+    final int capacity = HEADER_LEN + payload.getBodyLength() + payload.getHeaderLength();
     ByteBufWrapper byteBuffer = bytebufferWrapper.get(capacity);
 
     byteBuffer.writeByte(MAGIC);
     byteBuffer.writeByte(VERSION);
-    byteBuffer.writeByte(message.getMessageType());
-    byteBuffer.writeByte((byte) message.getMessageCode());
-    if (message instanceof RequestMessage) {
-      byteBuffer.writeBoolean(((RequestMessage) message).isOneWay());
+    byteBuffer.writeByte(payload.getMessageType());
+    byteBuffer.writeByte((byte) payload.getMessageCode());
+    if (payload.getPayloadBody() instanceof RequestPayloadBody) {
+      byteBuffer.writeBoolean(((RequestPayloadBody) payload.getPayloadBody()).isOneWay());
     } else {
       byteBuffer.writeBoolean(false);
     }
-    byteBuffer.writeByte((byte) message.getCodecType());
+    byteBuffer.writeByte((byte) payload.getCodecType());
     byteBuffer.writeByte((byte) 0);// keeped
 
     byteBuffer.writeInt(id);
-    byteBuffer.writeInt(headerBytes.length);
-    byteBuffer.writeInt(bodyBytes.length);
+    byteBuffer.writeInt(payload.getHeaderLength());
+    byteBuffer.writeInt(payload.getBodyLength());
 
     byteBuffer.writeBytes(headerBytes);
     byteBuffer.writeBytes(bodyBytes);
@@ -149,13 +131,13 @@ public class CrpcProtocol implements Protocol {
   }
 
   @Override
-  public Message decode(ByteBufWrapper byteBufWrapper) throws Exception {
+  public Payload decode(ByteBufWrapper byteBufWrapper) throws Exception {
     final int originPos = byteBufWrapper.readerIndex();
     if (byteBufWrapper.readableBytes() < HEADER_LEN) {
       byteBufWrapper.setReaderIndex(originPos);
       return null;
     }
-    byteBufWrapper.readByte();// magic
+    final byte protocolType = byteBufWrapper.readByte();// magic
     byteBufWrapper.readByte(); // version
     final byte messageType = byteBufWrapper.readByte();
     final byte messageCode = byteBufWrapper.readByte();
@@ -180,26 +162,28 @@ public class CrpcProtocol implements Protocol {
 
     byte[] bodyBytes = new byte[bodyLen];
     byteBufWrapper.readBytes(bodyBytes);
-    Message message = null;
-    if (messageType == REQUEST) {
-      RequestBody request = (RequestBody) codec.decode(RequestBody.class.getName(), bodyBytes);
-      message = (Message) new RequestMessage(request.getServiceTypeName(), request.getMethodName()).setOneWay(oneway)
-          .setTimeout(request.getTimeout()).setArgs(request.getArgs()).setArgTypes(request.getArgTypes());
 
+
+    PayloadBody payloadBody = null;
+    if (messageType == REQUEST) {
+      payloadBody = (RequestPayloadBody) codec.decode(RequestPayloadBody.class.getName(), bodyBytes);
+      ((RequestPayloadBody) payloadBody).setOneWay(oneway);
     } else {
-      ResponseBody response = (ResponseBody) codec.decode(ResponseBody.class.getName(), bodyBytes);
-      message = (Message) new ResponseMessage(response.getResponseClassName()).setError(response.isError())
-          .setResponse(response.getResponse());
+      payloadBody = (ResponsePayloadBody) codec.decode(ResponsePayloadBody.class.getName(), bodyBytes);
     }
 
-    message.setHeaders(headers);
-    message.setMessageType(messageType);
-    message.setMessageCode(messageCode);
-    message.setProtocolType(ProtocolType.CRPC);
-    message.setCodecType(codecType);
-    message.setId(id);
-    message.setHeaders(headers);
-    return message;
+    Payload payload = new Payload();
+    payload.setId(id);
+    payload.setProtocolType(protocolType);
+    payload.setCodecType(codecType);
+    payload.setMessageCode(messageCode);
+    payload.setMessageType(messageType);
+    payload.setHeaderLength(headerLen);
+    payload.setHeaders(headers);
+    payload.setBodyLength(bodyLen);
+    payload.setPayloadBody(payloadBody);
+
+    return payload;
   }
 
 }

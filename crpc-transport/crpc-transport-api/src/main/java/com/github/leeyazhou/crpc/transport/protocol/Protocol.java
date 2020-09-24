@@ -15,7 +15,7 @@
  */
 package com.github.leeyazhou.crpc.transport.protocol;
 
-import com.github.leeyazhou.crpc.transport.protocol.message.Message;
+import com.github.leeyazhou.crpc.transport.protocol.payload.Payload;
 
 /**
  * Protocol Interface,for custom network protocol
@@ -33,7 +33,7 @@ public interface Protocol {
    * @return ByteBufferWrapper
    * @throws Exception any exception
    */
-  ByteBufWrapper encode(ByteBufWrapper byteBufwrapper, Message message) throws Exception;
+  ByteBufWrapper encode(ByteBufWrapper byteBufwrapper, Payload message) throws Exception;
 
   /**
    * decode stream to object
@@ -42,5 +42,5 @@ public interface Protocol {
    * @return AbstractWrapper
    * @throws Exception any exception
    */
-  Message decode(ByteBufWrapper byteBufwrapper) throws Exception;
+  Payload decode(ByteBufWrapper byteBufwrapper) throws Exception;
 }

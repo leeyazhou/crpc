@@ -24,7 +24,7 @@ import java.io.Serializable;
  * @author leeyazhou
  *
  */
-public class RequestBody implements PayloadBody, Serializable {
+public class RequestPayloadBody implements PayloadBody, Serializable {
 
   private static final long serialVersionUID = 1L;
 
@@ -43,7 +43,7 @@ public class RequestBody implements PayloadBody, Serializable {
     return serviceTypeName;
   }
 
-  public RequestBody setServiceTypeName(String serviceTypeName) {
+  public RequestPayloadBody setServiceTypeName(String serviceTypeName) {
     this.serviceTypeName = serviceTypeName;
     return this;
   }
@@ -52,7 +52,7 @@ public class RequestBody implements PayloadBody, Serializable {
     return methodName;
   }
 
-  public RequestBody setMethodName(String methodName) {
+  public RequestPayloadBody setMethodName(String methodName) {
     this.methodName = methodName;
     return this;
   }
@@ -61,7 +61,7 @@ public class RequestBody implements PayloadBody, Serializable {
     return argTypes;
   }
 
-  public RequestBody setArgTypes(String[] argTypes) {
+  public RequestPayloadBody setArgTypes(String[] argTypes) {
     this.argTypes = argTypes;
     return this;
   }
@@ -70,7 +70,7 @@ public class RequestBody implements PayloadBody, Serializable {
     return args;
   }
 
-  public RequestBody setArgs(Object[] args) {
+  public RequestPayloadBody setArgs(Object[] args) {
     this.args = args;
     return this;
   }
@@ -79,7 +79,7 @@ public class RequestBody implements PayloadBody, Serializable {
     return timeout;
   }
 
-  public RequestBody setTimeout(int timeout) {
+  public RequestPayloadBody setTimeout(int timeout) {
     this.timeout = timeout;
     return this;
   }

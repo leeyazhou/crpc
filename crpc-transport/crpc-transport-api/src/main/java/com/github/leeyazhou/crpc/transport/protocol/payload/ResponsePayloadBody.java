@@ -24,7 +24,7 @@ import java.io.Serializable;
  * @author leeyazhou
  *
  */
-public class ResponseBody implements PayloadBody, Serializable {
+public class ResponsePayloadBody implements PayloadBody, Serializable {
   private static final long serialVersionUID = 1L;
 
   private Object response;
@@ -37,7 +37,7 @@ public class ResponseBody implements PayloadBody, Serializable {
     return response;
   }
 
-  public ResponseBody setResponse(Object response) {
+  public ResponsePayloadBody setResponse(Object response) {
     this.response = response;
     return this;
   }
@@ -46,7 +46,7 @@ public class ResponseBody implements PayloadBody, Serializable {
     return error;
   }
 
-  public ResponseBody setError(boolean error) {
+  public ResponsePayloadBody setError(boolean error) {
     this.error = error;
     return this;
   }
@@ -55,7 +55,7 @@ public class ResponseBody implements PayloadBody, Serializable {
     return responseClassName;
   }
 
-  public ResponseBody setResponseClassName(String responseClassName) {
+  public ResponsePayloadBody setResponseClassName(String responseClassName) {
     this.responseClassName = responseClassName;
     return this;
   }

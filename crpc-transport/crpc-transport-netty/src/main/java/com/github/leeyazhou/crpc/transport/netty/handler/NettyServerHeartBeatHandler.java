@@ -22,11 +22,9 @@ package com.github.leeyazhou.crpc.transport.netty.handler;
 import java.util.concurrent.TimeUnit;
 import com.github.leeyazhou.crpc.core.logger.Logger;
 import com.github.leeyazhou.crpc.core.logger.LoggerFactory;
-import com.github.leeyazhou.crpc.transport.protocol.message.Message;
 import com.github.leeyazhou.crpc.transport.protocol.message.MessageCode;
 import com.github.leeyazhou.crpc.transport.protocol.message.MessageType;
-import com.github.leeyazhou.crpc.transport.protocol.message.RequestMessage;
-import com.github.leeyazhou.crpc.transport.protocol.message.ResponseMessage;
+import com.github.leeyazhou.crpc.transport.protocol.payload.Payload;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandlerContext;
@@ -71,23 +69,25 @@ public class NettyServerHeartBeatHandler extends IdleStateHandler {
 
   @Override
   public void channelRead(final ChannelHandlerContext ctx, Object msg) throws Exception {
-    if (!(msg instanceof Message)) {
+    if (!(msg instanceof Payload)) {
       super.channelRead(ctx, msg);
       return;
     }
 
-    Message message = (Message) msg;
-    if (MessageCode.MESSAGE_COMMON.getCode() == message.getMessageCode()) {
+    Payload payload = (Payload) msg;
+    if (MessageCode.MESSAGE_COMMON.getCode() == payload.getMessageCode()) {
       super.channelRead(ctx, msg);
       return;
     }
 
-    if (msg instanceof RequestMessage) {
-      ResponseMessage response = new ResponseMessage();
-      response.setCodecType(message.getCodecType()).setProtocolType(message.getProtocolType())
-          .setMessageType(MessageType.RESPONSE).setMessageCode(MessageCode.MESSAGE_HEARTBEAT);
-      ChannelFuture channelFuture = ctx.channel().writeAndFlush(response);
-      channelFuture.addListener(new ChannelFutureListener() {
+    if (payload.getMessageType() == MessageType.REQUEST.getCode()) {
+      Payload response = new Payload();
+      response.setCodecType(payload.getCodecType());
+      response.setProtocolType(payload.getProtocolType());
+      response.setMessageType(MessageType.RESPONSE.getCode());
+      response.setMessageCode(MessageCode.MESSAGE_HEARTBEAT.getCode());
+
+      ctx.channel().writeAndFlush(response).addListener(new ChannelFutureListener() {
         @Override
         public void operationComplete(ChannelFuture future) throws Exception {
           if (future.isSuccess()) {

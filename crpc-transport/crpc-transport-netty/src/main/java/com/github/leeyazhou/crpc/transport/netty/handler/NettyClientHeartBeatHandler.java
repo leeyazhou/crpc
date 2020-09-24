@@ -23,9 +23,9 @@ import java.util.concurrent.TimeUnit;
 import com.github.leeyazhou.crpc.core.logger.Logger;
 import com.github.leeyazhou.crpc.core.logger.LoggerFactory;
 import com.github.leeyazhou.crpc.transport.netty.NettyClient;
-import com.github.leeyazhou.crpc.transport.protocol.message.Message;
 import com.github.leeyazhou.crpc.transport.protocol.message.MessageCode;
-import com.github.leeyazhou.crpc.transport.protocol.message.ResponseMessage;
+import com.github.leeyazhou.crpc.transport.protocol.message.MessageType;
+import com.github.leeyazhou.crpc.transport.protocol.payload.Payload;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.timeout.IdleState;
 import io.netty.handler.timeout.IdleStateEvent;
@@ -75,18 +75,18 @@ public class NettyClientHeartBeatHandler extends IdleStateHandler {
 
   @Override
   public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
-    if (!(msg instanceof Message)) {
+    if (!(msg instanceof Payload)) {
       super.channelRead(ctx, msg);
       return;
     }
 
-    Message header = (Message) msg;
-    if (MessageCode.MESSAGE_COMMON.getCode() == header.getMessageCode()) {
+    Payload payload = (Payload) msg;
+    if (MessageCode.MESSAGE_COMMON.getCode() == payload.getMessageCode()) {
       super.channelRead(ctx, msg);
       return;
     }
 
-    if (msg instanceof ResponseMessage) {
+    if (payload.getMessageType() == MessageType.RESPONSE.getCode()) {
       client.getIdleCount().set(0);
       if (logger.isDebugEnabled()) {
         logger.debug("client receive heartbeat from : " + ctx.channel().remoteAddress());

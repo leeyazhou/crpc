@@ -21,7 +21,7 @@ import com.github.leeyazhou.crpc.transport.protocol.CrpcProtocol;
 import com.github.leeyazhou.crpc.transport.protocol.Protocol;
 import com.github.leeyazhou.crpc.transport.protocol.ProtocolFactory;
 import com.github.leeyazhou.crpc.transport.protocol.ProtocolType;
-import com.github.leeyazhou.crpc.transport.protocol.message.Message;
+import com.github.leeyazhou.crpc.transport.protocol.payload.Payload;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.ByteToMessageDecoder;
@@ -53,9 +53,9 @@ public class NettyProtocolDecoder extends ByteToMessageDecoder {
       throw new UnsupportProtocolException("Unsupport protocol type : " + magic);
     }
     byteBufWrapper.setReaderIndex(originPos);
-    Message msg = protocol.decode(byteBufWrapper);
-    if (msg != null) {
-      out.add(msg);
+    Payload payload = protocol.decode(byteBufWrapper);
+    if (payload != null) {
+      out.add(payload);
     }
   }
 

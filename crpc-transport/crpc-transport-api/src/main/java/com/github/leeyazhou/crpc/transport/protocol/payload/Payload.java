@@ -98,6 +98,13 @@ public class Payload {
     this.bodyLength = bodyLength;
   }
 
+  /**
+   * @return
+   */
+  public int id() {
+    return id;
+  }
+
 
 
 }
