@@ -20,9 +20,6 @@ package com.github.leeyazhou.crpc.rpc;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
-import com.github.leeyazhou.crpc.rpc.api.Handler;
-import com.github.leeyazhou.crpc.rpc.api.Invocation;
-import com.github.leeyazhou.crpc.rpc.api.Result;
 
 /**
  * @author leeyazhou

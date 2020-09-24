@@ -37,7 +37,7 @@ import com.github.leeyazhou.crpc.core.logger.LoggerFactory;
 import com.github.leeyazhou.crpc.core.util.ServiceLoader;
 import com.github.leeyazhou.crpc.registry.Registry;
 import com.github.leeyazhou.crpc.registry.RegistryFactory;
-import com.github.leeyazhou.crpc.rpc.api.Handler;
+import com.github.leeyazhou.crpc.rpc.Handler;
 import com.github.leeyazhou.crpc.rpc.util.RpcUtil;
 import com.github.leeyazhou.crpc.transport.factory.ServerFactory;
 import com.github.leeyazhou.crpc.transport.factory.ServiceHandlerFilterWrapper;
@@ -62,7 +62,7 @@ public class ServiceFactoryBean<T> extends ServiceConfig<T>
   @Override
   public void afterPropertiesSet() throws Exception {
     if (object != null) {
-      setImplClass((Class<T>) this.object.getClass());
+      setServiceType((Class<T>) this.object.getClass());
       Class<?>[] inerfaces = object.getClass().getInterfaces();
       if (inerfaces != null && inerfaces.length > 0) {
         setServiceType((Class<T>) inerfaces[0]);

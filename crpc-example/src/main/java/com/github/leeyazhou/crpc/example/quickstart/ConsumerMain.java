@@ -18,8 +18,8 @@
  */
 package com.github.leeyazhou.crpc.example.quickstart;
 
+import com.github.leeyazhou.crpc.bootstrap.config.ConsumerConfig;
 import com.github.leeyazhou.crpc.config.ApplicationConfig;
-import com.github.leeyazhou.crpc.config.ConsumerConfig;
 import com.github.leeyazhou.crpc.core.URL;
 import com.github.leeyazhou.crpc.example.service.UserService;
 

@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.github.leeyazhou.crpc.rpc.api;
+package com.github.leeyazhou.crpc.rpc;
 
 import java.io.Serializable;
 import java.util.HashMap;

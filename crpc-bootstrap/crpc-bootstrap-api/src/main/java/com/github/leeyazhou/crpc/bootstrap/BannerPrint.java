@@ -20,6 +20,7 @@ package com.github.leeyazhou.crpc.bootstrap;
 
 import java.io.IOException;
 import java.io.InputStream;
+import com.github.leeyazhou.crpc.core.util.IOUtils;
 
 /**
  * 
@@ -37,6 +38,8 @@ public class BannerPrint {
       System.out.println(ret);
     } catch (IOException e) {
       e.printStackTrace();
+    } finally {
+      IOUtils.close(is);
     }
 
   }

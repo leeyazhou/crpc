@@ -37,17 +37,7 @@
         </dependency>
         <dependency>
             <groupId>com.github.leeyazhou</groupId>
-            <artifactId>crpc-bootstrap-api</artifactId>
-            <version>${project.parent.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.github.leeyazhou</groupId>
-            <artifactId>crpc-bootstrap-default</artifactId>
-            <version>${project.parent.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.github.leeyazhou</groupId>
-            <artifactId>crpc-config-api</artifactId>
+            <artifactId>crpc-bootstrap-crpc</artifactId>
             <version>${project.parent.version}</version>
         </dependency>
         <dependency>
@@ -57,17 +47,7 @@
         </dependency>
         <dependency>
             <groupId>com.github.leeyazhou</groupId>
-            <artifactId>crpc-transport-api</artifactId>
-            <version>${project.parent.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.github.leeyazhou</groupId>
             <artifactId>crpc-filter</artifactId>
-            <version>${project.parent.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.github.leeyazhou</groupId>
-            <artifactId>crpc-transport-netty</artifactId>
             <version>${project.parent.version}</version>
         </dependency>
         <dependency>

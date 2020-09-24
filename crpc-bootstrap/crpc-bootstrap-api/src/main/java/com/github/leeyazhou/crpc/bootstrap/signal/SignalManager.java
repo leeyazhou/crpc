@@ -20,16 +20,15 @@
 package com.github.leeyazhou.crpc.bootstrap.signal;
 
 import java.util.List;
-
-import com.github.leeyazhou.crpc.transport.Server;
 import com.github.leeyazhou.crpc.core.util.OSInfoUtil;
-
+import com.github.leeyazhou.crpc.transport.Server;
 import sun.misc.Signal;
 
 /**
  * 
  * @author leeyazhou
  */
+@SuppressWarnings("restriction")
 public class SignalManager {
 
   /**

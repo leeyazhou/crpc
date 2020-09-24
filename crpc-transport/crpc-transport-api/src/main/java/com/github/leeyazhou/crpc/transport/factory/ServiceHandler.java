@@ -24,9 +24,9 @@ import com.github.leeyazhou.crpc.core.logger.Logger;
 import com.github.leeyazhou.crpc.core.logger.LoggerFactory;
 import com.github.leeyazhou.crpc.core.util.ExceptionUtil;
 import com.github.leeyazhou.crpc.core.util.reflect.MethodProxy;
-import com.github.leeyazhou.crpc.rpc.api.Handler;
-import com.github.leeyazhou.crpc.rpc.api.Invocation;
-import com.github.leeyazhou.crpc.rpc.api.Result;
+import com.github.leeyazhou.crpc.rpc.Handler;
+import com.github.leeyazhou.crpc.rpc.Invocation;
+import com.github.leeyazhou.crpc.rpc.Result;
 import com.github.leeyazhou.crpc.transport.protocol.message.MessageType;
 import com.github.leeyazhou.crpc.transport.protocol.message.RequestMessage;
 import com.github.leeyazhou.crpc.transport.protocol.message.ResponseMessage;
@@ -76,7 +76,7 @@ public class ServiceHandler<T> implements Handler<T> {
       }
 
       response.setResponseClassName(method.getMethod().getReturnType().getName());
-      response.setResponse(method.invoke(serviceConfig.getInstance(), requestObjects));
+      response.setResponse(method.invoke(serviceConfig.get(), requestObjects));
 
     } catch (Exception err) {
       logger.error("server handle request error", err);

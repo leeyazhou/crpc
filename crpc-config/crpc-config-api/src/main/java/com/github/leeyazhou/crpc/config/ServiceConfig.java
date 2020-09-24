@@ -27,7 +27,7 @@ import com.github.leeyazhou.crpc.core.util.reflect.ClassInfo;
 public class ServiceConfig<T> extends AbstractLifecycle {
   private String name;
   private Class<T> serviceType;
-  private Class<T> implClass;
+  private Class<T> interfaceClass;
   private T instance;
   private ClassInfo<T> classInfo;
 
@@ -38,7 +38,9 @@ public class ServiceConfig<T> extends AbstractLifecycle {
   }
 
   @Override
-  protected void doStartup() {}
+  protected void doStartup() {
+    init();
+  }
 
   @Override
   protected void doShutdown() {}
@@ -52,8 +54,8 @@ public class ServiceConfig<T> extends AbstractLifecycle {
     return this;
   }
 
-  public Class<T> getImplClass() {
-    return implClass;
+  public Class<T> getInterfaceClass() {
+    return interfaceClass;
   }
 
   public ServiceConfig<T> setServiceType(Class<T> serviceType) {
@@ -65,8 +67,8 @@ public class ServiceConfig<T> extends AbstractLifecycle {
     return serviceType;
   }
 
-  public ServiceConfig<T> setImplClass(Class<T> implClass) {
-    this.implClass = implClass;
+  public ServiceConfig<T> setInterfaceClass(Class<T> interfaceClass) {
+    this.interfaceClass = interfaceClass;
     return this;
   }
 
@@ -76,7 +78,7 @@ public class ServiceConfig<T> extends AbstractLifecycle {
     return this;
   }
 
-  public Object getInstance() {
+  public Object get() {
     init();
     if (instance == null) {
       synchronized (logger) {

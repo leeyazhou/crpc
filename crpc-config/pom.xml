@@ -27,7 +27,6 @@
     <packaging>pom</packaging>
     <modules>
         <module>crpc-config-api</module>
-        <module>crpc-config-default</module>
         <module>crpc-config-spring</module>
     </modules>
 </project>

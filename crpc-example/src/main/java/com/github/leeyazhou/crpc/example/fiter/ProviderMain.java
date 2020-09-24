@@ -20,10 +20,10 @@ package com.github.leeyazhou.crpc.example.fiter;
 
 import java.util.ArrayList;
 import java.util.List;
+import com.github.leeyazhou.crpc.bootstrap.config.ProviderConfig;
 import com.github.leeyazhou.crpc.config.ApplicationConfig;
 import com.github.leeyazhou.crpc.config.Configuration;
 import com.github.leeyazhou.crpc.config.ProtocolConfig;
-import com.github.leeyazhou.crpc.config.ProviderConfig;
 import com.github.leeyazhou.crpc.config.ServerConfig;
 
 /**

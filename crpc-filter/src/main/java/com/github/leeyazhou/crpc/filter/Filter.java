@@ -19,9 +19,9 @@
 
 package com.github.leeyazhou.crpc.filter;
 
-import com.github.leeyazhou.crpc.rpc.api.Handler;
-import com.github.leeyazhou.crpc.rpc.api.Invocation;
-import com.github.leeyazhou.crpc.rpc.api.Result;
+import com.github.leeyazhou.crpc.rpc.Handler;
+import com.github.leeyazhou.crpc.rpc.Invocation;
+import com.github.leeyazhou.crpc.rpc.Result;
 
 /**
  * @author leeyazhou

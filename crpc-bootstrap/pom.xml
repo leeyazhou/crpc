@@ -27,8 +27,8 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>crpc-bootstrap-default</module>
-        <module>crpc-bootstrap-spring</module>
         <module>crpc-bootstrap-api</module>
+        <module>crpc-bootstrap-crpc</module>
+        <module>crpc-bootstrap-spring</module>
     </modules>
 </project>

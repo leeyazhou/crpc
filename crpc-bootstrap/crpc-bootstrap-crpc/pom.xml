@@ -23,7 +23,7 @@
         <artifactId>crpc-bootstrap</artifactId>
         <version>1.0.3-SNAPSHOT</version>
     </parent>
-    <artifactId>crpc-bootstrap-default</artifactId>
+    <artifactId>crpc-bootstrap-crpc</artifactId>
 
     <dependencies>
         <dependency>
@@ -33,7 +33,12 @@
         </dependency>
         <dependency>
             <groupId>com.github.leeyazhou</groupId>
-            <artifactId>crpc-config-default</artifactId>
+            <artifactId>crpc-config-api</artifactId>
+            <version>${project.parent.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.github.leeyazhou</groupId>
+            <artifactId>crpc-rpc-crpc</artifactId>
             <version>${project.parent.version}</version>
         </dependency>
     </dependencies>

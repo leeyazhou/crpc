@@ -25,7 +25,7 @@ import com.github.leeyazhou.crpc.config.ReferConfig;
 import com.github.leeyazhou.crpc.core.logger.Logger;
 import com.github.leeyazhou.crpc.core.logger.LoggerFactory;
 import com.github.leeyazhou.crpc.core.util.ServiceLoader;
-import com.github.leeyazhou.crpc.rpc.api.Handler;
+import com.github.leeyazhou.crpc.rpc.Handler;
 import com.github.leeyazhou.crpc.rpc.proxy.ProxyFactory;
 import com.github.leeyazhou.crpc.transport.Server;
 import com.github.leeyazhou.crpc.transport.TransportFactory;

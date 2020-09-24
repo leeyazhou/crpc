@@ -20,7 +20,7 @@ package com.github.leeyazhou.crpc.transport.factory;
 
 import java.util.concurrent.ExecutorService;
 import com.github.leeyazhou.crpc.config.Configuration;
-import com.github.leeyazhou.crpc.rpc.api.Handler;
+import com.github.leeyazhou.crpc.rpc.Handler;
 
 /**
  * 

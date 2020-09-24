@@ -20,42 +20,41 @@ package com.github.leeyazhou.crpc.bootstrap;
 
 import com.github.leeyazhou.crpc.core.Constants;
 import com.github.leeyazhou.crpc.core.annotation.SPI;
+import com.github.leeyazhou.crpc.core.lifecyle.AbstractLifecycle;
+import com.github.leeyazhou.crpc.core.lifecyle.Lifecycle;
 import com.github.leeyazhou.crpc.core.logger.Logger;
 import com.github.leeyazhou.crpc.core.logger.LoggerFactory;
-import com.github.leeyazhou.crpc.core.util.ServiceLoader;
-import com.github.leeyazhou.crpc.core.util.StringUtil;
 
 /**
  * @author leeyazhou
  */
 @SPI("spring")
-public abstract class Bootstrap {
+public abstract class Bootstrap extends AbstractLifecycle implements Lifecycle {
   private static final Logger logger = LoggerFactory.getLogger(Bootstrap.class);
 
-  public static final String BOOTSTRAP_TYPE = "crpc.bootstrap";
-  public static final String BOOTSTRAP_VALUE_CRPC = "crpc";
-  public static final String BOOTSTRAP_VALUE_SPRING = "spring";
-
-  public static void main(String[] args) {
-    BannerPrint.printBanner();
-    String bootstrapStr = System.getProperty(BOOTSTRAP_TYPE, null);
-    Bootstrap bootstrap = null;
-    if (StringUtil.isNotBlank(bootstrapStr)) {
-      bootstrap = ServiceLoader.load(Bootstrap.class).load(bootstrapStr);
-    } else {
-      bootstrap = ServiceLoader.load(Bootstrap.class).load();
-    }
-    bootstrap.startup();
-  }
-
-  /**
-   * 
-   */
-  public Bootstrap() {
+  @Override
+  protected void doInit() {
     printVersion();
   }
 
-  private void startup() {
+  protected void printVersion() {
+    logger.info("os.name : " + System.getProperty("os.name"));
+    logger.info("os.version : " + System.getProperty("os.version"));
+    logger.info("os.arch : " + System.getProperty("os.arch"));
+    logger.info("java.home : " + System.getProperty("java.home"));
+    logger.info("java.io.tmpdir : " + System.getProperty("java.io.tmpdir"));
+    logger.info("vm.version : " + System.getProperty("java.runtime.version"));
+    logger.info("vm.vendor : " + System.getProperty("java.vm.vendor"));
+    logger.info("crpc.home : " + System.getProperty("crpc.home"));
+    logger.info("crpc.version : " + Constants.CRPC_VERSION);
+    logger.info("crpc.encoding : " + Constants.ENCODING);
+  }
+
+  @Override
+  protected void doShutdown() {}
+
+  @Override
+  public void startup() {
     final long start = System.currentTimeMillis();
     try {
       doStartup();
@@ -71,20 +70,5 @@ public abstract class Bootstrap {
    */
   public abstract void doStartup();
 
-  /**
-   * 
-   */
 
-  protected static void printVersion() {
-    logger.info("os.name : " + System.getProperty("os.name"));
-    logger.info("os.version : " + System.getProperty("os.version"));
-    logger.info("os.arch : " + System.getProperty("os.arch"));
-    logger.info("java.home : " + System.getProperty("java.home"));
-    logger.info("java.io.tmpdir : " + System.getProperty("java.io.tmpdir"));
-    logger.info("vm.version : " + System.getProperty("java.runtime.version"));
-    logger.info("vm.vendor : " + System.getProperty("java.vm.vendor"));
-    logger.info("crpc.home : " + System.getProperty("crpc.home"));
-    logger.info("crpc.version : " + Constants.CRPC_VERSION);
-    logger.info("crpc.encoding : " + Constants.ENCODING);
-  }
 }

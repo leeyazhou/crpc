@@ -16,11 +16,15 @@
 /**
  *
  */
-package com.github.leeyazhou.crpc.config;
+package com.github.leeyazhou.crpc.bootstrap.config;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+import com.github.leeyazhou.crpc.config.Configuration;
+import com.github.leeyazhou.crpc.config.RegistryConfig;
+import com.github.leeyazhou.crpc.config.ServerConfig;
+import com.github.leeyazhou.crpc.config.ServiceConfig;
 import com.github.leeyazhou.crpc.core.annotation.CRPCFilterType;
 import com.github.leeyazhou.crpc.core.annotation.CRPCService;
 import com.github.leeyazhou.crpc.core.exception.CrpcException;
@@ -32,7 +36,7 @@ import com.github.leeyazhou.crpc.core.util.ServiceLoader;
 import com.github.leeyazhou.crpc.core.util.object.SideType;
 import com.github.leeyazhou.crpc.filter.Filter;
 import com.github.leeyazhou.crpc.registry.RegistryFactory;
-import com.github.leeyazhou.crpc.rpc.api.Handler;
+import com.github.leeyazhou.crpc.rpc.Handler;
 import com.github.leeyazhou.crpc.rpc.util.RpcUtil;
 import com.github.leeyazhou.crpc.transport.factory.CrpcServerFactory;
 import com.github.leeyazhou.crpc.transport.factory.ServerFactory;
@@ -104,8 +108,8 @@ public class ProviderConfig {
       Set<Class<?>> classSet = classScanner.getClassListByAnnotation(CRPCService.class);
       for (Class<?> targetClass : classSet) {
         logger.info("export service : " + targetClass);
-        ServiceConfig serviceConfig = new ServiceConfig();
-        serviceConfig.setServiceType(targetClass);
+        ServiceConfig serviceConfig =
+            new ServiceConfig().setServiceType(targetClass).setInterfaceClass(targetClass.getInterfaces()[0]);
         Handler<?> handler = new ServiceHandlerFilterWrapper(serviceConfig, filters);
         beanFactory.registerProcessor(handler);
       }

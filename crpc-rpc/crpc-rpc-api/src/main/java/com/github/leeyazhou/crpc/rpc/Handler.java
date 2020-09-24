@@ -16,7 +16,7 @@
 /**
  * 
  */
-package com.github.leeyazhou.crpc.rpc.api;
+package com.github.leeyazhou.crpc.rpc;
 
 /**
  * 

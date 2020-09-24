@@ -29,7 +29,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
-
 import com.github.leeyazhou.crpc.core.annotation.SPI;
 import com.github.leeyazhou.crpc.core.logger.Logger;
 import com.github.leeyazhou.crpc.core.logger.LoggerFactory;
@@ -139,6 +138,10 @@ public class ServiceLoader<T> {
       logger.error("", new ClassNotFoundException(name + " forType " + serviceType));
     }
     return serviceClass;
+  }
+
+  public Class<T> loadType() {
+    return loadType(defaultServiceImpl);
   }
 
   private void loadClasses() {

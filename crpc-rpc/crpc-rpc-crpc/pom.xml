@@ -11,11 +11,6 @@
 
     <artifactId>crpc-rpc-crpc</artifactId>
     <dependencies>
-        <!-- <dependency>
-            <groupId>com.github.leeyazhou</groupId>
-            <artifactId>crpc-config-api</artifactId>
-            <version>${project.parent.version}</version>
-        </dependency> -->
         <dependency>
             <groupId>com.github.leeyazhou</groupId>
             <artifactId>crpc-registry-api</artifactId>
@@ -23,7 +18,7 @@
         </dependency>
         <dependency>
             <groupId>com.github.leeyazhou</groupId>
-            <artifactId>crpc-transport-api</artifactId>
+            <artifactId>crpc-transport-netty</artifactId>
             <version>${project.parent.version}</version>
         </dependency>
         <dependency>

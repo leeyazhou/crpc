@@ -21,9 +21,9 @@ package com.github.leeyazhou.crpc.rpc.proxy.jdk;
 
 import java.lang.reflect.Proxy;
 import com.github.leeyazhou.crpc.config.ReferConfig;
+import com.github.leeyazhou.crpc.rpc.Handler;
 import com.github.leeyazhou.crpc.rpc.ProxyHandler;
 import com.github.leeyazhou.crpc.rpc.RpcHandlerFilterWrapper;
-import com.github.leeyazhou.crpc.rpc.api.Handler;
 import com.github.leeyazhou.crpc.rpc.proxy.ProxyFactory;
 
 /**
