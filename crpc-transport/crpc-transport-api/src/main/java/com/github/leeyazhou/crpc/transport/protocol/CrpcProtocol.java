@@ -25,6 +25,8 @@ import com.github.leeyazhou.crpc.transport.protocol.message.Message;
 import com.github.leeyazhou.crpc.transport.protocol.message.MessageType;
 import com.github.leeyazhou.crpc.transport.protocol.message.RequestMessage;
 import com.github.leeyazhou.crpc.transport.protocol.message.ResponseMessage;
+import com.github.leeyazhou.crpc.transport.protocol.payload.RequestBody;
+import com.github.leeyazhou.crpc.transport.protocol.payload.ResponseBody;
 
 /**
  * <b>Common RPC Protocol</b><br>
@@ -102,7 +104,7 @@ public class CrpcProtocol implements Protocol {
     byte[] bodyBytes = null;
     if (message.getMessageType() == MessageType.REQUEST.getCode()) {
       RequestMessage request = (RequestMessage) message;
-      InvocationRequest invocation = new InvocationRequest();
+      RequestBody invocation = new RequestBody();
       invocation.setArgs(request.getArgs());
       invocation.setArgTypes(request.getArgTypes());
       invocation.setMethodName(request.getMethodName());
@@ -111,7 +113,7 @@ public class CrpcProtocol implements Protocol {
       bodyBytes = codec.encode(invocation);
     } else {
       ResponseMessage response = (ResponseMessage) message;
-      InvocationResponse invocationResponse = new InvocationResponse();
+      ResponseBody invocationResponse = new ResponseBody();
       invocationResponse.setError(response.isError());
       invocationResponse.setResponse(response.getResponse());
       invocationResponse.setResponseClassName(response.getResponseClassName());
@@ -180,12 +182,12 @@ public class CrpcProtocol implements Protocol {
     byteBufWrapper.readBytes(bodyBytes);
     Message message = null;
     if (messageType == REQUEST) {
-      InvocationRequest request = (InvocationRequest) codec.decode(InvocationRequest.class.getName(), bodyBytes);
+      RequestBody request = (RequestBody) codec.decode(RequestBody.class.getName(), bodyBytes);
       message = (Message) new RequestMessage(request.getServiceTypeName(), request.getMethodName()).setOneWay(oneway)
           .setTimeout(request.getTimeout()).setArgs(request.getArgs()).setArgTypes(request.getArgTypes());
 
     } else {
-      InvocationResponse response = (InvocationResponse) codec.decode(InvocationResponse.class.getName(), bodyBytes);
+      ResponseBody response = (ResponseBody) codec.decode(ResponseBody.class.getName(), bodyBytes);
       message = (Message) new ResponseMessage(response.getResponseClassName()).setError(response.isError())
           .setResponse(response.getResponse());
     }

@@ -16,7 +16,7 @@
 /**
  * 
  */
-package com.github.leeyazhou.crpc.transport.protocol;
+package com.github.leeyazhou.crpc.transport.protocol.payload;
 
 import java.io.Serializable;
 
@@ -24,7 +24,7 @@ import java.io.Serializable;
  * @author leeyazhou
  *
  */
-public class InvocationResponse implements Serializable {
+public class ResponseBody implements PayloadBody, Serializable {
   private static final long serialVersionUID = 1L;
 
   private Object response;
@@ -37,7 +37,7 @@ public class InvocationResponse implements Serializable {
     return response;
   }
 
-  public InvocationResponse setResponse(Object response) {
+  public ResponseBody setResponse(Object response) {
     this.response = response;
     return this;
   }
@@ -46,7 +46,7 @@ public class InvocationResponse implements Serializable {
     return error;
   }
 
-  public InvocationResponse setError(boolean error) {
+  public ResponseBody setError(boolean error) {
     this.error = error;
     return this;
   }
@@ -55,7 +55,7 @@ public class InvocationResponse implements Serializable {
     return responseClassName;
   }
 
-  public InvocationResponse setResponseClassName(String responseClassName) {
+  public ResponseBody setResponseClassName(String responseClassName) {
     this.responseClassName = responseClassName;
     return this;
   }

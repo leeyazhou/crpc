@@ -28,7 +28,7 @@ import com.github.leeyazhou.crpc.rpc.Result;
 import com.github.leeyazhou.crpc.transport.connection.Connection;
 import com.github.leeyazhou.crpc.transport.connection.ConnectionManager;
 import com.github.leeyazhou.crpc.transport.factory.ServerFactory;
-import com.github.leeyazhou.crpc.transport.protocol.message.Message;
+import com.github.leeyazhou.crpc.transport.protocol.message.ResponseMessage;
 
 /**
  * @author leeyazhou
@@ -85,7 +85,7 @@ public class ServerHandler implements Handler<ServerHandler> {
       return;
     }
     if (!context.isOneWay()) {
-      connection.sendResponse((Message) response.getValue());
+      connection.sendResponse((ResponseMessage) response.getValue());
     }
   }
 

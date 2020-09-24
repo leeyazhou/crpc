@@ -43,7 +43,6 @@ public abstract class Message implements Serializable {
   private Header[] headers;
 
   private int id;
-  private int timeout;
 
   public Message() {}
 
@@ -158,12 +157,4 @@ public abstract class Message implements Serializable {
     return this;
   }
 
-  public Message setTimeout(int timeout) {
-    this.timeout = timeout;
-    return this;
-  }
-
-  public int getTimeout() {
-    return timeout;
-  }
 }

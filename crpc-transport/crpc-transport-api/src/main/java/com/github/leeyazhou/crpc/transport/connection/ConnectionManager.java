@@ -91,7 +91,7 @@ public class ConnectionManager {
     message.setMessageCode(MessageCode.MESSAGE_SHUTDOWN);
     for (Map.Entry<String, Connection> entry : serverChannelCache.entrySet()) {
       logger.info("通知关闭通道：" + entry.getKey() + ", channel : " + entry.getValue());
-      entry.getValue().sendRequest(message);
+      entry.getValue().sendResponse(message);
     }
     serverChannelCache.clear();
   }

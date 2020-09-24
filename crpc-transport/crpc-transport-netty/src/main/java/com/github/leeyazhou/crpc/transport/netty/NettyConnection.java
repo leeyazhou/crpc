@@ -25,7 +25,11 @@ import com.github.leeyazhou.crpc.core.logger.Logger;
 import com.github.leeyazhou.crpc.core.logger.LoggerFactory;
 import com.github.leeyazhou.crpc.core.util.function.Consumer;
 import com.github.leeyazhou.crpc.transport.connection.Connection;
-import com.github.leeyazhou.crpc.transport.protocol.message.Message;
+import com.github.leeyazhou.crpc.transport.protocol.message.RequestMessage;
+import com.github.leeyazhou.crpc.transport.protocol.message.ResponseMessage;
+import com.github.leeyazhou.crpc.transport.protocol.payload.Payload;
+import com.github.leeyazhou.crpc.transport.protocol.payload.RequestBody;
+import com.github.leeyazhou.crpc.transport.protocol.payload.ResponseBody;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelFutureListener;
 
@@ -46,7 +50,7 @@ public class NettyConnection implements Connection {
   }
 
   @Override
-  public void sendRequest(Message request) {
+  public void sendRequest(RequestMessage request) {
     sendRequest(request, new Consumer<Boolean>() {
 
       @Override
@@ -62,10 +66,30 @@ public class NettyConnection implements Connection {
   }
 
   @Override
-  public void sendRequest(final Message request, final Consumer<Boolean> consumer) {
+  public void sendRequest(final RequestMessage request, final Consumer<Boolean> consumer) {
     final long timeout = request.getTimeout();
     final long beginTime = System.currentTimeMillis();
-    // requestWrapper.getMessageLen();
+
+
+    Payload payLoad = new Payload();
+    payLoad.setId(request.id());
+    payLoad.setProtocolType(request.getProtocolType());
+    payLoad.setMessageCode(request.getMessageCode());
+    payLoad.setMessageType(request.getMessageType());
+    payLoad.setHeaders(request.getHeaders());
+    payLoad.setCodecType(request.getCodecType());
+
+    RequestBody body = new RequestBody();
+    payLoad.setPayloadBody(body);
+    body.setArgs(request.getArgs());
+    body.setArgTypes(request.getArgTypes());
+    body.setTimeout(request.getTimeout());
+    body.setMethodName(request.getMethodName());
+    body.setServiceTypeName(request.getServiceTypeName());
+    body.setOneWay(request.isOneWay());
+
+
+
     ChannelFuture writeFuture = channel.writeAndFlush(request);
     // use listener to avoid wait for write & thread context switch
     writeFuture.addListener(new ChannelFutureListener() {
@@ -101,7 +125,7 @@ public class NettyConnection implements Connection {
   }
 
   @Override
-  public void sendResponse(Message request) {
+  public void sendResponse(ResponseMessage request) {
     sendResponse(request, new Consumer<Boolean>() {
 
       @Override
@@ -117,7 +141,21 @@ public class NettyConnection implements Connection {
   }
 
   @Override
-  public void sendResponse(final Message response, final Consumer<Boolean> consumer) {
+  public void sendResponse(final ResponseMessage response, final Consumer<Boolean> consumer) {
+    Payload payLoad = new Payload();
+    payLoad.setId(response.id());
+    payLoad.setProtocolType(response.getProtocolType());
+    payLoad.setMessageCode(response.getMessageCode());
+    payLoad.setMessageType(response.getMessageType());
+    payLoad.setHeaders(response.getHeaders());
+    payLoad.setCodecType(response.getCodecType());
+
+    ResponseBody body = new ResponseBody();
+    payLoad.setPayloadBody(body);
+    body.setError(response.isError());
+    body.setResponse(response.getResponse());
+    body.setResponseClassName(response.getResponseClassName());
+
     this.channel.writeAndFlush(response).addListener(new ChannelFutureListener() {
       public void operationComplete(ChannelFuture future) throws Exception {
         if (future.isSuccess()) {

@@ -19,7 +19,8 @@
 package com.github.leeyazhou.crpc.transport.connection;
 
 import com.github.leeyazhou.crpc.core.util.function.Consumer;
-import com.github.leeyazhou.crpc.transport.protocol.message.Message;
+import com.github.leeyazhou.crpc.transport.protocol.message.RequestMessage;
+import com.github.leeyazhou.crpc.transport.protocol.message.ResponseMessage;
 
 /**
  * @author leeyazhou
@@ -29,14 +30,14 @@ public interface Connection {
 
   String getAddress();
 
-  void sendRequest(Message request, Consumer<Boolean> consumer);
+  void sendRequest(RequestMessage request, Consumer<Boolean> consumer);
 
-  void sendRequest(Message request);
+  void sendRequest(RequestMessage request);
 
   boolean isConnected();
 
-  void sendResponse(Message request, Consumer<Boolean> consumer);
+  void sendResponse(ResponseMessage request, Consumer<Boolean> consumer);
 
-  void sendResponse(Message request);
+  void sendResponse(ResponseMessage request);
 
 }

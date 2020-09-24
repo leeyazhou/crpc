@@ -16,7 +16,7 @@
 /**
  * 
  */
-package com.github.leeyazhou.crpc.transport.protocol;
+package com.github.leeyazhou.crpc.transport.protocol.payload;
 
 import java.io.Serializable;
 
@@ -24,7 +24,7 @@ import java.io.Serializable;
  * @author leeyazhou
  *
  */
-public class InvocationRequest implements Serializable {
+public class RequestBody implements PayloadBody, Serializable {
 
   private static final long serialVersionUID = 1L;
 
@@ -37,12 +37,13 @@ public class InvocationRequest implements Serializable {
   private Object[] args;
 
   private int timeout;
+  private boolean oneWay;
 
   public String getServiceTypeName() {
     return serviceTypeName;
   }
 
-  public InvocationRequest setServiceTypeName(String serviceTypeName) {
+  public RequestBody setServiceTypeName(String serviceTypeName) {
     this.serviceTypeName = serviceTypeName;
     return this;
   }
@@ -51,7 +52,7 @@ public class InvocationRequest implements Serializable {
     return methodName;
   }
 
-  public InvocationRequest setMethodName(String methodName) {
+  public RequestBody setMethodName(String methodName) {
     this.methodName = methodName;
     return this;
   }
@@ -60,7 +61,7 @@ public class InvocationRequest implements Serializable {
     return argTypes;
   }
 
-  public InvocationRequest setArgTypes(String[] argTypes) {
+  public RequestBody setArgTypes(String[] argTypes) {
     this.argTypes = argTypes;
     return this;
   }
@@ -69,7 +70,7 @@ public class InvocationRequest implements Serializable {
     return args;
   }
 
-  public InvocationRequest setArgs(Object[] args) {
+  public RequestBody setArgs(Object[] args) {
     this.args = args;
     return this;
   }
@@ -78,8 +79,16 @@ public class InvocationRequest implements Serializable {
     return timeout;
   }
 
-  public InvocationRequest setTimeout(int timeout) {
+  public RequestBody setTimeout(int timeout) {
     this.timeout = timeout;
     return this;
+  }
+
+  public void setOneWay(boolean oneWay) {
+    this.oneWay = oneWay;
+  }
+
+  public boolean isOneWay() {
+    return oneWay;
   }
 }
