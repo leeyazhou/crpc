@@ -29,6 +29,7 @@ import com.github.leeyazhou.crpc.core.util.ServiceLoader;
 import com.github.leeyazhou.crpc.transport.Client;
 import com.github.leeyazhou.crpc.transport.Handler;
 import com.github.leeyazhou.crpc.transport.LoadBalance;
+import com.github.leeyazhou.crpc.transport.Result;
 import com.github.leeyazhou.crpc.transport.RpcContext;
 import com.github.leeyazhou.crpc.transport.TransportFactory;
 import com.github.leeyazhou.crpc.transport.protocol.ProtocolType;
@@ -74,7 +75,7 @@ public class RpcHandler<T> implements Handler<T> {
 
 
   @Override
-  public ResponseMessage handle(RpcContext context) {
+  public Result handle(RpcContext context) {
     try {
       CodecType codecType = CodecType.valueOf(referConfig.getCodecType());
       RequestMessage request = context.getRequest();
@@ -91,12 +92,15 @@ public class RpcHandler<T> implements Handler<T> {
 
 
 
-  protected ResponseMessage doHandle(RpcContext context) throws Exception {
+  protected Result doHandle(RpcContext context) throws Exception {
     final RequestMessage request = context.getRequest();
     List<Client> clients = transportFactory.getClientManager().get(referConfig);
     LoadBalance loadBalance = transportFactory.getLoadBalance(referConfig.getLoadbalance());
     Client client = loadBalance.chooseOne(clients, request);
-    return client.request(request);
+    ResponseMessage message = client.request(request);
+    Result result = new Result();
+    result.setValue(message.getResponse());
+    return result;
   }
 
   public URL getUrl() {

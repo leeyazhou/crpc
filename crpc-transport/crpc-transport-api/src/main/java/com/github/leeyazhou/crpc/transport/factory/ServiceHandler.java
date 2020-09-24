@@ -25,6 +25,7 @@ import com.github.leeyazhou.crpc.core.logger.LoggerFactory;
 import com.github.leeyazhou.crpc.core.util.ExceptionUtil;
 import com.github.leeyazhou.crpc.core.util.reflect.MethodProxy;
 import com.github.leeyazhou.crpc.transport.Handler;
+import com.github.leeyazhou.crpc.transport.Result;
 import com.github.leeyazhou.crpc.transport.RpcContext;
 import com.github.leeyazhou.crpc.transport.protocol.message.MessageType;
 import com.github.leeyazhou.crpc.transport.protocol.message.RequestMessage;
@@ -85,8 +86,10 @@ public class ServiceHandler<T> implements Handler<T> {
   }
 
   @Override
-  public ResponseMessage handle(final RpcContext context) {
-    return doHandle(context);
+  public Result handle(final RpcContext context) {
+    Result result = new Result();
+    result.setValue(doHandle(context));
+    return result;
   }
 
 

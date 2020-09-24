@@ -19,8 +19,6 @@
 
 package com.github.leeyazhou.crpc.transport;
 
-import com.github.leeyazhou.crpc.transport.protocol.message.ResponseMessage;
-
 /**
  * @author leeyazhou
  */
@@ -32,8 +30,8 @@ public interface Filter {
    * 
    * @param handler handler
    * @param context {@link RpcContext}
-   * @return {@link ResponseMessage}
+   * @return {@link Result}
    */
-  ResponseMessage filter(Handler<?> handler, RpcContext context);
+  Result filter(Handler<?> handler, RpcContext context);
 
 }

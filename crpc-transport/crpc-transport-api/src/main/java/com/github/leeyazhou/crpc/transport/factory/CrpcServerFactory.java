@@ -83,7 +83,8 @@ public class CrpcServerFactory implements ServerFactory {
 
   @Override
   public <T> void registerProcessor(Handler<T> serviceHandler) {
-    serviceHandlers.putIfAbsent(serviceHandler.getHandlerType().getName(), serviceHandler);
+    Class<T> serviceType = serviceHandler.getHandlerType();
+    serviceHandlers.putIfAbsent(serviceType.getInterfaces()[0].getName(), serviceHandler);
     logger.info("注册服务:" + serviceHandler.getHandlerType().getName() + ", " + serviceHandler);
   }
 

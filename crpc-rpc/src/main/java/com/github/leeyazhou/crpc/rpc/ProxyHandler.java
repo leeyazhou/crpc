@@ -21,6 +21,7 @@ package com.github.leeyazhou.crpc.rpc;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import com.github.leeyazhou.crpc.transport.Handler;
+import com.github.leeyazhou.crpc.transport.Result;
 import com.github.leeyazhou.crpc.transport.RpcContext;
 import com.github.leeyazhou.crpc.transport.protocol.message.RequestMessage;
 
@@ -59,7 +60,8 @@ public class ProxyHandler<T> implements InvocationHandler {
     request.fillId();
 
     RpcContext context = RpcContext.consumerContext(request);
-    return handler.handle(context).getResponse();
+    Result result = handler.handle(context);
+    return result.getValue();
   }
 
 

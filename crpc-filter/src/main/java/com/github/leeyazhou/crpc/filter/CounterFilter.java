@@ -26,9 +26,9 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 import com.github.leeyazhou.crpc.core.util.LRUCache;
 import com.github.leeyazhou.crpc.transport.Handler;
+import com.github.leeyazhou.crpc.transport.Result;
 import com.github.leeyazhou.crpc.transport.RpcContext;
 import com.github.leeyazhou.crpc.transport.protocol.message.RequestMessage;
-import com.github.leeyazhou.crpc.transport.protocol.message.ResponseMessage;
 
 /**
  * @author leeyazhou
@@ -82,7 +82,7 @@ public class CounterFilter extends AbstractFilter {
   }
 
   @Override
-  public ResponseMessage doFilter(Handler<?> handler, RpcContext context) {
+  public Result doFilter(Handler<?> handler, RpcContext context) {
     QUEUE.offer(context.getRequest());
     return handler.handle(context);
   }

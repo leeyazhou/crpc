@@ -25,8 +25,8 @@ import com.github.leeyazhou.crpc.core.logger.LoggerFactory;
 import com.github.leeyazhou.crpc.transport.connection.Connection;
 import com.github.leeyazhou.crpc.transport.connection.ConnectionManager;
 import com.github.leeyazhou.crpc.transport.factory.ServerFactory;
+import com.github.leeyazhou.crpc.transport.protocol.message.Message;
 import com.github.leeyazhou.crpc.transport.protocol.message.RequestMessage;
-import com.github.leeyazhou.crpc.transport.protocol.message.ResponseMessage;
 
 /**
  * @author leeyazhou
@@ -47,7 +47,7 @@ public class ServerHandler implements Handler<ServerHandler> {
   }
 
   @Override
-  public ResponseMessage handle(final RpcContext context) {
+  public Result handle(final RpcContext context) {
     serverFactory.getExecutorService().execute(new Runnable() {
       private long beginTime = System.currentTimeMillis();
 
@@ -76,7 +76,7 @@ public class ServerHandler implements Handler<ServerHandler> {
           + connection.getAddress());
       return;
     }
-    ResponseMessage response = doHandle(context);
+    Result response = doHandle(context);
     // already timeout,so not return
     invokeTime = System.currentTimeMillis() - beginTime;
     if (invokeTime >= request.getTimeout() && logger.isWarnEnabled()) {
@@ -85,11 +85,11 @@ public class ServerHandler implements Handler<ServerHandler> {
           + connection.getAddress());
       return;
     }
-    connection.sendResponse(response);
+    connection.sendResponse((Message)response.getValue());
 
   }
 
-  public ResponseMessage doHandle(RpcContext context) {
+  public Result doHandle(RpcContext context) {
     final String targetInstanceName = context.getRequest().getServiceTypeName();
     final Handler<?> processor = serverFactory.getServiceHandler(targetInstanceName);
     if (processor == null) {

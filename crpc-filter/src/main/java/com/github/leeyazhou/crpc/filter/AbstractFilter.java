@@ -22,8 +22,8 @@ import com.github.leeyazhou.crpc.core.logger.Logger;
 import com.github.leeyazhou.crpc.core.logger.LoggerFactory;
 import com.github.leeyazhou.crpc.transport.Filter;
 import com.github.leeyazhou.crpc.transport.Handler;
+import com.github.leeyazhou.crpc.transport.Result;
 import com.github.leeyazhou.crpc.transport.RpcContext;
-import com.github.leeyazhou.crpc.transport.protocol.message.ResponseMessage;
 
 /**
  * @author leeyazhou_y
@@ -33,10 +33,10 @@ public abstract class AbstractFilter implements Filter {
   protected final Logger logger = LoggerFactory.getLogger(getClass());
 
   @Override
-  public ResponseMessage filter(Handler<?> handler, RpcContext context) {
+  public Result filter(Handler<?> handler, RpcContext context) {
     return doFilter(handler, context);
   }
 
-  protected abstract ResponseMessage doFilter(Handler<?> handler, RpcContext context);
+  protected abstract Result doFilter(Handler<?> handler, RpcContext context);
 
 }

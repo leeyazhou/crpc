@@ -20,7 +20,6 @@
 package com.github.leeyazhou.crpc.transport;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import com.github.leeyazhou.crpc.core.util.object.SideType;
 import com.github.leeyazhou.crpc.transport.protocol.message.RequestMessage;
@@ -35,10 +34,6 @@ public final class RpcContext {
   private final RequestMessage request;
   private SideType sideType;
   private Map<String, Object> attachements;
-
-  private RpcContext(RequestMessage request, List<Client> clients, LoadBalance loadBalance) {
-    this.request = request;
-  }
 
   private RpcContext(RequestMessage request) {
     this.request = request;
