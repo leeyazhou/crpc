@@ -25,8 +25,8 @@ import com.github.leeyazhou.crpc.core.logger.LoggerFactory;
 import com.github.leeyazhou.crpc.core.util.ExceptionUtil;
 import com.github.leeyazhou.crpc.core.util.reflect.MethodProxy;
 import com.github.leeyazhou.crpc.transport.Handler;
+import com.github.leeyazhou.crpc.transport.Invocation;
 import com.github.leeyazhou.crpc.transport.Result;
-import com.github.leeyazhou.crpc.transport.RpcContext;
 import com.github.leeyazhou.crpc.transport.protocol.message.MessageType;
 import com.github.leeyazhou.crpc.transport.protocol.message.RequestMessage;
 import com.github.leeyazhou.crpc.transport.protocol.message.ResponseMessage;
@@ -49,13 +49,14 @@ public class ServiceHandler<T> implements Handler<T> {
     return serviceConfig.getServiceType();
   }
 
-  public ResponseMessage doHandle(RpcContext context) {
-    final RequestMessage request = context.getRequest();
+  public ResponseMessage doHandle(Invocation context) {
+    final RequestMessage request = (RequestMessage) context.getAttachement("requestMessage");
 
     ResponseMessage response = new ResponseMessage();
     response.setMessageType(MessageType.RESPONSE);
     response.setId(request.id());
-    response.setCodecType(request.getCodecType()).setProtocolType(request.getProtocolType());
+    response.setCodecType(request.getCodecType());
+    response.setProtocolType(request.getProtocolType());
 
     final String methodKey = serviceConfig.getClassInfo().toMethodKey(request.getMethodName(), request.getArgTypes());
     MethodProxy method = serviceConfig.getClassInfo().getMethod(methodKey);
@@ -86,7 +87,7 @@ public class ServiceHandler<T> implements Handler<T> {
   }
 
   @Override
-  public Result handle(final RpcContext context) {
+  public Result handle(Invocation context) {
     Result result = new Result();
     result.setValue(doHandle(context));
     return result;

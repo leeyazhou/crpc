@@ -22,7 +22,7 @@ import com.github.leeyazhou.crpc.core.URL;
 import com.github.leeyazhou.crpc.core.logger.Logger;
 import com.github.leeyazhou.crpc.core.logger.LoggerFactory;
 import com.github.leeyazhou.crpc.transport.Handler;
-import com.github.leeyazhou.crpc.transport.RpcContext;
+import com.github.leeyazhou.crpc.transport.Invocation;
 import com.github.leeyazhou.crpc.transport.connection.ConnectionManager;
 import com.github.leeyazhou.crpc.transport.netty.NettyConnection;
 import com.github.leeyazhou.crpc.transport.netty.util.ChannelUtil;
@@ -69,11 +69,19 @@ public class NettyServerHandler extends SimpleChannelInboundHandler<RequestMessa
   protected void channelRead0(final ChannelHandlerContext ctx, final RequestMessage request) throws Exception {
     idleCount.set(0);
 
-    RpcContext context = RpcContext.providerContext(request);
-    URL url = ChannelUtil.toUrl(ctx);
-    context.addAttachement("url", url);
+    Invocation invocation = new Invocation();
+    invocation.setArgs(request.getArgs());
+    invocation.setArgTypes(request.getArgTypes());
+    invocation.setServiceTypeName(request.getServiceTypeName());
+    invocation.setMethodName(request.getMethodName());
+    invocation.setOneWay(request.isOneWay());
+    invocation.setTimeout(request.getTimeout());
 
-    serverHandler.handle(context);
+    URL url = ChannelUtil.toUrl(ctx);
+    invocation.addAttachement("url", url);
+    invocation.addAttachement("requestMessage", request);
+
+    serverHandler.handle(invocation);
   }
 
   @Override

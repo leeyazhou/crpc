@@ -26,16 +26,15 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 import com.github.leeyazhou.crpc.core.util.LRUCache;
 import com.github.leeyazhou.crpc.transport.Handler;
+import com.github.leeyazhou.crpc.transport.Invocation;
 import com.github.leeyazhou.crpc.transport.Result;
-import com.github.leeyazhou.crpc.transport.RpcContext;
-import com.github.leeyazhou.crpc.transport.protocol.message.RequestMessage;
 
 /**
  * @author leeyazhou
  */
 public class CounterFilter extends AbstractFilter {
   private static final LRUCache<String, AtomicInteger> counter = new LRUCache<String, AtomicInteger>(2048);
-  private static final BlockingQueue<RequestMessage> QUEUE = new ArrayBlockingQueue<RequestMessage>(1024);
+  private static final BlockingQueue<Invocation> QUEUE = new ArrayBlockingQueue<Invocation>(1024);
 
   public CounterFilter() {
     new Thread() {
@@ -52,7 +51,7 @@ public class CounterFilter extends AbstractFilter {
   }
 
   private void handleRequestCounter() throws Exception {
-    RequestMessage request = null;
+    Invocation request = null;
     long lastTime = 0;
     while (true) {
 
@@ -82,8 +81,8 @@ public class CounterFilter extends AbstractFilter {
   }
 
   @Override
-  public Result doFilter(Handler<?> handler, RpcContext context) {
-    QUEUE.offer(context.getRequest());
+  public Result doFilter(Handler<?> handler, Invocation context) {
+    QUEUE.offer(context);
     return handler.handle(context);
   }
 

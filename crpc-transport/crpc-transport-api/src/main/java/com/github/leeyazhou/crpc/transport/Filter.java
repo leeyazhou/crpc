@@ -29,9 +29,9 @@ public interface Filter {
    * filter
    * 
    * @param handler handler
-   * @param context {@link RpcContext}
+   * @param context {@link Invocation}
    * @return {@link Result}
    */
-  Result filter(Handler<?> handler, RpcContext context);
+  Result filter(Handler<?> handler, Invocation context);
 
 }

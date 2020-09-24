@@ -20,8 +20,8 @@
 package com.github.leeyazhou.crpc.filter;
 
 import com.github.leeyazhou.crpc.transport.Handler;
+import com.github.leeyazhou.crpc.transport.Invocation;
 import com.github.leeyazhou.crpc.transport.Result;
-import com.github.leeyazhou.crpc.transport.RpcContext;
 
 /**
  * @author leeyazhou
@@ -29,12 +29,8 @@ import com.github.leeyazhou.crpc.transport.RpcContext;
 public class IPFilter extends AbstractFilter {
 
   @Override
-  protected Result doFilter(Handler<?> handler, RpcContext context) {
-    if (context.isConsumerSide())
-      logger.info("IP过滤器:" + context.getRequest());
-    else {
-      logger.info("IP过滤器服务器端 : " + context.getRequest());
-    }
+  protected Result doFilter(Handler<?> handler, Invocation context) {
+    logger.info("IP过滤器:" + context);
     return handler.handle(context);
   }
 

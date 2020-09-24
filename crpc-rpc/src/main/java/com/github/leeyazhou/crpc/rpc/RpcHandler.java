@@ -28,9 +28,9 @@ import com.github.leeyazhou.crpc.core.logger.LoggerFactory;
 import com.github.leeyazhou.crpc.core.util.ServiceLoader;
 import com.github.leeyazhou.crpc.transport.Client;
 import com.github.leeyazhou.crpc.transport.Handler;
+import com.github.leeyazhou.crpc.transport.Invocation;
 import com.github.leeyazhou.crpc.transport.LoadBalance;
 import com.github.leeyazhou.crpc.transport.Result;
-import com.github.leeyazhou.crpc.transport.RpcContext;
 import com.github.leeyazhou.crpc.transport.TransportFactory;
 import com.github.leeyazhou.crpc.transport.protocol.ProtocolType;
 import com.github.leeyazhou.crpc.transport.protocol.message.RequestMessage;
@@ -75,15 +75,10 @@ public class RpcHandler<T> implements Handler<T> {
 
 
   @Override
-  public Result handle(RpcContext context) {
+  public Result handle(Invocation context) {
     try {
-      CodecType codecType = CodecType.valueOf(referConfig.getCodecType());
-      RequestMessage request = context.getRequest();
-      request.setServiceTypeName(getHandlerType().getName());
-      request.setTimeout(referConfig.getTimeout());
-      request.setCodecType(codecType);
-      request.setProtocolType(protocolType);
-
+      context.setServiceTypeName(getHandlerType().getName());
+      context.setTimeout(referConfig.getTimeout());
       return doHandle(context);
     } catch (Exception err) {
       throw new CrpcException(err);
@@ -92,8 +87,16 @@ public class RpcHandler<T> implements Handler<T> {
 
 
 
-  protected Result doHandle(RpcContext context) throws Exception {
-    final RequestMessage request = context.getRequest();
+  protected Result doHandle(Invocation context) throws Exception {
+    CodecType codecType = CodecType.valueOf(referConfig.getCodecType());
+    final RequestMessage request = new RequestMessage(context.getServiceTypeName(), context.getMethodName());
+    request.setCodecType(codecType);
+    request.setTimeout(referConfig.getTimeout());
+    request.setProtocolType(protocolType);
+    request.setArgs(context.getArgs());
+    request.setArgTypes(context.getArgTypes());
+
+
     List<Client> clients = transportFactory.getClientManager().get(referConfig);
     LoadBalance loadBalance = transportFactory.getLoadBalance(referConfig.getLoadbalance());
     Client client = loadBalance.chooseOne(clients, request);

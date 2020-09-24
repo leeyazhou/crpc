@@ -17,8 +17,8 @@ package com.github.leeyazhou.crpc.monitor;
 
 import com.github.leeyazhou.crpc.filter.AbstractFilter;
 import com.github.leeyazhou.crpc.transport.Handler;
+import com.github.leeyazhou.crpc.transport.Invocation;
 import com.github.leeyazhou.crpc.transport.Result;
-import com.github.leeyazhou.crpc.transport.RpcContext;
 
 /**
  * @author leeyazhou
@@ -26,7 +26,7 @@ import com.github.leeyazhou.crpc.transport.RpcContext;
 public abstract class AbstractMonitor extends AbstractFilter implements Monitor {
 
   @Override
-  public Result doFilter(Handler<?> handler, RpcContext context) {
+  public Result doFilter(Handler<?> handler, Invocation context) {
     logger.info("Monitor过滤器");
     collect(context);
     return handler.handle(context);

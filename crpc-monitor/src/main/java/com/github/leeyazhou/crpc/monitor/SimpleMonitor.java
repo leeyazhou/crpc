@@ -32,17 +32,16 @@ import java.util.concurrent.LinkedBlockingDeque;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
-import com.github.leeyazhou.crpc.transport.RpcContext;
-import com.github.leeyazhou.crpc.transport.protocol.message.RequestMessage;
 import com.github.leeyazhou.crpc.core.logger.Logger;
 import com.github.leeyazhou.crpc.core.logger.LoggerFactory;
+import com.github.leeyazhou.crpc.transport.Invocation;
 
 /**
  * @author leeyazhou
  */
 public class SimpleMonitor extends AbstractMonitor {
   private static final Logger logger = LoggerFactory.getLogger(SimpleMonitor.class);
-  private BlockingQueue<RequestMessage> queue;
+  private BlockingQueue<Invocation> queue;
   private Thread thread;
   private volatile AtomicBoolean running = new AtomicBoolean(false);
   // TODO 此处只有PUT，注意内存使用
@@ -56,7 +55,7 @@ public class SimpleMonitor extends AbstractMonitor {
     if (!running.compareAndSet(false, true)) {
       return;
     }
-    queue = new LinkedBlockingDeque<RequestMessage>(10240);
+    queue = new LinkedBlockingDeque<Invocation>(10240);
     thread = new Thread(new Runnable() {
       public void run() {
         try {
@@ -90,7 +89,7 @@ public class SimpleMonitor extends AbstractMonitor {
   private final Random random = new Random();
 
   private void doCollect() throws InterruptedException {
-    RequestMessage request = null;
+    Invocation request = null;
     do {
       request = queue.poll(random.nextInt(10), TimeUnit.SECONDS);
       if (request == null) {
@@ -109,8 +108,8 @@ public class SimpleMonitor extends AbstractMonitor {
   }
 
   @Override
-  public void collect(RpcContext context) {
-    queue.offer(context.getRequest());
+  public void collect(Invocation context) {
+    queue.offer(context);
   }
 
   private static final class MonitorData {

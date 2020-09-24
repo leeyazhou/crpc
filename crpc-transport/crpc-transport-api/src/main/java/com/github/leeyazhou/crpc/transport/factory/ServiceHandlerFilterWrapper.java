@@ -22,8 +22,8 @@ import java.util.List;
 import com.github.leeyazhou.crpc.config.ServiceConfig;
 import com.github.leeyazhou.crpc.transport.Filter;
 import com.github.leeyazhou.crpc.transport.Handler;
+import com.github.leeyazhou.crpc.transport.Invocation;
 import com.github.leeyazhou.crpc.transport.Result;
-import com.github.leeyazhou.crpc.transport.RpcContext;
 
 /**
  * @author leeyazhou
@@ -48,7 +48,7 @@ public class ServiceHandlerFilterWrapper<T> implements Handler<T> {
   }
 
   @Override
-  public Result handle(RpcContext context) {
+  public Result handle(Invocation context) {
     return this.handler.handle(context);
   }
 
@@ -66,7 +66,7 @@ public class ServiceHandlerFilterWrapper<T> implements Handler<T> {
           }
 
           @Override
-          public Result handle(RpcContext context) {
+          public Result handle(Invocation context) {
             return filter.filter(next, context);
           }
         };

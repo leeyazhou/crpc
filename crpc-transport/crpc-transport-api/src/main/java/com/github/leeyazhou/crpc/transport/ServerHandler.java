@@ -26,7 +26,6 @@ import com.github.leeyazhou.crpc.transport.connection.Connection;
 import com.github.leeyazhou.crpc.transport.connection.ConnectionManager;
 import com.github.leeyazhou.crpc.transport.factory.ServerFactory;
 import com.github.leeyazhou.crpc.transport.protocol.message.Message;
-import com.github.leeyazhou.crpc.transport.protocol.message.RequestMessage;
 
 /**
  * @author leeyazhou
@@ -47,7 +46,7 @@ public class ServerHandler implements Handler<ServerHandler> {
   }
 
   @Override
-  public Result handle(final RpcContext context) {
+  public Result handle(final Invocation context) {
     serverFactory.getExecutorService().execute(new Runnable() {
       private long beginTime = System.currentTimeMillis();
 
@@ -63,34 +62,32 @@ public class ServerHandler implements Handler<ServerHandler> {
     return null;
   }
 
-  private void returnResponse(RpcContext context, long beginTime) {
-    final RequestMessage request = context.getRequest();
+  private void returnResponse(Invocation context, long beginTime) {
     final URL url = (URL) context.getAttachement("url");
     final Connection connection = connectionManager.getServerConnection(url.getAddress());
 
     long invokeTime = System.currentTimeMillis() - beginTime;
     // already timeout,so not return
-    if (invokeTime >= request.getTimeout() && logger.isWarnEnabled()) {
-      logger.warn("timeout(" + request.getTimeout() + "ms < invoketime : " + invokeTime
-          + "ms), so give up send response to client, id :" + request.id() + ", client address : "
-          + connection.getAddress());
+    if (invokeTime >= context.getTimeout() && logger.isWarnEnabled()) {
+      logger.warn("timeout(" + context.getTimeout() + "ms < invoketime : " + invokeTime
+          + "ms), so give up send response to client, client address : " + connection.getAddress());
       return;
     }
     Result response = doHandle(context);
     // already timeout,so not return
     invokeTime = System.currentTimeMillis() - beginTime;
-    if (invokeTime >= request.getTimeout() && logger.isWarnEnabled()) {
-      logger.warn("timeout(" + request.getTimeout() + "ms < invoketime : " + invokeTime
-          + "ms), so give up send response to client, id :" + request.id() + ", client address : "
-          + connection.getAddress());
+    if (invokeTime >= context.getTimeout() && logger.isWarnEnabled()) {
+      logger.warn("timeout(" + context.getTimeout() + "ms < invoketime : " + invokeTime
+          + "ms), so give up send response to client, client address : " + connection.getAddress());
       return;
     }
-    connection.sendResponse((Message)response.getValue());
-
+    if (!context.isOneWay()) {
+      connection.sendResponse((Message) response.getValue());
+    }
   }
 
-  public Result doHandle(RpcContext context) {
-    final String targetInstanceName = context.getRequest().getServiceTypeName();
+  public Result doHandle(Invocation context) {
+    final String targetInstanceName = context.getServiceTypeName();
     final Handler<?> processor = serverFactory.getServiceHandler(targetInstanceName);
     if (processor == null) {
       throw new ServiceNotFoundException(targetInstanceName);

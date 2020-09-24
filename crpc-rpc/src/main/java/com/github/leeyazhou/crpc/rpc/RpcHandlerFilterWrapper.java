@@ -24,8 +24,8 @@ import com.github.leeyazhou.crpc.config.ReferConfig;
 import com.github.leeyazhou.crpc.core.util.ServiceLoader;
 import com.github.leeyazhou.crpc.transport.Filter;
 import com.github.leeyazhou.crpc.transport.Handler;
+import com.github.leeyazhou.crpc.transport.Invocation;
 import com.github.leeyazhou.crpc.transport.Result;
-import com.github.leeyazhou.crpc.transport.RpcContext;
 
 /**
  * @author leeyazhou
@@ -70,7 +70,7 @@ public class RpcHandlerFilterWrapper<T> implements Handler<T> {
           }
 
           @Override
-          public Result handle(RpcContext context) {
+          public Result handle(Invocation context) {
             return filter.filter(next, context);
           }
         };
@@ -82,7 +82,7 @@ public class RpcHandlerFilterWrapper<T> implements Handler<T> {
 
 
   @Override
-  public Result handle(RpcContext context) {
+  public Result handle(Invocation context) {
     return handler.handle(context);
   }
 

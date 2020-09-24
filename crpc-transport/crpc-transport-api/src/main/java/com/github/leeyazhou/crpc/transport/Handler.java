@@ -40,6 +40,6 @@ public interface Handler<T> {
    * @param context 请求上下文
    * @return 结果 {@link Result}
    */
-  Result handle(RpcContext context);
+  Result handle(Invocation context);
 
 }

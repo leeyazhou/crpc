@@ -15,10 +15,10 @@ public class Invocation {
   private Map<String, Object> attachements;
   private String methodName;
   private String serviceTypeName;
-
   private String[] argTypes;
-
   private Object[] args;
+  private int timeout;
+  private boolean oneWay;
 
   public Map<String, Object> getAttachements() {
     return attachements;
@@ -66,10 +66,37 @@ public class Invocation {
   }
 
   public Invocation addAttachement(String name, Object value) {
-    if (this.attachements != null) {
+    if (this.attachements == null) {
       this.attachements = new HashMap<String, Object>();
     }
     attachements.put(name, value);
     return this;
   }
+
+  public int getTimeout() {
+    return timeout;
+  }
+
+  public Invocation setTimeout(int timeout) {
+    this.timeout = timeout;
+    return this;
+  }
+
+  public boolean isOneWay() {
+    return oneWay;
+  }
+
+  public Invocation setOneWay(boolean oneWay) {
+    this.oneWay = oneWay;
+    return this;
+  }
+
+  public Object getAttachement(String key) {
+    if (this.attachements == null) {
+      return null;
+    }
+    return attachements.get(key);
+  }
+
+
 }

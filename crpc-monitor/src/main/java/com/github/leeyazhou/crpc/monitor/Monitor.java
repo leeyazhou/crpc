@@ -19,7 +19,7 @@
 
 package com.github.leeyazhou.crpc.monitor;
 
-import com.github.leeyazhou.crpc.transport.RpcContext;
+import com.github.leeyazhou.crpc.transport.Invocation;
 
 /**
  * @author leeyazhou
@@ -31,6 +31,6 @@ public interface Monitor {
    * 
    * @param context context
    */
-  public void collect(RpcContext context);
+  public void collect(Invocation context);
 
 }
