@@ -54,6 +54,7 @@
         <module>crpc-bom</module>
         <module>crpc-codec</module>
         <module>crpc-example</module>
+        <module>crpc-filter</module>
     </modules>
     <scm>
         <connection>scm:git:git@github.com:${github.org}/${github.repo}.git</connection>

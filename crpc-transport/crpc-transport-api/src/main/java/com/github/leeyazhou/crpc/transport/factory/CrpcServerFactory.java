@@ -18,19 +18,30 @@
  */
 package com.github.leeyazhou.crpc.transport.factory;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.TimeUnit;
 import com.github.leeyazhou.crpc.config.Configuration;
 import com.github.leeyazhou.crpc.config.ServerConfig;
+import com.github.leeyazhou.crpc.core.logger.Logger;
+import com.github.leeyazhou.crpc.core.logger.LoggerFactory;
 import com.github.leeyazhou.crpc.core.util.concurrent.NamedThreadFactory;
 import com.github.leeyazhou.crpc.core.util.concurrent.TaskQueue;
 import com.github.leeyazhou.crpc.core.util.concurrent.ThreadPoolExecutor;
+import com.github.leeyazhou.crpc.core.util.object.RegistryType;
+import com.github.leeyazhou.crpc.registry.RegistryFactory;
+import com.github.leeyazhou.crpc.transport.Handler;
 
 /**
  * @author leeyazhou
  */
-public abstract class AbstractServerFactory implements ServerFactory {
-
+public class CrpcServerFactory implements ServerFactory {
+  private static final Logger logger = LoggerFactory.getLogger(CrpcServerFactory.class);
+  private final ConcurrentMap<String, Handler<?>> serviceHandlers = new ConcurrentHashMap<String, Handler<?>>();
+  private final Map<RegistryType, RegistryFactory> registryFactories = new HashMap<RegistryType, RegistryFactory>();
   private ExecutorService executorService;
   private Configuration configuration;
   private ServerConfig serverConfig;
@@ -41,7 +52,7 @@ public abstract class AbstractServerFactory implements ServerFactory {
   @Override
   public ExecutorService getExecutorService() {
     if (executorService == null) {
-      synchronized (AbstractServerFactory.class) {
+      synchronized (CrpcServerFactory.class) {
         if (executorService == null) {
           final int availableProcessors = Runtime.getRuntime().availableProcessors();
           final int worker = serverConfig.getWorker();
@@ -62,5 +73,26 @@ public abstract class AbstractServerFactory implements ServerFactory {
   public void setConfiguration(Configuration configuration) {
     this.configuration = configuration;
     this.serverConfig = this.configuration.getServerConfig();
+  }
+
+  @SuppressWarnings("unchecked")
+  @Override
+  public <T> Handler<T> getServiceHandler(String targetInstanceName) {
+    return (Handler<T>) serviceHandlers.get(targetInstanceName);
+  }
+
+  @Override
+  public <T> void registerProcessor(Handler<T> serviceHandler) {
+    serviceHandlers.putIfAbsent(serviceHandler.getHandlerType().getName(), serviceHandler);
+    logger.info("注册服务:" + serviceHandler.getHandlerType().getName() + ", " + serviceHandler);
+  }
+
+  /**
+   * 注册中心工厂
+   * 
+   * @return the registryfactories
+   */
+  public Map<RegistryType, RegistryFactory> getRegistryFactories() {
+    return registryFactories;
   }
 }

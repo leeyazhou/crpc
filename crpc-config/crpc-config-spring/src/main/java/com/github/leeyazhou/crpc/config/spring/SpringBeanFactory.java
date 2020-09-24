@@ -18,24 +18,20 @@
  */
 package com.github.leeyazhou.crpc.config.spring;
 
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentMap;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import com.github.leeyazhou.crpc.core.logger.Logger;
 import com.github.leeyazhou.crpc.core.logger.LoggerFactory;
-import com.github.leeyazhou.crpc.transport.Handler;
-import com.github.leeyazhou.crpc.transport.factory.AbstractServerFactory;
-import com.github.leeyazhou.crpc.transport.factory.ServiceHandler;
+import com.github.leeyazhou.crpc.transport.factory.CrpcServerFactory;
 
 /**
  * @author leeyazhou
  */
-public class SpringBeanFactory extends AbstractServerFactory implements ApplicationContextAware {
+public class SpringBeanFactory extends CrpcServerFactory implements ApplicationContextAware {
   private static final Logger logger = LoggerFactory.getLogger(SpringBeanFactory.class);
   private ApplicationContext applicationContext;
-  private final ConcurrentMap<String, Handler<?>> serviceHandlers = new ConcurrentHashMap<String, Handler<?>>();
+  
 
   @Override
   public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
@@ -46,16 +42,6 @@ public class SpringBeanFactory extends AbstractServerFactory implements Applicat
     this.setConfiguration(applicationContext.getBean(com.github.leeyazhou.crpc.config.Configuration.class));
   }
 
-  @SuppressWarnings("unchecked")
-  @Override
-  public <T> ServiceHandler<T> getServiceHandler(String targetInstanceName) {
-    return (ServiceHandler<T>) serviceHandlers.get(targetInstanceName);
-  }
 
-  @Override
-  public <T> void registerProcessor(Handler<T> serviceHandler) {
-    serviceHandlers.putIfAbsent(serviceHandler.getHandlerType().getName(), serviceHandler);
-    logger.info("注册服务:" + serviceHandler.getHandlerType().getName() + ", " + serviceHandler);
-  }
 
 }

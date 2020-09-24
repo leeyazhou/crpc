@@ -17,7 +17,7 @@
  * 
  */
 
-package com.github.leeyazhou.crpc.transport.filter;
+package com.github.leeyazhou.crpc.filter;
 
 import com.github.leeyazhou.crpc.transport.Handler;
 import com.github.leeyazhou.crpc.transport.RpcContext;

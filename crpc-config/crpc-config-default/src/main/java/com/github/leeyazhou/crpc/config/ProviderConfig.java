@@ -34,6 +34,8 @@ import com.github.leeyazhou.crpc.registry.RegistryFactory;
 import com.github.leeyazhou.crpc.rpc.util.RpcUtil;
 import com.github.leeyazhou.crpc.transport.Filter;
 import com.github.leeyazhou.crpc.transport.Handler;
+import com.github.leeyazhou.crpc.transport.factory.CrpcServerFactory;
+import com.github.leeyazhou.crpc.transport.factory.ServerFactory;
 import com.github.leeyazhou.crpc.transport.factory.ServiceHandlerFilterWrapper;
 
 /**
@@ -54,15 +56,15 @@ public class ProviderConfig {
    */
   public void export() {
     validate();
-    DefaultServerFactory beanFactory = new DefaultServerFactory();
-    beanFactory.setConfiguration(configuration);
+    CrpcServerFactory serverFactory = new CrpcServerFactory();
+    serverFactory.setConfiguration(configuration);
     try {
-      prepareEnvironment(configuration.getServerConfig(), beanFactory);
-      scan(configuration.getServerConfig(), beanFactory);
+      prepareEnvironment(configuration.getServerConfig(), serverFactory);
+      scan(configuration.getServerConfig(), serverFactory);
     } catch (Exception e) {
       logger.error("", e);
     }
-    RpcUtil.export(configuration, beanFactory);
+    RpcUtil.export(configuration, serverFactory);
   }
 
   private void validate() {
@@ -77,7 +79,7 @@ public class ProviderConfig {
     }
   }
 
-  private void prepareEnvironment(ServerConfig serverConfig, DefaultServerFactory beanFactory) throws Exception {
+  private void prepareEnvironment(ServerConfig serverConfig, ServerFactory beanFactory) throws Exception {
     RegistryConfig registryConfig = configuration.getRegistryConfig();
     if (registryConfig == null) {
       return;
@@ -89,7 +91,7 @@ public class ProviderConfig {
   }
 
   @SuppressWarnings({"unchecked", "rawtypes"})
-  private void scan(ServerConfig serverConfig, DefaultServerFactory beanFactory) throws Exception {
+  private void scan(ServerConfig serverConfig, ServerFactory beanFactory) throws Exception {
     Set<String> basepackages = serverConfig.getBasepackages();
     if (basepackages == null || basepackages.isEmpty()) {
       throw new IllegalAccessException("basepackage is required ! ");

@@ -1,0 +1,3 @@
+# proxy factory
+ipFilter=com.github.leeyazhou.crpc.filter.IPFilter
+counterFilter=com.github.leeyazhou.crpc.filter.CounterFilter
