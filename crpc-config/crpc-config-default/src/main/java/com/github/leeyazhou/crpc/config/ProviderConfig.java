@@ -33,7 +33,8 @@ import com.github.leeyazhou.crpc.core.util.object.SideType;
 import com.github.leeyazhou.crpc.registry.RegistryFactory;
 import com.github.leeyazhou.crpc.rpc.util.RpcUtil;
 import com.github.leeyazhou.crpc.transport.Filter;
-import com.github.leeyazhou.crpc.transport.factory.ServiceHandler;
+import com.github.leeyazhou.crpc.transport.Handler;
+import com.github.leeyazhou.crpc.transport.factory.ServiceHandlerFilterWrapper;
 
 /**
  * @author leeyazhou
@@ -103,9 +104,8 @@ public class ProviderConfig {
         logger.info("export service : " + targetClass);
         ServiceConfig serviceConfig = new ServiceConfig();
         serviceConfig.setServiceType(targetClass);
-        ServiceHandler<?> serviceHandler = new ServiceHandler(serviceConfig);
-        serviceHandler.setFilters(filters);
-        beanFactory.registerProcessor(serviceHandler);
+        Handler<?> handler = new ServiceHandlerFilterWrapper(serviceConfig, filters);
+        beanFactory.registerProcessor(handler);
       }
     }
 

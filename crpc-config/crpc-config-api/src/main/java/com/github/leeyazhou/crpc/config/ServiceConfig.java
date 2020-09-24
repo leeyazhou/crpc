@@ -19,7 +19,6 @@
 package com.github.leeyazhou.crpc.config;
 
 import com.github.leeyazhou.crpc.core.lifecyle.AbstractLifecycle;
-import com.github.leeyazhou.crpc.core.util.function.Supplier;
 import com.github.leeyazhou.crpc.core.util.reflect.ClassInfo;
 
 /**
@@ -30,7 +29,6 @@ public class ServiceConfig<T> extends AbstractLifecycle {
   private Class<T> serviceType;
   private Class<T> implClass;
   private T instance;
-  private Supplier<T> instanceSupplier;
   private ClassInfo<T> classInfo;
 
   @Override
@@ -80,22 +78,18 @@ public class ServiceConfig<T> extends AbstractLifecycle {
 
   public Object getInstance() {
     init();
-    if (instanceSupplier != null) {
-      return instanceSupplier.get();
+    if (instance == null) {
+      synchronized (logger) {
+        if (instance == null) {
+          try {
+            this.instance = getServiceType().newInstance();
+          } catch (Exception e) {
+            logger.error("", e);
+          }
+        }
+      }
     }
     return instance;
-  }
-
-  /**
-   * @param instanceSupplier the instanceSupplier to set
-   */
-  public void setInstanceSupplier(Supplier<T> instanceSupplier) {
-    this.instanceSupplier = instanceSupplier;
-  }
-
-
-  public Supplier<T> getInstanceSupplier() {
-    return instanceSupplier;
   }
 
   /**

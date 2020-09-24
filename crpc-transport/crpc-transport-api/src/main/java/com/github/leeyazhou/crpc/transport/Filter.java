@@ -30,10 +30,10 @@ public interface Filter {
   /**
    * filter
    * 
+   * @param handler handler
    * @param context {@link RpcContext}
-   * @param filterChain {@link FilterChain}
    * @return {@link ResponseMessage}
    */
-  ResponseMessage filter(RpcContext context, FilterChain filterChain);
+  ResponseMessage filter(Handler<?> handler, RpcContext context);
 
 }

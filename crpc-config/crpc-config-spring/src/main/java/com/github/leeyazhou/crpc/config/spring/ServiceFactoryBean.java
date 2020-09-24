@@ -38,8 +38,9 @@ import com.github.leeyazhou.crpc.core.util.ServiceLoader;
 import com.github.leeyazhou.crpc.registry.Registry;
 import com.github.leeyazhou.crpc.registry.RegistryFactory;
 import com.github.leeyazhou.crpc.rpc.util.RpcUtil;
+import com.github.leeyazhou.crpc.transport.Handler;
 import com.github.leeyazhou.crpc.transport.factory.ServerFactory;
-import com.github.leeyazhou.crpc.transport.factory.ServiceHandler;
+import com.github.leeyazhou.crpc.transport.factory.ServiceHandlerFilterWrapper;
 
 /**
  * 服务类
@@ -50,7 +51,7 @@ public class ServiceFactoryBean<T> extends ServiceConfig<T>
     implements InitializingBean, DisposableBean, ApplicationContextAware, ApplicationListener<ContextRefreshedEvent> {
   static final Logger logger = LoggerFactory.getLogger(ServiceFactoryBean.class);
   private T object;
-  private ServiceHandler<T> serviceHandler;
+  private Handler<T> serviceHandler;
   private ApplicationContext applicationContext;
   private ServerFactory beanFactory;
   private Configuration configuration;
@@ -76,7 +77,7 @@ public class ServiceFactoryBean<T> extends ServiceConfig<T>
   /**
    * @return the serviceHandler
    */
-  public ServiceHandler<T> getServiceHandler() {
+  public Handler<T> getServiceHandler() {
     return serviceHandler;
   }
 
@@ -101,7 +102,7 @@ public class ServiceFactoryBean<T> extends ServiceConfig<T>
 
   private void doExport() {
     if (isExported.compareAndSet(false, true)) {
-      this.serviceHandler = new ServiceHandler<T>(this);
+      this.serviceHandler = new ServiceHandlerFilterWrapper<T>(this, null);
       this.beanFactory.registerProcessor(serviceHandler);
 
       RpcUtil.export(configuration, beanFactory);

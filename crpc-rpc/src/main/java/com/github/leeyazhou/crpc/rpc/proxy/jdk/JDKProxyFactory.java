@@ -21,8 +21,10 @@ package com.github.leeyazhou.crpc.rpc.proxy.jdk;
 
 import java.lang.reflect.Proxy;
 import com.github.leeyazhou.crpc.config.ReferConfig;
-import com.github.leeyazhou.crpc.rpc.DefaultInvoker;
+import com.github.leeyazhou.crpc.rpc.RpcHandlerFilterWrapper;
+import com.github.leeyazhou.crpc.rpc.ProxyHandler;
 import com.github.leeyazhou.crpc.rpc.proxy.ProxyFactory;
+import com.github.leeyazhou.crpc.transport.Handler;
 
 /**
  * @author leeyazhou
@@ -32,9 +34,10 @@ public final class JDKProxyFactory implements ProxyFactory {
   @SuppressWarnings("unchecked")
   @Override
   public <T> T getProxy(ReferConfig<T> referConfig) {
-    DefaultInvoker<T> handler = new DefaultInvoker<T>(referConfig);
+    Handler<T> handler = new RpcHandlerFilterWrapper<T>(referConfig);
+    ProxyHandler<T> proxyHandler = new ProxyHandler<T>(handler);
     return (T) Proxy.newProxyInstance(Thread.currentThread().getContextClassLoader(),
-        new Class<?>[] {referConfig.getServiceType()}, handler);
+        new Class<?>[] {referConfig.getServiceType()}, proxyHandler);
   }
 
 }

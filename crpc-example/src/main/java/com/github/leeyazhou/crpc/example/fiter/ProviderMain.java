@@ -39,7 +39,7 @@ public class ProviderMain {
     filters.add("ipFilter");
     filters.add("counterFilter");
     ServerConfig serverConfig =
-        new ServerConfig().addBasepackage("com.github.leeyazhou.crpc.service").setFilters(filters);
+        new ServerConfig().addBasepackage("com.github.leeyazhou.crpc.example.service").setFilters(filters);
 
     Configuration configuration = new Configuration().setApplicationConfig(applicationConfig)
         .setProtocolConfig(protocolConfig).setServerConfig(serverConfig);

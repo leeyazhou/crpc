@@ -102,7 +102,18 @@ public class NettyConnection implements Connection {
 
   @Override
   public void sendResponse(Message request) {
-    sendResponse(request, null);
+    sendResponse(request, new Consumer<Boolean>() {
+
+      @Override
+      public void accept(Boolean t) {
+
+      }
+
+      @Override
+      public void onError(Throwable throwable) {
+
+      }
+    });
   }
 
   @Override

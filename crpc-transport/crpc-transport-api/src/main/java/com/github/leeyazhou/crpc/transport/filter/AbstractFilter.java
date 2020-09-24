@@ -21,7 +21,7 @@ package com.github.leeyazhou.crpc.transport.filter;
 import com.github.leeyazhou.crpc.core.logger.Logger;
 import com.github.leeyazhou.crpc.core.logger.LoggerFactory;
 import com.github.leeyazhou.crpc.transport.Filter;
-import com.github.leeyazhou.crpc.transport.FilterChain;
+import com.github.leeyazhou.crpc.transport.Handler;
 import com.github.leeyazhou.crpc.transport.RpcContext;
 import com.github.leeyazhou.crpc.transport.protocol.message.ResponseMessage;
 
@@ -33,10 +33,10 @@ public abstract class AbstractFilter implements Filter {
   protected final Logger logger = LoggerFactory.getLogger(getClass());
 
   @Override
-  public ResponseMessage filter(RpcContext context, FilterChain filterChain) {
-    return doFilter(context, filterChain);
+  public ResponseMessage filter(Handler<?> handler, RpcContext context) {
+    return doFilter(handler, context);
   }
 
-  protected abstract ResponseMessage doFilter(RpcContext context, FilterChain filterChain);
+  protected abstract ResponseMessage doFilter(Handler<?> handler, RpcContext context);
 
 }

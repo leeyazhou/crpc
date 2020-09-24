@@ -20,8 +20,7 @@ package com.github.leeyazhou.crpc.transport.factory;
 
 import java.util.concurrent.ExecutorService;
 import com.github.leeyazhou.crpc.config.Configuration;
-import com.github.leeyazhou.crpc.transport.Filter;
-import com.github.leeyazhou.crpc.transport.FilterChain;
+import com.github.leeyazhou.crpc.transport.Handler;
 
 /**
  * 
@@ -31,20 +30,13 @@ import com.github.leeyazhou.crpc.transport.FilterChain;
 public interface ServerFactory {
 
   /**
-   * 获取缓存的{@link ServiceHandler}
+   * 获取缓存的{@link Handler}
    * 
    * @param <T> t
    * @param targetInstanceName targetInstanceName
-   * @return {@link ServiceHandler}
+   * @return {@link Handler}
    */
-  <T> ServiceHandler<T> getServiceHandler(String targetInstanceName);
-
-  /**
-   * 获取过滤器链
-   * 
-   * @return {@link FilterChain}
-   */
-  Filter getFilterChain();
+  <T> Handler<T> getServiceHandler(String targetInstanceName);
 
   /**
    * executor service
@@ -59,7 +51,7 @@ public interface ServerFactory {
    * @param <T> t
    * @param serviceHandler serviceHandler
    */
-  <T> void registerProcessor(ServiceHandler<T> serviceHandler);
+  <T> void registerProcessor(Handler<T> serviceHandler);
 
   /**
    * 设置服务器配置信息

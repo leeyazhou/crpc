@@ -19,7 +19,7 @@
 
 package com.github.leeyazhou.crpc.transport.filter;
 
-import com.github.leeyazhou.crpc.transport.FilterChain;
+import com.github.leeyazhou.crpc.transport.Handler;
 import com.github.leeyazhou.crpc.transport.RpcContext;
 import com.github.leeyazhou.crpc.transport.protocol.message.ResponseMessage;
 
@@ -29,13 +29,13 @@ import com.github.leeyazhou.crpc.transport.protocol.message.ResponseMessage;
 public class IPFilter extends AbstractFilter {
 
   @Override
-  protected ResponseMessage doFilter(RpcContext context, FilterChain filterChain) {
+  protected ResponseMessage doFilter(Handler<?> handler, RpcContext context) {
     if (context.isConsumerSide())
       logger.info("IP过滤器:" + context.getRequest());
     else {
       logger.info("IP过滤器服务器端 : " + context.getRequest());
     }
-    return filterChain.doFilter(context);
+    return handler.handle(context);
   }
 
 }

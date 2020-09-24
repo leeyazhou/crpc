@@ -26,10 +26,10 @@ import com.github.leeyazhou.crpc.core.logger.Logger;
 import com.github.leeyazhou.crpc.core.logger.LoggerFactory;
 import com.github.leeyazhou.crpc.core.util.ServiceLoader;
 import com.github.leeyazhou.crpc.rpc.proxy.ProxyFactory;
+import com.github.leeyazhou.crpc.transport.Handler;
 import com.github.leeyazhou.crpc.transport.Server;
 import com.github.leeyazhou.crpc.transport.TransportFactory;
 import com.github.leeyazhou.crpc.transport.factory.ServerFactory;
-import com.github.leeyazhou.crpc.transport.factory.ServiceHandler;
 
 /**
  * @author leeyazhou
@@ -60,7 +60,7 @@ public class RpcUtil {
 
   }
 
-  public static <T> void unexport(Configuration configuration, ServiceHandler<T> serviceHandler) {
+  public static <T> void unexport(Configuration configuration, Handler<T> serviceHandler) {
     logger.info("unexport : " + configuration.getProtocolConfig());
     final String serverKey = configuration.getProtocolConfig().getAddress();
     Server server = servers.remove(serverKey);

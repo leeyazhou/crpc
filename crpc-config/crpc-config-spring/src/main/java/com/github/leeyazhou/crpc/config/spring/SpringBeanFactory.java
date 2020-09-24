@@ -25,7 +25,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import com.github.leeyazhou.crpc.core.logger.Logger;
 import com.github.leeyazhou.crpc.core.logger.LoggerFactory;
-import com.github.leeyazhou.crpc.transport.Filter;
+import com.github.leeyazhou.crpc.transport.Handler;
 import com.github.leeyazhou.crpc.transport.factory.AbstractServerFactory;
 import com.github.leeyazhou.crpc.transport.factory.ServiceHandler;
 
@@ -35,9 +35,7 @@ import com.github.leeyazhou.crpc.transport.factory.ServiceHandler;
 public class SpringBeanFactory extends AbstractServerFactory implements ApplicationContextAware {
   private static final Logger logger = LoggerFactory.getLogger(SpringBeanFactory.class);
   private ApplicationContext applicationContext;
-  private final ConcurrentMap<String, ServiceHandler<?>> serviceHandlers =
-      new ConcurrentHashMap<String, ServiceHandler<?>>();
-  private Filter filterChain;
+  private final ConcurrentMap<String, Handler<?>> serviceHandlers = new ConcurrentHashMap<String, Handler<?>>();
 
   @Override
   public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
@@ -46,7 +44,6 @@ public class SpringBeanFactory extends AbstractServerFactory implements Applicat
       logger.info("初始化CRPC BeanFactory, springApplicationContext : " + this.applicationContext);
     }
     this.setConfiguration(applicationContext.getBean(com.github.leeyazhou.crpc.config.Configuration.class));
-    this.filterChain = applicationContext.getBean(Filter.class);
   }
 
   @SuppressWarnings("unchecked")
@@ -56,14 +53,9 @@ public class SpringBeanFactory extends AbstractServerFactory implements Applicat
   }
 
   @Override
-  public Filter getFilterChain() {
-    return filterChain;
-  }
-
-  @Override
-  public <T> void registerProcessor(ServiceHandler<T> serviceHandler) {
-    serviceHandlers.putIfAbsent(serviceHandler.getServiceConfig().getName(), serviceHandler);
-    logger.info("注册服务:" + serviceHandler.getServiceConfig().getName() + ", " + serviceHandler);
+  public <T> void registerProcessor(Handler<T> serviceHandler) {
+    serviceHandlers.putIfAbsent(serviceHandler.getHandlerType().getName(), serviceHandler);
+    logger.info("注册服务:" + serviceHandler.getHandlerType().getName() + ", " + serviceHandler);
   }
 
 }

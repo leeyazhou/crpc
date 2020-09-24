@@ -69,7 +69,7 @@ public class NettyServer extends AbstractServer {
     this.bootStrap = new ServerBootstrap();
     final Class<? extends ServerChannel> socketChannelClass;
     if (Epoll.isAvailable()) {
-      this.bossGroup = new EpollEventLoopGroup(1);
+      this.bossGroup = new EpollEventLoopGroup(1, new NamedThreadFactory("crpc-boss"));
       this.ioGroup = new EpollEventLoopGroup(0, new NamedThreadFactory("crpc-io"));
       socketChannelClass = EpollServerSocketChannel.class;
     } else {
