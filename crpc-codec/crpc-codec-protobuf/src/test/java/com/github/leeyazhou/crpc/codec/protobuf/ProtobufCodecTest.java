@@ -32,7 +32,7 @@ import com.github.leeyazhou.crpc.codec.model.User;
  */
 public class ProtobufCodecTest {
 
-  private Codec codec = new ProtobufSerializer();
+  private Codec codec = new ProtobufCodec();
 
   @Test
   public void testEncoder() throws Exception {

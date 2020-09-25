@@ -27,7 +27,7 @@ import com.github.leeyazhou.crpc.core.annotation.CRPCSerializable;
 @CRPCSerializable
 public class CrpcException extends RuntimeException {
 
-  private static final long serialVersionUID = -228732408921730446L;
+  private static final long serialVersionUID = -1L;
 
   public CrpcException() {
     super();

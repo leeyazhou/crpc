@@ -25,7 +25,6 @@ import java.util.List;
 import java.util.Map;
 import org.junit.Test;
 import com.github.leeyazhou.crpc.codec.Codec;
-import com.github.leeyazhou.crpc.codec.kryo.KryoCodec;
 import com.github.leeyazhou.crpc.codec.model.User;
 
 /**

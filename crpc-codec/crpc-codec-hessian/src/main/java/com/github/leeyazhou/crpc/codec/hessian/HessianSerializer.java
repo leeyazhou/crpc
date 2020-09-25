@@ -21,32 +21,56 @@ package com.github.leeyazhou.crpc.codec.hessian;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import com.caucho.hessian.io.Hessian2Input;
 import com.caucho.hessian.io.Hessian2Output;
-import com.github.leeyazhou.crpc.codec.Codec;
+import com.github.leeyazhou.crpc.codec.AbstractCodec;
+import com.github.leeyazhou.crpc.codec.CodecException;
 
 /**
  * @author leeyazhou
  */
-public class HessianSerializer implements Codec {
+public class HessianSerializer extends AbstractCodec {
 
   @Override
-  public Object decode(String className, byte[] bytes) throws Exception {
-    Hessian2Input input = new Hessian2Input(new ByteArrayInputStream(bytes));
-    Object resultObject = input.readObject();
-    input.close();
-    return resultObject;
+  public Object doDecode(String className, byte[] bytes) {
+    Hessian2Input input = null;
+    try {
+      input = new Hessian2Input(new ByteArrayInputStream(bytes));
+      return input.readObject();
+    } catch (Exception e) {
+      throw new CodecException(e);
+    } finally {
+      try {
+        if (input != null) {
+          input.close();
+        }
+      } catch (Exception e2) {
+        //
+      }
+    }
 
   }
 
   @Override
-  public byte[] encode(Object object) throws Exception {
-    ByteArrayOutputStream byteArray = new ByteArrayOutputStream();
-    Hessian2Output output = new Hessian2Output(byteArray);
-    output.writeObject(object);
-    output.close();
-    byte[] bytes = byteArray.toByteArray();
-    return bytes;
+  public byte[] doEncode(Object object) {
+    Hessian2Output output = null;
+    try {
+      ByteArrayOutputStream byteArray = new ByteArrayOutputStream();
+      output = new Hessian2Output(byteArray);
+      output.writeObject(object);
+      return byteArray.toByteArray();
+    } catch (Exception e) {
+      throw new CodecException(e);
+    } finally {
+      try {
+        if (output != null) {
+          output.close();
+        }
+      } catch (IOException e) {
+        //
+      }
+    }
 
   }
 }

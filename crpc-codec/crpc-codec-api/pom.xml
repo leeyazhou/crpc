@@ -24,4 +24,12 @@
         <version>1.0.3-SNAPSHOT</version>
     </parent>
     <artifactId>crpc-codec-api</artifactId>
+    
+    <dependencies>
+    	<dependency>
+	    	<groupId>com.github.leeyazhou</groupId>
+	    	<artifactId>crpc-core</artifactId>
+	        <version>1.0.3-SNAPSHOT</version>
+    	</dependency>
+    </dependencies>
 </project>

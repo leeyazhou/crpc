@@ -18,12 +18,12 @@ package com.github.leeyazhou.crpc.codec.kryo;
 import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryo.io.Input;
 import com.esotericsoftware.kryo.io.Output;
-import com.github.leeyazhou.crpc.codec.Codec;
+import com.github.leeyazhou.crpc.codec.AbstractCodec;
 
-public class KryoCodec implements Codec {
+public class KryoCodec extends AbstractCodec {
 
   @Override
-  public Object decode(String className, byte[] bytes) throws Exception {
+  public Object doDecode(String className, byte[] bytes) {
     Input input = new Input(bytes);
     try {
       return getKryo().readClassAndObject(input);
@@ -33,17 +33,16 @@ public class KryoCodec implements Codec {
   }
 
   @Override
-  public byte[] encode(Object object) throws Exception {
+  public byte[] doEncode(Object object) {
     Output output = new Output(256, -1);
     try {
       getKryo().writeClassAndObject(output, object);
       return output.toBytes();
     } finally {
-      output.flush();
       output.close();
     }
   }
-  
+
   private static final ThreadLocal<Kryo> kryosLocal = new ThreadLocal<Kryo>() {
     protected Kryo initialValue() {
       Kryo kryo = new Kryo();
@@ -69,6 +68,7 @@ public class KryoCodec implements Codec {
    * type, final Serializer<?> serializer) { this.type = type; this.serializer = serializer; } public Class<?> getType()
    * { return type; } public void setType(Class<?> type) { this.type = type; } public Serializer<?> getSerializer() {
    * return serializer; } public void setSerializer(Serializer<?> serializer) { this.serializer = serializer; }
+   * 
    * @Override public String toString() { return "ClassItem [type=" + type + ", serializer=" + serializer + "]"; } }
    */
 }

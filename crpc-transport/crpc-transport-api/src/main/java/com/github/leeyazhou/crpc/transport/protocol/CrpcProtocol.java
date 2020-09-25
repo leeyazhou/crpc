@@ -96,7 +96,7 @@ public class CrpcProtocol implements Protocol {
 
 
   @Override
-  public ByteBufWrapper encode(ByteBufWrapper bytebufferWrapper, Payload payload) throws Exception {
+  public ByteBufWrapper encode(ByteBufWrapper bytebufferWrapper, Payload payload) throws ProtocolException {
     int id = payload.id();
     Codec codec = ServiceLoader.load(Codec.class).load(CodecType.valueOf(payload.getCodecType()).getName());
     byte[] bodyBytes = codec.encode(payload.getPayloadBody());
@@ -131,7 +131,7 @@ public class CrpcProtocol implements Protocol {
   }
 
   @Override
-  public Payload decode(ByteBufWrapper byteBufWrapper) throws Exception {
+  public Payload decode(ByteBufWrapper byteBufWrapper) throws ProtocolException {
     final int originPos = byteBufWrapper.readerIndex();
     if (byteBufWrapper.readableBytes() < HEADER_LEN) {
       byteBufWrapper.setReaderIndex(originPos);

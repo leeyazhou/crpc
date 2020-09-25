@@ -20,7 +20,7 @@
 package com.github.leeyazhou.crpc.codec.protobuf;
 
 import java.util.concurrent.ConcurrentHashMap;
-import com.github.leeyazhou.crpc.codec.Codec;
+import com.github.leeyazhou.crpc.codec.AbstractCodec;
 import com.github.leeyazhou.crpc.core.util.SerializerUtil;
 import io.protostuff.LinkedBuffer;
 import io.protostuff.ProtobufIOUtil;
@@ -31,24 +31,24 @@ import io.protostuff.runtime.RuntimeSchema;
  * @author leeyazhou
  *
  */
-public class ProtobufSerializer implements Codec {
+public class ProtobufCodec extends AbstractCodec {
 
   @Override
-  public Object decode(String className, byte[] bytes) throws Exception {
+  public Object doDecode(String className, byte[] bytes) {
     Class<?> clazz = SerializerUtil.getInstance().getClazzForName(className);
     return doDecode(bytes, clazz);
   }
 
 
   @Override
-  public byte[] encode(Object object) throws Exception {
-    return doEncode(object);
+  public byte[] doEncode(Object object) {
+    return doEncodeInternal(object);
   }
 
-  private static ConcurrentHashMap<Class<?>, Schema<?>> cachedSchema = new ConcurrentHashMap<Class<?>, Schema<?>>();
+  private ConcurrentHashMap<Class<?>, Schema<?>> cachedSchema = new ConcurrentHashMap<Class<?>, Schema<?>>();
 
 
-  private static <T> Schema<T> getSchema(Class<T> cls) {
+  private <T> Schema<T> getSchema(Class<T> cls) {
     @SuppressWarnings("unchecked")
     Schema<T> schema = (Schema<T>) cachedSchema.get(cls);
     if (schema == null) {
@@ -60,7 +60,7 @@ public class ProtobufSerializer implements Codec {
     return schema;
   }
 
-  public static <T> byte[] doEncode(T obj) {
+  public <T> byte[] doEncodeInternal(T obj) {
     LinkedBuffer buffer = LinkedBuffer.allocate(LinkedBuffer.DEFAULT_BUFFER_SIZE);
     try {
       if (obj == null) {
@@ -76,7 +76,7 @@ public class ProtobufSerializer implements Codec {
     }
   }
 
-  public static <T> T doDecode(byte[] data, Class<T> cls) {
+  public <T> T doDecode(byte[] data, Class<T> cls) {
     try {
       T message = ObjectUtils.newInstance(cls);
       Schema<T> schema = getSchema(cls);

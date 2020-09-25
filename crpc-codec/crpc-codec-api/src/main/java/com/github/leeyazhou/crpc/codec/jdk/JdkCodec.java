@@ -19,28 +19,30 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import com.github.leeyazhou.crpc.codec.Codec;
+import com.github.leeyazhou.crpc.codec.AbstractCodec;
+import com.github.leeyazhou.crpc.codec.CodecException;
+import com.github.leeyazhou.crpc.core.util.IOUtils;
 
-public class JdkCodec implements Codec {
+public class JdkCodec extends AbstractCodec {
 
   @Override
-  public Object decode(String className, byte[] bytes) throws Exception {
+  public Object doDecode(String className, byte[] bytes) {
     ObjectInputStream objectIn = null;
     Object resultObject = null;
     try {
       objectIn = new ObjectInputStream(new ByteArrayInputStream(bytes));
       resultObject = objectIn.readObject();
+    } catch (Exception e) {
+      throw new CodecException(e);
     } finally {
-      if (null != objectIn) {
-        objectIn.close();
-      }
+      IOUtils.close(objectIn);
     }
 
     return resultObject;
   }
 
   @Override
-  public byte[] encode(Object object) throws Exception {
+  public byte[] doEncode(Object object) {
     ByteArrayOutputStream byteArray = null;
     ObjectOutputStream output = null;
     try {
@@ -48,10 +50,10 @@ public class JdkCodec implements Codec {
       output = new ObjectOutputStream(byteArray);
       output.writeObject(object);
       output.flush();
+    } catch (Exception e) {
+      throw new CodecException(e);
     } finally {
-      if (null != output) {
-        output.close();
-      }
+      IOUtils.close(output);
     }
     return byteArray.toByteArray();
   }

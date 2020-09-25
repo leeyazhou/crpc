@@ -16,33 +16,33 @@
 /**
  * 
  */
-package com.github.leeyazhou.crpc.codec;
+
+package com.github.leeyazhou.crpc.transport.protocol;
+
+import com.github.leeyazhou.crpc.core.annotation.CRPCSerializable;
+import com.github.leeyazhou.crpc.core.exception.CrpcException;
 
 /**
- * 
- * codec
- * 
  * @author leeyazhou
- *
  */
-public interface Codec {
-  /**
-   * Encode Object to byte[]
-   * 
-   * @param object object
-   * @return byte of object
-   * @throws Exception any exception
-   */
-  byte[] encode(Object object) throws CodecException;
+@CRPCSerializable
+public class ProtocolException extends CrpcException {
 
-  /**
-   * decode byte[] to Object
-   * 
-   * @param className className
-   * @param bytes byte
-   * @return Object
-   * @throws Exception exception
-   */
-  Object decode(String className, byte[] bytes) throws CodecException;
+  private static final long serialVersionUID = -1L;
 
+  public ProtocolException() {
+    super();
+  }
+
+  public ProtocolException(String message) {
+    super(message);
+  }
+
+  public ProtocolException(String message, Throwable cause) {
+    super(message, cause);
+  }
+
+  public ProtocolException(Throwable cause) {
+    super(cause);
+  }
 }

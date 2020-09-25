@@ -20,21 +20,21 @@
 package com.github.leeyazhou.crpc.codec.fst;
 
 import org.nustaq.serialization.FSTConfiguration;
-import com.github.leeyazhou.crpc.codec.Codec;
+import com.github.leeyazhou.crpc.codec.AbstractCodec;
 
 /**
  * @author leeyazhou
  */
-public class FSTCodec implements Codec {
+public class FSTCodec extends AbstractCodec {
   private final FSTConfiguration configuration = FSTConfiguration.createDefaultConfiguration();
 
   @Override
-  public Object decode(String className, byte[] bytes) throws Exception {
+  public Object doDecode(String className, byte[] bytes) {
     return getConfiguration().asObject(bytes);
   }
 
   @Override
-  public byte[] encode(Object object) throws Exception {
+  public byte[] doEncode(Object object) {
     return getConfiguration().asByteArray(object);
   }
 
