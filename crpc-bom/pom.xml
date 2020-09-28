@@ -50,6 +50,36 @@
             </dependency>
             <dependency>
                 <groupId>com.github.leeyazhou</groupId>
+                <artifactId>crpc-codec</artifactId>
+                <version>${project.parent.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.github.leeyazhou</groupId>
+                <artifactId>crpc-codec-api</artifactId>
+                <version>${project.parent.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.github.leeyazhou</groupId>
+                <artifactId>crpc-codec-fst</artifactId>
+                <version>${project.parent.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.github.leeyazhou</groupId>
+                <artifactId>crpc-codec-hessian</artifactId>
+                <version>${project.parent.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.github.leeyazhou</groupId>
+                <artifactId>crpc-codec-kryo</artifactId>
+                <version>${project.parent.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.github.leeyazhou</groupId>
+                <artifactId>crpc-codec-protobuf</artifactId>
+                <version>${project.parent.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.github.leeyazhou</groupId>
                 <artifactId>crpc-config</artifactId>
                 <version>${project.parent.version}</version>
             </dependency>
@@ -121,36 +151,6 @@
             <dependency>
                 <groupId>com.github.leeyazhou</groupId>
                 <artifactId>crpc-transport-netty</artifactId>
-                <version>${project.parent.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.github.leeyazhou</groupId>
-                <artifactId>crpc-codec</artifactId>
-                <version>${project.parent.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.github.leeyazhou</groupId>
-                <artifactId>crpc-codec-api</artifactId>
-                <version>${project.parent.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.github.leeyazhou</groupId>
-                <artifactId>crpc-codec-fst</artifactId>
-                <version>${project.parent.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.github.leeyazhou</groupId>
-                <artifactId>crpc-codec-hessian</artifactId>
-                <version>${project.parent.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.github.leeyazhou</groupId>
-                <artifactId>crpc-codec-kryo</artifactId>
-                <version>${project.parent.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.github.leeyazhou</groupId>
-                <artifactId>crpc-codec-protobuf</artifactId>
                 <version>${project.parent.version}</version>
             </dependency>
         </dependencies>

@@ -10,5 +10,5 @@
   <crpc:protocol name="kryo" />
   <crpc:registry address="zookeeper://172.26.248.85:2181" />
 
-  <crpc:component-scan base-package="com.github.leeyazhou.config.spring" />
+  <crpc:component-scan base-package="com.github.leeyazhou.crpc.config.spring" />
 </beans>

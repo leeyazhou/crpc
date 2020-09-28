@@ -24,6 +24,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import com.github.leeyazhou.crpc.config.ReferConfig;
 import com.github.leeyazhou.crpc.core.URL;
+import com.github.leeyazhou.crpc.core.exception.CrpcException;
 import com.github.leeyazhou.crpc.core.exception.ServiceNotFoundException;
 
 /**
@@ -45,9 +46,8 @@ public class ClientManager {
    * @param <T> t
    * @param referConfig {@link ReferConfig}
    * @return list of {@link Client}
-   * @throws Exception any exception
    */
-  public <T> List<Client> get(final ReferConfig<T> referConfig) throws Exception {
+  public <T> List<Client> get(final ReferConfig<T> referConfig) {
     try {
       List<Client> clients = new ArrayList<Client>();
       for (URL url : referConfig.getUrls()) {
@@ -58,7 +58,7 @@ public class ClientManager {
       }
       return clients;
     } catch (Exception err) {
-      throw err;
+      throw new CrpcException(err);
     }
   }
 

@@ -15,92 +15,29 @@
  */
 package com.github.leeyazhou.crpc.rpc;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import com.github.leeyazhou.crpc.codec.CodecType;
+import com.github.leeyazhou.crpc.cluster.FailoverCluster;
 import com.github.leeyazhou.crpc.config.ReferConfig;
-import com.github.leeyazhou.crpc.core.Constants;
 import com.github.leeyazhou.crpc.core.URL;
-import com.github.leeyazhou.crpc.core.exception.CrpcException;
 import com.github.leeyazhou.crpc.core.logger.Logger;
 import com.github.leeyazhou.crpc.core.logger.LoggerFactory;
-import com.github.leeyazhou.crpc.core.util.ServiceLoader;
-import com.github.leeyazhou.crpc.transport.Client;
-import com.github.leeyazhou.crpc.transport.LoadBalance;
-import com.github.leeyazhou.crpc.transport.TransportFactory;
-import com.github.leeyazhou.crpc.transport.protocol.ProtocolType;
-import com.github.leeyazhou.crpc.transport.protocol.message.RequestMessage;
-import com.github.leeyazhou.crpc.transport.protocol.message.ResponseMessage;
 
 public class RpcHandler<T> implements Handler<T> {
   protected final Logger logger = LoggerFactory.getLogger(RpcHandler.class);
   private URL url;
 
-  private Class<T> handlerType;
-
-  private ProtocolType protocolType = ProtocolType.CRPC;
-
   protected ReferConfig<T> referConfig;
-  protected final TransportFactory transportFactory = ServiceLoader.load(TransportFactory.class).load();
+  private Handler<T> handler;
+
 
   public RpcHandler(ReferConfig<T> referConfig) {
-    this(referConfig, ProtocolType.CRPC);
-  }
-
-  public RpcHandler(ReferConfig<T> referConfig, ProtocolType protocolType) {
     this.referConfig = referConfig;
-    this.handlerType = referConfig.getServiceType();
-    this.protocolType = protocolType;
-    initService();
-  }
-
-  private void initService() {
-    Set<URL> providers = referConfig.getUrls();
-    if (providers != null && !providers.isEmpty()) {
-      Set<URL> urls = new HashSet<URL>();
-      for (URL provider : providers) {
-        provider.addParameter(Constants.APPLICATION, referConfig.getApplicationConfig().getName());
-        provider.addParameter(Constants.VERSION, Constants.CRPC_VERSION);
-        provider.addParameter(Constants.SERVICE_INTERFACE, handlerType.getName());
-        urls.add(provider);
-      }
-      referConfig.setUrls(urls);
-    }
-    this.transportFactory.initService(referConfig);
+    handler = new FailoverCluster().join(referConfig);
   }
 
 
   @Override
   public Result handle(Invocation context) {
-    try {
-      context.setServiceTypeName(getHandlerType().getName());
-      context.setTimeout(referConfig.getTimeout());
-      return doHandle(context);
-    } catch (Exception err) {
-      throw new CrpcException(err);
-    }
-  }
-
-
-
-  protected Result doHandle(Invocation context) throws Exception {
-    CodecType codecType = CodecType.valueOf(referConfig.getCodecType());
-    final RequestMessage request = new RequestMessage(context.getServiceTypeName(), context.getMethodName());
-    request.setCodecType(codecType);
-    request.setTimeout(referConfig.getTimeout());
-    request.setProtocolType(protocolType);
-    request.setArgs(context.getArgs());
-    request.setArgTypes(context.getArgTypes());
-
-
-    List<Client> clients = transportFactory.getClientManager().get(referConfig);
-    LoadBalance loadBalance = transportFactory.getLoadBalance(referConfig.getLoadbalance());
-    Client client = loadBalance.chooseOne(clients, request);
-    ResponseMessage message = client.request(request);
-    Result result = new Result();
-    result.setValue(message.getResponse());
-    return result;
+    return handler.handle(context);
   }
 
   public URL getUrl() {
@@ -109,11 +46,7 @@ public class RpcHandler<T> implements Handler<T> {
 
   @Override
   public Class<T> getHandlerType() {
-    return handlerType;
-  }
-
-  public ProtocolType getProtocolType() {
-    return protocolType;
+    return referConfig.getServiceType();
   }
 
 

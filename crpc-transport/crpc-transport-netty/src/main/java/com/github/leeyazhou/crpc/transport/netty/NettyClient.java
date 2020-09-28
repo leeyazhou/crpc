@@ -33,7 +33,7 @@ import io.netty.channel.ChannelFutureListener;
 public class NettyClient extends AbstractClient {
   private static final Logger logger = LoggerFactory.getLogger(NettyClient.class);
   private final AtomicInteger idleCount = new AtomicInteger(0);
-  private volatile Connection channel;
+  private volatile Connection connection;
 
   private final Bootstrap bootStrap;
 
@@ -90,7 +90,7 @@ public class NettyClient extends AbstractClient {
         }
       }
     }).syncUninterruptibly();
-    this.channel = new NettyConnection(channelFuture.channel(), getUrl());
+    this.connection = new NettyConnection(channelFuture.channel(), getUrl());
     return channelFuture.awaitUninterruptibly().isSuccess();
   }
 
@@ -102,7 +102,7 @@ public class NettyClient extends AbstractClient {
 
   @Override
   public Connection getConnection() {
-    return this.channel;
+    return this.connection;
   }
 
   /**

@@ -29,7 +29,7 @@ public interface Client {
    * @param request {@link RequestMessage}
    * @return Object return response
    */
-  ResponseMessage request(RequestMessage request);
+  RpcResult request(RequestMessage request);
 
   /**
    * receive response from server

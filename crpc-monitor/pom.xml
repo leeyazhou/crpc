@@ -33,12 +33,12 @@
         </dependency>
         <dependency>
             <groupId>com.github.leeyazhou</groupId>
-            <artifactId>crpc-transport-api</artifactId>
+            <artifactId>crpc-filter</artifactId>
             <version>${project.parent.version}</version>
         </dependency>
         <dependency>
             <groupId>com.github.leeyazhou</groupId>
-            <artifactId>crpc-filter</artifactId>
+            <artifactId>crpc-transport-api</artifactId>
             <version>${project.parent.version}</version>
         </dependency>
         <dependency>

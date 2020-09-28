@@ -55,6 +55,7 @@
         <module>crpc-codec</module>
         <module>crpc-example</module>
         <module>crpc-filter</module>
+        <module>crpc-cluster</module>
     </modules>
     <scm>
         <connection>scm:git:git@github.com:${github.org}/${github.repo}.git</connection>

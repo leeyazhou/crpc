@@ -44,4 +44,15 @@ public class CrpcException extends RuntimeException {
   public CrpcException(Throwable cause) {
     super(cause);
   }
+
+  public static CrpcException wrap(Throwable ex) {
+    return wrap(null, ex);
+  }
+
+  public static CrpcException wrap(String message, Throwable ex) {
+    if (ex instanceof CrpcException) {
+      return (CrpcException) ex;
+    }
+    return new CrpcException(message, ex);
+  }
 }

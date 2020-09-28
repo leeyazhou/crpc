@@ -50,6 +50,7 @@ public class ProxyHandler<T> implements InvocationHandler {
   public Object doInvoke(Object proxy, Method method, Object[] args) {
     String[] argTypes = createParamSignature(method.getParameterTypes());
     Invocation invocation = new Invocation();
+    invocation.setServiceTypeName(handler.getHandlerType().getName());
     invocation.setMethodName(method.getName());
     invocation.setArgTypes(argTypes);
     invocation.setArgs(args);

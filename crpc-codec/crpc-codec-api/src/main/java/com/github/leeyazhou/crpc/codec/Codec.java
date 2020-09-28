@@ -31,7 +31,7 @@ public interface Codec {
    * 
    * @param object object
    * @return byte of object
-   * @throws Exception any exception
+   * @throws CodecException any exception
    */
   byte[] encode(Object object) throws CodecException;
 
@@ -41,7 +41,7 @@ public interface Codec {
    * @param className className
    * @param bytes byte
    * @return Object
-   * @throws Exception exception
+   * @throws CodecException exception
    */
   Object decode(String className, byte[] bytes) throws CodecException;
 

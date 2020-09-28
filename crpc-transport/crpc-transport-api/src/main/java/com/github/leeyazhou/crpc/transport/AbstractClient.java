@@ -17,10 +17,8 @@ package com.github.leeyazhou.crpc.transport;
 
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
-import java.util.concurrent.TimeUnit;
 import com.github.leeyazhou.crpc.core.URL;
 import com.github.leeyazhou.crpc.core.exception.CrpcException;
-import com.github.leeyazhou.crpc.core.exception.TimeoutException;
 import com.github.leeyazhou.crpc.core.logger.Logger;
 import com.github.leeyazhou.crpc.core.logger.LoggerFactory;
 import com.github.leeyazhou.crpc.core.util.ServiceLoader;
@@ -30,7 +28,6 @@ import com.github.leeyazhou.crpc.transport.protocol.message.ResponseMessage;
 public abstract class AbstractClient implements Client {
   private static final Logger logger = LoggerFactory.getLogger(AbstractClient.class);
   private static final boolean isDebugEnabled = logger.isDebugEnabled();
-  private static final long PRINT_CONSUME_MINTIME = Long.parseLong(System.getProperty("rpc.print.consumetime", "0"));
   protected static ConcurrentMap<Integer, RpcResult> responses = new ConcurrentHashMap<Integer, RpcResult>();
   protected final TransportFactory transportFactory = ServiceLoader.load(TransportFactory.class).load();
   protected final URL url;
@@ -40,10 +37,9 @@ public abstract class AbstractClient implements Client {
   }
 
   @Override
-  public ResponseMessage request(RequestMessage request) {
+  public RpcResult request(RequestMessage request) {
     validate(request);
-    long beginTime = System.currentTimeMillis();
-    final RpcResult rpcResult = new RpcResult();
+    final RpcResult rpcResult = new RpcResult().setId(request.id()).start();
     responses.putIfAbsent(request.id(), rpcResult);
     try {
       if (isDebugEnabled) {
@@ -58,43 +54,10 @@ public abstract class AbstractClient implements Client {
       responses.remove(request.id());
       final String msg = "send request to os sendbuffer error, " + request;
       logger.error(msg, err);
-      throw new CrpcException(msg, err);
-    }
-    ResponseMessage response = null;
-    try {
-      response =
-          rpcResult.getResponse(request.getTimeout() - (System.currentTimeMillis() - beginTime), TimeUnit.MILLISECONDS);
-    } catch (Exception err) {
-      // logger.error("Get response error", err);
-      throw new CrpcException("Get response error, " + request, err);
-    } finally {
-      responses.remove(request.id());
+      throw CrpcException.wrap(msg, err);
     }
 
-    if (PRINT_CONSUME_MINTIME > 0 && isDebugEnabled) {
-      long consumeTime = System.currentTimeMillis() - beginTime;
-      if (consumeTime > PRINT_CONSUME_MINTIME) {
-        if (logger.isInfoEnabled()) {
-          logger.info(
-              String.format("client invokeSync consume time: %s ms, server is: %s:%s request id is:%s, queue : %s",
-                  consumeTime, this.url.getHost(), this.url.getPort(), request.id(), responses.size()));
-        }
-      }
-    }
-    if (response == null) {
-      String errorMsg = "receive response timeout(" + request.getTimeout() + " ms), server is: " + this.url.getHost()
-          + ":" + this.url.getPort() + ", request id is:" + request.id() + ", queue size : " + responses.size();
-      throw new TimeoutException(errorMsg);
-    } else if (response.isError()) {
-      StringBuilder sb = new StringBuilder("server error, server is: [");
-      sb.append(this.url.getHost()).append(":").append(this.url.getPort());
-      sb.append("], request id is:").append(request.id());
-      if (response.getResponse() != null) {
-        sb.append(", ").append(response.getResponse());
-      }
-      throw new CrpcException(sb.toString());
-    }
-    return response;
+    return rpcResult;
   }
 
   private void validate(RequestMessage requestMessage) {
@@ -111,7 +74,7 @@ public abstract class AbstractClient implements Client {
    */
   @Override
   public void receiveResponse(ResponseMessage response) {
-    RpcResult rpcResult = responses.get(response.id());
+    RpcResult rpcResult = responses.remove(response.id());
     if (rpcResult != null) {
       rpcResult.setResponse(response);
     } else {
@@ -130,6 +93,6 @@ public abstract class AbstractClient implements Client {
    * @param request {@link RequestMessage}
    * @throws Exception any exception
    */
-  public abstract void doRequest(RequestMessage request) throws Exception;
+  protected abstract void doRequest(RequestMessage request) throws Exception;
 
 }

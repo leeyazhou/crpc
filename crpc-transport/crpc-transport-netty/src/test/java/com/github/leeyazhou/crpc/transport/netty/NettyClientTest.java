@@ -24,6 +24,7 @@ import org.junit.Test;
 import com.github.leeyazhou.crpc.core.Constants;
 import com.github.leeyazhou.crpc.core.URL;
 import com.github.leeyazhou.crpc.core.util.concurrent.NamedThreadFactory;
+import com.github.leeyazhou.crpc.transport.RpcResult;
 import com.github.leeyazhou.crpc.transport.connection.ConnectionManager;
 import com.github.leeyazhou.crpc.transport.netty.handler.NettyClientHandler;
 import com.github.leeyazhou.crpc.transport.netty.handler.NettyClientHeartBeatHandler;
@@ -83,7 +84,8 @@ public class NettyClientTest extends NettyServerTest {
     message.setTimeout(3000);
     message.addHeader(new Header("username", "crpc"));
 
-    ResponseMessage responseMessage = client.request(message);
+    RpcResult rpcResult = client.request(message);
+    ResponseMessage responseMessage = rpcResult.getResponse(3000, TimeUnit.MILLISECONDS);
     Assert.assertEquals("PING", responseMessage.getResponse());
   }
 

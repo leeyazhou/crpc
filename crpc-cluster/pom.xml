@@ -20,15 +20,31 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>com.github.leeyazhou</groupId>
-        <artifactId>crpc-rpc</artifactId>
+        <artifactId>crpc-parent</artifactId>
         <version>1.0.3-SNAPSHOT</version>
     </parent>
-    <artifactId>crpc-rpc-api</artifactId>
+    <artifactId>crpc-cluster</artifactId>
+
     <dependencies>
         <dependency>
             <groupId>com.github.leeyazhou</groupId>
-            <artifactId>crpc-core</artifactId>
-            <version>${project.parent.version}</version>
+            <artifactId>crpc-codec-api</artifactId>
+            <version>1.0.3-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>com.github.leeyazhou</groupId>
+            <artifactId>crpc-config-api</artifactId>
+            <version>1.0.3-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>com.github.leeyazhou</groupId>
+            <artifactId>crpc-rpc-api</artifactId>
+            <version>1.0.3-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>com.github.leeyazhou</groupId>
+            <artifactId>crpc-transport-api</artifactId>
+            <version>1.0.3-SNAPSHOT</version>
         </dependency>
     </dependencies>
 </project>

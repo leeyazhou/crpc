@@ -16,46 +16,22 @@
 /**
  * 
  */
-package com.github.leeyazhou.crpc.rpc;
+package com.github.leeyazhou.crpc.cluster;
+
+import com.github.leeyazhou.crpc.config.ReferConfig;
+import com.github.leeyazhou.crpc.rpc.Handler;
 
 /**
  * @author leeyazhou
  *
  */
-public class Result {
+public class FailoverCluster implements Cluster {
 
-  private Object value;
-  private Exception exception;
 
-  public Result() {}
 
-  public Result(Object value) {
-    this.value = value;
-  }
-
-  public Object getValue() {
-    return value;
-  }
-
-  /**
-   * @param value the value to set
-   */
-  public void setValue(Object value) {
-    this.value = value;
-  }
-
-  /**
-   * @return the exception
-   */
-  public Exception getException() {
-    return exception;
-  }
-
-  /**
-   * @param exception the exception to set
-   */
-  public void setException(Exception exception) {
-    this.exception = exception;
+  @Override
+  public <T> Handler<T> join(ReferConfig<T> referConfig) {
+    return new FailoverClusterHandler<T>(referConfig);
   }
 
 
