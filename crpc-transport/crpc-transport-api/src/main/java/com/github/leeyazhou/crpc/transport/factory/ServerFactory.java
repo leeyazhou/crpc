@@ -20,6 +20,7 @@ package com.github.leeyazhou.crpc.transport.factory;
 
 import java.util.concurrent.ExecutorService;
 import com.github.leeyazhou.crpc.config.Configuration;
+import com.github.leeyazhou.crpc.registry.meta.ApplicationMeta;
 import com.github.leeyazhou.crpc.rpc.Handler;
 
 /**
@@ -56,8 +57,10 @@ public interface ServerFactory {
   /**
    * 设置服务器配置信息
    * 
-   * @param configuration configuration
+   * @return {@link Configuration}
    */
-  void setConfiguration(Configuration configuration);
+  Configuration getConfiguration();
+
+  ApplicationMeta getApplicationMeta();
 
 }

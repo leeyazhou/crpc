@@ -18,6 +18,7 @@
  */
 package com.github.leeyazhou.crpc.transport.factory;
 
+import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -33,6 +34,9 @@ import com.github.leeyazhou.crpc.core.util.concurrent.TaskQueue;
 import com.github.leeyazhou.crpc.core.util.concurrent.ThreadPoolExecutor;
 import com.github.leeyazhou.crpc.core.util.object.RegistryType;
 import com.github.leeyazhou.crpc.registry.RegistryFactory;
+import com.github.leeyazhou.crpc.registry.meta.ApplicationMeta;
+import com.github.leeyazhou.crpc.registry.meta.MethodMeta;
+import com.github.leeyazhou.crpc.registry.meta.ServiceMeta;
 import com.github.leeyazhou.crpc.rpc.Handler;
 
 /**
@@ -45,10 +49,8 @@ public class CrpcServerFactory implements ServerFactory {
   private ExecutorService executorService;
   private Configuration configuration;
   private ServerConfig serverConfig;
+  private ApplicationMeta applicationMeta;
 
-  /**
-   * @return the executorService
-   */
   @Override
   public ExecutorService getExecutorService() {
     if (executorService == null) {
@@ -66,13 +68,15 @@ public class CrpcServerFactory implements ServerFactory {
     return executorService;
   }
 
-  /**
-   * @param configuration configuration
-   */
-  @Override
-  public void setConfiguration(Configuration configuration) {
+  public CrpcServerFactory setConfiguration(Configuration configuration) {
     this.configuration = configuration;
     this.serverConfig = this.configuration.getServerConfig();
+    return this;
+  }
+
+  @Override
+  public Configuration getConfiguration() {
+    return configuration;
   }
 
   @SuppressWarnings("unchecked")
@@ -96,4 +100,50 @@ public class CrpcServerFactory implements ServerFactory {
   public Map<RegistryType, RegistryFactory> getRegistryFactories() {
     return registryFactories;
   }
+
+  @Override
+  public ApplicationMeta getApplicationMeta() {
+    if (applicationMeta == null) {
+      synchronized (logger) {
+        if (applicationMeta == null) {
+          this.applicationMeta = doGetApplicationMeta();
+        }
+      }
+
+    }
+    return applicationMeta;
+  }
+
+  private ApplicationMeta doGetApplicationMeta() {
+    ApplicationMeta meta = new ApplicationMeta();
+    meta.setName(this.configuration.getApplicationConfig().getName());
+    meta.setVersion(configuration.getApplicationConfig().getVersion());
+    Map<String, ServiceMeta> serviceMetas = new HashMap<String, ServiceMeta>();
+    meta.setServiceInfos(serviceMetas);
+
+    for (Map.Entry<String, Handler<?>> entry : serviceHandlers.entrySet()) {
+      Class<?> serviceType = entry.getValue().getHandlerType();
+      ServiceMeta serviceMeta = new ServiceMeta();
+      serviceMetas.put(entry.getKey(), serviceMeta);
+      serviceMeta.setName(serviceType.getName());
+      doProcessMethodMetas(serviceMeta, serviceType);
+    }
+    return meta;
+  }
+
+  private void doProcessMethodMetas(ServiceMeta serviceMeta, Class<?> serviceType) {
+    for (Method method : serviceType.getDeclaredMethods()) {
+      MethodMeta meta = new MethodMeta();
+      serviceMeta.addMethodMeta(meta);
+      meta.setName(method.getName());
+      meta.setReturnType(method.getReturnType().getName());
+      String[] argsTypes = new String[method.getParameterCount()];
+      meta.setArgsTypes(argsTypes);
+      for (int i = 0; i < method.getParameterCount(); i++) {
+        argsTypes[i] = method.getParameters()[i].getName();
+      }
+    }
+  }
+
+
 }

@@ -32,9 +32,9 @@ crpc-showcase/
 
 ```
 <dependency>
-    <groupId>com.github.crpc</groupId>
+    <groupId>com.github.leeyazhou</groupId>
     <artifactId>crpc</artifactId>
-    <version>0.0.2-SNAPSHOT</version>
+    <version>1.0.2.RELEASE</version>
 </dependency>
 ```
 
