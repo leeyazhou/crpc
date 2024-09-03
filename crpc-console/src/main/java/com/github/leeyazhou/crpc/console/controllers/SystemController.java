@@ -22,18 +22,16 @@ package com.github.leeyazhou.crpc.console.controllers;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
-import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import com.github.leeyazhou.crpc.console.config.ConsoleConfig;
-import com.github.leeyazhou.crpc.console.utils.DateUtil;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Level;
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.core.Logger;
+import org.apache.logging.log4j.core.LoggerContext;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -41,7 +39,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
-
+import com.github.leeyazhou.crpc.console.config.ConsoleConfig;
+import com.github.leeyazhou.crpc.console.utils.DateUtil;
 import com.github.leeyazhou.crpc.core.Constants;
 
 /**
@@ -56,11 +55,10 @@ public class SystemController {
   @RequestMapping("log")
   public String log(Model model) {
     logger.info("log");
-    @SuppressWarnings("unchecked")
-    Enumeration<Logger> loggers = LogManager.getCurrentLoggers();
+    Collection<Logger> loggers = ((LoggerContext) LogManager.getContext()).getLoggers();
     List<Logger> loggersResult = new ArrayList<Logger>();
-    while (loggers.hasMoreElements()) {
-      loggersResult.add(loggers.nextElement());
+    for (Logger logger : loggers) {
+      loggersResult.add(logger);
     }
     model.addAttribute("loggers", loggersResult);
     model.addAttribute("rootLogger", LogManager.getRootLogger());
@@ -73,11 +71,12 @@ public class SystemController {
     String result = "失败!";
 
     if ("changeall".equals(name) && StringUtils.isNotBlank(level)) {
-      LogManager.getRootLogger().setLevel(Level.toLevel(level));
+      LogManager.getRootLogger().atLevel(Level.toLevel(level));
       result = "所有日志更新为：" + level;
     } else if (StringUtils.isNotBlank(name) && StringUtils.isNotBlank(level)) {
-      Logger logger = LogManager.exists(name);
-      logger.setLevel(Level.toLevel(level));
+      LogManager.getLogger(name);
+      org.apache.logging.log4j.Logger logger = LogManager.getLogger(name);
+      logger.atLevel(Level.toLevel(level));
       result = "成功!";
     }
 
@@ -99,7 +98,8 @@ public class SystemController {
     version.put("CRPC编码", Constants.ENCODING);
     version.put("内存", getHeapMsg());
     version.put("操作系统", System.getenv("OS"));
-    version.put("CPU", System.getenv("PROCESSOR_ARCHITECTURE") + " ; " + Runtime.getRuntime().availableProcessors() + " cores");
+    version.put("CPU",
+        System.getenv("PROCESSOR_ARCHITECTURE") + " ; " + Runtime.getRuntime().availableProcessors() + " cores");
     version.put("运行时间", getSystemRunningTime());
     model.addAttribute("version", version);
     return "/sys/version";
