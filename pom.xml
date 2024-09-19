@@ -103,7 +103,7 @@
         <objenesis.version>3.4</objenesis.version>
         <project.build.locale>zh_CN</project.build.locale>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <protobuf.version>4.27.2</protobuf.version>
+        <protobuf.version>4.27.5</protobuf.version>
         <protostuff.version>1.8.0</protostuff.version>
 
         <sentinel.version>1.8.8</sentinel.version>
